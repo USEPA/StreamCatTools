@@ -1,0 +1,157 @@
+---
+title: "SnapSitesToNHDPlus"
+author: "Marc Weber"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    theme: yeti
+    highlighted: default 
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Read in point location data
+
+```{r sites, warning=FALSE, error=FALSE, message=FALSE}
+library(dplyr); 
+library(ggplot2); 
+library(sf); 
+library(readr)
+library(mapview)
+library(leaflet)
+library(foreign)
+library(knitr)
+
+df_locs <- read_csv('VA_FF_WVA_MD_Other_envData.csv')
+# head(as.data.frame(df_locs))
+df_locs <- st_as_sf(df_locs, 
+                    coords = c("LongitudeDD", "LatitudeDD"), # for point data
+                    remove = F, # don't remove these lat/lon cols from df
+                    crs = 4269) # add projection 
+```
+
+## Assign NHDPlus regions to sites
+Project both df_locs and flowlines to Albers, asign sites to NHDPlus regions, and write out temp NHD lines
+```{r NHDPlus, eval=FALSE}
+regions <- st_read('H:/NHDPlusV21/NHDPlusGlobalData/BoundaryUnit.shp')
+regions <- regions %>% 
+  dplyr::filter(UnitType=='VPU') %>%
+  dplyr::select(DrainageID, UnitID, geometry)
+
+df_locs <- df_locs %>% dplyr::select(UID, StationID, LongitudeDD, LatitudeDD, state)
+regions <- st_transform(regions, st_crs(df_locs))
+df_locs <- st_join(df_locs, regions) 
+
+df_locs$UnitID <- droplevels(df_locs$UnitID)
+
+i=0
+for (l in levels(df_locs$UnitID)){
+  d <- regions$DrainageID[regions$UnitID == l]
+  if (i==0){
+    nhd <- st_read(paste0('H:/NHDPlusV21/NHDPlus',d,'/NHDPlus',l,'/NHDSnapshot/Hydrography/NHDFlowline.shp'))
+    nhd <- st_transform(nhd, st_crs(df_locs))
+    nhd <- st_zm(nhd, drop = TRUE, what = "ZM")
+    nhd <- st_crop(nhd, st_bbox(df_locs))
+    nhd2 <- st_read(paste0('H:/NHDPlusV21/NHDPlus',d,'/NHDPlus',l,'/NHDSnapshot/Hydrography/NHDFlowline.shp'))
+    nhd2 <- nhd2 %>% 
+      dplyr::filter(COMID %in% nhd$COMID)
+  }
+  if (i > 0){
+    temp <- st_read(paste0('H:/NHDPlusV21/NHDPlus',d,'/NHDPlus',l,'/NHDSnapshot/Hydrography/NHDFlowline.shp'))
+    temp <- st_transform(temp, st_crs(df_locs))
+    temp <- st_zm(temp, drop = TRUE, what = "ZM")
+    temp <- st_crop(temp, st_bbox(df_locs))
+    temp2 <- st_read(paste0('H:/NHDPlusV21/NHDPlus',d,'/NHDPlus',l,'/NHDSnapshot/Hydrography/NHDFlowline.shp'))
+    temp2 <- temp2 %>% 
+      dplyr::filter(COMID %in% temp$COMID)
+    nhd2 <- rbind(nhd2, temp2)
+  }
+  i = i+1
+}
+
+nhd2 <- nhd2 %>% 
+  st_transform(crs = 102003) # convert to Albers Equal Area
+df_locs <- df_locs %>% 
+  st_transform(crs = 102003) # convert to Albers Equal Area
+
+
+# Write out temporary projected shapefiles to use for linear referencing sites
+st_write(df_locs, 'H:/WorkingData/Junk/sites_for_lr.shp')
+st_write(nhd2, 'H:/WorkingData/Junk/nhd_for_lr.shp')
+```
+
+## Set up reticulate to run python from R
+You may need to install reticulate, and then you need to set your python path (where your python excutable is located that you want to use), use a conda environment, or use a virtual environment for python
+```{r reticulate, eval=FALSE}
+# install.packages("reticulate")
+library(reticulate)
+# use_python("C:/Python27/ArcGIS10.6") # A typical installation example...
+use_condaenv("StreamCat") # I use a conda environment installation of python
+```
+
+## Snap sites to flowlines
+Use linear referencing with ArcPy and create route if streamlines are not already a route
+```{python, eval=FALSE}
+import arcpy
+# If streamlines are not routes, you will need to modify Create Routes below to fit your needs
+# Execute CreateRoutes
+# arcpy.CreateRoutes_lr(in_lines, route_ID_field, out_routes, "LENGTH", "#", "#", "LOWER_LEFT", 0.00018939394)
+
+# Execute LocateFeaturesAlongRoutes
+pts = 'H:/WorkingData/Junk/sites_for_lr.shp'
+nhd = 'H:/WorkingData/Junk/nhd_for_lr.shp'
+props = "RID POINT MEAS"
+arcpy.LocateFeaturesAlongRoutes_lr(pts, nhd, "REACHCODE", "3000 Meters", "H:/WorkingData/Junk/LR_Sites.dbf", props, "FIRST", "DISTANCE", "ZERO", "FIELDS", "M_DIRECTON")
+```
+
+### View locations and NHDPlus
+```{r mapview, eval=TRUE}
+df_locs <- st_read('H:/WorkingData/Junk/sites_for_lr.shp')
+m <- mapview(df_locs)
+m@map = m@map %>% addWMSTiles(group = 'NHDPlus',
+"https://watersgeo.epa.gov/arcgis/services/NHDPlus_NP21/NHDSnapshot_NP21/MapServer/WmsServer?",
+layers  = 4,
+options = WMSTileOptions(format = "image/png", transparent = TRUE),
+attribution = "") %>% mapview:::mapViewLayersControl(names = c("NHDPlus"))
+m
+```
+
+
+### Flag results
+Check for sites that were far from streamlines or that had multiple streamlines within a given buffer distance of original site locations. Note negative values indicate direction from line.  I used example values of > 20 meters from stream or more than 2 streams within a 50 meter buffer of sites to be conservative.
+
+```{r flags, eval=TRUE, warning=FALSE, error=FALSE, message=FALSE}
+nhd <- st_read('H:/WorkingData/Junk/nhd_for_lr.shp')
+sites_lr <- read.dbf('H:/WorkingData/Junk/LR_Sites.dbf')
+
+a <- ggplot(sites_lr, aes(x = Distance))
+a + geom_histogram(bins = 30, color = "black", fill = "gray") +
+  geom_vline(aes(xintercept = mean(Distance)), 
+             linetype = "dashed", size = 0.6)
+summary(abs(sites_lr$Distance))
+
+# Drop sites more than 20 meters from streamlines just as an example distance flag
+too_far <- sites_lr[abs(sites_lr$Distance) > 20,]
+
+# Back to Albers projection for creating buffers
+# df_locs <- df_locs %>% 
+#   st_transform(crs = 102003) # convert to Albers Equal Area
+bufs <- st_buffer(df_locs, dist=50)
+nhd <- st_zm(nhd, drop = TRUE, what = "ZM")
+bufs <- st_intersection(bufs, nhd)
+too_many_streams <- bufs %>%
+  group_by(UID) %>%
+  filter(n_distinct(COMID) > 1)
+
+# Add flag
+df_locs$Flag <- ifelse((df_locs$UID %in% too_far$UID) | (df_locs$UID %in% too_many_streams$UID), 'Need to Check', 'OK')
+kable(table(df_locs$Flag))
+# st_write(df_locs, 'F:/Git Projects/LouReynolds/Sites_with_Flags_and_NHDPlusInfo.shp')
+```
+
