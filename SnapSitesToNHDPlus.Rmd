@@ -152,6 +152,9 @@ too_many_streams <- bufs %>%
 # Add flag
 df_locs$Flag <- ifelse((df_locs$UID %in% too_far$UID) | (df_locs$UID %in% too_many_streams$UID), 'Need to Check', 'OK')
 kable(table(df_locs$Flag))
-# st_write(df_locs, 'F:/Git Projects/LouReynolds/Sites_with_Flags_and_NHDPlusInfo.shp')
+st_geometry(bufs) <- NULL 
+df_locs <- left_join(df_locs, bufs[,c('UID','COMID','REACHCODE','GNIS_ID','GNIS_NAME')])
+st_geometry(df_locs) <- NULL 
+write_csv(df_locs, 'F:/Git Projects/LouReynolds/Sites_with_Flags_and_NHDPlusInfo.csv')
 ```
 
