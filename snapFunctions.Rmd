@@ -81,11 +81,6 @@ snap_Point_to_Feature <- function(POINT, # sf POINT file
                                   bufferDistances # numeric sequence of distances to run buffer, these will be in
                                   ){              # the unit of the POINT and MULTILINESTRING files
   
-  # Make a place for data to come out of function that matches the input MULTILINESTRING
-  fun_output <- MULTILINESTRING[1,] %>% 
-    mutate(`Point Unique Identifier` = 'deleteMe', `Buffer Distance` = NA) %>% 
-    select(`Point Unique Identifier`, `Buffer Distance`, everything())
-  
   x <- 0
   repeat {
    x <- x + 1
@@ -118,62 +113,37 @@ z1 <- snap_Point_to_Feature(probSites_sf[1,],'StationID',WQS, seq(10,50,by=10)) 
 z3 <- snap_Point_to_Feature(probSites_sf[4,],'StationID',WQS, seq(10,50,by=10)) # three connections
 z0 <- snap_Point_to_Feature(probSites_sf[5,],'StationID',WQS, seq(10,50,by=10)) # no connection
 
-# Ideally we would combine them now to output to a user, but can't
+# Ideally we would combine them now to output to a user, but can't bc sf issues with bind_rows
 
 bind_rows(z1,z3,z0)
-
 # bind_rows should work bc it adds columns even if they don't exist in one object, but geometry list is throwing this function off 
+
+# rbind for the win?
+rbindFail <- rbind(z1,z3,z0) # yeah, rbind not to the rescue
+
+rm(rbindFail)
+
+# But it rbind at least works with similar features
+
+works <- rbind(z1,z3)
+doesntwork <- bind_rows(z1,z3)
+
+filter(doesntwork, `Point Unique Identifier` == '9-LIC004.73')
+# error
+
+rm(works);rm(doesntwork)
 ```
 
 
-Now extend this to MULTIPOINT features so user can easily use with spreadsheet-like input.
-
-```{r MULTIPOINT buffer}
-# for testing
-#MULTIPOINT <- probSites_sf[1:2,]
-#POINT_UID_colname <- "StationID"
-#MULTILINESTRING <- WQS
-#bufferDistances <- seq(10,50,by=10)
-
-snap_Points_to_Feature <- function(MULTIPOINT, # sf MULTIPOINT file
-                                  POINT_UID_colname, # as.character(name of unique identifier in POINT file)
-                                  MULTILINESTRING, # stream network
-                                  bufferDistances # numeric sequence of distances to run buffer, these will be in
-                                  ){              # the unit of the MULTIPOINT and MULTILINESTRING files)
-  
-  # Make a place for data to come out of function that matches the input MULTILINESTRING
-  fun_output <- MULTILINESTRING[1,] %>% 
-    mutate(`Point Unique Identifier` = 'deleteMe', `Buffer Distance` = NA) %>% 
-    select(`Point Unique Identifier`, `Buffer Distance`, everything())
-  
-  # Don't love using a loop here but can't figure out better way at present
-  for(i in 1:nrow(MULTIPOINT)) {
-    print(paste('Snapping Point ',i,' of ',nrow(MULTIPOINT), sep = ''))
-    z <- snap_Point_to_Feature(MULTIPOINT[i,], POINT_UID_colname, MULTILINESTRING, bufferDistances)
-    fun_output <- suppressWarnings( fun_output %>% bind_rows(z) )
-  }
-  return(fun_output)
-  #return(filter(fun_output, `Point Unique Identifier` != 'deleteMe')) # get rid of template row
-}
-```
 
 
-That function is where I started before going to a list output. I can feed the snap_Points_to_Feature() points that will and wont connect to a segment within a given buffer distance, but the output is difficult to use. As you can see from line 153, I tried to get rid of the template row before outputting result from function, but error messages occurred.
 
-```{r troubleshooting}
-z <- snap_Points_to_Feature(probSites_sf[1:3,],'StationID',WQS, seq(10,50,by=10))
+Now need to extend this to MULTIPOINT features so user can easily use with spreadsheet-like input. This function outputs a list with one sf object for things that connected to segment within buffer and one smaller tbl that identifies sites that need attention. I didn't love this initally, but I think it offers a somewhat elegant solution to the problem because a single sf output with sites that worked and ones that didn't would still need to be filtered to get rid of empty geometry rows before manipulating further.
 
-# trying to get rid of template row
-filter(z, `Point Unique Identifier` != 'deleteMe') # fail
-z[-1,] # fail
-
-```
+Also, don't love the loop in the function, costly. Maybe a Jenny Bryan list solution could speed up processing here? leaving it at loop for now.
 
 
-Working function outputs a list with one sf object for things that connected to segment within buffer and one smaller tbl that identifies sites that need attention. I didn't love this initally, but I think it offers a somewhat elegant solution to the problem because a single sf output with sites that worked and ones that didn't would still need to be filtered to get rid of empty geometry rows before manipulating further.
-
-
-```{r try multipoint with list output}
+```{r multipoint with list output}
 
 snap_Points_to_Feature_List <- function(MULTIPOINT, # sf MULTIPOINT file
                                   POINT_UID_colname, # as.character(name of unique identifier in POINT file)
@@ -188,7 +158,10 @@ snap_Points_to_Feature_List <- function(MULTIPOINT, # sf MULTIPOINT file
     print(paste('Snapping Point ',i,' of ',nrow(MULTIPOINT), sep = ''))
     z <- snap_Point_to_Feature(MULTIPOINT[i,], POINT_UID_colname, MULTILINESTRING, bufferDistances)
     if("sf" %in% class(z)){
-      out_list$sf_output <- suppressWarnings( out_list$sf_output %>% bind_rows(z) )
+      if( length(out_list$sf_output) == 0 ){
+        out_list$sf_output <- z
+      } else { 
+        out_list$sf_output <- suppressWarnings( out_list$sf_output <- rbind(out_list$sf_output,z) ) }
     } else {
       out_list$tbl_output <-  suppressWarnings( out_list$tbl_output %>% bind_rows(z) )
     }
