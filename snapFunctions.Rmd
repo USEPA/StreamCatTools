@@ -1,0 +1,25 @@
+---
+title: "Snap Tool"
+author: "Emma Jones"
+date: "December 6, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(sf)
+```
+
+This script demonstrates an initial workflow to retrieve attribute information from NHD flowlines. All analysis will comply with tidy data workflows. 
+
+### Initial Thoughts on Snapping Points to Lines
+
+**Background** 
+I built an S3 version of this workflow in ~2015 to snap VDEQ monitoring locations to a NHD polyline shapefile with embedded Water Quality Standards information. This process was an initial step in automating WQS assessment workflows throughout the state. After a few years of project stagnation, renewed interest in automating assessments came about in 2017 with increased shiny app acceptance within the agency. The goal of this snapping project is to develop a function that can take point information and associate the nearest line feature for extraction of attribute info. 
+
+**Why a new function?** 
+After thorough exploration of native sf snapping functions (sf::st_snap, sf::st_nearest_feature) I have determined that they do not fully meet needs for flow line applications. These functions only return the closest feature to an input point, which can mask errors in snapping to the 'correct' flow line. Though a number of lat/lng fall close enough to stream segments to use the above mentioned snapping functions, there are cases where a point falls close to 2+ flow lines. These require manual QA to identify where the point intended to snap to. By only returning the closest feature, these cases are masked from users and can potentially snap to incorrect stream segments. There is value in knowing how many segments are identified within a given buffer distance.
+
+
+
