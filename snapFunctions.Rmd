@@ -85,8 +85,7 @@ snap_Point_to_Feature <- function(POINT, # sf POINT file
   repeat {
    x <- x + 1
    b <- snap_bufferMethod(POINT,MULTILINESTRING,bufferDistances[x])
-   if (nrow(b) > 0 | x == length(bufferDistances)) break 
-  }
+   if (nrow(b) > 0 | x == length(bufferDistances)) break   }
   
   cn <- as.character(unique(st_set_geometry(POINT,NULL) %>% select_(POINT_UID_colname)))
   
@@ -98,8 +97,7 @@ snap_Point_to_Feature <- function(POINT, # sf POINT file
      b <- mutate(b,`Point Unique Identifier` = cn,
               `Buffer Distance` = paste(bufferDistances[x], 
                                         st_crs(POINT)$units, sep = ' ')) %>%
-    dplyr::select(`Point Unique Identifier`, `Buffer Distance`, everything())
-  }
+    dplyr::select(`Point Unique Identifier`, `Buffer Distance`, everything())  }
   return(b)
 }
 
@@ -126,16 +124,14 @@ rm(rbindFail)
 # But it rbind at least works with similar features
 
 works <- rbind(z1,z3)
-doesntwork <- bind_rows(z1,z3)
+doesntwork <- bind_rows(z1,z3) #bind_rows looks like it works for similar features
 
-filter(doesntwork, `Point Unique Identifier` == '9-LIC004.73')
-# error
+filter(doesntwork, `Point Unique Identifier` == '9-LIC004.73') # until you try to do anything with the object
+# So bind_rows is out for this workflow
 
-rm(works);rm(doesntwork)
+# clean up workspace
+rm(list=setdiff(ls(), c("probSites_sf", "probSites_xl", "snap_bufferMethod", "snap_Point_to_Feature", "WQS")))
 ```
-
-
-
 
 
 Now need to extend this to MULTIPOINT features so user can easily use with spreadsheet-like input. This function outputs a list with one sf object for things that connected to segment within buffer and one smaller tbl that identifies sites that need attention. I didn't love this initally, but I think it offers a somewhat elegant solution to the problem because a single sf output with sites that worked and ones that didn't would still need to be filtered to get rid of empty geometry rows before manipulating further.
@@ -182,14 +178,13 @@ Run the function.
 testList <- snap_Points_to_Feature_List(probSites_sf,'StationID',WQS, seq(10,50,by=10))
 ```
 
+Now see what these look like.
 
 ```{r}
 library(mapview)
 
 mapview(testList[['sf_output']])
 
-test <- testList[['sf_output']][1]
-
-mapview(z3) + mapview(probSites_sf)
+mapview(testList[['sf_output']]) + mapview(probSites_sf)
 ```
 
