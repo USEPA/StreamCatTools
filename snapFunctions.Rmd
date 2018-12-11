@@ -51,9 +51,9 @@ Starting small, build first function that just buffers single site X distance an
 
 ```{r bufferFunction}
 # For testing
-#POINT <- probSites_sf[1,]
-#MULTILINESTRING <- WQS
-#distance <- 10
+POINT <- probSites_sf[1,]
+MULTILINESTRING <- WQS
+distance <- 40
 
 snap_bufferMethod <- function(POINT, MULTILINESTRING, distance){
   step1 <- st_buffer(POINT,dist = distance)
@@ -61,8 +61,19 @@ snap_bufferMethod <- function(POINT, MULTILINESTRING, distance){
     filter(st_intersects(., st_zm(step1), sparse = FALSE))
 }
 
-#snap_bufferMethod(probSites_sf[1,],WQS,10)
-#snap_bufferMethod(probSites_sf[1,],WQS,40)
+snap_bufferMethod2 <- function(POINT, MULTILINESTRING, distance){
+  step1 <- st_buffer(POINT,dist = distance)
+  if (apply(st_intersects(step1, st_zm(MULTILINESTRING), sparse = FALSE),1, any)){
+    return (TRUE) } else {
+      return (FALSE)
+    }
+}
+
+snap_bufferMethod(probSites_sf[1,],WQS,10)
+snap_bufferMethod(probSites_sf[1,],WQS,40)
+
+snap_bufferMethod2(probSites_sf[1,],WQS,5)
+snap_bufferMethod2(probSites_sf[1,],WQS,40)
 ```
 
 
