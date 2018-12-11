@@ -81,10 +81,10 @@ Then build outer function that accepts sequence of buffer distances for a single
 
 ```{r buffer series}
 # For testing
-#POINT <- probSites_sf[1,]
-#POINT_UID_colname <- "StationID"
-#MULTILINESTRING <- WQS
-#bufferDistances <- seq(10,50,by=10)
+POINT <- probSites_sf[1,]
+POINT_UID_colname <- "StationID"
+MULTILINESTRING <- WQS
+bufferDistances <- seq(10,50,by=10)
 
 snap_Point_to_Feature <- function(POINT, # sf POINT file
                                   POINT_UID_colname, # as.character(name of unique identifier in POINT file)
@@ -112,6 +112,7 @@ snap_Point_to_Feature <- function(POINT, # sf POINT file
   return(b)
 }
 
+snap_Point_to_Feature(POINT, POINT_UID_colname, MULTILINESTRING, bufferDistances)
 ``` 
  
  
@@ -173,7 +174,11 @@ snap_Points_to_Feature_List <- function(MULTIPOINT, # sf MULTIPOINT file
       out_list$tbl_output <-  suppressWarnings( out_list$tbl_output %>% bind_rows(z) )
     }
   }
- 
+  
+
+    
+  
+  
   # Report Results
   print('Use objectName$sf_output to view successful connections.')
   print('Use objectName$tbl_output to view sites that did not connect to any segments within the input buffer distances.')
@@ -183,10 +188,54 @@ snap_Points_to_Feature_List <- function(MULTIPOINT, # sf MULTIPOINT file
 
 ```
 
+
+
+```{r multipoint with list output}
+
+snap_Points_to_Feature_List2 <- function(MULTIPOINT, # sf MULTIPOINT file
+                                  POINT_UID_colname, # as.character(name of unique identifier in POINT file)
+                                  MULTILINESTRING, # stream network
+                                  bufferDistances # distance to run buffer, this will be in
+                                  ){              # the units of the MULTIPOINT and MULTILINESTRING files)
+  
+  # Don't love using a loop here but can't figure out better way at present
+  for(i in 1:nrow(MULTIPOINT)) {
+    print(paste('Snapping Point ',i,' of ',nrow(MULTIPOINT), sep = ''))
+    z <- snap_Point_to_Feature(MULTIPOINT[i,], POINT_UID_colname, MULTILINESTRING, bufferDistances)
+    if("sf" %in% class(z)){
+      if (nrow(z) > 1){
+        y <- z %>%
+          dplyr::select(`Point Unique Identifier`,`Buffer Distance`)%>%
+          dplyr::slice(1) %>%
+          st_set_geometry(NULL)
+        out_list$tbl_output <- tibble(`Point Unique Identifier` = y$`Point Unique Identifier`,
+                    `Buffer Distance` = paste0('Multiple Connections within ',y$`Buffer Distance`))
+        
+      }
+      if (length(out_list$sf_output) == 0 ){
+        out_list$sf_output <- z
+      } else { 
+        out_list$sf_output <- suppressWarnings( out_list$sf_output <- rbind(out_list$sf_output,z) ) }
+    } else {
+      out_list$tbl_output <-  suppressWarnings( out_list$tbl_output %>% bind_rows(z) )
+    }
+  }
+
+    
+  
+  # Report Results
+  print('Use objectName$sf_output to view successful connections.')
+  print('Use objectName$tbl_output to view sites that did not connect to any segments within the input buffer distances.')
+  
+  return(out_list)
+}
+
+```
 Run the function.
 
 ```{r listOutput}
 testList <- snap_Points_to_Feature_List(probSites_sf,'StationID',WQS, seq(10,50,by=10))
+testList2 <- snap_Points_to_Feature_List2(probSites_sf,'StationID',WQS, seq(10,50,by=10))
 ```
 
 Now see what these look like.
