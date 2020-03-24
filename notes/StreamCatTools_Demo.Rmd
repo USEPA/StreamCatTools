@@ -14,60 +14,59 @@ output:
 
 ## Install StreamCatTools
 Also make sure you have nhdplusTools installed - I am leveraging some functions from that package to complement grabbing Streamcat data.  I'm also using mapview package.
-```{r load libraries, eval=FALSE}
+```{r load libraries, eval=TRUE, warning=FALSE, message=FALSE}
 # requires devtools to install
-install.packages('devtools')
+# install.packages('devtools')
 library(devtools)
 
 # install from repository
-install_github('USEPA/StreamCatTools')
+# install_github('USEPA/StreamCatTools')
 library(StreamCatTools)
+library(sf)
 library(nhdplusTools)
 library(mapview)
-```
-
-## Access data for 
-Look for joined fields in shapefile to figure out which states or hydroregions to load
-
-```{r Regions_metrics}
-library(readr)
 library(dplyr)
-# Variables
-Region_type <- 'State' # or Hydroregions
-metrics <-  c('CoalMines','ImperviousSurfaces2011')
-temp_dir <- 'H:/WorkingData/Junk'
-
-dat <- read_csv('F:/Git Projects/LouReynolds/Sites_with_Flags_and_NHDPlusInfo.csv')
-
-if (Region_type=='State'){ 
-  States = levels(as.factor(dat$state))
-  for (s in States){
-    for (m in metrics){
-      download.file(paste0('ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/StreamCat/States/',m,'_',s,'.zip'),paste0(m,'_',s,'.zip'))
-      unzip(paste0(m,'_',s,'.zip'),exdir = '.')
-    }
-  }
-}
-
-if (Region_type=='Hydroregions'){ 
-  Hydroregions = levels(as.factor(dat$UnitID))
-  for (h in Hydroregions){
-    for (m in metrics){
-      download.file(paste0('ftp://newftp.epa.gov/EPADataCommons/ORD/NHDPlusLandscapeAttributes/StreamCat/HydroRegions/',m,'_',h,'.zip'),paste0(m,'_',h,'.zip'))
-      unzip(paste0(m,'_',h,'.zip'),exdir = '.')
-    }
-  }
-}
+library(knitr)
+sessionInfo()
 ```
 
-## Join StreamCat
-```{r Join, eval=FALSE}
-for (m in metrics){
-  files = list.files('.', pattern = m)
-  files = files[!grepl('\\.zip$',files)]
-  temp <- lapply(files, read_csv)
-  dat <- left_join(as.data.frame(dat), as.data.frame(temp))
-}
-write_csv(dat, 'Example_Output.csv')
+## Example One
+Access several variables for several areas of interest and a couple COMIDs.  Loads into a tibble we can view.
+```{r Example One, warning=FALSE, error=FALSE, message=FALSE}
+df <- get_streamcat_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
+kable(df)
 ```
 
+## Example Two
+Access a couple watershed-only variables for a county (Benton County in this case). 
+```{r Example Two, warning=FALSE, error=FALSE, message=FALSE}
+df <- get_streamcat_data(metric='PctWdWet2006', aoi='watershed', county='41003')
+kable(head(df))
+```
+
+## Example Three
+Access a single variable for the Calapooia River. Use nhdplusTools library to grab flowlines and watershed for Calapooia, plot selected StreamCat metric for Calapooia and show watershed.
+```{r Example Three, warning=FALSE, error=FALSE, message=FALSE, fig.width=9}
+discover_nldi_sources()$source
+start_comid = 23763529
+nldi_feature <- list(featureSource = "comid", featureID = start_comid)
+discover_nldi_navigation(nldi_feature)
+
+flowline_nldi <- navigate_nldi(nldi_feature, mode = "upstreamTributaries", data_source = "")
+
+# get StreamCat metrics
+temp_dir <- 'C:/Users/mweber/temp'
+nhdplus <- subset_nhdplus(comids = flowline_nldi$nhdplus_comid, output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE, return_data = FALSE)
+
+st_layers(nhdplus)
+cats <- read_sf(dsn=nhdplus, layer='CatchmentSP')
+comids <- paste(cats$featureid,collapse=",",sep="")
+
+df <- get_streamcat_data(metric='PctImp2011', aoi='catchment', comid=comids)
+
+flowline_nldi$PCTIMP2011CAT <- df$PCTIMP2011CAT[match(flowline_nldi$nhdplus_comid, df$COMID)]
+
+basin <- get_nldi_basin(nldi_feature = nldi_feature)
+
+mapview(basin, alpha.regions=.08) + mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
+```
