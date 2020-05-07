@@ -81,7 +81,7 @@ Grab NRSA data from NARS website directly in R, pull particular StreamCat metric
 nrsa <- read_csv('https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv')
 glimpse(nrsa)
 
-# Gromote data frame to sf spatial points data frame
+# Promote data frame to sf spatial points data frame
 nrsa_sf <- st_as_sf(nrsa, coords = c("LON_DD83", "LAT_DD83"), crs = 4269)
 
 # Get COMIDs using nhdplusTools package
@@ -98,21 +98,8 @@ comids <- nrsa_sf$COMID
 comids <- comids[!is.na(comids)]
 comids <- comids[c(1:925)]
 comids <- paste(comids,collapse=',')
-df1 <- get_streamcat_data(metric='PctCrop2006', aoi='watershed', comid=comids)
+df <- get_streamcat_data(metric='PctCrop2006', aoi='watershed', comid=comids)
 
-comids2 <- nrsa_sf$COMID
-comids2 <- comids2[!is.na(comids2)]
-comids2 <- comids2[c(926:1856)]
-comids2 <- paste(comids2,collapse=',')
-df2 <- get_streamcat_data(metric='PctCrop2006', aoi='watershed', comid=comids2)
-
-comids3 <- nrsa_sf$COMID
-comids3 <- comids3[!is.na(comids2)]
-comids3 <- comids3[c(1856:2320)]
-comids3 <- paste(comids3,collapse=',')
-df3 <- get_streamcat_data(metric='PctCrop2006', aoi='watershed', comid=comids3)
-
-df <- rbind(df1, df2, df3)
 glimpse(df)
 df$COMID <- as.integer(df$COMID)
 nrsa_sf <- left_join(nrsa_sf, df, by='COMID')
