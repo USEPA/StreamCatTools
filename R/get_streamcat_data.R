@@ -4,7 +4,9 @@
 #' Function to return StreamCat catchment and watershed metrics using the StreamCat API.  The function allows a user to get data
 #' specific to a catchment or metric of interest, as well as returning data by hydroregion(s), state(s), or county(ies).
 #' 
-#'
+#' @author 
+#' Marc Weber
+#' 
 #' @param metric Names of a metric to query
 #' Syntax: name=<name1>,<name2>
 #' 
@@ -43,15 +45,18 @@
 #' df <- get_streamcat_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
 
 get_streamcat_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, region=NA, showPctFull=NA) {
-  get_url <- "http://v26267mcpk506/StreamCat/v1/stable/metrics?"
-  if (!is.na(metric)) get_url <- paste0(get_url,"&name=",metric)
-  if (!is.na(comid)) get_url <- paste0(get_url,"&comid=",comid) 
-  if (!is.na(aoi)) get_url <- paste0(get_url,"&areaOfInterest=",aoi) 
-  if (!is.na(state)) get_url <- paste0(get_url,"&state=",state) 
-  if (!is.na(county)) get_url <- paste0(get_url,"&county=",county) 
-  if (!is.na(region)) get_url <- paste0(get_url,"&region=",region) 
-  if (!is.na(showPctFull)) get_url <- paste0(get_url,"&showPctFull=",showPctFull) 
-  resp <- httr::GET(get_url)
+  post_url <- "http://v26267mcpk506/StreamCat/v1/stable/metrics?"
+  
+  post_body=""
+  if (!is.na(metric)) post_body <- paste0(post_body,"&name=",metric)
+  if (!is.na(comid)) post_body <- paste0(post_body,"&comid=",comid) 
+  if (!is.na(aoi)) post_body <- paste0(post_body,"&areaOfInterest=",aoi) 
+  if (!is.na(state)) post_body <- paste0(post_body,"&state=",state) 
+  if (!is.na(county)) post_body <- paste0(post_body,"&county=",county) 
+  if (!is.na(region)) post_body <- paste0(post_body,"&region=",region) 
+  if (!is.na(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showPctFull) 
+  cat(post_body)
+  resp <- httr::POST(post_url, body=post_body)
   df <- httr::content(resp, type="text/csv", encoding = 'UTF-8') 
   df <- df[,1:ncol(df)] 
   return(df)

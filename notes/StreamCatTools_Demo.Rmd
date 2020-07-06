@@ -27,6 +27,10 @@ library(nhdplusTools)
 library(mapview)
 library(dplyr)
 library(knitr)
+library(readr)
+library(purrr)
+library(tidyr)
+library(ggplot2)
 sessionInfo()
 ```
 
@@ -75,4 +79,48 @@ flowline_nldi$PCTIMP2011CAT <- df$PCTIMP2011CAT[match(flowline_nldi$nhdplus_comi
 basin <- get_nldi_basin(nldi_feature = nldi_feature)
 
 mapview(basin, alpha.regions=.08) + mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
+```
+
+## Example Four
+Grab NRSA data from NARS website directly in R, pull particular StreamCat metrics for sites, compare landscape metrics with other NRSA metrics
+```{r Example Four, warning=FALSE, error=FALSE, message=FALSE}
+nrsa <- read_csv('https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv')
+glimpse(nrsa)
+
+# Promote data frame to sf spatial points data frame
+nrsa_sf <- st_as_sf(nrsa, coords = c("LON_DD83", "LAT_DD83"), crs = 4269)
+
+# Get COMIDs using nhdplusTools package
+# nrsa$COMID<- NA
+# for (i in 1:nrow(nrsa_sf)){
+#   print (i)
+#   nrsa_sf[i,'COMID'] <- discover_nhdplus_id(nrsa_sf[i,c('geometry')])
+# }
+load("L:/Public/mweber/example.RData")
+
+# get particular StreamCat data for all these NRSA sites
+# nrsa_sf$COMID <- as.character(nrsa_sf$COMID)
+comids <- nrsa_sf$COMID
+comids <- comids[!is.na(comids)]
+comids <- comids[c(1:925)]
+comids <- paste(comids,collapse=',')
+df <- get_streamcat_data(metric='PctCrop2006', aoi='watershed', comid=comids)
+
+glimpse(df)
+df$COMID <- as.integer(df$COMID)
+nrsa_sf <- left_join(nrsa_sf, df, by='COMID')
+```
+
+```{r Example Four ggplot, warning=FALSE, error=FALSE, message=FALSE, fig.width=9}
+# download mmi from NARS web page
+mmi <- read_csv('https://www.epa.gov/sites/production/files/2015-09/bentcond.csv')
+glimpse(mmi)
+
+# join mmi to NARS info data frame with StreamCat PctCrop metric
+nrsa_sf <- left_join(nrsa_sf, mmi[,c('SITE_ID','BENT_MMI_COND')], by='SITE_ID')
+nrsa_sf %>% 
+  drop_na(BENT_MMI_COND) %>%
+  ggplot(aes(x=PCTCROP2006WS, y=BENT_MMI_COND))+
+  geom_boxplot()
+
 ```
