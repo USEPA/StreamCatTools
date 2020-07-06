@@ -53,7 +53,7 @@ get_streamcat_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA,
   if (!is.na(showPctFull)) get_url <- paste0(get_url,"&showPctFull=",showPctFull) 
   resp <- httr::GET(get_url)
   df <- httr::content(resp, type="text/csv", encoding = 'UTF-8') 
-  df <- df[,1:ncol(df)-1] 
+  df <- df[,1:ncol(df)] 
   return(df)
 }
 

@@ -16,7 +16,15 @@ Authors@R: c(person(given = "Marc",
                     email = "emma.jones@deq.virginia.gov"))
 Description: Tools for using the StreamCat API and interacting with StreamCat data.
 Depends: R (>= 3.5.1)
-Imports: dplyr, sf, magrittr, readr, jsonlite, httr, xml2, tidyr
+Imports: 
+  dplyr,
+  sf, 
+  magrittr, 
+  readr, 
+  jsonlite, 
+  httr, 
+  xml2, 
+  tidyr
 Suggests: testthat, knitr, rmarkdown, devtools
 License: CC0
 Encoding: UTF-8
