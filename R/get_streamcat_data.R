@@ -61,5 +61,3 @@ get_streamcat_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA,
   df <- df[,1:ncol(df)-1] 
   return(df)
 }
-
-df <- get_streamcat_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
