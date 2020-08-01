@@ -58,6 +58,6 @@ get_streamcat_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA,
   cat(post_body)
   resp <- httr::POST(post_url, body=post_body)
   df <- httr::content(resp, type="text/csv", encoding = 'UTF-8') 
-  df <- df[,1:ncol(df)-1] 
+  df <- df[,1:ncol(df)] 
   return(df)
 }

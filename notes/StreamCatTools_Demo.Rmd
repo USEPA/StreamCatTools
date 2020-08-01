@@ -49,6 +49,12 @@ kable(head(df))
 ```
 
 ## Example Three
+Access a couple watershed-only metrics for all hydroregions. 
+```{r Example Two, warning=FALSE, error=FALSE, message=FALSE}
+df <- get_streamcat_data(metric='PctWdWet2006', aoi='watershed', region='17')
+kable(head(df))
+```
+## Example Four
 Access a single variable for the Calapooia River. Use nhdplusTools library to grab flowlines and watershed for Calapooia, plot selected StreamCat metric for Calapooia and show watershed.
 ```{r Example Three, warning=FALSE, error=FALSE, message=FALSE, fig.width=9}
 discover_nldi_sources()$source
