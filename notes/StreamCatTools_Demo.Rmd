@@ -35,28 +35,35 @@ sessionInfo()
 ```
 
 ## Example One
-Access several variables for several areas of interest and a couple COMIDs.  Loads into a tibble we can view.
+Get a list of all the available StreamCat metrics via the API
 ```{r Example One, warning=FALSE, error=FALSE, message=FALSE}
+metrics <- get_streamcat_metrics()
+metrics
+```
+
+## Example Two
+Access several variables for several areas of interest and a couple COMIDs.  Loads data into a tibble we can view.
+```{r Example Two, warning=FALSE, error=FALSE, message=FALSE}
 df <- get_streamcat_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
 kable(df)
 ```
 
-## Example Two
+## Example Three
 Access a couple watershed-only variables for a county (Benton County in this case). 
-```{r Example Two, warning=FALSE, error=FALSE, message=FALSE}
+```{r Example Three, warning=FALSE, error=FALSE, message=FALSE}
 df <- get_streamcat_data(metric='PctWdWet2006', aoi='watershed', county='41003')
 kable(head(df))
 ```
 
-## Example Three
+## Example Four
 Access a couple watershed-only metrics for all hydroregions. 
-```{r Example Two, warning=FALSE, error=FALSE, message=FALSE}
+```{r Example Four, warning=FALSE, error=FALSE, message=FALSE}
 df <- get_streamcat_data(metric='PctWdWet2006', aoi='watershed', region='17')
 kable(head(df))
 ```
-## Example Four
+## Example Five
 Access a single variable for the Calapooia River. Use nhdplusTools library to grab flowlines and watershed for Calapooia, plot selected StreamCat metric for Calapooia and show watershed.
-```{r Example Three, warning=FALSE, error=FALSE, message=FALSE, fig.width=9}
+```{r Example Five, warning=FALSE, error=FALSE, message=FALSE, fig.width=9}
 discover_nldi_sources()$source
 start_comid = 23763529
 nldi_feature <- list(featureSource = "comid", featureID = start_comid)
@@ -81,9 +88,9 @@ basin <- get_nldi_basin(nldi_feature = nldi_feature)
 mapview(basin, alpha.regions=.08) + mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
 ```
 
-## Example Four
+## Example Six
 Grab NRSA data from NARS website directly in R, pull particular StreamCat metrics for sites, compare landscape metrics with other NRSA metrics
-```{r Example Four, warning=FALSE, error=FALSE, message=FALSE}
+```{r Example Six, warning=FALSE, error=FALSE, message=FALSE}
 nrsa <- read_csv('https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv')
 glimpse(nrsa)
 
@@ -111,7 +118,7 @@ df$COMID <- as.integer(df$COMID)
 nrsa_sf <- left_join(nrsa_sf, df, by='COMID')
 ```
 
-```{r Example Four ggplot, warning=FALSE, error=FALSE, message=FALSE, fig.width=9}
+```{r Example Six ggplot, warning=FALSE, error=FALSE, message=FALSE, fig.width=9}
 # download mmi from NARS web page
 mmi <- read_csv('https://www.epa.gov/sites/production/files/2015-09/bentcond.csv')
 glimpse(mmi)
