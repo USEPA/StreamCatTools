@@ -6,8 +6,10 @@
 #' @author 
 #' Marc Weber
 #' 
-#' @params param Either name or area to grab JSON of parameters in API
-#' 
+#' @param param Either name or area to grab JSON of parameters in API
+#' Syntax: param=<value1>,<value2>
+#' Values: name|area
+#'  
 #' @return A list of all the current StreamCat values for a given parameter
 #' @export
 #'
