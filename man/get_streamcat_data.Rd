@@ -4,8 +4,15 @@
 \alias{get_streamcat_data}
 \title{Get StreamCat data}
 \usage{
-get_streamcat_data(metric = NA, aoi = NA, comid = NA, state = NA,
-  county = NA, region = NA, showPctFull = NA)
+get_streamcat_data(
+  metric = NA,
+  aoi = NA,
+  comid = NA,
+  state = NA,
+  county = NA,
+  region = NA,
+  showPctFull = NA
+)
 }
 \arguments{
 \item{metric}{Names of a metric to query
@@ -48,4 +55,7 @@ df <- get_streamcat_data(metric='PctGrs2006', aoi='watershed', region='01')
 df <- get_streamcat_data(metric='PctUrbMd2006', aoi='riparian_catchment', comid='1337420')
 
 df <- get_streamcat_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
+}
+\author{
+Marc Weber
 }
