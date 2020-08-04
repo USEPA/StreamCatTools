@@ -46,7 +46,7 @@
 
 get_streamcat_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, region=NA, showPctFull=NA) {
   post_url <- "http://v26267mcpk506/StreamCat/v1/stable/metrics?"
-  
+  if (!is.character(comid)) comid <- paste(comid, collapse=",")
   post_body=""
   if (!is.na(metric)) post_body <- paste0(post_body,"&name=",metric)
   if (!is.na(comid)) post_body <- paste0(post_body,"&comid=",comid) 

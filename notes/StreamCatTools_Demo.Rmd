@@ -46,7 +46,7 @@ print(paste0('A selection of available StreamCat metrics include: ',paste(name_p
 ```
 
 ## Example Two
-Access several variables for several areas of interest and a couple COMIDs using theh `get_streamcat_data` function.  Loads data into a tibble we can view.
+Access several variables for several areas of interest and a couple COMIDs using the `get_streamcat_data` function.  Loads data into a tibble we can view.
 ```{r Example Two, warning=FALSE, error=FALSE, message=FALSE}
 df <- get_streamcat_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
 kable(df)
