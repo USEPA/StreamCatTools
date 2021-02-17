@@ -1,7 +1,8 @@
-# StreamCatTools
+# StreamCatTools[![Lifecycle:
+maturing](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![R-CMD-check](https://github.com/USEPA/StreamCatTools/workflows/R-CMD-check/badge.svg)](https://github.com/USEPA/StreamCatTools/actions)
 
-[![Lifecycle:
-maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+
 
 `StreamCatTools` is a draft R package for accessing StreamCat data via the in-development StreamCat API and for working with site data in conjunction with StreamCat and NHDPlus. The StreamCat API is currently behind the agency firewall so the functions in the package will not currently work for those outside the EPA. `StreamCatTools` is in pre-alpha development - this is a work in progress, look for a working package release in the next year.
 
