@@ -1,7 +1,0 @@
-DataSource,StationID,Year,StationID_,LongitudeD,LatitudeDD,stratum,designweig,weightcate,station,state,status,comment,set,Basin,SubBasin,BayShed,BayPanel,EcoRegion,BioRegion,Panel,BioPanel,Order_,BasinSize,StreamSize
-State ProbMon,9-LIC004.73,2001,9-LIC004.73,-80.538003,36.938597,1,3790.5166,1,688,VA,TS,Target,1,New,New,NonBay,NonBayPhase1,Blue Ridge Mountains,Mountain,Phase1,Phase1,1,2,Small
-State ProbMon,9-LRV004.89,2005,9-LRV004.89,-80.544056,37.049322,1,140.3895,5,693,VA,TS,Target,1,New,New,NonBay,NonBayPhase1,Central Appalachian Ridges and Valleys,Mountain,Phase1,Phase2,5,4,Large
-State ProbMon,9-LRV012.98,2014,9-LRV012.98,-80.533,37.0191,1,140.3895,5,694,VA,TS,Y -TS,1,New,New,NonBay,NonBayPhase2,Central Appalachian Ridges and Valleys,Mountain,Phase2,Phase4,5,4,Large
-not real,test1,0,test1,-80.53872715,36.93899724,0,0,0,0,NA,NA,NA,0,NA,NA,NA,NA,NA,NA,NA,NA,0,0,NA
-not real,test2,0,test2,-80.53059737,36.94386786,0,0,0,0,NA,NA,NA,0,NA,NA,NA,NA,NA,NA,NA,NA,0,0,NA
-not real,test3,0,test3,-80.53388408,36.94681754,0,0,0,0,NA,NA,NA,0,NA,NA,NA,NA,NA,NA,NA,NA,0,0,NA
