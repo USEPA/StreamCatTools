@@ -81,14 +81,14 @@ start_comid = 23763529
 nldi_feature <- list(featureSource = "comid", featureID = start_comid)
 discover_nldi_navigation(nldi_feature)
 
-flowline_nldi <- navigate_nldi(nldi_feature, mode = "upstreamTributaries", data_source = "")
+flowline_nldi <- navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
 
 # get StreamCat metrics
 temp_dir <- 'C:/Users/mweber/temp'
-nhdplus <- subset_nhdplus(comids = flowline_nldi$nhdplus_comid, output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE, return_data = FALSE)
+nhdplus <- subset_nhdplus(comids = flowline_nldi$nhdplus_comid, output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE,flowline_only = FALSE)
 
-st_layers(nhdplus)
-cats <- read_sf(dsn=nhdplus, layer='CatchmentSP')
+names(nhdplus)
+cats <- nhdplus$CatchmentSP
 comids <- paste(cats$featureid,collapse=",",sep="")
 
 df <- get_streamcat_data(metric='PctImp2011', aoi='catchment', comid=comids)

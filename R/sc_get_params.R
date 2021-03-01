@@ -17,7 +17,7 @@
 #' params <- get_streamcat_params(param='name')
 #' params <- get_streamcat_params(param='area')
 
-get_streamcat_params <- function(param = NULL) {
+sc_get_params <- function(param = NULL) {
   resp <- fromJSON("http://v26267mcpk506/StreamCat/v1/stable/metrics")
   if (param=='area') params <- resp$parameters$areaOfInterest$options else{
     params <- resp$parameters$name$options
