@@ -32,6 +32,9 @@
 #' @param showPctFull Return the "*pctfull" row for each dataset. The default value is false.
 #' Values: true|false 
 #' 
+#' #' @param showAreaSqKm Return the "*pctfull" row for each dataset. The default value is false.
+#' Values: true|false 
+#' 
 #' @return A tibble of desired StreamCat metrics
 #' @export
 #'
@@ -44,9 +47,9 @@
 #' 
 #' df <- get_streamcat_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
 
-sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, region=NA, showPctFull=NA) {
+sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, region=NA, showPctFull=NA, showAreaSqKm=NA) {
   post_url <- "http://v26267mcpk506/StreamCat/v1/stable/metrics?"
-  if (!is.character(comid)) comid <- paste(comid, collapse=",")
+  if (!is.character(comid) & ! is.na(comid)) comid <- paste(comid, collapse=",")
   post_body=""
   if (!is.na(metric)) post_body <- paste0(post_body,"&name=",metric)
   if (!is.na(comid)) post_body <- paste0(post_body,"&comid=",comid) 
@@ -54,7 +57,8 @@ sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, region
   if (!is.na(state)) post_body <- paste0(post_body,"&state=",state) 
   if (!is.na(county)) post_body <- paste0(post_body,"&county=",county) 
   if (!is.na(region)) post_body <- paste0(post_body,"&region=",region) 
-  if (!is.na(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showPctFull) 
+  if (!is.na(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showPctFull)
+  if (!is.na(showPctFull)) post_body <- paste0(post_body,"&showAreaSqKm=",showAreaSqKm) 
   cat(post_body)
   resp <- httr::POST(post_url, body=post_body)
   df <- httr::content(resp, type="text/csv", encoding = 'UTF-8') 
