@@ -36,8 +36,15 @@ library(jsonlite)
 sessionInfo()
 ```
 
+## StreamCat API
+We can actually pull data into R from the StreamCat API by simply using `read_csv` function from the `readr` package.  We have to hard-wire paramaters and are limited in number of records returned through a `GET` request
+```{r Example Three, warning=FALSE, error=FALSE, message=FALSE}
+df <- read_csv("http://v26267mcpk506/StreamCat/v1/stable/metrics?name=fert&areaOfInterest=watershed&comid=179")
+kable(df)
+```
+
 ## Example One
-Get a list of available StreamCat values for certain parameters using the `get_streamcat_params` function (right now just metric names and areas of interest for this function) via the API
+Using `StreamCatTools`, get a list of available StreamCat values for certain parameters using the `get_streamcat_params` function (right now just metric names and areas of interest for this function) via the API
 ```{r Example One, warning=FALSE, error=FALSE, message=FALSE, include=FALSE}
 region_params <- sc_get_params(param='areaOfInterest')
 name_params <- sc_get_params(param='name')
@@ -53,16 +60,25 @@ kable(df)
 ```
 
 ## Example Three
-We can actually pull data into R from the StreamCat API by simply using `read_csv` function from the `readr` package.  We have to hard-wire paramaters and are limited in number of records returned through a `GET` request
-```{r Example Three, warning=FALSE, error=FALSE, message=FALSE}
-df <- read_csv("http://v26267mcpk506/StreamCat/v1/stable/metrics?name=fert&areaOfInterest=watershed&comid=179")
-kable(df)
+Access a couple watershed-only variables for the area of interest of a county (Benton County in this case) using the `get_streamcat_data` function. 
+```{r Example Four, warning=FALSE, error=FALSE, message=FALSE}
+df <- sc_get_data(metric='pctwdwet2006', aoi='watershed', county='41003')
+kable(head(df))
 ```
 
 ## Example Four
-Access a couple watershed-only variables for a county (Benton County in this case) using the `get_streamcat_data` function. 
+Use the `streamcat_get_comid` function to find comids for a point shapefile we load into R. Note that we could also use a .csv file with coordinate columns and a known coordinate reference system.  We'll use an example dataset of large dams in Oregon from the [Oregon Spatial Data Library]
 ```{r Example Four, warning=FALSE, error=FALSE, message=FALSE}
-df <- sc_get_data(metric='pctwdwet2006', aoi='watershed', county='41003')
+download.file('http://oe.oregonexplorer.info/ExternalContent/SpatialDataforDownload/oregon_dams_2014.zip', 'oregon_dams_2014.zip')
+unzip("oregon_dams_2014.zip", exdir = ".") 
+st_layers('oregon_dams_2015/Oregon_dams_20150107.gdb')
+dams <- read_sf(dsn="oregon_dams_2015/Oregon_dams_20150107.gdb",layer='or_dams') 
+# glimpse(dams)
+names(dams)[36] <- 'geometry'
+st_geometry(dams) <- 'geometry'
+# we'll just grab a few records to keep things simple
+dam_coms <- sc_get_comid(dams[1:10,])
+df <- sc_get_data(metric='huden2010', aoi='watershed', comid=dam_coms)
 kable(head(df))
 ```
 
