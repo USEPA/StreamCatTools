@@ -38,16 +38,16 @@ sessionInfo()
 
 ## Example One
 Get a list of available StreamCat values for certain parameters using the `get_streamcat_params` function (right now just metric names and areas of interest for this function) via the API
-```{r Example One, warning=FALSE, error=FALSE, message=FALSE}
-area_params <- sc_get_params(param='area')
+```{r Example One, warning=FALSE, error=FALSE, message=FALSE, include=FALSE}
+region_params <- sc_get_params(param='areaOfInterest')
 name_params <- sc_get_params(param='name')
-print(paste0('Area of interest available parameters are: ', paste(area_params,collapse = ', ')))
+print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
 print(paste0('A selection of available StreamCat metrics include: ',paste(name_params[1:10],collapse = ', ')))
 ```
 
 ## Example Two
 Access several variables for several areas of interest and a couple COMIDs using the `get_streamcat_data` function.  Loads data into a tibble we can view.
-```{r Example Two, warning=FALSE, error=FALSE, message=FALSE}
+```{r Example Two, warning=FALSE, error=FALSE, message=FALSE, }
 df <- sc_get_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
 kable(df)
 ```
@@ -62,14 +62,14 @@ kable(df)
 ## Example Four
 Access a couple watershed-only variables for a county (Benton County in this case) using the `get_streamcat_data` function. 
 ```{r Example Four, warning=FALSE, error=FALSE, message=FALSE}
-df <- get_streamcat_data(metric='PctWdWet2006', aoi='watershed', county='41003')
+df <- sc_get_data(metric='pctwdwet2006', aoi='watershed', county='41003')
 kable(head(df))
 ```
 
 ## Example Five
 Access a couple watershed-only metrics for a particular hydroregion using the `get_streamcat_data` function. 
 ```{r Example Five, warning=FALSE, error=FALSE, message=FALSE}
-df <- get_streamcat_data(metric='PctWdWet2006', aoi='watershed', region='17')
+df <- sc_get_data(metric='PctWdWet2006', aoi='watershed', region='17')
 kable(head(df))
 ```
 
@@ -91,7 +91,7 @@ names(nhdplus)
 cats <- nhdplus$CatchmentSP
 comids <- paste(cats$featureid,collapse=",",sep="")
 
-df <- get_streamcat_data(metric='PctImp2011', aoi='catchment', comid=comids)
+df <- sc_get_data(metric='PctImp2011', aoi='catchment', comid=comids)
 
 flowline_nldi$PCTIMP2011CAT <- df$PCTIMP2011CAT[match(flowline_nldi$nhdplus_comid, df$COMID)]
 
@@ -123,7 +123,7 @@ comids <- nrsa_sf$COMID
 comids <- comids[!is.na(comids)]
 comids <- comids[c(1:925)]
 comids <- paste(comids,collapse=',')
-df <- get_streamcat_data(metric='PctCrop2006', aoi='watershed', comid=comids)
+df <- sc_get_data(metric='PctCrop2006', aoi='watershed', comid=comids)
 
 glimpse(df)
 df$COMID <- as.integer(df$COMID)

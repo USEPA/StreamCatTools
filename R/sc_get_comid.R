@@ -33,7 +33,7 @@
 
 sc_get_comid <- function(df = NULL, xcoord = NULL, 
                          ycoord=NULL, crdsys=NULL) {
-  if (!'sf' %in% class(test_sf) & ((is.null(xcoord)) | 
+  if (!'sf' %in% class(df) & ((is.null(xcoord)) | 
                                     (is.null(ycoord)) |
                                      (is.null(crdsys)))) {
     "\nMake sure you supply parameters for xcoord, ycoord, and a crs as an epsg code."
@@ -43,8 +43,8 @@ sc_get_comid <- function(df = NULL, xcoord = NULL,
   }
   
   run_for <- 1:nrow(df)
-  output <- do.call(rbind, lapply(1:nrow(test_sf), function(i){
-    comid <- nhdplusTools::discover_nhdplus_id(test_sf[i,c('geometry')])
+  output <- do.call(rbind, lapply(1:nrow(df), function(i){
+    comid <- nhdplusTools::discover_nhdplus_id(df[i,c('geometry')])
   }))
   comids <- paste(as.data.frame(output)$V1, collapse=",",sep="")
   return(comids)
