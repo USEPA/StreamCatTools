@@ -24,3 +24,27 @@ sc_get_params <- function(param = NULL) {
   }
   return(params)
 }
+
+#' @title Lookup Full Metric Name
+#' 
+#' @description 
+#' Function to retrieve a full metric name based on the short name using the StreamCat API.  
+#' 
+#' @author 
+#' Marc Weber
+#' 
+#' @param metric 
+#' Syntax: metric=value1
+#' Values: metric
+#'  
+#' @return A lookup of the full name for a given StreamCat metric
+#' @export
+#'
+#' @examples
+#' fullname <- sc_fullname(metric='name')
+
+sc_fullname <- function(metric = NULL) {
+  resp <- fromJSON("http://v26267mcpk506/StreamCat/v1/stable/metrics/datadictionary")
+  result <- resp$dictionary[[metric]]$short_display_name
+  return(result)
+}
