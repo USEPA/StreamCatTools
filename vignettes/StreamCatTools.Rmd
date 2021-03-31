@@ -47,7 +47,7 @@ knitr::opts_chunk$set(echo = TRUE,
 sessionInfo()
 ```
 
-The `StreamCatTools` package was designed to simpify the use of [StreamCat] data in the R envirnonment, leveraging the new API for StreamCat. 
+The `StreamCatTools` package was designed to simpify the use of [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset-0) data in R, leveraging the new [API for StreamCat](https://intranet.ord.epa.gov/sswr/streamcat-web-tools). 
 
 ## StreamCat API
 We can actually pull data into R from the [StreamCat API](http://v26267mcpk506/StreamCat/v1/stable/metrics/about.jsp) by simply using `read_csv` function from the `readr` package.  We have to hard-wire paramaters and are limited in the number of records returned through a `GET` request
