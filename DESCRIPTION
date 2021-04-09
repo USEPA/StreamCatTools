@@ -28,5 +28,6 @@ Imports:
 Suggests: testthat, knitr, rmarkdown, devtools
 License: CC0
 Encoding: UTF-8
+VignetteBuilder: knitr, rmarkdown
 LazyData: true
 RoxygenNote: 7.1.1
