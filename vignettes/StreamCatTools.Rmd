@@ -12,9 +12,11 @@ output:
       smooth_scroll: yes
       number_sections: true
 vignette: >
-  %\VignetteIndexEntry{Introduction to nhdplusTools}
+  %\VignetteIndexEntry{Introduction to StreamCatTools}
+  %\VignetteEncoding{UTF-8}{inputenc}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+editor_options: 
+  chunk_output_type: inline
 ---
 
 
@@ -47,10 +49,10 @@ knitr::opts_chunk$set(echo = TRUE,
 sessionInfo()
 ```
 
-The `StreamCatTools` package was designed to simpify the use of [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset-0) data in R, leveraging the new [API for StreamCat](https://intranet.ord.epa.gov/sswr/streamcat-web-tools). 
+The `StreamCatTools` package was designed to simplify the use of [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset-0) data in R, leveraging the new [API for StreamCat](https://intranet.ord.epa.gov/sswr/streamcat-web-tools). 
 
 ## StreamCat API
-We can actually pull data into R from the [StreamCat API](http://v26267mcpk506/StreamCat/v1/stable/metrics/about.jsp) by simply using `read_csv` function from the `readr` package.  We have to hard-wire paramaters and are limited in the number of records returned through a `GET` request
+We can actually pull data into R from the [StreamCat API](http://v26267mcpk506/StreamCat/v1/stable/metrics/about.jsp) by simply using `read_csv` function from the `readr` package.  We have to hard-wire parameters and are limited in the number of records returned through a `GET` request.
 ```{r API}
 df <- read_csv("http://v26267mcpk506/StreamCat/v1/stable/metrics?name=fert&areaOfInterest=watershed&comid=179")
 kable(df)
@@ -89,12 +91,12 @@ kable(head(df))
 ```
 
 ## Example Four
-Use the `sc_get_comid` function to find comids for a point shapefile we load into R. Note that we could also use a .csv file with coordinate columns and a known coordinate reference system.  We'll use an example dataset of large dams in Oregon from the [Oregon Spatial Data Library]
+Use the `sc_get_comid` function to find COMIDs for a point shapefile we load into R. Note that we could also use a .csv file with coordinate columns and a known coordinate reference system.  We'll use an example dataset of large dams in Oregon from the [Oregon Spatial Data Library]
 ```{r Example Four}
-download.file('http://oe.oregonexplorer.info/ExternalContent/SpatialDataforDownload/oregon_dams_2014.zip', 'oregon_dams_2014.zip')
-unzip("oregon_dams_2014.zip", exdir = ".") 
-st_layers('oregon_dams_2015/Oregon_dams_20150107.gdb')
-dams <- read_sf(dsn="oregon_dams_2015/Oregon_dams_20150107.gdb",layer='or_dams') 
+# download.file('http://oe.oregonexplorer.info/ExternalContent/SpatialDataforDownload/oregon_dams_2014.zip', 'oregon_dams_2014.zip')
+# unzip("oregon_dams_2014.zip", exdir = ".")
+st_layers('C:/Users/mweber/GitProjects/StreamCatTools/vignettes/oregon_dams_2015/Oregon_dams_20150107.gdb')
+dams <- read_sf(dsn="C:/Users/mweber/GitProjects/StreamCatTools/vignettes/oregon_dams_2015/Oregon_dams_20150107.gdb",layer='or_dams') 
 # glimpse(dams)
 names(dams)[36] <- 'geometry'
 st_geometry(dams) <- 'geometry'
@@ -137,7 +139,8 @@ basin <- get_nldi_basin(nldi_feature = nldi_feature)
 ```
 
 ```{r Example Six Pt2}
-mapview(basin, alpha.regions=.08) + mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
+# mapview(basin, alpha.regions=.08) + mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
+mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
 ```
 
 ## Example Seven

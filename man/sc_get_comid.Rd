@@ -20,7 +20,7 @@ frame}
 \item{crdsys}{The epsg code if using a raw data frame}
 }
 \value{
-A string of COMIDS to pass to sc_get_data
+A new sf data frame with a populated 'COMID' column
 }
 \description{
 Function to return NHDPlusV2 COMIDS using either a 

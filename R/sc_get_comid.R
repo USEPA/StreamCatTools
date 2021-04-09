@@ -21,7 +21,7 @@
 #' 
 #' @param crdsys The epsg code if using a raw data frame
 #' 
-#' @return A string of COMIDS to pass to sc_get_data
+#' @return A new sf data frame with a populated 'COMID' column
 #' @export
 #'
 #' @examples
@@ -45,7 +45,15 @@ sc_get_comid <- function(df = NULL, xcoord = NULL,
   run_for <- 1:nrow(df)
   output <- do.call(rbind, lapply(1:nrow(df), function(i){
     comid <- nhdplusTools::discover_nhdplus_id(df[i,c('geometry')])
+    if (length(comid)==0L) comid <- NA else comid <- comid
+    return(comid)
   }))
-  comids <- paste(as.data.frame(output)$V1, collapse=",",sep="")
+  output <- as.data.frame(output)
+  names(output)[1] <- 'COMID'
+  if (any(is.na(output$COMID))){
+    missing <- which(is.na(output$COMID))
+    message(cat('The following rows in the input file came back with no corresponding \nCOMIDS, likely because the sites were outside of the \nNHDPlus COMID features: ',as.character(missing)))
+  }
+  comids <- cbind(df, output)
   return(comids)
 }
