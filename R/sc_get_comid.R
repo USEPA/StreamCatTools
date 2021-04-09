@@ -54,6 +54,6 @@ sc_get_comid <- function(df = NULL, xcoord = NULL,
     missing <- which(is.na(output$COMID))
     message(cat('The following rows in the input file came back with no corresponding \nCOMIDS, likely because the sites were outside of the \nNHDPlus COMID features: ',as.character(missing)))
   }
-  comids <- cbind(df, comids)
+  comids <- cbind(df, output)
   return(comids)
 }
