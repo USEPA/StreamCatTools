@@ -19,6 +19,7 @@ Depends: R (>= 3.5.1)
 Imports: 
   dplyr,
   sf, 
+  nhdplusTools,
   magrittr, 
   readr, 
   jsonlite, 
