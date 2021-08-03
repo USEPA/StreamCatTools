@@ -4,6 +4,7 @@ author: "Marc Weber"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   html_document:
+    keep_md: yes
     theme: yeti
     highlighted: default 
     toc: yes
@@ -54,7 +55,7 @@ The `StreamCatTools` package was designed to simplify the use of [StreamCat](htt
 ## StreamCat API
 We can actually pull data into R from the [StreamCat API](http://v26267mcpk506/StreamCat/v1/stable/metrics/about.jsp) by simply using `read_csv` function from the `readr` package.  We have to hard-wire parameters and are limited in the number of records returned through a `GET` request.
 ```{r API}
-df <- read_csv("http://v26267mcpk506/StreamCat/v1/stable/metrics?name=fert&areaOfInterest=watershed&comid=179")
+df <- read_csv("https://v26267mcpk506/StreamCat/v1/stable/metrics?name=fert&areaOfInterest=watershed&comid=179")
 kable(df)
 ```
 

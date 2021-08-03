@@ -48,7 +48,7 @@
 #' df <- get_streamcat_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
 
 sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, region=NA, showPctFull=NA, showAreaSqKm=NA) {
-  post_url <- "http://v26267mcpk506/StreamCat/v1/stable/metrics?"
+  post_url <- "https://v26267mcpk506/StreamCat/v1/stable/metrics?"
   if (!is.character(comid) & ! is.na(comid)) comid <- paste(comid, collapse=",")
   post_body=""
   if (!is.na(metric)) post_body <- paste0(post_body,"&name=",metric)
