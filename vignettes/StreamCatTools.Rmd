@@ -59,8 +59,8 @@ df <- read_csv("https://v26267mcpk506/StreamCat/v1/stable/metrics?name=fert&area
 kable(df)
 ```
 
-## List parameters
-Get a list of available StreamCat values for certain parameters using the `sc_get_params` function (right now just metric names and areas of interest for this function) via the API
+## Example One
+List parameters -get a list of available StreamCat values for certain parameters using the `sc_get_params` function (right now just metric names and areas of interest for this function) via the API
 ```{r Example One}
 region_params <- sc_get_params(param='areaOfInterest')
 
@@ -92,17 +92,12 @@ kable(head(df))
 ```
 
 ## Example Four
-Use the `sc_get_comid` function to find COMIDs for a point shapefile we load into R. Note that we could also use a .csv file with coordinate columns and a known coordinate reference system.  We'll use an example dataset of large dams in Oregon from the [Oregon Spatial Data Library]
+Use the `sc_get_comid` function to find COMIDs for USGS stream gages we load into R. We use a .csv file with coordinate columns and a known coordinate reference system.  We'll use an example dataset of large dams in Oregon from the [Oregon Spatial Data Library]
 ```{r Example Four}
-# download.file('http://oe.oregonexplorer.info/ExternalContent/SpatialDataforDownload/oregon_dams_2014.zip', 'oregon_dams_2014.zip')
-# unzip("oregon_dams_2014.zip", exdir = ".")
-st_layers('C:/Users/mweber/GitProjects/StreamCatTools/vignettes/oregon_dams_2015/Oregon_dams_20150107.gdb')
-dams <- read_sf(dsn="C:/Users/mweber/GitProjects/StreamCatTools/vignettes/oregon_dams_2015/Oregon_dams_20150107.gdb",layer='or_dams') 
-# glimpse(dams)
-names(dams)[36] <- 'geometry'
-st_geometry(dams) <- 'geometry'
+gages = read_csv(system.file("extdata/Gages_flowdata.csv", package = "StreamCatTools"))
 # we'll just grab a few records to keep things simple
-dam_coms <- sc_get_comid(dams[1:10,])
+dam_coms <- sc_get_comid(gages[1:10,], xcoord='LON_SITE', 
+ycoord='LAT_SITE', crdsys=4269)
 df <- sc_get_data(metric='huden2010', aoi='watershed', comid=dam_coms)
 kable(head(df))
 ```
@@ -115,18 +110,22 @@ kable(head(df))
 ```
 
 ## Example Six
+Access a metric for conus using the `sc_get_data` function.
+```{r Example Six}
+df <- sc_get_data(metric='om', aoi='watershed', conus='true')
+kable(head(df))
+```
+## Example Seven
 Access a single variable for the Calapooia River using `sc_get_data` function. Use `nhdplusTools` library to grab flowlines and watershed for the Calapooia, plot selected StreamCat metric for Calapooia and show the watershed.
-```{r Example Six, results='hide'}
-discover_nldi_sources()$source
+```{r Example Seven, results='hide'}
 start_comid = 23763529
 nldi_feature <- list(featureSource = "comid", featureID = start_comid)
-discover_nldi_navigation(nldi_feature)
 
 flowline_nldi <- navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
 
 # get StreamCat metrics
-temp_dir <- 'C:/Users/mweber/temp'
-nhdplus <- subset_nhdplus(comids = flowline_nldi$nhdplus_comid, output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE,flowline_only = FALSE)
+temp_dir <- '.'
+nhdplus <- subset_nhdplus(comids = flowline_nldi$UT_flowlines$nhdplus_comid, output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE,flowline_only = FALSE)
 
 names(nhdplus)
 cats <- nhdplus$CatchmentSP
@@ -139,14 +138,14 @@ flowline_nldi$PCTIMP2011CAT <- df$PCTIMP2011CAT[match(flowline_nldi$nhdplus_comi
 basin <- get_nldi_basin(nldi_feature = nldi_feature)
 ```
 
-```{r Example Six Pt2}
+```{r Example Seven Pt2}
 # mapview(basin, alpha.regions=.08) + mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
 mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
 ```
 
-## Example Seven
+## Example Eigth
 Grab NRSA data from NARS website directly in R, pull particular StreamCat metrics for sites using `sc_get_data`, and compare landscape metrics with other NRSA metrics
-```{r Example Seven, results='hide'}
+```{r Example Eight, results='hide'}
 nrsa <- read_csv('https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv')
 glimpse(nrsa)
 
@@ -174,7 +173,7 @@ df$COMID <- as.integer(df$COMID)
 nrsa_sf <- left_join(nrsa_sf, df, by='COMID')
 ```
 
-```{r Example Six ggplot}
+```{r Example Eight ggplot}
 # download mmi from NARS web page
 mmi <- read_csv('https://www.epa.gov/sites/production/files/2015-09/bentcond.csv')
 glimpse(mmi)
