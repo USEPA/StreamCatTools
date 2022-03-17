@@ -28,12 +28,21 @@
 #' 
 #' @param region Return metric information for COMIDs within a specified hydroregion.
 #' Syntax: region=<regionid1>,<regionid2>
+#'
+#' @param conus Return tReturn all COMIDs in the conterminous United States. 
+#' The default value is false.
+#' Values: true|false
+#'  
+#' @param showAreaSqKm Return the area in square kilometers of a given area of interest. 
+#' The default value is false.
+#' Values: true|false 
 #' 
 #' @param showPctFull Return the "*pctfull" row for each dataset. The default value is false.
-#' Values: true|false 
+#' Values: true|false
 #' 
-#' #' @param showAreaSqKm Return the "*pctfull" row for each dataset. The default value is false.
-#' Values: true|false 
+#' @param countOnly Return a CSV containing only the row count (ROWCOUNT) and the column 
+#' count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
+#' Values: true|false
 #' 
 #' @return A tibble of desired StreamCat metrics
 #' @export
@@ -47,7 +56,9 @@
 #' 
 #' df <- get_streamcat_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
 
-sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, region=NA, showPctFull=NA, showAreaSqKm=NA) {
+sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, 
+                        region=NA, showAreaSqKm=NA, showPctFull=NA, conus=NA,
+                        countOnly=NA) {
   post_url <- "https://v26267mcpk506/StreamCat/v1/stable/metrics?"
   if (!is.character(comid) & ! is.na(comid)) comid <- paste(comid, collapse=",")
   post_body=""
@@ -57,8 +68,10 @@ sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, region
   if (!is.na(state)) post_body <- paste0(post_body,"&state=",state) 
   if (!is.na(county)) post_body <- paste0(post_body,"&county=",county) 
   if (!is.na(region)) post_body <- paste0(post_body,"&region=",region) 
-  if (!is.na(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showPctFull)
-  if (!is.na(showPctFull)) post_body <- paste0(post_body,"&showAreaSqKm=",showAreaSqKm) 
+  if (!is.na(showAreaSqKm)) post_body <- paste0(post_body,"&showAreaSqKm=",showPctFull)
+  if (!is.na(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showAreaSqKm) 
+  if (!is.na(conus)) post_body <- paste0(post_body,"&conus=",conus)
+  if (!is.na(countOnly)) post_body <- paste0(post_body,"&countOnly=",conus)
   cat(post_body)
   resp <- httr::POST(post_url, body=post_body)
   df <- httr::content(resp, type="text/csv", encoding = 'UTF-8') 
