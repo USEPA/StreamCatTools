@@ -115,6 +115,7 @@ Access a metric for conus using the `sc_get_data` function.
 df <- sc_get_data(metric='om', aoi='watershed', conus='true')
 kable(head(df))
 ```
+
 ## Example Seven
 Access a single variable for the Calapooia River using `sc_get_data` function. Use `nhdplusTools` library to grab flowlines and watershed for the Calapooia, plot selected StreamCat metric for Calapooia and show the watershed.
 ```{r Example Seven, results='hide'}
@@ -133,6 +134,7 @@ comids <- paste(cats$featureid,collapse=",",sep="")
 
 df <- sc_get_data(metric='PctImp2011', aoi='catchment', comid=comids)
 
+flowline_nldi <- flowline_nldi$UT_flowlines
 flowline_nldi$PCTIMP2011CAT <- df$PCTIMP2011CAT[match(flowline_nldi$nhdplus_comid, df$COMID)]
 
 basin <- get_nldi_basin(nldi_feature = nldi_feature)
@@ -143,7 +145,7 @@ basin <- get_nldi_basin(nldi_feature = nldi_feature)
 mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
 ```
 
-## Example Eigth
+## Example Eight
 Grab NRSA data from NARS website directly in R, pull particular StreamCat metrics for sites using `sc_get_data`, and compare landscape metrics with other NRSA metrics
 ```{r Example Eight, results='hide'}
 nrsa <- read_csv('https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv')
