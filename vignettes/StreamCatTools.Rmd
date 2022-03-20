@@ -96,9 +96,9 @@ Use the `sc_get_comid` function to find COMIDs for USGS stream gages we load int
 ```{r Example Four}
 gages = read_csv(system.file("extdata/Gages_flowdata.csv", package = "StreamCatTools"))
 # we'll just grab a few records to keep things simple
-dam_coms <- sc_get_comid(gages[1:10,], xcoord='LON_SITE', 
-ycoord='LAT_SITE', crdsys=4269)
-df <- sc_get_data(metric='huden2010', aoi='watershed', comid=dam_coms)
+gages_coms <- sc_get_comid(gages[1:10,], xcoord='LON_SITE',
+                           ycoord='LAT_SITE', crdsys=4269)
+df <- sc_get_data(metric='huden2010', aoi='watershed', comid=gages_coms)
 kable(head(df))
 ```
 

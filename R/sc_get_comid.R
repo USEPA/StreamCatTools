@@ -39,7 +39,7 @@ sc_get_comid <- function(df = NULL, xcoord = NULL,
     "\nMake sure you supply parameters for xcoord, ycoord, and a crs as an epsg code."
   } else {
     df <- df %>%
-      st_as_sf(coords = c(xcoord, ycoord), crs = crdsys, remove = FALSE)
+      sf::st_as_sf(coords = c(xcoord, ycoord), crs = crdsys, remove = FALSE)
   }
   
   run_for <- 1:nrow(df)
