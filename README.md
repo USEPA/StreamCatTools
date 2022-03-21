@@ -14,8 +14,8 @@ status](https://github.com/USEPA/StreamCatTools/workflows/R-CMD-check/badge.svg)
 You can install and load the most recent approved version from GitHub by running:
 
 ```r
-install the most recent development version from GitHub with package vignettes
-devtstart-hereools::install_github("USEPA/StreamCatTools", build_vignettes=TRUE)
+library(remotes)
+install_github("USEPA/StreamCatTools", build_vignettes=TRUE)
 ```
 
 To view the vignette in RStudio, run
