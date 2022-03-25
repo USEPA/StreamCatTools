@@ -14,8 +14,8 @@
 #' @export
 #'
 #' @examples
-#' params <- get_streamcat_params(param='name')
-#' params <- get_streamcat_params(param='area')
+#' params <- sc_get_params(param='name')
+#' params <- sc_get_params(param='area')
 
 sc_get_params <- function(param = NULL) {
   resp <- jsonlite::fromJSON("https://v26267mcpk506/StreamCat/v1/stable/metrics")
@@ -33,7 +33,7 @@ sc_get_params <- function(param = NULL) {
 #' @author 
 #' Marc Weber
 #' 
-#' @param metric 
+#' @param metric Short metric name
 #' Syntax: metric=value1
 #' Values: metric
 #'  
