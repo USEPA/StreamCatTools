@@ -48,13 +48,13 @@
 #' @export
 #'
 #' @examples
-#' df <- get_streamcat_data(comid='179', aoi='catchment', metric='fert')
+#' df <- sc_get_data(comid='179', aoi='catchment', metric='fert')
 #' 
-#' df <- get_streamcat_data(metric='PctGrs2006', aoi='watershed', region='01')
+#' df <- sc_get_data(metric='PctGrs2006', aoi='watershed', region='01')
 #' 
-#' df <- get_streamcat_data(metric='PctUrbMd2006', aoi='riparian_catchment', comid='1337420')
+#' df <- sc_get_data(metric='PctUrbMd2006', aoi='riparian_catchment', comid='1337420')
 #' 
-#' df <- get_streamcat_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
+#' df <- sc_get_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
 
 sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, 
                         region=NA, showAreaSqKm=NA, showPctFull=NA, conus=NA,
