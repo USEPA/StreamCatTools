@@ -1,13 +1,13 @@
 #' @title Get StreamCat data
 #' 
 #' @description 
-#' Function to return StreamCat catchment and watershed metrics using the StreamCat API.  The function allows a user to get data
-#' specific to a catchment or metric of interest, as well as returning data by hydroregion(s), state(s), or county(ies).
+#' Function to return StreamCat catchment and watershed metrics using the StreamCat API.  The function allows a user to get
+#' specific metric data aggregated by area of interest, returned by comid(s), hydroregion(s), state(s), or county(ies).
 #' 
 #' @author 
 #' Marc Weber
 #' 
-#' @param metric Names of a metric to query
+#' @param metric Name(s) of metrics to query
 #' Syntax: name=<name1>,<name2>
 #' 
 #' @param aoi Specify the area of interest described by a metric. By default, all available areas of interest 
@@ -15,7 +15,7 @@
 #' Syntax: areaOfInterest=<value1>,<value2>
 #' Values: catchment|watershed|riparian_catchment|riparian_watershed|other
 #' 
-#' @param comid Return metric information about specific COMIDs
+#' @param comid Return metric information for specific COMIDs
 #' Syntax: comid=<comid1>,<comid2>
 #' 
 #' @param state Return metric information for COMIDs within a specific state. Use a state's abbreviation to 
@@ -23,7 +23,7 @@
 #' Syntax: state=<state1>,<state2>
 #' 
 #' @param county Return metric information for COMIDs within a specific county. 
-#' Users must use FIPS code, not county name, as a way to disambiguate counties.
+#' Users must use the FIPS code, not county name, as a way to disambiguate counties.
 #' Syntax: county=<county1>,<county1>
 #' 
 #' @param region Return metric information for COMIDs within a specified hydroregion.
