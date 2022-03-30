@@ -74,7 +74,7 @@ sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA,
   if (!is.na(countOnly)) post_body <- paste0(post_body,"&countOnly=",conus)
   cat(post_body)
   resp <- httr::POST(post_url, body=post_body)
-  df <- httr::content(resp, type="text/csv", encoding = 'UTF-8') 
+  df <- httr::content(resp, type="text/csv", encoding = 'UTF-8',show_col_types = FALSE) 
   df <- df[,1:ncol(df)] 
   return(df)
 }

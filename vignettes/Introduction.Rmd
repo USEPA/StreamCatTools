@@ -1,66 +1,56 @@
 ---
-title: "Introduction to the StreamCatTools Package"
+title: "Introduction to StreamCatTools"
 author: "Marc Weber"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   html_document:
-    keep_md: yes
-    theme: yeti
+    theme: flatly
+    number_sections: true
     highlighted: default 
     toc: yes
     toc_float:
       collapsed: no
-      smooth_scroll: yes
-      number_sections: true
+      smooth_scroll: no
+    toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{Introduction to StreamCatTools}
   %\VignetteEncoding{UTF-8}{inputenc}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: inline
+  %\VignetteEngine{rmarkdown::render}
 ---
 
-
-```{r setup, include=FALSE, message=FALSE}
-# requires devtools to install
-# install.packages('devtools')
-library(devtools)
-
-# install from repository
-# install_github('USEPA/StreamCatTools')
-library(StreamCatTools)
-library(sf)
-library(nhdplusTools)
-library(readr)
-library(mapview)
-library(dplyr)
-library(knitr)
-library(readr)
-library(purrr)
-library(tidyr)
-library(ggplot2)
-library(jsonlite)
-knitr::opts_chunk$set(echo = TRUE,
-                      warning = FALSE,
-                      message = FALSE,
-                      error=FALSE,
-                      comment = "#>",
-                      fig.height = 7,
-                      fig.width = 7)
-sessionInfo()
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  warning = FALSE, 
+  message = FALSE
+)
 ```
 
+## Installing and loading StreamCatTools
+To install, currently you need to install from GitHub using devtools
+```{r, include=FALSE, message=FALSE, eval=FALSE}
+library(devtools)
+install_github('USEPA/StreamCatTools')
+```
+
+After installing load the library
+```{r, include=FALSE, message=FALSE}
+library(StreamCatTools)
+```
+
+## Background
 The `StreamCatTools` package was designed to simplify the use of [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset-0) data in R, leveraging the new [API for StreamCat](https://intranet.ord.epa.gov/sswr/streamcat-web-tools). 
 
-## StreamCat API
-We can actually pull data into R from the [StreamCat API](http://v26267mcpk506/StreamCat/v1/stable/metrics/about.jsp) by simply using `read_csv` function from the `readr` package.  We have to hard-wire parameters and are limited in the number of records returned through a `GET` request.
+### StreamCat API
+We can actually pull data into R from the [StreamCat API](http://v26267mcpk506/StreamCat/v1/stable/metrics/about.jsp) by simply using the `read_csv` function from the `readr` package.  We have to hard-wire parameters and are limited in the number of records returned through a `GET` request.
 ```{r API}
-df <- read_csv("https://v26267mcpk506/StreamCat/v1/stable/metrics?name=fert&areaOfInterest=watershed&comid=179")
-kable(df)
+df <- readr::read_csv("https://v26267mcpk506/StreamCat/v1/stable/metrics?name=fert&areaOfInterest=watershed&comid=179", show_col_types = FALSE)
+knitr::kable(df)
 ```
 
+### Examples of package functions
 ## Example One
-List parameters -get a list of available StreamCat values for certain parameters using the `sc_get_params` function (right now just metric names and areas of interest for this function) via the API
+List StreamCat parameters: Get a list of available StreamCat values for certain parameters using the `sc_get_params` function (right now just metric names and areas of interest for this function) via the API
 ```{r Example One}
 region_params <- sc_get_params(param='areaOfInterest')
 
@@ -78,55 +68,55 @@ print(paste0('The full name for ',metric, ' is: ', paste(fullname,collapse = ', 
 ```
 
 ## Example Two
-Access several variables for several areas of interest and a couple COMIDs using the `sc_get_data` function.  Loads data into a tibble we can view.
+In this example we access several variables, for several areas of interest, and for several COMIDs using the `sc_get_data` function.  Loads data into a tibble we can view.
 ```{r Example Two}
 df <- sc_get_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
-kable(df)
+knitr::kable(df)
 ```
 
 ## Example Three
-Access a couple watershed-only variables for the area of interest of a county (Benton County in this case) using the `sc_get_data` function. 
+In this example we access a couple variables at the watershed scale for the area of interest of a county (Benton County in this case) using the `sc_get_data` function. 
 ```{r Example Three}
 df <- sc_get_data(metric='pctwdwet2006', aoi='watershed', county='41003')
-kable(head(df))
+knitr::kable(head(df))
 ```
 
 ## Example Four
-Use the `sc_get_comid` function to find COMIDs for USGS stream gages we load into R. We use a .csv file with coordinate columns and a known coordinate reference system.  We'll use an example dataset of large dams in Oregon from the [Oregon Spatial Data Library]
+In this example we use the `sc_get_comid` function to find COMIDs for USGS stream gages we load into R. We use a .csv file with coordinate columns and a known coordinate reference system.  We'll use an example dataset of large dams in Oregon from the [Oregon Spatial Data Library]
 ```{r Example Four}
-gages = read_csv(system.file("extdata/Gages_flowdata.csv", package = "StreamCatTools"))
+gages = readr::read_csv(system.file("extdata/Gages_flowdata.csv", package = "StreamCatTools"),show_col_types = FALSE)
 # we'll just grab a few records to keep things simple
 gages_coms <- sc_get_comid(gages[1:10,], xcoord='LON_SITE',
-                           ycoord='LAT_SITE', crdsys=4269)
+                           ycoord='LAT_SITE', crsys=4269)
 df <- sc_get_data(metric='huden2010', aoi='watershed', comid=gages_coms)
-kable(head(df))
+knitr::kable(head(df))
 ```
 
 ## Example Five
-Access a couple watershed-only metrics for a particular hydroregion using the `sc_get_data` function. 
+In this example we access a couple watershed-only metrics for a particular NHDPlus hydroregion using the `sc_get_data` function. 
 ```{r Example Five}
 df <- sc_get_data(metric='PctWdWet2006', aoi='watershed', region='17')
-kable(head(df))
+knitr::kable(head(df))
 ```
 
 ## Example Six
-Access a metric for conus using the `sc_get_data` function.
-```{r Example Six}
+In this example we access a metric for conus using the `sc_get_data` function - this is shown for demonstration but not run as it takes a bit of time
+```{r Example Six, eval=FALSE}
 df <- sc_get_data(metric='om', aoi='watershed', conus='true')
-kable(head(df))
+knitr::kable(head(df))
 ```
 
 ## Example Seven
-Access a single variable for the Calapooia River using `sc_get_data` function. Use `nhdplusTools` library to grab flowlines and watershed for the Calapooia, plot selected StreamCat metric for Calapooia and show the watershed.
+In this example we access a single variable for the Calapooia River using `sc_get_data` function. We then use the `nhdplusTools` library to grab flowlines and watershed for the Calapooia, plot the selected StreamCat metric for the Calapooia River and show the watershed.
 ```{r Example Seven, results='hide'}
 start_comid = 23763529
 nldi_feature <- list(featureSource = "comid", featureID = start_comid)
 
-flowline_nldi <- navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
+flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
 
 # get StreamCat metrics
 temp_dir <- '.'
-nhdplus <- subset_nhdplus(comids = flowline_nldi$UT_flowlines$nhdplus_comid, output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE,flowline_only = FALSE)
+nhdplus <- nhdplusTools::subset_nhdplus(comids = flowline_nldi$UT_flowlines$nhdplus_comid, output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE,flowline_only = FALSE)
 
 names(nhdplus)
 cats <- nhdplus$CatchmentSP
@@ -137,22 +127,21 @@ df <- sc_get_data(metric='PctImp2011', aoi='catchment', comid=comids)
 flowline_nldi <- flowline_nldi$UT_flowlines
 flowline_nldi$PCTIMP2011CAT <- df$PCTIMP2011CAT[match(flowline_nldi$nhdplus_comid, df$COMID)]
 
-basin <- get_nldi_basin(nldi_feature = nldi_feature)
+basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
 ```
 
 ```{r Example Seven Pt2}
-# mapview(basin, alpha.regions=.08) + mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
-mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
+mapview::mapview(basin, alpha.regions=.08) + mapview::mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
 ```
 
 ## Example Eight
-Grab NRSA data from NARS website directly in R, pull particular StreamCat metrics for sites using `sc_get_data`, and compare landscape metrics with other NRSA metrics
+In this example we demonstrate a data 'mashup' by grabbing NRSA data from the EPA National Aquatic Resource Surveys (NARS) website directly in R, pull particular StreamCat metrics for sites using `sc_get_data`, and compare landscape metrics with other NRSA metrics
 ```{r Example Eight, results='hide'}
-nrsa <- read_csv('https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv')
-glimpse(nrsa)
+nrsa <- readr::read_csv('https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv')
+# dplyr::glimpse(nrsa)
 
 # Promote data frame to sf spatial points data frame
-nrsa_sf <- st_as_sf(nrsa, coords = c("LON_DD83", "LAT_DD83"), crs = 4269)
+nrsa_sf <- sf::st_as_sf(nrsa, coords = c("LON_DD83", "LAT_DD83"), crs = 4269)
 
 # Get COMIDs using nhdplusTools package
 # nrsa$COMID<- NA
@@ -170,20 +159,23 @@ comids <- comids[c(1:925)]
 comids <- paste(comids,collapse=',')
 df <- sc_get_data(metric='PctCrop2006', aoi='watershed', comid=comids)
 
-glimpse(df)
+# glimpse(df)
 df$COMID <- as.integer(df$COMID)
-nrsa_sf <- left_join(nrsa_sf, df, by='COMID')
+nrsa_sf <- dplyr::left_join(nrsa_sf, df, by='COMID')
 ```
 
 ```{r Example Eight ggplot}
 # download mmi from NARS web page
-mmi <- read_csv('https://www.epa.gov/sites/production/files/2015-09/bentcond.csv')
-glimpse(mmi)
+library(dplyr)
+library(ggplot2)
+mmi <- readr::read_csv('https://www.epa.gov/sites/production/files/2015-09/bentcond.csv',show_col_types = FALSE)
+dplyr::glimpse(mmi)
 
 # join mmi to NARS info data frame with StreamCat PctCrop metric
-nrsa_sf <- left_join(nrsa_sf, mmi[,c('SITE_ID','BENT_MMI_COND')], by='SITE_ID')
-nrsa_sf %>% 
-  drop_na(BENT_MMI_COND) %>%
+nrsa_sf <- dplyr::left_join(nrsa_sf, mmi[,c('SITE_ID','BENT_MMI_COND')], by='SITE_ID')
+bxplt <- nrsa_sf %>% 
+  tidyr::drop_na(BENT_MMI_COND) %>%
   ggplot(aes(x=PCTCROP2006WS, y=BENT_MMI_COND))+
   geom_boxplot()
+suppressWarnings(print(bxplt))
 ```

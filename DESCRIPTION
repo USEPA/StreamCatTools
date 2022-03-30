@@ -1,7 +1,7 @@
 Package: StreamCatTools
 Type: Package
 Title: Streamcat Tools
-Version: 0.0.0.9000
+Version: 0.1.1.9000
 Authors@R: c(person(given = "Marc", 
                     family = "Weber", 
                     role = c("aut", "cre"), 
@@ -29,6 +29,6 @@ Imports:
 Suggests: testthat, knitr, rmarkdown, devtools
 License: CC0
 Encoding: UTF-8
-VignetteBuilder: knitr, rmarkdown
+VignetteBuilder: rmarkdown
 LazyData: true
 RoxygenNote: 7.1.1
