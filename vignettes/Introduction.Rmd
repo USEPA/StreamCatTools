@@ -14,7 +14,7 @@ output:
 vignette: >
   %\VignetteIndexEntry{Introduction to StreamCatTools}
   %\VignetteEncoding{UTF-8}{inputenc}
-  %\VignetteEngine{rmarkdown::render}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r, include = FALSE}
