@@ -1,2 +1,4 @@
 ^StreamCatTools\.Rproj$
 ^\.Rproj\.user$
+^doc$
+^Meta$

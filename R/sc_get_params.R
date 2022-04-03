@@ -14,11 +14,11 @@
 #' @export
 #'
 #' @examples
-#' params <- get_streamcat_params(param='name')
-#' params <- get_streamcat_params(param='area')
+#' params <- sc_get_params(param='name')
+#' params <- sc_get_params(param='area')
 
 sc_get_params <- function(param = NULL) {
-  resp <- fromJSON("https://v26267mcpk506/StreamCat/v1/stable/metrics")
+  resp <- jsonlite::fromJSON("https://v26267mcpk506/StreamCat/v1/stable/metrics")
   if (param=='areaOfInterest') params <- resp$parameters$areaOfInterest$options else{
     params <- resp$parameters$name$options
   }
@@ -33,7 +33,7 @@ sc_get_params <- function(param = NULL) {
 #' @author 
 #' Marc Weber
 #' 
-#' @param metric 
+#' @param metric Short metric name
 #' Syntax: metric=value1
 #' Values: metric
 #'  
@@ -44,7 +44,7 @@ sc_get_params <- function(param = NULL) {
 #' fullname <- sc_fullname(metric='name')
 
 sc_fullname <- function(metric = NULL) {
-  resp <- fromJSON("https://v26267mcpk506/StreamCat/v1/stable/metrics/datadictionary")
-  result <- resp$dictionary[[metric]]$short_display_name
+  resp <- as.data.frame(jsonlite::fromJSON("https://v26267mcpk506/StreamCat/v1/stable/metrics/datadictionary"))
+  result <- resp[resp$dictionary.metric_prefix==metric,1]
   return(result)
 }

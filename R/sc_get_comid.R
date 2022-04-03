@@ -19,27 +19,26 @@
 #' @param ycoord The y coordinate column if using a raw data 
 #' frame
 #' 
-#' @param crdsys The epsg code if using a raw data frame
+#' @param crsys The epsg code if using a raw data frame
 #' 
 #' @return A new sf data frame with a populated 'COMID' column
 #' @export
 #'
 #' @examples
 #' comids <- sc_get_comid(df=df, xcoord='lon_dd', 
-#' ycoord='lat_dd', crdsys=4269)
+#' ycoord='lat_dd', crsys=4269)
 #' 
 #' comids <- sc_get_comid(df=df)
 #' 
 
 sc_get_comid <- function(df = NULL, xcoord = NULL, 
-                         ycoord=NULL, crdsys=NULL) {
+                         ycoord=NULL, crsys=NULL) {
   if (!'sf' %in% class(df) & ((is.null(xcoord)) | 
                                     (is.null(ycoord)) |
-                                     (is.null(crdsys)))) {
+                                     (is.null(crsys)))) {
     "\nMake sure you supply parameters for xcoord, ycoord, and a crs as an epsg code."
   } else {
-    df <- df %>%
-      st_as_sf(coords = c(xcoord, ycoord), crs = crdsys, remove = FALSE)
+    df <- sf::st_as_sf(df, coords = c(xcoord, ycoord), crs = crsys, remove = FALSE)
   }
   
   run_for <- 1:nrow(df)
@@ -54,6 +53,6 @@ sc_get_comid <- function(df = NULL, xcoord = NULL,
     missing <- which(is.na(output$COMID))
     message(cat('The following rows in the input file came back with no corresponding \nCOMIDS, likely because the sites were outside of the \nNHDPlus COMID features: ',as.character(missing)))
   }
-  comids <- cbind(df, output)
+  comids <- paste(output$COMID, collapse=',')
   return(comids)
 }

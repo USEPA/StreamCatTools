@@ -1,13 +1,13 @@
 #' @title Get StreamCat data
 #' 
 #' @description 
-#' Function to return StreamCat catchment and watershed metrics using the StreamCat API.  The function allows a user to get data
-#' specific to a catchment or metric of interest, as well as returning data by hydroregion(s), state(s), or county(ies).
+#' Function to return StreamCat catchment and watershed metrics using the StreamCat API.  The function allows a user to get
+#' specific metric data aggregated by area of interest, returned by comid(s), hydroregion(s), state(s), or county(ies).
 #' 
 #' @author 
 #' Marc Weber
 #' 
-#' @param metric Names of a metric to query
+#' @param metric Name(s) of metrics to query
 #' Syntax: name=<name1>,<name2>
 #' 
 #' @param aoi Specify the area of interest described by a metric. By default, all available areas of interest 
@@ -15,7 +15,7 @@
 #' Syntax: areaOfInterest=<value1>,<value2>
 #' Values: catchment|watershed|riparian_catchment|riparian_watershed|other
 #' 
-#' @param comid Return metric information about specific COMIDs
+#' @param comid Return metric information for specific COMIDs
 #' Syntax: comid=<comid1>,<comid2>
 #' 
 #' @param state Return metric information for COMIDs within a specific state. Use a state's abbreviation to 
@@ -23,31 +23,42 @@
 #' Syntax: state=<state1>,<state2>
 #' 
 #' @param county Return metric information for COMIDs within a specific county. 
-#' Users must use FIPS code, not county name, as a way to disambiguate counties.
+#' Users must use the FIPS code, not county name, as a way to disambiguate counties.
 #' Syntax: county=<county1>,<county1>
 #' 
 #' @param region Return metric information for COMIDs within a specified hydroregion.
 #' Syntax: region=<regionid1>,<regionid2>
+#'
+#' @param conus Return tReturn all COMIDs in the conterminous United States. 
+#' The default value is false.
+#' Values: true|false
+#'  
+#' @param showAreaSqKm Return the area in square kilometers of a given area of interest. 
+#' The default value is false.
+#' Values: true|false 
 #' 
 #' @param showPctFull Return the "*pctfull" row for each dataset. The default value is false.
-#' Values: true|false 
+#' Values: true|false
 #' 
-#' #' @param showAreaSqKm Return the "*pctfull" row for each dataset. The default value is false.
-#' Values: true|false 
+#' @param countOnly Return a CSV containing only the row count (ROWCOUNT) and the column 
+#' count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
+#' Values: true|false
 #' 
 #' @return A tibble of desired StreamCat metrics
 #' @export
 #'
 #' @examples
-#' df <- get_streamcat_data(comid='179', aoi='catchment', metric='fert')
+#' df <- sc_get_data(comid='179', aoi='catchment', metric='fert')
 #' 
-#' df <- get_streamcat_data(metric='PctGrs2006', aoi='watershed', region='01')
+#' df <- sc_get_data(metric='PctGrs2006', aoi='watershed', region='01')
 #' 
-#' df <- get_streamcat_data(metric='PctUrbMd2006', aoi='riparian_catchment', comid='1337420')
+#' df <- sc_get_data(metric='PctUrbMd2006', aoi='riparian_catchment', comid='1337420')
 #' 
-#' df <- get_streamcat_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
+#' df <- sc_get_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
 
-sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, region=NA, showPctFull=NA, showAreaSqKm=NA) {
+sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, 
+                        region=NA, showAreaSqKm=NA, showPctFull=NA, conus=NA,
+                        countOnly=NA) {
   post_url <- "https://v26267mcpk506/StreamCat/v1/stable/metrics?"
   if (!is.character(comid) & ! is.na(comid)) comid <- paste(comid, collapse=",")
   post_body=""
@@ -57,11 +68,13 @@ sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, region
   if (!is.na(state)) post_body <- paste0(post_body,"&state=",state) 
   if (!is.na(county)) post_body <- paste0(post_body,"&county=",county) 
   if (!is.na(region)) post_body <- paste0(post_body,"&region=",region) 
-  if (!is.na(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showPctFull)
-  if (!is.na(showPctFull)) post_body <- paste0(post_body,"&showAreaSqKm=",showAreaSqKm) 
+  if (!is.na(showAreaSqKm)) post_body <- paste0(post_body,"&showAreaSqKm=",showPctFull)
+  if (!is.na(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showAreaSqKm) 
+  if (!is.na(conus)) post_body <- paste0(post_body,"&conus=",conus)
+  if (!is.na(countOnly)) post_body <- paste0(post_body,"&countOnly=",conus)
   cat(post_body)
   resp <- httr::POST(post_url, body=post_body)
-  df <- httr::content(resp, type="text/csv", encoding = 'UTF-8') 
+  df <- httr::content(resp, type="text/csv", encoding = 'UTF-8',show_col_types = FALSE) 
   df <- df[,1:ncol(df)] 
   return(df)
 }
