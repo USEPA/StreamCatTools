@@ -117,16 +117,16 @@ kable(head(df))
 ## Example Six
 Access a single variable for the Calapooia River using `sc_get_data` function. Use `nhdplusTools` library to grab flowlines and watershed for the Calapooia, plot selected StreamCat metric for Calapooia and show the watershed.
 ```{r Example Six, results='hide'}
-discover_nldi_sources()$source
+# discover_nldi_sources()$source
 start_comid = 23763529
 nldi_feature <- list(featureSource = "comid", featureID = start_comid)
-discover_nldi_navigation(nldi_feature)
+# discover_nldi_navigation(nldi_feature)
 
 flowline_nldi <- navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
 
 # get StreamCat metrics
 temp_dir <- 'C:/Users/mweber/temp'
-nhdplus <- subset_nhdplus(comids = flowline_nldi$nhdplus_comid, output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE,flowline_only = FALSE)
+nhdplus <- subset_nhdplus(comids = flowline_nldi$UT_flowlines$nhdplus_comid, output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE,flowline_only = FALSE)
 
 names(nhdplus)
 cats <- nhdplus$CatchmentSP
