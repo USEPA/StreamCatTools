@@ -11,12 +11,14 @@ sc_get_data(
   state = NA,
   county = NA,
   region = NA,
+  showAreaSqKm = NA,
   showPctFull = NA,
-  showAreaSqKm = NA
+  conus = NA,
+  countOnly = NA
 )
 }
 \arguments{
-\item{metric}{Names of a metric to query
+\item{metric}{Name(s) of metrics to query
 Syntax: name=<name1>,<name2>}
 
 \item{aoi}{Specify the area of interest described by a metric. By default, all available areas of interest 
@@ -24,7 +26,7 @@ for a given metric are returned.
 Syntax: areaOfInterest=<value1>,<value2>
 Values: catchment|watershed|riparian_catchment|riparian_watershed|other}
 
-\item{comid}{Return metric information about specific COMIDs
+\item{comid}{Return metric information for specific COMIDs
 Syntax: comid=<comid1>,<comid2>}
 
 \item{state}{Return metric information for COMIDs within a specific state. Use a state's abbreviation to 
@@ -32,33 +34,42 @@ query for a given state.
 Syntax: state=<state1>,<state2>}
 
 \item{county}{Return metric information for COMIDs within a specific county. 
-Users must use FIPS code, not county name, as a way to disambiguate counties.
+Users must use the FIPS code, not county name, as a way to disambiguate counties.
 Syntax: county=<county1>,<county1>}
 
 \item{region}{Return metric information for COMIDs within a specified hydroregion.
 Syntax: region=<regionid1>,<regionid2>}
 
-\item{showPctFull}{Return the "*pctfull" row for each dataset. The default value is false.
-Values: true|false 
+\item{showAreaSqKm}{Return the area in square kilometers of a given area of interest. 
+The default value is false.
+Values: true|false}
 
-#' @param showAreaSqKm Return the "*pctfull" row for each dataset. The default value is false.
+\item{showPctFull}{Return the pctfull for each dataset. The default value is false.
+Values: true|false}
+
+\item{conus}{Return tReturn all COMIDs in the conterminous United States. 
+The default value is false.
+Values: true|false}
+
+\item{countOnly}{Return a CSV containing only the row count (ROWCOUNT) and the column 
+count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
 Values: true|false}
 }
 \value{
 A tibble of desired StreamCat metrics
 }
 \description{
-Function to return StreamCat catchment and watershed metrics using the StreamCat API.  The function allows a user to get data
-specific to a catchment or metric of interest, as well as returning data by hydroregion(s), state(s), or county(ies).
+Function to return StreamCat catchment and watershed metrics using the StreamCat API.  The function allows a user to get
+specific metric data aggregated by area of interest, returned by comid(s), hydroregion(s), state(s), or county(ies).
 }
 \examples{
-df <- get_streamcat_data(comid='179', aoi='catchment', metric='fert')
+df <- sc_get_data(comid='179', aoi='catchment', metric='fert')
 
-df <- get_streamcat_data(metric='PctGrs2006', aoi='watershed', region='01')
+df <- sc_get_data(metric='PctGrs2006', aoi='watershed', region='01')
 
-df <- get_streamcat_data(metric='PctUrbMd2006', aoi='riparian_catchment', comid='1337420')
+df <- sc_get_data(metric='PctUrbMd2006', aoi='riparian_catchment', comid='1337420')
 
-df <- get_streamcat_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
+df <- sc_get_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
 }
 \author{
 Marc Weber

@@ -37,7 +37,7 @@
 #' The default value is false.
 #' Values: true|false 
 #' 
-#' @param showPctFull Return the "*pctfull" row for each dataset. The default value is false.
+#' @param showPctFull Return the pctfull for each dataset. The default value is false.
 #' Values: true|false
 #' 
 #' @param countOnly Return a CSV containing only the row count (ROWCOUNT) and the column 

@@ -4,7 +4,7 @@
 \alias{sc_get_comid}
 \title{Get COMIDs}
 \usage{
-sc_get_comid(df = NULL, xcoord = NULL, ycoord = NULL, crdsys = NULL)
+sc_get_comid(df = NULL, xcoord = NULL, ycoord = NULL, crsys = NULL)
 }
 \arguments{
 \item{df}{Name of data frame object.  Can be a simple
@@ -17,7 +17,7 @@ frame}
 \item{ycoord}{The y coordinate column if using a raw data 
 frame}
 
-\item{crdsys}{The epsg code if using a raw data frame}
+\item{crsys}{The epsg code if using a raw data frame}
 }
 \value{
 A new sf data frame with a populated 'COMID' column
@@ -30,7 +30,7 @@ values a user can then pass to sc_get_data function
 }
 \examples{
 comids <- sc_get_comid(df=df, xcoord='lon_dd', 
-ycoord='lat_dd', crdsys=4269)
+ycoord='lat_dd', crsys=4269)
 
 comids <- sc_get_comid(df=df)
 

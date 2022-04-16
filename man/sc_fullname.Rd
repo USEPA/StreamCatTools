@@ -7,7 +7,8 @@
 sc_fullname(metric = NULL)
 }
 \arguments{
-\item{metric}{Syntax: metric=value1
+\item{metric}{Short metric name
+Syntax: metric=value1
 Values: metric}
 }
 \value{

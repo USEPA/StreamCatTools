@@ -18,8 +18,8 @@ A list of all the current StreamCat values for a given parameter
 Function to return available StreamCat parameters using the StreamCat API.
 }
 \examples{
-params <- get_streamcat_params(param='name')
-params <- get_streamcat_params(param='area')
+params <- sc_get_params(param='name')
+params <- sc_get_params(param='area')
 }
 \author{
 Marc Weber
