@@ -47,7 +47,7 @@ Values: true|false}
 \item{showPctFull}{Return the pctfull for each dataset. The default value is false.
 Values: true|false}
 
-\item{conus}{Return tReturn all COMIDs in the conterminous United States. 
+\item{conus}{Return all COMIDs in the conterminous United States. 
 The default value is false.
 Values: true|false}
 

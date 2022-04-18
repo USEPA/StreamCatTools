@@ -29,7 +29,7 @@
 #' @param region Return metric information for COMIDs within a specified hydroregion.
 #' Syntax: region=<regionid1>,<regionid2>
 #'
-#' @param conus Return tReturn all COMIDs in the conterminous United States. 
+#' @param conus Return all COMIDs in the conterminous United States. 
 #' The default value is false.
 #' Values: true|false
 #'  
