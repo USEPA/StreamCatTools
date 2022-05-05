@@ -4,6 +4,7 @@ author: "Marc Weber"
 output: 
   html_document:
     theme: flatly
+    keep_md: yes
     number_sections: true
     highlighted: default 
     toc: yes
@@ -116,7 +117,7 @@ flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_sou
 
 # get StreamCat metrics
 temp_dir <- '.'
-nhdplus <- nhdplusTools::subset_nhdplus(comids = flowline_nldi$UT_flowlines$nhdplus_comid, output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE,flowline_only = FALSE)
+nhdplus <- nhdplusTools::subset_nhdplus(comids = as.integer(flowline_nldi$UT_flowlines$nhdplus_comid), output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE,flowline_only = FALSE)
 
 names(nhdplus)
 cats <- nhdplus$CatchmentSP
