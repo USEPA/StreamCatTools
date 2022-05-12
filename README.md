@@ -1,9 +1,11 @@
-# StreamCatTools <img src="man/figures/logo.png" align="right" alt="" width="120" />
+# StreamCatTools <img src="man/figures/logo.png" align="right" alt="" width="150" />
+
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![R build
 status](https://github.com/USEPA/StreamCatTools/workflows/R-CMD-check/badge.svg)](https://github.com/USEPA/StreamCatTools/actions)
+
 
 ## StreamCatTools: Tools to work with the [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) API within R and access the full suite of StreamCat catchment and waterhsed scale metrics for all NHDPlusV2 stream reaches and catchments.
 
