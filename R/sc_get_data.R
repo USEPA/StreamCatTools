@@ -59,22 +59,20 @@
 sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, 
                         region=NA, showAreaSqKm=NA, showPctFull=NA, conus=NA,
                         countOnly=NA) {
-  post_url <- "https://v26267mcpk506/StreamCat/v1/stable/metrics?"
+  query_url <- "https://v26267mcpk506/StreamCat/v1/stable/metrics?"
   if (!is.character(comid) & ! is.na(comid)) comid <- paste(comid, collapse=",")
-  post_body=""
-  if (!is.na(metric)) post_body <- paste0(post_body,"&name=",metric)
-  if (!is.na(comid)) post_body <- paste0(post_body,"&comid=",comid) 
-  if (!is.na(aoi)) post_body <- paste0(post_body,"&areaOfInterest=",aoi) 
-  if (!is.na(state)) post_body <- paste0(post_body,"&state=",state) 
-  if (!is.na(county)) post_body <- paste0(post_body,"&county=",county) 
-  if (!is.na(region)) post_body <- paste0(post_body,"&region=",region) 
-  if (!is.na(showAreaSqKm)) post_body <- paste0(post_body,"&showAreaSqKm=",showPctFull)
-  if (!is.na(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showAreaSqKm) 
-  if (!is.na(conus)) post_body <- paste0(post_body,"&conus=",conus)
-  if (!is.na(countOnly)) post_body <- paste0(post_body,"&countOnly=",conus)
-  cat(post_body)
-  resp <- httr::POST(post_url, body=post_body)
+  query_body=""
+  if (!is.na(metric)) query_body <- paste0(query_body,"&name=",metric)
+  if (!is.na(comid)) query_body <- paste0(query_body,"&comid=",comid) 
+  if (!is.na(aoi)) query_body <- paste0(query_body,"&areaOfInterest=",aoi) 
+  if (!is.na(state)) query_body <- paste0(query_body,"&state=",state) 
+  if (!is.na(county)) query_body <- paste0(query_body,"&county=",county) 
+  if (!is.na(region)) query_body <- paste0(query_body,"&region=",region) 
+  if (!is.na(showAreaSqKm)) query_body <- paste0(query_body,"&showAreaSqKm=",showPctFull)
+  if (!is.na(showPctFull)) query_body <- paste0(query_body,"&showPctFull=",showAreaSqKm) 
+  if (!is.na(conus)) query_body <- paste0(query_body,"&conus=",conus)
+  if (!is.na(countOnly)) query_body <- paste0(query_body,"&countOnly=",conus)
+  resp <- httr::GET(paste0(query_url, body=query_body))
   df <- httr::content(resp, type="text/csv", encoding = 'UTF-8',show_col_types = FALSE) 
-  df <- df[,1:ncol(df)] 
   return(df)
 }
