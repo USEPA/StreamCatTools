@@ -72,7 +72,7 @@ sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA,
   if (!is.na(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showAreaSqKm) 
   if (!is.na(conus)) post_body <- paste0(post_body,"&conus=",conus)
   if (!is.na(countOnly)) post_body <- paste0(post_body,"&countOnly=",conus)
-  cat(post_body)
+  post_body = substring(post_body, 2)
   resp <- httr::POST(post_url, body=post_body)
   df <- httr::content(resp, type="text/csv", encoding = 'UTF-8',show_col_types = FALSE) 
   df <- df[,1:ncol(df)] 
