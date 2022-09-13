@@ -45,7 +45,7 @@ The `StreamCatTools` package was designed to simplify the use of [StreamCat](htt
 ### StreamCat API
 We can actually pull data into R from the [StreamCat API](http://v26267mcpk506/StreamCat/v1/stable/metrics/about.jsp) by simply using the `read_csv` function from the `readr` package.  We have to hard-wire parameters and are limited in the number of records returned through a `GET` request.
 ```{r API}
-df <- readr::read_csv("https://v26267mcpk506/StreamCat/v1/stable/metrics?name=fert&areaOfInterest=watershed&comid=179", show_col_types = FALSE)
+df <- readr::read_csv("https://javastage.rtpnc.epa.gov/StreamCat/metrics?name=fert&areaOfInterest=watershed&comid=179", show_col_types = FALSE)
 knitr::kable(df)
 ```
 

@@ -18,7 +18,7 @@
 #' params <- sc_get_params(param='area')
 
 sc_get_params <- function(param = NULL) {
-  resp <- jsonlite::fromJSON("https://v26267mcpk506/StreamCat/v1/stable/metrics")
+  resp <- jsonlite::fromJSON("https://javastage.rtpnc.epa.gov/StreamCat/metrics")
   if (param=='areaOfInterest') params <- resp$parameters$areaOfInterest$options else{
     params <- resp$parameters$name$options
   }
@@ -44,7 +44,7 @@ sc_get_params <- function(param = NULL) {
 #' fullname <- sc_fullname(metric='name')
 
 sc_fullname <- function(metric = NULL) {
-  resp <- as.data.frame(jsonlite::fromJSON("https://v26267mcpk506/StreamCat/v1/stable/metrics/datadictionary"))
+  resp <- as.data.frame(jsonlite::fromJSON("https://javastage.rtpnc.epa.gov/StreamCat/metrics/datadictionary"))
   result <- resp[resp$dictionary.metric_prefix==metric,1]
   return(result)
 }

@@ -59,7 +59,7 @@
 sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, 
                         region=NA, showAreaSqKm=NA, showPctFull=NA, conus=NA,
                         countOnly=NA) {
-  query_url <- "https://v26267mcpk506/StreamCat/v1/stable/metrics?"
+  query_url <- "https://javastage.rtpnc.epa.gov/StreamCat/metrics?"
   if (!is.character(comid) & ! is.na(comid)) comid <- paste(comid, collapse=",")
   post_body=""
   if (!is.na(metric)) post_body <- paste0(post_body,"&name=",metric)
@@ -73,7 +73,7 @@ sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA,
   if (!is.na(conus)) post_body <- paste0(post_body,"&conus=",conus)
   if (!is.na(countOnly)) post_body <- paste0(post_body,"&countOnly=",conus)
   post_body = substring(post_body, 2)
-  resp <- httr::POST(post_url, body=post_body)
+  resp <- httr::POST(query_url, body=post_body)
   df <- httr::content(resp, type="text/csv", encoding = 'UTF-8',show_col_types = FALSE) 
   return(df)
 }
