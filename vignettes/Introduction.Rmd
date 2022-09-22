@@ -87,10 +87,15 @@ In this example we use the `sc_get_comid` function to find COMIDs for USGS strea
 ```{r Example Four}
 gages = readr::read_csv(system.file("extdata/Gages_flowdata.csv", package = "StreamCatTools"),show_col_types = FALSE)
 # we'll just grab a few records to keep things simple
-gages_coms <- sc_get_comid(gages[1:10,], xcoord='LON_SITE',
-                           ycoord='LAT_SITE', crsys=4269)
+gages <- gages[1:10,c('SOURCE_FEA','STATION_NM','LON_SITE','LAT_SITE')]
+gages_coms <- sc_get_comid(gages, xcoord='LON_SITE',                   ycoord='LAT_SITE', crsys=4269)
+
+# Add the COMID we found back to gages data frame
+gages$COMID <- strsplit(gages_coms, ",")[[1]]
 df <- sc_get_data(metric='huden2010', aoi='watershed', comid=gages_coms)
-knitr::kable(head(df))
+df$COMID <- as.character(df$COMID)
+gages <- dplyr::left_join(gages, df, by='COMID')
+knitr::kable(head(gages))
 ```
 
 ## Example Five
