@@ -108,8 +108,8 @@ knitr::kable(head(df))
 ## Example Six
 In this example we access a metric for conus using the `sc_get_data` function - this is shown for demonstration but not run as it takes a bit of time
 ```{r Example Six, eval=FALSE}
-df <- sc_get_data(metric='om', aoi='watershed', conus='true')
-knitr::kable(head(df))
+# df <- sc_get_data(metric='om', aoi='watershed', conus='true')
+# knitr::kable(head(df))
 ```
 
 ## Example Seven
