@@ -44,7 +44,7 @@ sc_get_params <- function(param = NULL) {
 #' fullname <- sc_fullname(metric='name')
 
 sc_fullname <- function(metric = NULL) {
-  resp <- as.data.frame(jsonlite::fromJSON("https://javastage.rtpnc.epa.gov/StreamCat/metrics/datadictionary"))
+  resp <- as.data.frame(jsonlite::fromJSON("https://v26267mcpk506/StreamCat/postgresql/metrics"))
   result <- resp[resp$dictionary.metric_prefix==metric,1]
   return(result)
 }
