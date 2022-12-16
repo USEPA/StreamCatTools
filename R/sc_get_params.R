@@ -18,7 +18,7 @@
 #' params <- sc_get_params(param='area')
 
 sc_get_params <- function(param = NULL) {
-  resp <- jsonlite::fromJSON("https://javastage.rtpnc.epa.gov/StreamCat/metrics")
+  resp <- jsonlite::fromJSON("https://java.epa.gov/StreamCAT/metrics")
   if (param=='areaOfInterest') params <- resp$parameters$areaOfInterest$options else{
     params <- resp$parameters$name$options
   }

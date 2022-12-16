@@ -40,12 +40,12 @@ library(StreamCatTools)
 ```
 
 ## Background
-The `StreamCatTools` package was designed to simplify the use of [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset-0) data in R, leveraging the new [API for StreamCat](https://intranet.ord.epa.gov/sswr/streamcat-web-tools). 
+The `StreamCatTools` package was designed to simplify the use of [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) data in R, leveraging the new [API for StreamCat](https://intranet.ord.epa.gov/sswr/streamcat-web-tools). 
 
 ### StreamCat API
-We can actually pull data into R from the [StreamCat API](http://v26267mcpk506/StreamCat/v1/stable/metrics/about.jsp) by simply using the `read_csv` function from the `readr` package.  We have to hard-wire parameters and are limited in the number of records returned through a `GET` request.
+We can actually pull data into R from the [StreamCat API](https://java.epa.gov/StreamCAT/metrics/about.jsp) by simply using the `read_csv` function from the `readr` package.  We have to hard-wire parameters and are limited in the number of records returned through a `GET` request.
 ```{r API}
-df <- readr::read_csv("https://javastage.rtpnc.epa.gov/StreamCat/metrics?name=fert&areaOfInterest=watershed&comid=179", show_col_types = FALSE)
+df <- readr::read_csv("https://java.epa.gov/StreamCAT/metrics?name=fert&areaOfInterest=catchment&comid=179", show_col_types = FALSE)
 knitr::kable(df)
 ```
 
@@ -137,6 +137,7 @@ basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
 ```
 
 ```{r Example Seven Pt2}
+mapview::mapviewOptions(fgb=FALSE)
 mapview::mapview(basin, alpha.regions=.08) + mapview::mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
 ```
 

@@ -12,5 +12,5 @@ test_that("st_get_params for region parameters", {
 test_that("st_get_params for name parameters", {
   params <- sc_get_params(param='name')
   expect_true(exists("params"))
-  expect_equal(length(params),581)
+  expect_equal(length(params),567)
 })
