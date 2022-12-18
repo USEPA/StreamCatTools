@@ -25,10 +25,17 @@
 #' @export
 #'
 #' @examples
-#' comids <- sc_get_comid(df=df, xcoord='lon_dd', 
-#' ycoord='lat_dd', crsys=4269)
+#' set.seed(1234)
+#' pt <- 10000
+#' df <- data.frame(x = runif(nb_pt, 0, 100),
+#'                  y = runif(nb_pt, 0,50),
+#'                  f1 = rnorm(pt))
+#'                                   
+#' comids <- sc_get_comid(df, xcoord='x', 
+#' ycoord='y', crsys=4269)
 #' 
-#' comids <- sc_get_comid(df=df)
+#' df <- sf::read_sf(system.file("shape/nc.shp", package="sf"))
+#' comids <- sc_get_comid(df)
 #' 
 
 sc_get_comid <- function(df = NULL, xcoord = NULL, 
