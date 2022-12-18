@@ -22,9 +22,9 @@
 #' @param crsys The epsg code if using a raw data frame
 #' 
 #' @return A new sf data frame with a populated 'COMID' column
-#' @export
 #'
 #' @examples
+#' \donttest{
 #' set.seed(1234)
 #' pt <- 10000
 #' df <- data.frame(x = runif(nb_pt, 0, 100),
@@ -34,11 +34,13 @@
 #' comids <- sc_get_comid(df, xcoord='x', 
 #' ycoord='y', crsys=4269)
 #' 
-#' df <- sf::read_sf(system.file("shape/nc.shp", package="sf"))
-#' comids <- sc_get_comid(df)
+#' dd <- sf::read_sf(system.file("shape/nc.shp", package="sf"))
+#' comids <- sc_get_comid(dd)
 #' 
+#'  }
+#' @export
 
-sc_get_comid <- function(df = NULL, xcoord = NULL, 
+sc_get_comid <- function(dd = NULL, xcoord = NULL, 
                          ycoord=NULL, crsys=NULL) {
   if (!'sf' %in% class(df) & ((is.null(xcoord)) | 
                                     (is.null(ycoord)) |
