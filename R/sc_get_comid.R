@@ -47,12 +47,12 @@ sc_get_comid <- function(dd = NULL, xcoord = NULL,
                                      (is.null(crsys)))) {
     "\nMake sure you supply parameters for xcoord, ycoord, and a crs as an epsg code."
   } else {
-    df <- sf::st_as_sf(df, coords = c(xcoord, ycoord), crs = crsys, remove = FALSE)
+    dd <- sf::st_as_sf(dd, coords = c(xcoord, ycoord), crs = crsys, remove = FALSE)
   }
   
-  run_for <- 1:nrow(df)
-  output <- do.call(rbind, lapply(1:nrow(df), function(i){
-    comid <- nhdplusTools::discover_nhdplus_id(df[i,c('geometry')])
+  run_for <- 1:nrow(dd)
+  output <- do.call(rbind, lapply(1:nrow(dd), function(i){
+    comid <- nhdplusTools::discover_nhdplus_id(dd[i,c('geometry')])
     if (length(comid)==0L) comid <- NA else comid <- comid
     return(comid)
   }))
