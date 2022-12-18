@@ -25,7 +25,8 @@ Imports:
   jsonlite, 
   httr, 
   xml2, 
-  tidyr
+  tidyr,
+  mapview
 Suggests: testthat, knitr, rmarkdown, devtools
 License: CC0
 Encoding: UTF-8

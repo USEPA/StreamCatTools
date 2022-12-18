@@ -137,6 +137,7 @@ basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
 ```
 
 ```{r Example Seven Pt2}
+library(mapview)
 mapview::mapviewOptions(fgb=FALSE)
 mapview::mapview(basin, alpha.regions=.08) + mapview::mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
 ```
