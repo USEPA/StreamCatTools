@@ -4,10 +4,10 @@
 \alias{sc_get_comid}
 \title{Get COMIDs}
 \usage{
-sc_get_comid(df = NULL, xcoord = NULL, ycoord = NULL, crsys = NULL)
+sc_get_comid(dd = NULL, xcoord = NULL, ycoord = NULL, crsys = NULL)
 }
 \arguments{
-\item{df}{Name of data frame object.  Can be a simple
+\item{dd}{Name of data frame object.  Can be a simple
 data frame with coordinate columns in a known CRS or
 an sf points data frame}
 
@@ -29,11 +29,20 @@ sf object.  The function generates a vector of COMID
 values a user can then pass to sc_get_data function
 }
 \examples{
-comids <- sc_get_comid(df=df, xcoord='lon_dd', 
-ycoord='lat_dd', crsys=4269)
+\donttest{
+set.seed(1234)
+pt <- 10000
+dd <- data.frame(x = runif(nb_pt, 0, 100),
+                 y = runif(nb_pt, 0,50),
+                 f1 = rnorm(pt))
+                                  
+comids <- sc_get_comid(dd, xcoord='x', 
+ycoord='y', crsys=4269)
 
-comids <- sc_get_comid(df=df)
+dd <- sf::read_sf(system.file("shape/nc.shp", package="sf"))
+comids <- sc_get_comid(dd)
 
+ }
 }
 \author{
 Marc Weber
