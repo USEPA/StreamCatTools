@@ -9,7 +9,7 @@
 #' @author 
 #' Marc Weber
 #' 
-#' @param df Name of data frame object.  Can be a simple
+#' @param dd Name of data frame object.  Can be a simple
 #' data frame with coordinate columns in a known CRS or
 #' an sf points data frame
 #' 
@@ -27,11 +27,11 @@
 #' \donttest{
 #' set.seed(1234)
 #' pt <- 10000
-#' df <- data.frame(x = runif(nb_pt, 0, 100),
+#' dd <- data.frame(x = runif(nb_pt, 0, 100),
 #'                  y = runif(nb_pt, 0,50),
 #'                  f1 = rnorm(pt))
 #'                                   
-#' comids <- sc_get_comid(df, xcoord='x', 
+#' comids <- sc_get_comid(dd, xcoord='x', 
 #' ycoord='y', crsys=4269)
 #' 
 #' dd <- sf::read_sf(system.file("shape/nc.shp", package="sf"))
@@ -42,7 +42,7 @@
 
 sc_get_comid <- function(dd = NULL, xcoord = NULL, 
                          ycoord=NULL, crsys=NULL) {
-  if (!'sf' %in% class(df) & ((is.null(xcoord)) | 
+  if (!'sf' %in% class(dd) & ((is.null(xcoord)) | 
                                     (is.null(ycoord)) |
                                      (is.null(crsys)))) {
     "\nMake sure you supply parameters for xcoord, ycoord, and a crs as an epsg code."
