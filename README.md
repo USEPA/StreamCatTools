@@ -10,7 +10,7 @@ status](https://github.com/USEPA/StreamCatTools/workflows/R-CMD-check/badge.svg)
 ## StreamCatTools: Tools to work with the [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) API within R and access the full suite of StreamCat catchment and waterhsed scale metrics for all NHDPlusV2 stream reaches and catchments.
 
 
-`StreamCatTools` is a draft R package for accessing StreamCat data via the StreamCat API and for working with site data in conjunction with StreamCat and NHDPlus. The StreamCat API is currently for users on the EPA network so the functions in the package will not currently work for those outside the EPA. `StreamCatTools` is alpha development - this is a work in progress, look for a working package release soon.
+`StreamCatTools` is an R package for accessing StreamCat data via the StreamCat API and for working with site data in conjunction with StreamCat and NHDPlus. `StreamCatTools` is in development but currently contains a core set of functions for working with the StreamCat API in R. Look for more details on contributing to the package soon.
 
 ### Installation
 
