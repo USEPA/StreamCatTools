@@ -52,7 +52,7 @@ knitr::kable(df)
 ### Examples of package functions
 ## Example One
 List StreamCat parameters: Get a list of available StreamCat values for certain parameters using the `sc_get_params` function (right now just metric names and areas of interest for this function) via the API
-```{r Example One}
+```{r Example_One}
 region_params <- sc_get_params(param='areaOfInterest')
 
 name_params <- sc_get_params(param='name')
@@ -62,7 +62,7 @@ print(paste0('A selection of available StreamCat metrics include: ',paste(name_p
 ```
 
 Look up the display name for a metric using the `sc_fullname` function via the API
-```{r Example One fullnames}
+```{r Example_One_fullnames}
 metric='pcthbwet2011'
 fullname <- sc_fullname(metric)
 print(paste0('The full name for ',metric, ' is: ', paste(fullname,collapse = ', ')))
@@ -70,21 +70,21 @@ print(paste0('The full name for ',metric, ' is: ', paste(fullname,collapse = ', 
 
 ## Example Two
 In this example we access several variables, for several areas of interest, and for several COMIDs using the `sc_get_data` function.  Loads data into a tibble we can view.
-```{r Example Two}
+```{r Example_Two}
 df <- sc_get_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
 knitr::kable(df)
 ```
 
 ## Example Three
 In this example we access a couple variables at the watershed scale for the area of interest of a county (Benton County in this case) using the `sc_get_data` function. 
-```{r Example Three}
+```{r Example_Three}
 df <- sc_get_data(metric='pctwdwet2006', aoi='watershed', county='41003')
 knitr::kable(head(df))
 ```
 
 ## Example Four
 In this example we use the `sc_get_comid` function to find COMIDs for USGS stream gages we load into R. We use a .csv file with coordinate columns and a known coordinate reference system.  We'll use an example dataset of large dams in Oregon from the [Oregon Spatial Data Library]
-```{r Example Four, eval=FALSE}
+```{r Example_Four, eval=FALSE}
 gages = readr::read_csv(system.file("extdata","Gages_flowdata.csv", package = "StreamCatTools"),show_col_types = FALSE)
 # we'll just grab a few records to keep things simple
 gages <- gages[1:10,c('SOURCE_FEA','STATION_NM','LON_SITE','LAT_SITE')]
@@ -100,21 +100,21 @@ knitr::kable(head(gages))
 
 ## Example Five
 In this example we access a couple watershed-only metrics for a particular NHDPlus hydroregion using the `sc_get_data` function. 
-```{r Example Five}
+```{r Example_Five}
 df <- sc_get_data(metric='PctWdWet2006', aoi='watershed', region='17')
 knitr::kable(head(df))
 ```
 
 ## Example Six
 In this example we access a metric for conus using the `sc_get_data` function - this is shown for demonstration but not run as it takes a bit of time
-```{r Example Six, eval=FALSE}
+```{r Example_Six, eval=FALSE}
 # df <- sc_get_data(metric='om', aoi='watershed', conus='true')
 # knitr::kable(head(df))
 ```
 
 ## Example Seven
 In this example we access a single variable for the Calapooia River using `sc_get_data` function. We then use the `nhdplusTools` library to grab flowlines and watershed for the Calapooia, plot the selected StreamCat metric for the Calapooia River and show the watershed.
-```{r Example Seven, results='hide'}
+```{r Example_Seven, results='hide'}
 start_comid = 23763529
 nldi_feature <- list(featureSource = "comid", featureID = start_comid)
 
@@ -144,7 +144,7 @@ mapview::mapview(basin, alpha.regions=.08) + mapview::mapview(flowline_nldi, zco
 
 ## Example Eight
 In this example we demonstrate a data 'mashup' by grabbing NRSA data from the EPA National Aquatic Resource Surveys (NARS) website directly in R, pull particular StreamCat metrics for sites using `sc_get_data`, and compare landscape metrics with other NRSA metrics
-```{r Example Eight, results='hide'}
+```{r Example_Eight, results='hide'}
 nrsa <- readr::read_csv('https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv')
 # dplyr::glimpse(nrsa)
 
@@ -172,7 +172,7 @@ df$COMID <- as.integer(df$COMID)
 nrsa_sf <- dplyr::left_join(nrsa_sf, df, by='COMID')
 ```
 
-```{r Example Eight ggplot}
+```{r Example_Eight ggplot}
 # download mmi from NARS web page
 library(dplyr)
 library(ggplot2)
