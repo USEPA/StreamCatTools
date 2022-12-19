@@ -172,7 +172,7 @@ df$COMID <- as.integer(df$COMID)
 nrsa_sf <- dplyr::left_join(nrsa_sf, df, by='COMID')
 ```
 
-```{r Example_Eight ggplot}
+```{r Example_Eight_ggplot}
 # download mmi from NARS web page
 library(dplyr)
 library(ggplot2)
