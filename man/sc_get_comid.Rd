@@ -32,8 +32,8 @@ values a user can then pass to sc_get_data function
 \donttest{
 set.seed(1234)
 pt <- 10000
-dd <- data.frame(x = runif(nb_pt, 0, 100),
-                 y = runif(nb_pt, 0,50),
+dd <- data.frame(x = runif(pt, 0, 100),
+                 y = runif(pt, 0,50),
                  f1 = rnorm(pt))
                                   
 comids <- sc_get_comid(dd, xcoord='x', 
