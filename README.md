@@ -2,7 +2,7 @@
 
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+experimental](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![R build
 status](https://github.com/USEPA/StreamCatTools/workflows/R-CMD-check/badge.svg)](https://github.com/USEPA/StreamCatTools/actions)
 
@@ -33,6 +33,9 @@ Contributions to development of the package are welcome and encouraged. Please c
 - We encourage use of the [tidyverse style guide](https://style.tidyverse.org/) for contributions
 - Contributions should ideally be tested using [testthat](https://testthat.r-lib.org/)
 - If you contribute documentation the package uses pkgdown and running `pkgdown::build_site()` will refresh the pkgdown pages for the package
+
+### Python Implementation of StreamCat API
+[PyNHD](https://github.com/hyriver/pynhd), part of the [HyRiver](https://github.com/hyriver) suite of Python packages, also provides access to StreamCat data via the API in Python, along with other NHDPlus value-added attributes for catchments and catchment and network accumulated values for catchments available via [USGS ScienceBase](https://sciencebase.usgs.gov/)
 
 ### Disclaimer
 The United States Environmental Protection Agency (EPA) GitHub project code is provided on an "as is" basis and the user assumes responsibility for its use.  EPA has relinquished control of the information and no longer has responsibility to protect the integrity , confidentiality, or availability of the information.  Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by EPA.  The EPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by EPA or the United States Government.
