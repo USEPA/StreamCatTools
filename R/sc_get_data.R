@@ -77,3 +77,107 @@ sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA,
   df <- httr::content(resp, type="text/csv", encoding = 'UTF-8',show_col_types = FALSE) 
   return(df)
 }
+
+#' @title Get NLCD Data
+#' 
+#' @description 
+#' Function to specifically retrieve all NLCD metrics for a given year using the StreamCat API.  
+#' 
+#' @author 
+#' Marc Weber
+#' 
+#' @param year Years(s) of NLCD metrics to query.
+#' Only valid NLCD years are accepted (i.e. 2001, 2004, 2006, 2008, 
+#' 2011, 2013, 2016, 2019)
+#' Syntax: year=<year1>,<year2>
+#' 
+#' @param aoi Specify the area of interest described by a metric. By default, all available areas of interest 
+#' for a given metric are returned.
+#' Syntax: areaOfInterest=<value1>,<value2>
+#' Values: catchment|watershed|riparian_catchment|riparian_watershed|other
+#' 
+#' @param comid Return metric information for specific COMIDs
+#' Syntax: comid=<comid1>,<comid2>
+#' 
+#' @param state Return metric information for COMIDs within a specific state. Use a state's abbreviation to 
+#' query for a given state.
+#' Syntax: state=<state1>,<state2>
+#' 
+#' @param county Return metric information for COMIDs within a specific county. 
+#' Users must use the FIPS code, not county name, as a way to disambiguate counties.
+#' Syntax: county=<county1>,<county1>
+#' 
+#' @param region Return metric information for COMIDs within a specified hydroregion.
+#' Syntax: region=<regionid1>,<regionid2>
+#'
+#' @param conus Return all COMIDs in the conterminous United States. 
+#' The default value is false.
+#' Values: true|false
+#'  
+#' @param showAreaSqKm Return the area in square kilometers of a given area of interest. 
+#' The default value is false.
+#' Values: true|false 
+#' 
+#' @param showPctFull Return the pctfull for each dataset. The default value is false.
+#' Values: true|false
+#' 
+#' @param countOnly Return a CSV containing only the row count (ROWCOUNT) and the column 
+#' count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
+#' Values: true|false
+#' 
+#' @return A tibble of desired StreamCat metrics
+#' @export
+#'
+#' @examples
+#' df <- sc_nlcd(year='2019',comid='179', aoi='catchment')
+#' 
+#' df <- sc_nlcd(year='2001', aoi='watershed', region='01')
+#' 
+#' df <- sc_nlcd(year='2004, 2006', aoi='catchment,watershed', comid='179,1337,1337420')
+
+
+sc_nlcd <- function(year='2019', aoi=NA, comid=NA, state=NA, county=NA, 
+                    region=NA, showAreaSqKm=NA, showPctFull=NA, conus=NA,
+                    countOnly=NA)  {
+  nlcd <- c('PctMxFst','PctOw','PctShrb','PctUrbHi','PctUrbLo',
+            'PctUrbMd','PctUrbOp','PctWdWet','PctBl','PctConif',
+            'PctCrop','PctDecid','PctGrs','PctHay','PctHbWet',
+            'PctIce')
+  if (stringr::str_detect(year,',') & length(year)==1){
+    year <- strsplit(year, ",")[[1]]
+  }
+  if (length(year)==1){
+    if (year %in% c('2001', '2004', '2006', '2008', '2011', '2013',
+                    '2016', '2019')){
+      nlcd_mets <- paste0(nlcd, year, collapse = ",")
+      df <- sc_get_data(metric=nlcd_mets, comid=comid)
+      return(df)
+      
+    } else {
+      stop("year must be a valid NLCD land cover year: 2001, 2004,
+         2006, 2008, 2011, 2013, or 2019")
+    }
+  } else {
+    for (i in year){
+      if (year %in% c('2001', '2004', '2006', '2008', '2011', '2013',
+                      '2016', '2019')){
+        
+        nlcd_mets <- sapply(paste0(vec, collapse = ","))
+        df <- sc_get_data(year=year,metric=nlcd_mets, aoi=aoi, comid=comid, aoi=NA, comid=NA, state=NA, county=NA, 
+                          region=region, showAreaSqKm=showAreaSqKm, 
+                          showPctFull=showPctFull, conus=conus,
+                          countOnly=countOnly)
+        return(df)
+        
+      } else {
+        stop("year must be a valid NLCD land cover year: 2001, 2004,
+         2006, 2008, 2011, 2013, or 2019")
+      }
+    }
+  }
+  
+  
+  resp <- as.data.frame(jsonlite::fromJSON("https://java.epa.gov/StreamCAT/metrics/datadictionary"))
+  result <- resp[resp$dictionary.metric_prefix==metric,1]
+  return(result)
+}
