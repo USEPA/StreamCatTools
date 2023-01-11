@@ -61,7 +61,7 @@ sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA,
                         region=NA, showAreaSqKm=NA, showPctFull=NA, conus=NA,
                         countOnly=NA) {
   query_url <- "https://java.epa.gov/StreamCAT/metrics?"
-  if (any((!is.character(comid) & ! is.na(comid)) | length(comid > 1))) comid <- paste(comid, collapse=",")
+  if (any((!is.character(comid) & ! is.na(comid)) | (length(comid > 1) &  ! is.na(comid)))) comid <- paste(comid, collapse=",")
   post_body=""
   if (!is.na(metric)) post_body <- paste0(post_body,"&name=",metric)
   if (!is.na(comid)) post_body <- paste0(post_body,"&comid=",comid) 
