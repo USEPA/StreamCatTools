@@ -15,7 +15,8 @@
 #' Syntax: areaOfInterest=<value1>,<value2>
 #' Values: catchment|watershed|riparian_catchment|riparian_watershed|other
 #' 
-#' @param comid Return metric information for specific COMIDs
+#' @param comid Return metric information for specific COMIDs.  Needs to be a character string
+#' and function will convert to this format if needed.
 #' Syntax: comid=<comid1>,<comid2>
 #' 
 #' @param state Return metric information for COMIDs within a specific state. Use a state's abbreviation to 
@@ -60,7 +61,7 @@ sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA,
                         region=NA, showAreaSqKm=NA, showPctFull=NA, conus=NA,
                         countOnly=NA) {
   query_url <- "https://java.epa.gov/StreamCAT/metrics?"
-  if (!is.character(comid) & ! is.na(comid)) comid <- paste(comid, collapse=",")
+  if (any((!is.character(comid) & ! is.na(comid)) | (length(comid > 1) &  ! is.na(comid)))) comid <- paste(comid, collapse=",")
   post_body=""
   if (!is.na(metric)) post_body <- paste0(post_body,"&name=",metric)
   if (!is.na(comid)) post_body <- paste0(post_body,"&comid=",comid) 
