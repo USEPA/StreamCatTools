@@ -13,7 +13,7 @@ output:
       smooth_scroll: no
     toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{Introduction to StreamCatTools}
+  %\VignetteIndexEntry{Applications withs StreamCatTools}
   %\VignetteEncoding{UTF-8}{inputenc}
   %\VignetteEngine{knitr::rmarkdown}
 ---
