@@ -1,0 +1,105 @@
+---
+title: "Applications"
+author: "Marc Weber"
+output: 
+  html_document:
+    theme: flatly
+    keep_md: yes
+    number_sections: true
+    highlighted: default 
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Introduction to StreamCatTools}
+  %\VignetteEncoding{UTF-8}{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  warning = FALSE, 
+  message = FALSE
+)
+```
+
+### Plotting watershed data
+In this example we access a single variable for the Calapooia River using `sc_get_data` function. We then use the `nhdplusTools` library to grab flowlines and watershed for the Calapooia, plot the selected StreamCat metric for the Calapooia River and show the watershed.
+```{r wshd, results='hide'}
+library(StreamCatTools)
+start_comid = 23763529
+nldi_feature <- list(featureSource = "comid", featureID = start_comid)
+
+flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
+
+# get StreamCat metrics
+temp_dir <- '.'
+nhdplus <- nhdplusTools::subset_nhdplus(comids = as.integer(flowline_nldi$UT_flowlines$nhdplus_comid), output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE,flowline_only = FALSE)
+
+names(nhdplus)
+cats <- nhdplus$CatchmentSP
+comids <- paste(cats$featureid,collapse=",",sep="")
+
+df <- sc_get_data(metric='PctImp2011', aoi='catchment', comid=comids)
+
+flowline_nldi <- flowline_nldi$UT_flowlines
+flowline_nldi$PCTIMP2011CAT <- df$PCTIMP2011CAT[match(flowline_nldi$nhdplus_comid, df$COMID)]
+
+basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
+```
+
+```{r wshd pt2}
+library(mapview)
+mapview::mapviewOptions(fgb=FALSE)
+mapview::mapview(basin, alpha.regions=.08) + mapview::mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
+```
+
+### Working with NARS data
+In this example we demonstrate a data 'mashup' by grabbing NRSA data from the EPA National Aquatic Resource Surveys (NARS) website directly in R, pull particular StreamCat metrics for sites using `sc_get_data`, and compare landscape metrics with other NRSA metrics
+```{r nars, results='hide'}
+nrsa <- readr::read_csv('https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv')
+# dplyr::glimpse(nrsa)
+
+# Promote data frame to sf spatial points data frame
+nrsa_sf <- sf::st_as_sf(nrsa, coords = c("LON_DD83", "LAT_DD83"), crs = 4269)
+
+# Get COMIDs using nhdplusTools package
+# nrsa$COMID<- NA
+# for (i in 1:nrow(nrsa_sf)){
+#   print (i)
+#   nrsa_sf[i,'COMID'] <- discover_nhdplus_id(nrsa_sf[i,c('geometry')])
+# }
+load(system.file("extdata", "sample_nrsa_data.rda", package="StreamCatTools"))
+
+# get particular StreamCat data for all these NRSA sites
+# nrsa_sf$COMID <- as.character(nrsa_sf$COMID)
+comids <- nrsa_sf$COMID
+comids <- comids[!is.na(comids)]
+comids <- comids[c(1:925)]
+comids <- paste(comids,collapse=',')
+df <- sc_get_data(metric='PctCrop2006', aoi='watershed', comid=comids)
+
+# glimpse(df)
+df$COMID <- as.integer(df$COMID)
+nrsa_sf <- dplyr::left_join(nrsa_sf, df, by='COMID')
+```
+
+```{r nars_ggplot}
+# download mmi from NARS web page
+library(dplyr)
+library(ggplot2)
+mmi <- readr::read_csv('https://www.epa.gov/sites/production/files/2015-09/bentcond.csv',show_col_types = FALSE)
+dplyr::glimpse(mmi)
+
+# join mmi to NARS info data frame with StreamCat PctCrop metric
+nrsa_sf <- dplyr::left_join(nrsa_sf, mmi[,c('SITE_ID','BENT_MMI_COND')], by='SITE_ID')
+bxplt <- nrsa_sf %>% 
+  tidyr::drop_na(BENT_MMI_COND) %>%
+  ggplot(aes(x=PCTCROP2006WS, y=BENT_MMI_COND))+
+  geom_boxplot()
+suppressWarnings(print(bxplt))
+```
