@@ -26,7 +26,8 @@ Imports:
   httr, 
   xml2, 
   tidyr,
-  mapview
+  mapview,
+  ggplot2
 Suggests: testthat, knitr, rmarkdown, devtools
 License: CC0
 Encoding: UTF-8

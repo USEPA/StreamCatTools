@@ -99,7 +99,7 @@ dplyr::glimpse(mmi)
 nrsa_sf <- dplyr::left_join(nrsa_sf, mmi[,c('SITE_ID','BENT_MMI_COND')], by='SITE_ID')
 bxplt <- nrsa_sf %>% 
   tidyr::drop_na(BENT_MMI_COND) %>%
-  ggplot(aes(x=PCTCROP2006WS, y=BENT_MMI_COND))+
-  geom_boxplot()
+  ggplot2::ggplot(aes(x=PCTCROP2006WS, y=BENT_MMI_COND))+
+  ggplot2::geom_boxplot()
 suppressWarnings(print(bxplt))
 ```
