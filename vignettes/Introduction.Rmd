@@ -93,7 +93,7 @@ We can also pass a couple years for a different area of interest for another reg
 ```{r get_nlcd2}
 df <- sc_nlcd(year='2006, 2019', aoi='watershed',
               county='41003')
-knitr::kable(df)
+knitr::kable(head(df))
 ```
 ### Get COMIDs
 In this example we use the `sc_get_comid` function to find COMIDs for USGS stream gages we load into R. We use a .csv file with coordinate columns and a known coordinate reference system.  We'll use an example dataset of large dams in Oregon from the [Oregon Spatial Data Library]
