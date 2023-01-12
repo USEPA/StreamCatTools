@@ -81,6 +81,20 @@ df <- sc_get_data(metric='pctwdwet2006', aoi='watershed', county='41003')
 knitr::kable(head(df))
 ```
 
+### Get NLCD data
+In this example we access National Land Cover Dataset (NLCD) data for 2001, just at the catchment level for several COMIDs using the `sc_nlcd` function.  Loads data into a tibble we can view.
+```{r get_nlcd}
+df <- sc_nlcd(year='2001', aoi='catchment',
+              comid='179,1337,1337420')
+knitr::kable(df)
+```
+
+We can also pass a couple years for a different area of interest for another region like a county.
+```{r get_nlcd2}
+df <- sc_nlcd(year='2006, 2019', aoi='watershed',
+              county='41003')
+knitr::kable(df)
+```
 ### Get COMIDs
 In this example we use the `sc_get_comid` function to find COMIDs for USGS stream gages we load into R. We use a .csv file with coordinate columns and a known coordinate reference system.  We'll use an example dataset of large dams in Oregon from the [Oregon Spatial Data Library]
 ```{r comids, eval=FALSE}

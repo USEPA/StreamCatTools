@@ -143,14 +143,18 @@ sc_nlcd <- function(year='2019', aoi=NA, comid=NA, state=NA, county=NA,
             'PctUrbMd','PctUrbOp','PctWdWet','PctBl','PctConif',
             'PctCrop','PctDecid','PctGrs','PctHay','PctHbWet',
             'PctIce')
+  year=as.character(year)
   if (stringr::str_detect(year,',') & length(year)==1){
-    year <- strsplit(year, ",")[[1]]
+    year <- sapply(strsplit(year, ",")[[1]], trimws)
   }
   if (length(year)==1){
     if (year %in% c('2001', '2004', '2006', '2008', '2011', '2013',
                     '2016', '2019')){
       nlcd_mets <- paste0(nlcd, year, collapse = ",")
-      df <- sc_get_data(metric=nlcd_mets, comid=comid)
+      df <- sc_get_data(metric=nlcd_mets, aoi=aoi, comid=comid, 
+                        state=state, county=county, region=region, 
+                        showAreaSqKm=showAreaSqKm, showPctFull=showPctFull, 
+                        conus=conus,countOnly=countOnly)
       return(df)
       
     } else {
@@ -158,25 +162,32 @@ sc_nlcd <- function(year='2019', aoi=NA, comid=NA, state=NA, county=NA,
          2006, 2008, 2011, 2013, or 2019")
     }
   } else {
+    k=1
     for (i in year){
-      if (year %in% c('2001', '2004', '2006', '2008', '2011', '2013',
+      if (i %in% c('2001', '2004', '2006', '2008', '2011', '2013',
                       '2016', '2019')){
-        
-        nlcd_mets <- sapply(paste0(vec, collapse = ","))
-        df <- sc_get_data(year=year,metric=nlcd_mets, aoi=aoi, comid=comid, aoi=NA, comid=NA, state=NA, county=NA, 
-                          region=region, showAreaSqKm=showAreaSqKm, 
-                          showPctFull=showPctFull, conus=conus,
-                          countOnly=countOnly)
-        return(df)
+        nlcd_mets <- paste0(nlcd, i, collapse = ",")
+        if (k==1){
+          df <- sc_get_data(metric=nlcd_mets, aoi=aoi, comid=comid, 
+                            state=state, county=county, region=region, 
+                            showAreaSqKm=showAreaSqKm, showPctFull=showPctFull, 
+                            conus=conus,countOnly=countOnly)
+        } else {
+          temp <- sc_get_data(metric=nlcd_mets, aoi=aoi, comid=comid, 
+                            state=state, county=county, region=region, 
+                            showAreaSqKm=showAreaSqKm, showPctFull=showPctFull, 
+                            conus=conus,countOnly=countOnly)
+          df <- cbind(df, temp[,4:19])
+        }
         
       } else {
         stop("year must be a valid NLCD land cover year: 2001, 2004,
          2006, 2008, 2011, 2013, or 2019")
       }
+      k=k+1
     }
+    return(df)
   }
-  
-  
   resp <- as.data.frame(jsonlite::fromJSON("https://java.epa.gov/StreamCAT/metrics/datadictionary"))
   result <- resp[resp$dictionary.metric_prefix==metric,1]
   return(result)
