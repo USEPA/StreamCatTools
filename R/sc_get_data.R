@@ -130,11 +130,11 @@ sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA,
 #' @export
 #'
 #' @examples
-#' df <- sc_nlcd(year='2019',comid='179', aoi='catchment')
+#' df <- sc_nlcd(year='2001', aoi='catchment',comid='179,1337,1337420')
 #' 
 #' df <- sc_nlcd(year='2001', aoi='watershed', region='01')
 #' 
-#' df <- sc_nlcd(year='2004, 2006', aoi='catchment,watershed', comid='179,1337,1337420')
+#' df <- sc_nlcd(year='2001, 2006', aoi='catchment,watershed', comid='179,1337,1337420')
 
 
 sc_nlcd <- function(year='2019', aoi=NA, comid=NA, state=NA, county=NA, 

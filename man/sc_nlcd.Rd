@@ -64,11 +64,11 @@ A tibble of desired StreamCat metrics
 Function to specifically retrieve all NLCD metrics for a given year using the StreamCat API.
 }
 \examples{
-df <- sc_nlcd(year='2019',comid='179', aoi='catchment')
+df <- sc_nlcd(year='2001', aoi='catchment',comid='179,1337,1337420')
 
 df <- sc_nlcd(year='2001', aoi='watershed', region='01')
 
-df <- sc_nlcd(year='2004, 2006', aoi='catchment,watershed', comid='179,1337,1337420')
+df <- sc_nlcd(year='2001, 2006', aoi='catchment,watershed', comid='179,1337,1337420')
 }
 \author{
 Marc Weber

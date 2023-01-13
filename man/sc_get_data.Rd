@@ -26,7 +26,8 @@ for a given metric are returned.
 Syntax: areaOfInterest=<value1>,<value2>
 Values: catchment|watershed|riparian_catchment|riparian_watershed|other}
 
-\item{comid}{Return metric information for specific COMIDs
+\item{comid}{Return metric information for specific COMIDs.  Needs to be a character string
+and function will convert to this format if needed.
 Syntax: comid=<comid1>,<comid2>}
 
 \item{state}{Return metric information for COMIDs within a specific state. Use a state's abbreviation to 
