@@ -99,8 +99,8 @@ knitr::kable(head(df))
 In this example we use the `sc_get_comid` function to find COMIDs for USGS stream gages we load into R. We use a .csv file with coordinate columns and a known coordinate reference system.  We'll use an example dataset of large dams in Oregon from the [Oregon Spatial Data Library]
 ```{r comids, eval=FALSE}
 gages = readr::read_csv(system.file("extdata","Gages_flowdata.csv", package = "StreamCatTools"),show_col_types = FALSE)
-# we'll just grab a few records to keep things simple
-gages <- gages[1:10,c('SOURCE_FEA','STATION_NM','LON_SITE','LAT_SITE')]
+# we'll just grab a few variables to keep things simple
+gages <- gages[,c('SOURCE_FEA','STATION_NM','LON_SITE','LAT_SITE')]
 gages_coms <- sc_get_comid(gages, xcoord='LON_SITE',                   ycoord='LAT_SITE', crsys=4269)
 
 # Add the COMID we found back to gages data frame

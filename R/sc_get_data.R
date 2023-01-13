@@ -46,16 +46,20 @@
 #' Values: true|false
 #' 
 #' @return A tibble of desired StreamCat metrics
-#' @export
 #'
 #' @examples
+#' \donttest{
 #' df <- sc_get_data(comid='179', aoi='catchment', metric='fert')
 #' 
 #' df <- sc_get_data(metric='PctGrs2006', aoi='watershed', region='01')
 #' 
-#' df <- sc_get_data(metric='PctUrbMd2006', aoi='riparian_catchment', comid='1337420')
+#' df <- sc_get_data(metric='PctUrbMd2006', aoi='riparian_catchment', 
+#' comid='1337420')
 #' 
-#' df <- sc_get_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
+#' df <- sc_get_data(metric='PctUrbMd2006,DamDens', 
+#' aoi='catchment,watershed', comid='179,1337,1337420')
+#'  }
+#' @export
 
 sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA, 
                         region=NA, showAreaSqKm=NA, showPctFull=NA, conus=NA,
@@ -127,14 +131,17 @@ sc_get_data <- function(metric=NA, aoi=NA, comid=NA, state=NA, county=NA,
 #' Values: true|false
 #' 
 #' @return A tibble of desired StreamCat metrics
-#' @export
 #'
 #' @examples
+#' \donttest{
 #' df <- sc_nlcd(year='2001', aoi='catchment',comid='179,1337,1337420')
 #' 
 #' df <- sc_nlcd(year='2001', aoi='watershed', region='01')
 #' 
-#' df <- sc_nlcd(year='2001, 2006', aoi='catchment,watershed', comid='179,1337,1337420')
+#' df <- sc_nlcd(year='2001, 2006', aoi='catchment,watershed', 
+#' comid='179,1337,1337420')
+#' }
+#' @export 
 
 
 sc_nlcd <- function(year='2019', aoi=NA, comid=NA, state=NA, county=NA, 
@@ -187,9 +194,7 @@ sc_nlcd <- function(year='2019', aoi=NA, comid=NA, state=NA, county=NA,
       }
       k=k+1
     }
-    return(df)
+    
   }
-  resp <- as.data.frame(jsonlite::fromJSON("https://java.epa.gov/StreamCAT/metrics/datadictionary"))
-  result <- resp[resp$dictionary.metric_prefix==metric,1]
-  return(result)
+  return(df)
 }

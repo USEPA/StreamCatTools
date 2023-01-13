@@ -64,13 +64,17 @@ Function to return StreamCat catchment and watershed metrics using the StreamCat
 specific metric data aggregated by area of interest, returned by comid(s), hydroregion(s), state(s), or county(ies).
 }
 \examples{
+\donttest{
 df <- sc_get_data(comid='179', aoi='catchment', metric='fert')
 
 df <- sc_get_data(metric='PctGrs2006', aoi='watershed', region='01')
 
-df <- sc_get_data(metric='PctUrbMd2006', aoi='riparian_catchment', comid='1337420')
+df <- sc_get_data(metric='PctUrbMd2006', aoi='riparian_catchment', 
+comid='1337420')
 
-df <- sc_get_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
+df <- sc_get_data(metric='PctUrbMd2006,DamDens', 
+aoi='catchment,watershed', comid='179,1337,1337420')
+ }
 }
 \author{
 Marc Weber

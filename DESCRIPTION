@@ -17,20 +17,26 @@ Authors@R: c(person(given = "Marc",
 Description: Tools for using the StreamCat API and interacting with StreamCat data.
 Depends: R (>= 3.5.1)
 Imports: 
-  dplyr,
   sf, 
   nhdplusTools,
-  magrittr, 
-  readr, 
   jsonlite, 
-  httr, 
-  xml2, 
-  tidyr,
+  httr,
+  stringr
+Suggests: 
+  dplyr,
+  ggplot2,
   mapview,
-  ggplot2
-Suggests: testthat, knitr, rmarkdown, devtools
+  testthat, 
+  knitr, 
+  rmarkdown, 
+  devtools,
+  xml2,
+  magrittr,
+  readr,
+  tidyr
 License: CC0
 Encoding: UTF-8
+URL: https://usepa.github.io/StreamCatTools/
 VignetteBuilder: knitr,rmarkdown
 LazyData: true
 RoxygenNote: 7.2.1
