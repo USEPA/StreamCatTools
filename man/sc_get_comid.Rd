@@ -30,11 +30,15 @@ values a user can then pass to sc_get_data function
 }
 \examples{
 \donttest{
-set.seed(1234)
-pt <- 10000
-dd <- data.frame(x = runif(pt, 0, 100),
-                 y = runif(pt, 0,50),
-                 f1 = rnorm(pt))
+
+dd <- data.frame(x = c(-122.649,-100.348,-75.186,-106.675),
+y = c(45.085, 35.405,42.403,38.721))
+
+comids <- sc_get_comid(dd, xcoord='x',
+                       ycoord='y', crsys=4269)
+
+dd <- sf::read_sf(system.file("shape/nc.shp", package="sf"))
+comids <- sc_get_comid(dd)
                                   
 comids <- sc_get_comid(dd, xcoord='x', 
 ycoord='y', crsys=4269)
