@@ -140,12 +140,14 @@ Values: true|false</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">sc_nlcd</span><span class="op">(</span>year<span class="op">=</span><span class="st">'2019'</span>,comid<span class="op">=</span><span class="st">'179'</span>, aoi<span class="op">=</span><span class="st">'catchment'</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">sc_nlcd</span><span class="op">(</span>year<span class="op">=</span><span class="st">'2001'</span>, aoi<span class="op">=</span><span class="st">'catchment'</span>,comid<span class="op">=</span><span class="st">'179,1337,1337420'</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">sc_nlcd</span><span class="op">(</span>year<span class="op">=</span><span class="st">'2001'</span>, aoi<span class="op">=</span><span class="st">'watershed'</span>, region<span class="op">=</span><span class="st">'01'</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">sc_nlcd</span><span class="op">(</span>year<span class="op">=</span><span class="st">'2004, 2006'</span>, aoi<span class="op">=</span><span class="st">'catchment,watershed'</span>, comid<span class="op">=</span><span class="st">'179,1337,1337420'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in data.frame(..., check.names = FALSE):</span> arguments imply differing number of rows: 0, 3</span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">sc_nlcd</span><span class="op">(</span>year<span class="op">=</span><span class="st">'2001, 2006'</span>, aoi<span class="op">=</span><span class="st">'catchment,watershed'</span>, </span></span>
+<span class="r-in"><span>comid<span class="op">=</span><span class="st">'179,1337,1337420'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
