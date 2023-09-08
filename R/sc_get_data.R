@@ -206,9 +206,14 @@ sc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL, state = NULL,
     'PctHbWet',
     'PctIce'
   )
+  # Create a data frame of all NLCD Metric and year combinations.
+  all_comb <- expand.grid(nlcd, year_vec)
   # Concatenate the NLCD metric name with the supplied year(s) to create
   # valid metric names to submit to the API.
-  nlcd_mets <- paste0(nlcd, year_vec, collapse = ",")
+  nlcd_mets <- paste0(all_comb$Var1,
+                      all_comb$Var2,
+                      collapse = ",",
+                      recycle0 = TRUE)
   # Query the API.
   final_df <- sc_get_data(
     metric = nlcd_mets,
