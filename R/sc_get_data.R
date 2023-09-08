@@ -163,57 +163,65 @@ sc_get_data <- function(metric = NULL,
 #' @export
 
 
-sc_nlcd <- function(year='2019', aoi=NA, comid=NA, state=NA, county=NA,
-                    region=NA, showAreaSqKm=NA, showPctFull=NA, conus=NA,
-                    countOnly=NA)  {
-  nlcd <- c('PctMxFst','PctOw','PctShrb','PctUrbHi','PctUrbLo',
-            'PctUrbMd','PctUrbOp','PctWdWet','PctBl','PctConif',
-            'PctCrop','PctDecid','PctGrs','PctHay','PctHbWet',
-            'PctIce')
-  year=as.character(year)
-  if (stringr::str_detect(year,',') & length(year)==1){
-    year <- sapply(strsplit(year, ",")[[1]], trimws)
-  }
-  if (length(year)==1){
-    if (year %in% c('2001', '2004', '2006', '2008', '2011', '2013',
-                    '2016', '2019')){
-      nlcd_mets <- paste0(nlcd, year, collapse = ",")
-      df <- sc_get_data(metric=nlcd_mets, aoi=aoi, comid=comid,
-                        state=state, county=county, region=region,
-                        showAreaSqKm=showAreaSqKm, showPctFull=showPctFull,
-                        conus=conus,countOnly=countOnly)
-      return(df)
-
-    } else {
-      stop("year must be a valid NLCD land cover year: 2001, 2004,
-         2006, 2008, 2011, 2013, or 2019")
-    }
-  } else {
-    k=1
-    for (i in year){
-      if (i %in% c('2001', '2004', '2006', '2008', '2011', '2013',
-                      '2016', '2019')){
-        nlcd_mets <- paste0(nlcd, i, collapse = ",")
-        if (k==1){
-          df <- sc_get_data(metric=nlcd_mets, aoi=aoi, comid=comid,
-                            state=state, county=county, region=region,
-                            showAreaSqKm=showAreaSqKm, showPctFull=showPctFull,
-                            conus=conus,countOnly=countOnly)
-        } else {
-          temp <- sc_get_data(metric=nlcd_mets, aoi=aoi, comid=comid,
-                            state=state, county=county, region=region,
-                            showAreaSqKm=showAreaSqKm, showPctFull=showPctFull,
-                            conus=conus,countOnly=countOnly)
-          df <- cbind(df, temp[,4:19])
-        }
-
-      } else {
-        stop("year must be a valid NLCD land cover year: 2001, 2004,
-         2006, 2008, 2011, 2013, or 2019")
-      }
-      k=k+1
-    }
-
-  }
-  return(df)
+sc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL, state = NULL,
+                    county = NULL, region = NULL, showAreaSqKm = NULL,
+                    showPctFull = NULL, conus = NULL, countOnly = NULL) {
+  # year must be a character string.
+  year_chr <-  as.character(year)
+  # split multiple years supplied as a single string into
+  # a vector of years.
+  year_vec <- unlist(strsplit(x = year_chr,
+                              split = ",|, "))
+  # Vector of valid NLCD years to check inputs against.
+  valid_years <- c('2001',
+                   '2004',
+                   '2006',
+                   '2008',
+                   '2011',
+                   '2013',
+                   '2016',
+                   '2019')
+  # Stop early if any of the year(s) supplied are not found in the valid
+  # years vec.
+  stopifnot(
+    "year must be a valid NLCD land cover year: 2001, 2004,
+         2006, 2008, 2011, 2013, or 2019" = any(year_vec %in% valid_years)
+  )
+  # Vector of NLCD metric names.
+  nlcd <- c(
+    'PctMxFst',
+    'PctOw',
+    'PctShrb',
+    'PctUrbHi',
+    'PctUrbLo',
+    'PctUrbMd',
+    'PctUrbOp',
+    'PctWdWet',
+    'PctBl',
+    'PctConif',
+    'PctCrop',
+    'PctDecid',
+    'PctGrs',
+    'PctHay',
+    'PctHbWet',
+    'PctIce'
+  )
+  # Concatenate the NLCD metric name with the supplied year(s) to create
+  # valid metric names to submit to the API.
+  nlcd_mets <- paste0(nlcd, year_vec, collapse = ",")
+  # Query the API.
+  final_df <- sc_get_data(
+    metric = nlcd_mets,
+    aoi = aoi,
+    comid = comid,
+    state = state,
+    county = county,
+    region = region,
+    showAreaSqKm = showAreaSqKm,
+    showPctFull = showPctFull,
+    conus = conus,
+    countOnly = countOnly
+  )
+  # End of function. Return a data frame.
+  return(final_df)
 }
