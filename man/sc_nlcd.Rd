@@ -6,24 +6,24 @@
 \usage{
 sc_nlcd(
   year = "2019",
-  aoi = NA,
-  comid = NA,
-  state = NA,
-  county = NA,
-  region = NA,
-  showAreaSqKm = NA,
-  showPctFull = NA,
-  conus = NA,
-  countOnly = NA
+  aoi = NULL,
+  comid = NULL,
+  state = NULL,
+  county = NULL,
+  region = NULL,
+  showAreaSqKm = NULL,
+  showPctFull = NULL,
+  conus = NULL,
+  countOnly = NULL
 )
 }
 \arguments{
 \item{year}{Years(s) of NLCD metrics to query.
-Only valid NLCD years are accepted (i.e. 2001, 2004, 2006, 2008, 
+Only valid NLCD years are accepted (i.e. 2001, 2004, 2006, 2008,
 2011, 2013, 2016, 2019)
 Syntax: year=<year1>,<year2>}
 
-\item{aoi}{Specify the area of interest described by a metric. By default, all available areas of interest 
+\item{aoi}{Specify the area of interest described by a metric. By default, all available areas of interest
 for a given metric are returned.
 Syntax: areaOfInterest=<value1>,<value2>
 Values: catchment|watershed|riparian_catchment|riparian_watershed|other}
@@ -31,29 +31,29 @@ Values: catchment|watershed|riparian_catchment|riparian_watershed|other}
 \item{comid}{Return metric information for specific COMIDs
 Syntax: comid=<comid1>,<comid2>}
 
-\item{state}{Return metric information for COMIDs within a specific state. Use a state's abbreviation to 
+\item{state}{Return metric information for COMIDs within a specific state. Use a state's abbreviation to
 query for a given state.
 Syntax: state=<state1>,<state2>}
 
-\item{county}{Return metric information for COMIDs within a specific county. 
+\item{county}{Return metric information for COMIDs within a specific county.
 Users must use the FIPS code, not county name, as a way to disambiguate counties.
 Syntax: county=<county1>,<county1>}
 
 \item{region}{Return metric information for COMIDs within a specified hydroregion.
 Syntax: region=<regionid1>,<regionid2>}
 
-\item{showAreaSqKm}{Return the area in square kilometers of a given area of interest. 
+\item{showAreaSqKm}{Return the area in square kilometers of a given area of interest.
 The default value is false.
 Values: true|false}
 
 \item{showPctFull}{Return the pctfull for each dataset. The default value is false.
 Values: true|false}
 
-\item{conus}{Return all COMIDs in the conterminous United States. 
+\item{conus}{Return all COMIDs in the conterminous United States.
 The default value is false.
 Values: true|false}
 
-\item{countOnly}{Return a CSV containing only the row count (ROWCOUNT) and the column 
+\item{countOnly}{Return a CSV containing only the row count (ROWCOUNT) and the column
 count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
 Values: true|false}
 }
@@ -69,7 +69,7 @@ df <- sc_nlcd(year='2001', aoi='catchment',comid='179,1337,1337420')
 
 df <- sc_nlcd(year='2001', aoi='watershed', region='01')
 
-df <- sc_nlcd(year='2001, 2006', aoi='catchment,watershed', 
+df <- sc_nlcd(year='2001, 2006', aoi='catchment,watershed',
 comid='179,1337,1337420')
 }
 }

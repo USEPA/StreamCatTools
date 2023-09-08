@@ -5,23 +5,23 @@
 \title{Get StreamCat data}
 \usage{
 sc_get_data(
-  metric = NA,
-  aoi = NA,
-  comid = NA,
-  state = NA,
-  county = NA,
-  region = NA,
-  showAreaSqKm = NA,
-  showPctFull = NA,
-  conus = NA,
-  countOnly = NA
+  metric = NULL,
+  aoi = NULL,
+  comid = NULL,
+  state = NULL,
+  county = NULL,
+  region = NULL,
+  showAreaSqKm = NULL,
+  showPctFull = NULL,
+  conus = NULL,
+  countOnly = NULL
 )
 }
 \arguments{
 \item{metric}{Name(s) of metrics to query
 Syntax: name=<name1>,<name2>}
 
-\item{aoi}{Specify the area of interest described by a metric. By default, all available areas of interest 
+\item{aoi}{Specify the area of interest described by a metric. By default, all available areas of interest
 for a given metric are returned.
 Syntax: areaOfInterest=<value1>,<value2>
 Values: catchment|watershed|riparian_catchment|riparian_watershed|other}
@@ -30,29 +30,29 @@ Values: catchment|watershed|riparian_catchment|riparian_watershed|other}
 and function will convert to this format if needed.
 Syntax: comid=<comid1>,<comid2>}
 
-\item{state}{Return metric information for COMIDs within a specific state. Use a state's abbreviation to 
+\item{state}{Return metric information for COMIDs within a specific state. Use a state's abbreviation to
 query for a given state.
 Syntax: state=<state1>,<state2>}
 
-\item{county}{Return metric information for COMIDs within a specific county. 
+\item{county}{Return metric information for COMIDs within a specific county.
 Users must use the FIPS code, not county name, as a way to disambiguate counties.
 Syntax: county=<county1>,<county1>}
 
 \item{region}{Return metric information for COMIDs within a specified hydroregion.
 Syntax: region=<regionid1>,<regionid2>}
 
-\item{showAreaSqKm}{Return the area in square kilometers of a given area of interest. 
+\item{showAreaSqKm}{Return the area in square kilometers of a given area of interest.
 The default value is false.
 Values: true|false}
 
 \item{showPctFull}{Return the pctfull for each dataset. The default value is false.
 Values: true|false}
 
-\item{conus}{Return all COMIDs in the conterminous United States. 
+\item{conus}{Return all COMIDs in the conterminous United States.
 The default value is false.
 Values: true|false}
 
-\item{countOnly}{Return a CSV containing only the row count (ROWCOUNT) and the column 
+\item{countOnly}{Return a CSV containing only the row count (ROWCOUNT) and the column
 count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
 Values: true|false}
 }
@@ -69,10 +69,10 @@ df <- sc_get_data(comid='179', aoi='catchment', metric='fert')
 
 df <- sc_get_data(metric='PctGrs2006', aoi='watershed', region='01')
 
-df <- sc_get_data(metric='PctUrbMd2006', aoi='riparian_catchment', 
+df <- sc_get_data(metric='PctUrbMd2006', aoi='riparian_catchment',
 comid='1337420')
 
-df <- sc_get_data(metric='PctUrbMd2006,DamDens', 
+df <- sc_get_data(metric='PctUrbMd2006,DamDens',
 aoi='catchment,watershed', comid='179,1337,1337420')
  }
 }
