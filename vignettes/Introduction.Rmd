@@ -29,13 +29,13 @@ knitr::opts_chunk$set(
 
 ## Installing and loading StreamCatTools
 To install, currently you need to install from GitHub using devtools
-```{r, include=FALSE, message=FALSE, eval=FALSE}
+```{r, message=FALSE, eval=FALSE}
 library(devtools)
 install_github('USEPA/StreamCatTools')
 ```
 
 After installing load the library
-```{r, include=FALSE, message=FALSE}
+```{r, message=FALSE}
 library(StreamCatTools)
 ```
 
