@@ -18,7 +18,7 @@ You can install and load the most recent approved version from GitHub by running
 
 ```r
 library(remotes)
-install_github("USEPA/StreamCatTools", build_vignettes=TRUE)
+install_github("USEPA/StreamCatTools", build_vignettes=FALSE)
 ```
 
 To view the vignette in RStudio, run
