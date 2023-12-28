@@ -61,8 +61,11 @@ mapview::mapview(basin, alpha.regions=.08) + mapview::mapview(flowline_nldi, zco
 ### Working with NARS data
 In this example we demonstrate a data 'mashup' by grabbing NRSA data from the EPA National Aquatic Resource Surveys (NARS) website directly in R, pull particular StreamCat metrics for sites using `sc_get_data`, and compare landscape metrics with other NRSA metrics
 ```{r nars, results='hide'}
-nrsa <- readr::read_csv('https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv')
-# dplyr::glimpse(nrsa)
+UA <- paste('Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0)',
+                    'Gecko/20100101 Firefox/98.0')
+nrsa <- (data.table::fread(httr::content(httr::GET("https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv", httr::add_headers(`User-Agent` = UA)), encoding = "UTF-8", as = "text"),stringsAsFactors = FALSE, data.table = F))
+
+dplyr::glimpse(nrsa)
 
 # Promote data frame to sf spatial points data frame
 nrsa_sf <- sf::st_as_sf(nrsa, coords = c("LON_DD83", "LAT_DD83"), crs = 4269)
@@ -79,7 +82,7 @@ load(system.file("extdata", "sample_nrsa_data.rda", package="StreamCatTools"))
 # nrsa_sf$COMID <- as.character(nrsa_sf$COMID)
 comids <- nrsa_sf$COMID
 comids <- comids[!is.na(comids)]
-comids <- comids[c(1:925)]
+comids <- comids[c(1:700)]
 comids <- paste(comids,collapse=',')
 df <- sc_get_data(metric='PctCrop2006', aoi='watershed', comid=comids)
 
@@ -88,12 +91,12 @@ df$COMID <- as.integer(df$COMID)
 nrsa_sf <- dplyr::left_join(nrsa_sf, df, by='COMID')
 ```
 
-```{r nars_ggplot}
+```{r nars_ggplot, warning=FALSE}
 # download mmi from NARS web page
 library(dplyr)
 library(ggplot2)
-mmi <- readr::read_csv('https://www.epa.gov/sites/production/files/2015-09/bentcond.csv',show_col_types = FALSE)
-dplyr::glimpse(mmi)
+mmi <- (data.table::fread(httr::content(httr::GET("https://www.epa.gov/sites/production/files/2015-09/bentcond.csv", httr::add_headers(`User-Agent` = UA)), encoding = "UTF-8", as = "text"),stringsAsFactors = FALSE, data.table = F))
+# dplyr::glimpse(mmi)
 
 # join mmi to NARS info data frame with StreamCat PctCrop metric
 nrsa_sf <- dplyr::left_join(nrsa_sf, mmi[,c('SITE_ID','BENT_MMI_COND')], by='SITE_ID')
