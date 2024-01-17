@@ -74,6 +74,14 @@ comid='1337420')
 
 df <- sc_get_data(metric='PctUrbMd2006,DamDens',
 aoi='catchment,watershed', comid='179,1337,1337420')
+
+df <- sc_get_data(metric='PctUrbMd2006,DamDens',
+aoi='catchment,watershed', comid='179,1337,1337420',
+showAreaSqKm=FALSE, showPctFull=TRUE)
+
+df <- sc_get_data(metric='PctUrbMd2006,DamDens',
+aoi='catchment,watershed', comid='179,1337,1337420', countOnly=TRUE)
+
  }
 }
 \author{

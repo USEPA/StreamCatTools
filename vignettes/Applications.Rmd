@@ -52,7 +52,7 @@ flowline_nldi$PCTIMP2011CAT <- df$PCTIMP2011CAT[match(flowline_nldi$nhdplus_comi
 basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
 ```
 
-```{r wshd pt2}
+```{r wshd pt2, eval=FALSE}
 library(mapview)
 mapview::mapviewOptions(fgb=FALSE)
 mapview::mapview(basin, alpha.regions=.08) + mapview::mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)

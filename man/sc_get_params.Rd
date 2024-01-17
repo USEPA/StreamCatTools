@@ -19,7 +19,7 @@ Function to return available StreamCat parameters using the StreamCat API.
 }
 \examples{
 params <- sc_get_params(param='name')
-params <- sc_get_params(param='area')
+params <- sc_get_params(param='areaOfInterest')
 }
 \author{
 Marc Weber
