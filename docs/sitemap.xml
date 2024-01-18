@@ -31,6 +31,18 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
+    <loc>/reference/lc_fullname.html</loc>
+  </url>
+  <url>
+    <loc>/reference/lc_get_data.html</loc>
+  </url>
+  <url>
+    <loc>/reference/lc_get_params.html</loc>
+  </url>
+  <url>
+    <loc>/reference/lc_nlcd.html</loc>
+  </url>
+  <url>
     <loc>/reference/sc_fullname.html</loc>
   </url>
   <url>

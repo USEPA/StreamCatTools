@@ -57,7 +57,6 @@ lc_get_data <- function(metric = NULL,
                         comid = NULL,
                         showAreaSqKm = NULL,
                         showPctFull = NULL,
-                        conus = NULL,
                         countOnly = NULL) {
   # Base API URL.
   req <- httr2::request("https://java.epa.gov/StreamCAT/LakeCat/metrics?")
@@ -73,7 +72,6 @@ lc_get_data <- function(metric = NULL,
     areaOfInterest = aoi,
     showAreaSqKm = showAreaSqKm,
     showPctFull = showPctFull,
-    conus = conus,
     countOnly = countOnly
   )
   # Send HTTP request

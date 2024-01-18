@@ -37,12 +37,7 @@ nldi_feature <- list(featureSource = "comid", featureID = start_comid)
 flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
 
 # get StreamCat metrics
-temp_dir <- '.'
-nhdplus <- nhdplusTools::subset_nhdplus(comids = as.integer(flowline_nldi$UT_flowlines$nhdplus_comid), output_file = file.path(temp_dir, "nhdplus.gpkg"),nhdplus_data = "download",overwrite = TRUE,flowline_only = FALSE)
-
-names(nhdplus)
-cats <- nhdplus$CatchmentSP
-comids <- paste(cats$featureid,collapse=",",sep="")
+comids <- paste(as.integer(flowline_nldi$UT_flowlines$nhdplus_comid), collapse=",",sep="")
 
 df <- sc_get_data(metric='PctImp2011', aoi='catchment', comid=comids)
 
@@ -52,7 +47,7 @@ flowline_nldi$PCTIMP2011CAT <- df$PCTIMP2011CAT[match(flowline_nldi$nhdplus_comi
 basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
 ```
 
-```{r wshd pt2, eval=FALSE}
+```{r wshd pt2}
 library(mapview)
 mapview::mapviewOptions(fgb=FALSE)
 mapview::mapview(basin, alpha.regions=.08) + mapview::mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
