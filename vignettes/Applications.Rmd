@@ -58,7 +58,7 @@ In this example we demonstrate a data 'mashup' by grabbing NRSA data from the EP
 ```{r nars, results='hide'}
 UA <- paste('Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0)',
                     'Gecko/20100101 Firefox/98.0')
-nrsa <- (data.table::fread(httr::content(httr::GET("https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv", httr::add_headers(`User-Agent` = UA)), encoding = "UTF-8", as = "text"),stringsAsFactors = FALSE, data.table = F))
+nrsa <- read_csv("https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv")
 
 dplyr::glimpse(nrsa)
 
@@ -90,7 +90,7 @@ nrsa_sf <- dplyr::left_join(nrsa_sf, df, by='COMID')
 # download mmi from NARS web page
 library(dplyr)
 library(ggplot2)
-mmi <- (data.table::fread(httr::content(httr::GET("https://www.epa.gov/sites/production/files/2015-09/bentcond.csv", httr::add_headers(`User-Agent` = UA)), encoding = "UTF-8", as = "text"),stringsAsFactors = FALSE, data.table = F))
+mmi <- read_csv("https://www.epa.gov/sites/production/files/2015-09/bentcond.csv")
 # dplyr::glimpse(mmi)
 
 # join mmi to NARS info data frame with StreamCat PctCrop metric
