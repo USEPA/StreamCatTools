@@ -33,9 +33,10 @@ Suggests:
   magrittr,
   readr,
   tidyr
-License: CC0
+LICENSE: CC0
 Encoding: UTF-8
 URL: https://usepa.github.io/StreamCatTools/
 VignetteBuilder: knitr,rmarkdown
 LazyData: true
 RoxygenNote: 7.2.3
+License: CC0
