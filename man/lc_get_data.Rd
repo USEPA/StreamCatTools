@@ -10,7 +10,6 @@ lc_get_data(
   comid = NULL,
   showAreaSqKm = NULL,
   showPctFull = NULL,
-  conus = NULL,
   countOnly = NULL
 )
 }
