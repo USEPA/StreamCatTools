@@ -56,9 +56,7 @@ mapview::mapview(basin, alpha.regions=.08) + mapview::mapview(flowline_nldi, zco
 ### Working with NARS data
 In this example we demonstrate a data 'mashup' by grabbing NRSA data from the EPA National Aquatic Resource Surveys (NARS) website directly in R, pull particular StreamCat metrics for sites using `sc_get_data`, and compare landscape metrics with other NRSA metrics
 ```{r nars, results='hide'}
-UA <- paste('Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0)',
-                    'Gecko/20100101 Firefox/98.0')
-nrsa <- read_csv("https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv")
+nrsa <- readr::read_csv("https://www.epa.gov/sites/production/files/2015-09/siteinfo_0.csv")
 
 dplyr::glimpse(nrsa)
 
@@ -90,7 +88,7 @@ nrsa_sf <- dplyr::left_join(nrsa_sf, df, by='COMID')
 # download mmi from NARS web page
 library(dplyr)
 library(ggplot2)
-mmi <- read_csv("https://www.epa.gov/sites/production/files/2015-09/bentcond.csv")
+mmi <- readr::read_csv("https://www.epa.gov/sites/production/files/2015-09/bentcond.csv")
 # dplyr::glimpse(mmi)
 
 # join mmi to NARS info data frame with StreamCat PctCrop metric
