@@ -33,7 +33,6 @@ Suggests:
   magrittr,
   readr,
   tidyr
-LICENSE: CC0
 Encoding: UTF-8
 URL: https://usepa.github.io/StreamCatTools/
 VignetteBuilder: knitr,rmarkdown
