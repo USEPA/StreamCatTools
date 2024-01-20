@@ -38,4 +38,4 @@ URL: https://usepa.github.io/StreamCatTools/
 VignetteBuilder: knitr,rmarkdown
 LazyData: true
 RoxygenNote: 7.2.3
-License: CC0
+LICENSE: CC0
