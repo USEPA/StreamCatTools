@@ -39,3 +39,4 @@ VignetteBuilder: knitr,rmarkdown
 LazyData: true
 RoxygenNote: 7.2.3
 LICENSE: CC0
+License: CC0
