@@ -8,10 +8,10 @@
 
 
 
-## StreamCatTools: Tools to work with the [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) API within R and access the full suite of StreamCat catchment and waterhsed scale metrics for all NHDPlusV2 stream reaches and catchments.
+## StreamCatTools: Tools to work with the [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) API within R and access the full suite of StreamCat and [LakeCat](https://www.epa.gov/national-aquatic-resource-surveys/lakecat-dataset) metrics.
 
 
-`StreamCatTools` is an R package for accessing StreamCat data via the StreamCat API and for working with site data in conjunction with StreamCat and NHDPlus. `StreamCatTools` is in development but currently contains a core set of functions for working with the StreamCat API in R.
+`StreamCatTools` is an R package for accessing [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) and [LakeCat](https://www.epa.gov/national-aquatic-resource-surveys/lakecat-dataset)data via the [StreamCat API]() and for working with site data in conjunction with StreamCat and NHDPlus. 
 
 ### Installation
 
@@ -38,5 +38,11 @@ Contributions to development of the package are welcome and encouraged. Please c
 ### Python Implementation of StreamCat API
 [PyNHD](https://github.com/hyriver/pynhd), part of the [HyRiver](https://github.com/hyriver) suite of Python packages, also provides access to StreamCat data via the API in Python, along with other NHDPlus value-added attributes for catchments and catchment and network accumulated values for catchments available via [USGS ScienceBase](https://sciencebase.usgs.gov/)
 
+### Recommended Citation:
+```
+  Weber, Marc H, 2024, StreamCatTools: Tools for
+  Accessing and Working with the NHDPlus,
+  https://doi.org/10.5066/P97AS8JD
+```
 ### Disclaimer
 The United States Environmental Protection Agency (EPA) GitHub project code is provided on an "as is" basis and the user assumes responsibility for its use.  EPA has relinquished control of the information and no longer has responsibility to protect the integrity , confidentiality, or availability of the information.  Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by EPA.  The EPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by EPA or the United States Government.
