@@ -39,6 +39,7 @@ df <- readr::read_csv("https://java.epa.gov/StreamCAT/LakeCat/metrics?name=PctUr
 List LakeCat parameters: Get a list of available LakeCat values for certain parameters using the `lc_get_params` function (right now just metric names and areas of interest for this function) via the API
 
 ```{r params}
+library(StreamCatTools)
 region_params <- lc_get_params(param='areaOfInterest')
 
 name_params <- lc_get_params(param='name')
