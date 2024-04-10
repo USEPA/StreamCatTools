@@ -80,34 +80,36 @@ sc_get_data <- function(metric = NULL,
                         conus = NULL,
                         countOnly = NULL) {
   # Base API URL.
-  req <- httr2::request("https://java.epa.gov/StreamCAT/metrics?")
+  query_url <- "https://java.epa.gov/StreamCAT/metrics?"
   # Collapse comids into a single string separated by a comma.
   if (!is.null(comid))
     comid <- paste(comid, collapse = ",")
   # Create the query based on user inputs.
   # req_url_query silently ignores NULLs.
-  query <-  httr2::req_url_query(
-    .req = req,
-    name = metric,
-    comid = comid,
-    areaOfInterest = aoi,
-    state = state,
-    county = county,
-    region = region,
-    showAreaSqKm = showAreaSqKm,
-    showPctFull = showPctFull,
-    conus = conus,
-    countOnly = countOnly
-  )
+  post_body=""
+  if (!is.null(metric)) post_body <- paste0(post_body,"&name=",metric)
+  if (!is.null(comid)) post_body <- paste0(post_body,"&comid=",comid) 
+  if (!is.null(aoi)) post_body <- paste0(post_body,"&areaOfInterest=",aoi) 
+  if (!is.null(state)) post_body <- paste0(post_body,"&state=",state) 
+  if (!is.null(county)) post_body <- paste0(post_body,"&county=",county) 
+  if (!is.null(region)) post_body <- paste0(post_body,"&region=",region) 
+  if (!is.null(showAreaSqKm)) post_body <- paste0(post_body,"&showAreaSqKm=",showAreaSqKm)
+  if (!is.null(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showPctFull) 
+  if (!is.null(conus)) post_body <- paste0(post_body,"&conus=",conus)
+  if (!is.null(countOnly)) post_body <- paste0(post_body,"&countOnly=",countOnly)
+  post_body = substring(post_body, 2)
   # Send HTTP request
-  resp <- httr2::req_perform(req = query)
-  # Extract the body of the response.
-  resp_body <- httr2::resp_body_string(resp, encoding = "UTF-8")
-  # Transform the string response into a data frame.
-  final_df <- utils::read.csv(text = resp_body,
-                              fileEncoding = "UTF8")
+  df <- httr2::request(query_url) |>
+    # insert body to ensure return of hundreds of COMIDs
+    httr2::req_body_raw(post_body) |>
+    # perform the request
+    httr2::req_perform() |>
+    # extract response body as string
+    httr2::resp_body_string(encoding = 'UTF-8') |> 
+    # Transform the string response into a data frame.
+    readr::read_csv()
   # End of function. Return a data frame.
-  return(final_df)
+  return(df)
 }
 
 #' @title Get NLCD Data
