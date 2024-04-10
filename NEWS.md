@@ -1,3 +1,5 @@
+# StreamCatTools 0.3.0
+
 # StreamCatTools 0.2.0
 
 -   Added LakeCat functions to the package:

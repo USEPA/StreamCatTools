@@ -1,7 +1,7 @@
 Package: StreamCatTools
 Type: Package
 Title: Tools to work with the StreamCat API within R and access the full suite of StreamCat and LakeCat metrics.
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: c(person(given = "Marc", 
                     family = "Weber", 
                     role = c("aut", "cre"), 
@@ -42,4 +42,3 @@ VignetteBuilder: knitr,rmarkdown
 LazyData: true
 RoxygenNote: 7.2.3
 License: CC0
-
