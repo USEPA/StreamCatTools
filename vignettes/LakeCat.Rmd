@@ -1,0 +1,74 @@
+---
+title: "Working with LakeCat data"
+output: 
+  html_document:
+    theme: flatly
+    keep_md: yes
+    number_sections: true
+    highlighted: default 
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Working with LakeCat data}
+  %\VignetteEncoding{UTF-8}{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  warning = FALSE, 
+  message = FALSE
+)
+```
+
+## Accessing and working with [LakeCat](https://www.epa.gov/national-aquatic-resource-surveys/lakecat-dataset)
+The `StreamCatTools` package was designed to simplify the use of [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) data in R, leveraging the new [API for StreamCat](https://intranet.ord.epa.gov/sswr/streamcat-web-tools).  We now have functionality in the [StreamCat API](https://java.epa.gov/StreamCAT/metrics/about.jsp) for accessing and working with LakeCat data and have added functions in `StreamCatTools` to access LakeCata data in R using the API.
+
+We can actually pull data into R from LakeCat by simply using the `read_csv` function from the `readr` package. We have to hard-wire parameters and are limited in the number of records returned through a `GET` request.
+```{r, message=FALSE, eval=FALSE}
+df <- readr::read_csv("https://java.epa.gov/StreamCAT/LakeCat/metrics?name=PctUrbMd2006&areaOfInterest=catchment&comid=22538788", show_col_types = FALSE)
+```
+
+## List LakeCat API parameters
+
+List LakeCat parameters: Get a list of available LakeCat values for certain parameters using the `lc_get_params` function (right now just metric names and areas of interest for this function) via the API
+
+```{r params}
+region_params <- lc_get_params(param='areaOfInterest')
+
+name_params <- lc_get_params(param='name')
+
+print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
+print(paste0('A selection of available LakrCat metrics include: ',paste(name_params[1:10],collapse = ', ')))
+```
+
+## Get data for COMIDs
+
+In this example we access several variables, for several areas of interest, and for several COMIDs using the `lc_get_data` function. Loads data into a tibble we can view.
+
+```{r get_data}
+df <- lc_get_data(metric='PctUrbMd2006,DamDens', aoi='catchment,watershed', comid='23783629,23794487,23812618')
+knitr::kable(df)
+```
+
+## Get NLCD data
+
+In this example we access National Land Cover Dataset (NLCD) data for 2019, just at the catchment level for several COMIDs using the `lc_nlcd` function. Loads data into a tibble we can view.
+
+```{r get_nlcd}
+df <- lc_nlcd(comid='23783629,23794487,23812618', year='2019', aoi='watershed')
+knitr::kable(df)
+```
+
+We can also pass a couple years for a different area of interest for another region like a county.
+
+```{r get_nlcd2}
+df <- sc_nlcd(year='2006, 2019', aoi='watershed',
+              county='41003')
+knitr::kable(head(df))
+```

@@ -1,5 +1,8 @@
 # StreamCatTools 0.3.0
 
+-   Incorporated POST requests in `httr2` requests to deal with many COMIDs in requests
+-   Added documentation to vignette for working with LakeCat data in the package
+
 # StreamCatTools 0.2.0
 
 -   Added LakeCat functions to the package:
