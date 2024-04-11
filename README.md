@@ -7,7 +7,6 @@
 <!-- badges: end -->
 
 
-
 ## StreamCatTools: Tools to work with the [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) API within R and access the full suite of StreamCat and [LakeCat](https://www.epa.gov/national-aquatic-resource-surveys/lakecat-dataset) metrics.
 
 
@@ -40,7 +39,7 @@ Contributions to development of the package are welcome and encouraged. Please c
 
 ### Recommended Citation:
 ```
-  Weber, Marc H, 2024, StreamCatTools: Tools to work with the StreamCat API within R and access the full suite of StreamCat and LakeCat metrics,
+  Weber, Marc H, Hill, Ryan A., Brookes, Allen F. 2024, StreamCatTools: Tools to work with the StreamCat API within R and access the full suite of StreamCat and LakeCat metrics,
   https://usepa.github.io/StreamCatTools
 ```
 ### Disclaimer

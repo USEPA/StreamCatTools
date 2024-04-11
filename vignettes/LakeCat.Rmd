@@ -65,11 +65,3 @@ In this example we access National Land Cover Dataset (NLCD) data for 2019, just
 df <- lc_nlcd(comid='23783629,23794487,23812618', year='2019', aoi='watershed')
 knitr::kable(df)
 ```
-
-We can also pass a couple years for a different area of interest for another region like a county.
-
-```{r get_nlcd2}
-df <- sc_nlcd(year='2006, 2019', aoi='watershed',
-              county='41003')
-knitr::kable(head(df))
-```
