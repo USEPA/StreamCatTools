@@ -59,11 +59,17 @@ print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
 print(paste0('A selection of available StreamCat metrics include: ',paste(name_params[1:10],collapse = ', ')))
 ```
 
-Look up the display name for a metric using the `sc_fullname` function via the API
-```{r Example_One_fullnames}
+Look up the display name or names for a metric using the `sc_fullname` function via the API
+```{r fullnames}
 metric='pcthbwet2011'
 fullname <- sc_fullname(metric)
-print(paste0('The full name for ',metric, ' is: ', paste(fullname,collapse = ', ')))
+fullname
+```
+
+```{r fullnames2}
+metric='pctdecid2019,fert'
+fullname <- sc_fullname(metric)
+fullname
 ```
 
 ## Get data for COMIDs

@@ -22,6 +22,7 @@ sc_get_params <- function(param = NULL) {
   if (param=='areaOfInterest') params <- resp$parameters$areaOfInterest$options else{
     params <- resp$parameters$name$options
   }
+  params <- params[order(params)]
   return(params)
 }
 
@@ -45,6 +46,6 @@ sc_get_params <- function(param = NULL) {
 
 sc_fullname <- function(metric = NULL) {
   resp <- as.data.frame(jsonlite::fromJSON("https://java.epa.gov/StreamCAT/metrics/datadictionary"))
-  result <- resp[resp$dictionary.metric_prefix==metric,1]
+  result <- resp[resp$dictionary.metric_prefix %in% unlist(strsplit(metric, split = ',')), 1]
   return(result)
 }
