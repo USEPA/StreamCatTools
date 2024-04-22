@@ -148,16 +148,22 @@ via the API</p>
 <span><span class="va">name_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sc_get_params.html">sc_get_params</a></span><span class="op">(</span>param<span class="op">=</span><span class="st">'name'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'region parameters are: '</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">region_params</span>,collapse <span class="op">=</span> <span class="st">', '</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "region parameters are: catchment, watershed, riparian_catchment, riparian_watershed, other"</span></span>
+<span><span class="co">#&gt; [1] "region parameters are: catchment, other, riparian_catchment, riparian_watershed, watershed"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'A selection of available StreamCat metrics include: '</span>,<span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">name_params</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>,collapse <span class="op">=</span> <span class="st">', '</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "A selection of available StreamCat metrics include: pctlowsev1985, pctlowsev1986, pctlowsev1984, pcturbmd2001, pcturbmd2004, pcturbmd2006, pctglactilloam, rdcrs, pctincvegresp2003, pctincvegresp2004"</span></span></code></pre></div>
-<p>Look up the display name for a metric using the
+<span><span class="co">#&gt; [1] "A selection of available StreamCat metrics include: agkffact, al2o3, bankfull_depth_m, bankfull_width_m, bfi, canaldens, cao, cbnf, cchem, cconn"</span></span></code></pre></div>
+<p>Look up the display name or names for a metric using the
 <code>sc_fullname</code> function via the API</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metric</span><span class="op">=</span><span class="st">'pcthbwet2011'</span></span>
 <span><span class="va">fullname</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sc_fullname.html">sc_fullname</a></span><span class="op">(</span><span class="va">metric</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'The full name for '</span>,<span class="va">metric</span>, <span class="st">' is: '</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">fullname</span>,collapse <span class="op">=</span> <span class="st">', '</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "The full name for pcthbwet2011 is: Herbaceous Wetland Percentage 2011"</span></span></code></pre></div>
+<span><span class="va">fullname</span></span>
+<span><span class="co">#&gt; [1] "Herbaceous Wetland Percentage 2011"</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">metric</span><span class="op">=</span><span class="st">'pctdecid2019,fert'</span></span>
+<span><span class="va">fullname</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sc_fullname.html">sc_fullname</a></span><span class="op">(</span><span class="va">metric</span><span class="op">)</span></span>
+<span><span class="va">fullname</span></span>
+<span><span class="co">#&gt; [1] "Deciduous Forest Percentage 2019"                   </span></span>
+<span><span class="co">#&gt; [2] "Synthetic Nitrogen Fertilizer Application Mean Rate"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="get-data-for-comids">Get data for COMIDs<a class="anchor" aria-label="anchor" href="#get-data-for-comids"></a>
@@ -165,7 +171,7 @@ via the API</p>
 <p>In this example we access several variables, for several areas of
 interest, and for several COMIDs using the <code>sc_get_data</code>
 function. Loads data into a tibble we can view.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sc_get_data.html">sc_get_data</a></span><span class="op">(</span>metric<span class="op">=</span><span class="st">'PctUrbMd2006,DamDens,TRIDens'</span>, aoi<span class="op">=</span><span class="st">'riparian_catchment,catchment,watershed'</span>, comid<span class="op">=</span><span class="st">'179,1337,1337420'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -254,7 +260,7 @@ function. Loads data into a tibble we can view.</p>
 <p>In this example we access a couple variables at the watershed scale
 for the area of interest of a county (Benton County in this case) using
 the <code>sc_get_data</code> function.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sc_get_data.html">sc_get_data</a></span><span class="op">(</span>metric<span class="op">=</span><span class="st">'pctwdwet2006'</span>, aoi<span class="op">=</span><span class="st">'watershed'</span>, county<span class="op">=</span><span class="st">'41003'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -310,7 +316,7 @@ the <code>sc_get_data</code> function.</p>
 <p>In this example we access National Land Cover Dataset (NLCD) data for
 2001, just at the catchment level for several COMIDs using the
 <code>sc_nlcd</code> function. Loads data into a tibble we can view.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sc_nlcd.html">sc_nlcd</a></span><span class="op">(</span>year<span class="op">=</span><span class="st">'2001'</span>, aoi<span class="op">=</span><span class="st">'catchment'</span>,</span>
 <span>              comid<span class="op">=</span><span class="st">'179,1337,1337420'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
@@ -425,7 +431,7 @@ the <code>sc_get_data</code> function.</p>
 </table>
 <p>We can also pass a couple years for a different area of interest for
 another region like a county.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sc_nlcd.html">sc_nlcd</a></span><span class="op">(</span>year<span class="op">=</span><span class="st">'2006, 2019'</span>, aoi<span class="op">=</span><span class="st">'watershed'</span>,</span>
 <span>              county<span class="op">=</span><span class="st">'41003'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -738,7 +744,7 @@ COMIDs for USGS stream gages we load into R. We use a .csv file with
 coordinate columns and a known coordinate reference system. We’ll use an
 example dataset of large dams in Oregon from the [Oregon Spatial Data
 Library]</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gages</span> <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,<span class="st">"Gages_flowdata.csv"</span>, package <span class="op">=</span> <span class="st">"StreamCatTools"</span><span class="op">)</span>,show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co"># we'll just grab a few variables to keep things simple</span></span>
 <span><span class="va">gages</span> <span class="op">&lt;-</span> <span class="va">gages</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'SOURCE_FEA'</span>,<span class="st">'STATION_NM'</span>,<span class="st">'LON_SITE'</span>,<span class="st">'LAT_SITE'</span><span class="op">)</span><span class="op">]</span></span>
@@ -757,7 +763,7 @@ Library]</p>
 <p>In this example we access a couple watershed-only metrics for a
 particular NHDPlus hydroregion using the <code>sc_get_data</code>
 function.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sc_get_data.html">sc_get_data</a></span><span class="op">(</span>metric<span class="op">=</span><span class="st">'PctWdWet2006'</span>, aoi<span class="op">=</span><span class="st">'watershed'</span>, region<span class="op">=</span><span class="st">'17'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -813,7 +819,7 @@ function.</p>
 <p>In this example we access a metric for conus using the
 <code>sc_get_data</code> function - this is shown for demonstration but
 not run as it takes a bit of time</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># df &lt;- sc_get_data(metric='om', aoi='watershed', conus='true')</span></span>
 <span><span class="co"># knitr::kable(head(df))</span></span></code></pre></div>
 </div>
