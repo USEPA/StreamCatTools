@@ -48,6 +48,19 @@ print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
 print(paste0('A selection of available LakrCat metrics include: ',paste(name_params[1:10],collapse = ', ')))
 ```
 
+Look up the display name or names for a metric using the `lc_fullname` function via the API
+```{r fullnames}
+metric='pcthbwet2011'
+fullname <- lc_fullname(metric)
+fullname
+```
+
+```{r fullnames2}
+metric='pctdecid2019,fert'
+fullname <- lc_fullname(metric)
+fullname
+```
+
 ## Get data for COMIDs
 
 In this example we access several variables, for several areas of interest, and for several COMIDs using the `lc_get_data` function. Loads data into a tibble we can view.
