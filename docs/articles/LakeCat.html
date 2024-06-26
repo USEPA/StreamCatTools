@@ -29,7 +29,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">StreamCatTools</a>
 
@@ -138,12 +138,83 @@ API</p>
 <span><span class="co">#&gt; [2] "Synthetic Nitrogen Fertilizer Application Mean Rate"</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="get-waterbody-comids">Get Waterbody COMIDs<a class="anchor" aria-label="anchor" href="#get-waterbody-comids"></a>
+</h2>
+<p>In this example we use the <code>lc_get_comid</code> function to find
+COMIDs for a set of example lake locations we load into
+R.<code>lc_get_comid</code> is just a simple wrapper for
+<code>get_waterbodies</code> in the <a href="https://doi-usgs.github.io/nhdplusTools/" class="external-link">nhdplusTools</a> R
+package. We can then use the COMIDs we derive for our lake locations to
+get LakeCat metrics for these lakes as we show in after this.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">89.198</span>,<span class="op">-</span><span class="fl">114.125</span>,<span class="op">-</span><span class="fl">122.044</span><span class="op">)</span>,</span>
+<span>                 y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">45.502</span>,<span class="fl">47.877</span>,<span class="fl">43.730</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span>coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'x'</span>, <span class="st">'y'</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
+<span>    </span>
+<span><span class="va">comids</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_comid.html">lc_get_comid</a></span><span class="op">(</span><span class="va">dd</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="get-data-for-comids">Get data for COMIDs<a class="anchor" aria-label="anchor" href="#get-data-for-comids"></a>
 </h2>
 <p>In this example we access several variables, for several areas of
 interest, and for several COMIDs using the <code>lc_get_data</code>
-function. Loads data into a tibble we can view.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+function. We’ll show using both the COMIDS we derived with
+<code>lc_get_comid</code> function in previous chunk as well as with
+known COMIDS for NHDPlus waterbodies. Loads data into a tibble we can
+view.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_data.html">lc_get_data</a></span><span class="op">(</span>metric<span class="op">=</span><span class="st">'PctUrbMd2006,DamDens'</span>, aoi<span class="op">=</span><span class="st">'catchment,watershed'</span>, comid<span class="op">=</span><span class="va">comids</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="11%">
+<col width="12%">
+<col width="14%">
+<col width="18%">
+<col width="17%">
+<col width="12%">
+<col width="11%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">COMID</th>
+<th align="right">WSAREASQKM</th>
+<th align="right">CATAREASQKM</th>
+<th align="right">PCTURBMD2006CAT</th>
+<th align="right">PCTURBMD2006WS</th>
+<th align="right">DAMDENSCAT</th>
+<th align="right">DAMDENSWS</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">23756298</td>
+<td align="right">76.7322</td>
+<td align="right">76.7322</td>
+<td align="right">0.0293228</td>
+<td align="right">0.0293228</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr class="even">
+<td align="right">120054065</td>
+<td align="right">18081.5220</td>
+<td align="right">728.5806</td>
+<td align="right">0.4348181</td>
+<td align="right">0.1451495</td>
+<td align="right">0.0000000</td>
+<td align="right">0.0007270</td>
+</tr>
+<tr class="odd">
+<td align="right">167120863</td>
+<td align="right">40.9860</td>
+<td align="right">40.9860</td>
+<td align="right">0.2086078</td>
+<td align="right">0.2086078</td>
+<td align="right">0.0243986</td>
+<td align="right">0.0243986</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_data.html">lc_get_data</a></span><span class="op">(</span>metric<span class="op">=</span><span class="st">'PctUrbMd2006,DamDens'</span>, aoi<span class="op">=</span><span class="st">'catchment,watershed'</span>, comid<span class="op">=</span><span class="st">'23783629,23794487,23812618'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -202,7 +273,7 @@ function. Loads data into a tibble we can view.</p>
 <p>In this example we access National Land Cover Dataset (NLCD) data for
 2019, just at the catchment level for several COMIDs using the
 <code>lc_nlcd</code> function. Loads data into a tibble we can view.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_nlcd.html">lc_nlcd</a></span><span class="op">(</span>comid<span class="op">=</span><span class="st">'23783629,23794487,23812618'</span>, year<span class="op">=</span><span class="st">'2019'</span>, aoi<span class="op">=</span><span class="st">'watershed'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -323,7 +394,7 @@ function. Loads data into a tibble we can view.</p>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>
