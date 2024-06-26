@@ -61,11 +61,26 @@ fullname <- lc_fullname(metric)
 fullname
 ```
 
+## Get Waterbody COMIDs
+In this example we use the `lc_get_comid` function to find COMIDs for a set of example lake locations we load into R.`lc_get_comid` is just a simple wrapper for `get_waterbodies` in the [nhdplusTools](https://doi-usgs.github.io/nhdplusTools/) R package. We can then use the COMIDs we derive for our lake locations to get LakeCat metrics for these lakes as we show in after this.
+```{r comids, warning=FALSE, message=FALSE}
+dd <- data.frame(x = c(-89.198,-114.125,-122.044),
+                 y = c(45.502,47.877,43.730)) |> 
+  sf::st_as_sf(coords = c('x', 'y'), crs = 4326)
+    
+comids <- lc_get_comid(dd)
+```
+
 ## Get data for COMIDs
 
-In this example we access several variables, for several areas of interest, and for several COMIDs using the `lc_get_data` function. Loads data into a tibble we can view.
+In this example we access several variables, for several areas of interest, and for several COMIDs using the `lc_get_data` function. We'll show using both the COMIDS we derived with `lc_get_comid` function in previous chunk as well as with known COMIDS for NHDPlus waterbodies. Loads data into a tibble we can view.
 
 ```{r get_data}
+df <- lc_get_data(metric='PctUrbMd2006,DamDens', aoi='catchment,watershed', comid=comids)
+knitr::kable(df)
+```
+
+```{r get_data2}
 df <- lc_get_data(metric='PctUrbMd2006,DamDens', aoi='catchment,watershed', comid='23783629,23794487,23812618')
 knitr::kable(df)
 ```
