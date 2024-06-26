@@ -48,7 +48,7 @@ comids <- lc_get_comid(dd, xcoord='x',
 
 dd <- data.frame(x = c(-89.198,-114.125,-122.044),
 y = c(45.502,47.877,43.730)) |> 
-   st_as_sf(coords = c('x', 'y'), crs = 4326)
+   sf::st_as_sf(coords = c('x', 'y'), crs = 4326)
    
 comids <- lc_get_comid(dd)
  }
