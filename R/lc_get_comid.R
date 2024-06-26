@@ -37,7 +37,7 @@
 #' 
 #' dd <- data.frame(x = c(-89.198,-114.125,-122.044),
 #' y = c(45.502,47.877,43.730)) |> 
-#'    st_as_sf(coords = c('x', 'y'), crs = 4326)
+#'    sf::st_as_sf(coords = c('x', 'y'), crs = 4326)
 #'    
 #' comids <- lc_get_comid(dd)
 #'  }
@@ -53,9 +53,13 @@ lc_get_comid <- function(dd = NULL, xcoord = NULL,
     dd <- sf::st_as_sf(dd, coords = c(xcoord, ycoord), crs = crsys, remove = FALSE)
   }
   
-  run_for <- 1:nrow(dd)
+  
   output <- do.call(rbind, lapply(1:nrow(dd), function(i){
-    wb <- nhdplusTools::get_waterbodies(dd[i,], buffer=buffer)
+    if (is.null(buffer)){
+      wb <- nhdplusTools::get_waterbodies(dd[i,])
+    } else {
+      wb <- nhdplusTools::get_waterbodies(dd[i,], buffer=buffer)
+    }
     comid <- wb |>
       dplyr::pull(comid)
     if (length(comid)==0L) comid <- NA else comid <- comid
