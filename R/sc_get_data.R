@@ -88,13 +88,13 @@ sc_get_data <- function(metric = NULL,
   # req_url_query silently ignores NULLs.
   post_body=""
   if (!is.null(metric)) post_body <- paste0(post_body,"&name=",metric)
-  if (!is.null(comid)) post_body <- paste0(post_body,"&comid=",comid) 
-  if (!is.null(aoi)) post_body <- paste0(post_body,"&areaOfInterest=",aoi) 
-  if (!is.null(state)) post_body <- paste0(post_body,"&state=",state) 
-  if (!is.null(county)) post_body <- paste0(post_body,"&county=",county) 
-  if (!is.null(region)) post_body <- paste0(post_body,"&region=",region) 
+  if (!is.null(comid)) post_body <- paste0(post_body,"&comid=",comid)
+  if (!is.null(aoi)) post_body <- paste0(post_body,"&areaOfInterest=",aoi)
+  if (!is.null(state)) post_body <- paste0(post_body,"&state=",state)
+  if (!is.null(county)) post_body <- paste0(post_body,"&county=",county)
+  if (!is.null(region)) post_body <- paste0(post_body,"&region=",region)
   if (!is.null(showAreaSqKm)) post_body <- paste0(post_body,"&showAreaSqKm=",showAreaSqKm)
-  if (!is.null(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showPctFull) 
+  if (!is.null(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showPctFull)
   if (!is.null(conus)) post_body <- paste0(post_body,"&conus=",conus)
   if (!is.null(countOnly)) post_body <- paste0(post_body,"&countOnly=",countOnly)
   post_body = substring(post_body, 2)
@@ -105,9 +105,18 @@ sc_get_data <- function(metric = NULL,
     # perform the request
     httr2::req_perform() |>
     # extract response body as string
-    httr2::resp_body_string(encoding = 'UTF-8') |> 
+    httr2::resp_body_string(encoding = 'UTF-8') |>
     # Transform the string response into a data frame.
     readr::read_csv()
+    # Temporary fix for ShowAreaSqKm
+  if (showAreaSqKm==FALSE & 'WSAREASQKM' %in% colnames(df)){
+    df <- df |>
+      dplyr::select(-WSAREASQKM)
+  }
+  if (showAreaSqKm==FALSE & 'WSAREASQKMRP100' %in% colnames(df)){
+    df <- df |>
+      dplyr::select(-WSAREASQKMRP100)
+  }
   # End of function. Return a data frame.
   return(df)
 }
