@@ -109,13 +109,15 @@ sc_get_data <- function(metric = NULL,
     # Transform the string response into a data frame.
     readr::read_csv()
     # Temporary fix for ShowAreaSqKm
-  if (showAreaSqKm==FALSE & 'WSAREASQKM' %in% colnames(df)){
-    df <- df |>
-      dplyr::select(-WSAREASQKM)
-  }
-  if (showAreaSqKm==FALSE & 'WSAREASQKMRP100' %in% colnames(df)){
-    df <- df |>
-      dplyr::select(-WSAREASQKMRP100)
+  if (!is.null(showAreaSqKm)){
+      if (showAreaSqKm==FALSE & 'WSAREASQKM' %in% colnames(df)){
+        df <- df |>
+        dplyr::select(-WSAREASQKM)
+        }
+      if (showAreaSqKm==FALSE & 'WSAREASQKMRP100' %in% colnames(df)){
+        df <- df |>
+        dplyr::select(-WSAREASQKMRP100)
+      }
   }
   # End of function. Return a data frame.
   return(df)
