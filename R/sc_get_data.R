@@ -10,10 +10,14 @@
 #' @param metric Name(s) of metrics to query
 #' Syntax: name=<name1>,<name2>
 #'
-#' @param aoi Specify the area of interest described by a metric. By default, all available areas of interest
-#' for a given metric are returned.
+#' @param aoi Specify the area of interest described by a metric. For riparian area (catrp100 and wsrp100)
+#' if the metric does not have data for the riparian area, no data is returned for that AOI.
+#' Certain metrics have no AOI specified for StreamCat so AOI needs to be left null.  These
+#' metrics are: BankfullDepth, BankfullWidth, CHEM_V2_1, CONN, HABT, HYD, ICI, IWI, TEMP, WettedWidth,
+#' prg_bmmi, and all the mast, msst, mwst metrics
+#'  
 #' Syntax: areaOfInterest=<value1>,<value2>
-#' Values: catchment|watershed|riparian_catchment|riparian_watershed|other
+#' Values: cat|ws|catrp100|wsrp100
 #'
 #' @param comid Return metric information for specific COMIDs.  Needs to be a character string
 #' and function will convert to this format if needed.
@@ -45,77 +49,75 @@
 #' count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
 #' Values: true|false
 #'
-#' @return A tibble of desired StreamCat metrics
+#' @return A data frame of StreamCat metrics
 #'
 #' @examples
 #' \donttest{
-#' df <- sc_get_data(comid='179', aoi='catchment', metric='fert')
+#' df <- sc_get_data(comid='179', aoi='cat', metric='fert')
 #'
-#' df <- sc_get_data(metric='PctGrs2006', aoi='watershed', region='01')
+#' df <- sc_get_data(metric='PctGrs2006', aoi='ws', region='Region01')
 #'
-#' df <- sc_get_data(metric='PctUrbMd2006', aoi='riparian_catchment',
+#' df <- sc_get_data(metric='PctUrbMd2006', aoi='wsrp100',
 #' comid='1337420')
 #'
 #' df <- sc_get_data(metric='PctUrbMd2006,DamDens',
-#' aoi='catchment,watershed', comid='179,1337,1337420')
+#' aoi='cat,ws', comid='179,1337,1337420')
 #'
 #' df <- sc_get_data(metric='PctUrbMd2006,DamDens',
-#' aoi='catchment,watershed', comid='179,1337,1337420',
+#' aoi='cat,ws', comid='179,1337,1337420',
 #' showAreaSqKm=FALSE, showPctFull=TRUE)
 #'
 #' df <- sc_get_data(metric='PctUrbMd2006,DamDens',
-#' aoi='catchment,watershed', comid='179,1337,1337420', countOnly=TRUE)
+#' aoi='cat,ws', comid='179,1337,1337420', countOnly=TRUE)
 #'
+#' df <- sc_get_data(metric='ThalwagDepth', comid='179,1337,1337420')
 #'  }
 #' @export
 
-sc_get_data <- function(metric = NULL,
+sc_get_data <- function(comid = NULL,
+                        metric = NULL,
                         aoi = NULL,
-                        comid = NULL,
+                        showAreaSqKm = NULL,
+                        showPctFull = NULL,
                         state = NULL,
                         county = NULL,
                         region = NULL,
-                        showAreaSqKm = NULL,
-                        showPctFull = NULL,
                         conus = NULL,
                         countOnly = NULL) {
   # Base API URL.
-  query_url <- "https://java.epa.gov/StreamCAT/metrics?"
+  req <- httr2::request('https://api.epa.gov/StreamCat/streams/metrics')
   # Collapse comids into a single string separated by a comma.
-  if (!is.null(comid))
+    if (!is.null(comid))
     comid <- paste(comid, collapse = ",")
-  # Create the query based on user inputs.
-  # req_url_query silently ignores NULLs.
-  post_body=""
-  if (!is.null(metric)) post_body <- paste0(post_body,"&name=",metric)
-  if (!is.null(comid)) post_body <- paste0(post_body,"&comid=",comid) 
-  if (!is.null(aoi)) post_body <- paste0(post_body,"&areaOfInterest=",aoi) 
-  if (!is.null(state)) post_body <- paste0(post_body,"&state=",state) 
-  if (!is.null(county)) post_body <- paste0(post_body,"&county=",county) 
-  if (!is.null(region)) post_body <- paste0(post_body,"&region=",region) 
-  if (!is.null(showAreaSqKm)) post_body <- paste0(post_body,"&showAreaSqKm=",showAreaSqKm)
-  if (!is.null(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showPctFull) 
-  if (!is.null(conus)) post_body <- paste0(post_body,"&conus=",conus)
-  if (!is.null(countOnly)) post_body <- paste0(post_body,"&countOnly=",countOnly)
-  post_body = substring(post_body, 2)
-  # Send HTTP request
-  df <- httr2::request(query_url) |>
-    # insert body to ensure return of hundreds of COMIDs
-    httr2::req_body_raw(post_body) |>
-    # perform the request
-    httr2::req_perform() |>
+  # Force old and odd naming convention to behave correctly
+    if (!is.null(aoi)){
+      if (aoi == 'catchment') aoi <- 'cat'
+      if (aoi == 'watershed') aoi <- 'ws'
+      if (aoi == 'riparian_catchment') aoi <- 'catrp100'
+      if (aoi == 'riparian_watershed') aoi <- 'wsrp100'
+      if (aoi == 'other') aoi <- NULL
+    }
+  df <- req |>
+    httr2::req_method("POST") |>
+    httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
+                       showpctfull=showPctFull,state=state,county=county,region=region,
+                       conus=conus,countOnly=countOnly) |>
+    httr2::req_perform() |> 
     # extract response body as string
-    httr2::resp_body_string(encoding = 'UTF-8') |> 
-    # Transform the string response into a data frame.
-    readr::read_csv()
-  # End of function. Return a data frame.
-  return(df)
+    httr2::resp_body_string() |> 
+    jsonlite::fromJSON()
+    # End of function. Return a data frame.
+    if (is.null(countOnly)){
+      df <- df$items |> 
+        dplyr::select(comid, everything()) 
+    }
+    return(df)
 }
 
 #' @title Get NLCD Data
 #'
 #' @description
-#' Function to specifically retrieve all NLCD metrics for a given year using the StreamCat API.
+#' Function to retrieve all NLCD metrics for a given year using the StreamCat API.
 #'
 #' @author
 #' Marc Weber

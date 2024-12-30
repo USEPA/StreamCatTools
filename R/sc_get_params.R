@@ -6,7 +6,8 @@
 #' @author
 #' Marc Weber
 #'
-#' @param param Either name or area to grab JSON of parameters in API
+#' @param param List of available parameters in the API for the following options:
+#' name, areaofInterest, region, state, county
 #' Syntax: param=<value1>,<value2>
 #' Values: name|area
 #'
@@ -18,9 +19,12 @@
 #' params <- sc_get_params(param='areaOfInterest')
 
 sc_get_params <- function(param = NULL) {
-  resp <- jsonlite::fromJSON("https://java.epa.gov/StreamCAT/metrics")
-  if (param=='areaOfInterest') params <- resp$parameters$areaOfInterest$options else{
-    params <- resp$parameters$name$options
+  resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/metrics")$items
+  if (param=='areaOfInterest'){
+    params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]
+    params <- gsub(" ","", params)
+  }  else {
+    params <- resp$name_options
   }
   params <- params[order(params)]
   return(params)
@@ -42,10 +46,11 @@ sc_get_params <- function(param = NULL) {
 #' @export
 #'
 #' @examples
-#' fullname <- sc_fullname(metric='name')
+#' fullname <- sc_fullname(metric='clay')
 
 sc_fullname <- function(metric = NULL) {
-  resp <- as.data.frame(jsonlite::fromJSON("https://java.epa.gov/StreamCAT/metrics/datadictionary"))
-  result <- resp[resp$dictionary.metric_prefix %in% unlist(strsplit(metric, split = ',')), 1]
+  resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/datadictionary")$items
+  resp <- as.data.frame(resp$dictionary)
+  result <- unique(resp[resp$metric_prefix %in% unlist(strsplit(metric, split = ',')), 1])
   return(result)
 }

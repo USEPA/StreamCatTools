@@ -18,9 +18,12 @@
 #' params <- lc_get_params(param='areaOfInterest')
 
 lc_get_params <- function(param = NULL) {
-  resp <- jsonlite::fromJSON("https://java.epa.gov/StreamCAT/LakeCat/metrics")
-  if (param=='areaOfInterest') params <- resp$parameters$areaOfInterest$options else{
-    params <- resp$parameters$name$options
+  resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/lakes/metrics")$items
+  if (param=='areaOfInterest') {
+    params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]
+    params <- gsub(" ","", params)[1:2]
+  } else{
+    params <- resp$name_options
   }
   params <- params[order(params)]
   return(params)
@@ -42,10 +45,11 @@ lc_get_params <- function(param = NULL) {
 #' @export
 #'
 #' @examples
-#' fullname <- lc_fullname(metric='name')
+#' fullname <- lc_fullname(metric='clay')
 
 lc_fullname <- function(metric = NULL) {
-  resp <- as.data.frame(jsonlite::fromJSON("https://java.epa.gov/StreamCAT/metrics/datadictionary"))
-  result <- resp[resp$dictionary.metric_prefix %in% unlist(strsplit(metric, split = ',')), 1]
+  resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/lakes/datadictionary")$items
+  resp <- as.data.frame(resp$dictionary)
+  result <- unique(resp[resp$metric_prefix %in% unlist(strsplit(metric, split = ',')), 1])
   return(result)
 }

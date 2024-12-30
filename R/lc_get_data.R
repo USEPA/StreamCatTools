@@ -34,19 +34,19 @@
 #'
 #' @examples
 #' \donttest{
-#' df <- lc_get_data(comid='23794487', aoi='catchment', metric='fert')
+#' df <- lc_get_data(comid='23794487', aoi='cat', metric='fert')
 #'
-#' df <- lc_get_data(metric='PctUrbMd2006', aoi='watershed',
+#' df <- lc_get_data(metric='PctUrbMd2006', aoi='ws',
 #' comid='24083377')
 #'
-#' df <- lc_get_data(metric='PctUrbMd2006', aoi='watershed',
+#' df <- lc_get_data(metric='PctUrbMd2006', aoi='ws',
 #' comid='24083377', showAreaSqKm=FALSE, showPctFull=TRUE)
 #'
 #' df <- lc_get_data(metric='PctUrbMd2006,DamDens',
-#' aoi='catchment,watershed', comid='23783629,23794487,23812618')
+#' aoi='cat,ws', comid='23783629,23794487,23812618')
 #'
 #' df <- lc_get_data(metric='PctUrbMd2006,DamDens',
-#' aoi='catchment,watershed', comid='23783629,23794487,23812618',
+#' aoi='cat,ws', comid='23783629,23794487,23812618',
 #' countOnly=TRUE)
 #'
 #'  }
@@ -59,31 +59,30 @@ lc_get_data <- function(metric = NULL,
                         showPctFull = NULL,
                         countOnly = NULL) {
   # Base API URL.
-  query_url <- "https://java.epa.gov/StreamCAT/LakeCat/metrics?"
+  req <- httr2::request('https://api.epa.gov/StreamCat/lakes/metrics')
   # Collapse comids into a single string separated by a comma.
   if (!is.null(comid))
     comid <- paste(comid, collapse = ",")
-  # Create the query based on user inputs.
-  # req_url_query silently ignores NULLs.
-  post_body=""
-  if (!is.null(metric)) post_body <- paste0(post_body,"&name=",metric)
-  if (!is.null(comid)) post_body <- paste0(post_body,"&comid=",comid) 
-  if (!is.null(aoi)) post_body <- paste0(post_body,"&areaOfInterest=",aoi) 
-  if (!is.null(showAreaSqKm)) post_body <- paste0(post_body,"&showAreaSqKm=",showAreaSqKm)
-  if (!is.null(showPctFull)) post_body <- paste0(post_body,"&showPctFull=",showPctFull) 
-  if (!is.null(countOnly)) post_body <- paste0(post_body,"&countOnly=",countOnly)
-  post_body = substring(post_body, 2)
-  
-  df <- httr2::request(query_url) |>
-    # insert body to ensure return of hundreds of COMIDs
-    httr2::req_body_raw(post_body) |>
-    # perform the request
-    httr2::req_perform() |>
+  # Force old and odd naming convention to behave correctly
+  if (!is.null(aoi)){
+    if (aoi == 'catchment') aoi <- 'cat'
+    if (aoi == 'watershed') aoi <- 'ws'
+  }
+ 
+  df <- req |>
+    req_method("POST") |>
+    httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
+                       showpctfull=showPctFull,state=state,county=county,region=region,
+                       conus=conus,countOnly=countOnly) |>
+    httr2::req_perform() |> 
     # extract response body as string
-    httr2::resp_body_string(encoding = 'UTF-8') |> 
-    # Transform the string response into a data frame.
-    readr::read_csv()
+    httr2::resp_body_string() |> 
+    jsonlite::fromJSON()
   # End of function. Return a data frame.
+  if (is.null(countOnly)){
+    df <- df$items |> 
+      dplyr::select(comid, everything()) 
+  }
   return(df)
 }
 
