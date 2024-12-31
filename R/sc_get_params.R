@@ -24,7 +24,7 @@ sc_get_params <- function(param = NULL) {
     params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]
     params <- gsub(" ","", params)
   }  else {
-    params <- resp$name_options
+    params <- resp$name_options[[1]][[1]]
   }
   params <- params[order(params)]
   return(params)

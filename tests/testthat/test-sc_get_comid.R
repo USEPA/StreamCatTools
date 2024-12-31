@@ -10,5 +10,6 @@ test_that("sc_get_comid for sample gage coordinates", {
   expect_true(exists("gages_coms"))
   expect_equal(nrow(gages), 9)
   expect_equal(ncol(gages), 5)
+  expect_equal(length(gages$COMID), 9)
           })
 

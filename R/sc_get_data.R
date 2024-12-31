@@ -65,7 +65,7 @@
 #'
 #' df <- sc_get_data(metric='PctUrbMd2006,DamDens',
 #' aoi='cat,ws', comid='179,1337,1337420',
-#' showAreaSqKm=FALSE, showPctFull=TRUE)
+#' showAreaSqKm=TRUE, showPctFull=TRUE)
 #'
 #' df <- sc_get_data(metric='PctUrbMd2006,DamDens',
 #' aoi='cat,ws', comid='179,1337,1337420', countOnly=TRUE)
@@ -91,11 +91,29 @@ sc_get_data <- function(comid = NULL,
     comid <- paste(comid, collapse = ",")
   # Force old and odd naming convention to behave correctly
     if (!is.null(aoi)){
-      if (aoi == 'catchment') aoi <- 'cat'
-      if (aoi == 'watershed') aoi <- 'ws'
-      if (aoi == 'riparian_catchment') aoi <- 'catrp100'
-      if (aoi == 'riparian_watershed') aoi <- 'wsrp100'
+      if (stringr::str_detect(aoi,'catchment')) {
+        aoi <- gsub('catchment','cat',aoi)
+      }
+      if (stringr::str_detect(aoi,'watershed')) {
+        aoi <- gsub('watershed','ws',aoi)
+      }
+      if (stringr::str_detect(aoi,'riparian_catchment')) {
+        aoi <- gsub('riparian_catchment','catrp100',aoi)
+      }
+      if (stringr::str_detect(aoi,'riparian_watershed')) {
+        aoi <- gsub('riparian_watershed','wsrp100',aoi)
+      }
       if (aoi == 'other') aoi <- NULL
+    }
+    if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) |is.null(aoi)){
+      stop('Must provide at a minimum valid comid, metric and aoi to the function')
+    }
+    items = unlist(strsplit(metric,','))
+    items = gsub(" ","",items)
+    items = gsub("\n","",items)
+    params <- sc_get_params(param='name')
+    if (!all(items %in% params)){
+      stop("One or more of the provided metric names do not match the expected metrics names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
     }
   df <- req |>
     httr2::req_method("POST") |>
@@ -207,22 +225,22 @@ sc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL, state = NULL,
   )
   # Vector of NLCD metric names.
   nlcd <- c(
-    'PctMxFst',
-    'PctOw',
-    'PctShrb',
-    'PctUrbHi',
-    'PctUrbLo',
-    'PctUrbMd',
-    'PctUrbOp',
-    'PctWdWet',
-    'PctBl',
-    'PctConif',
-    'PctCrop',
-    'PctDecid',
-    'PctGrs',
-    'PctHay',
-    'PctHbWet',
-    'PctIce'
+    'pctmxfst',
+    'pctow',
+    'pctshrb',
+    'pcturbhi',
+    'pcturblo',
+    'pcturbmd',
+    'pcturbop',
+    'pctwdwet',
+    'pctbl',
+    'pctconif',
+    'pctcrop',
+    'pctdecid',
+    'pctgrs',
+    'pcthay',
+    'pcthbwet',
+    'pctice'
   )
   # Create a data frame of all NLCD Metric and year combinations.
   all_comb <- expand.grid(nlcd, year_vec)

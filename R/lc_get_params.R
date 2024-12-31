@@ -23,7 +23,7 @@ lc_get_params <- function(param = NULL) {
     params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]
     params <- gsub(" ","", params)[1:2]
   } else{
-    params <- resp$name_options
+    params <- resp$name_options[[1]]$name
   }
   params <- params[order(params)]
   return(params)

@@ -68,12 +68,10 @@ lc_get_data <- function(metric = NULL,
     if (aoi == 'catchment') aoi <- 'cat'
     if (aoi == 'watershed') aoi <- 'ws'
   }
- 
   df <- req |>
-    req_method("POST") |>
+    httr2::req_method("POST") |>
     httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
-                       showpctfull=showPctFull,state=state,county=county,region=region,
-                       conus=conus,countOnly=countOnly) |>
+                       showpctfull=showPctFull,countOnly=countOnly) |>
     httr2::req_perform() |> 
     # extract response body as string
     httr2::resp_body_string() |> 
@@ -163,22 +161,22 @@ lc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL,
   )
   # Vector of NLCD metric names.
   nlcd <- c(
-    'PctMxFst',
-    'PctOw',
-    'PctShrb',
-    'PctUrbHi',
-    'PctUrbLo',
-    'PctUrbMd',
-    'PctUrbOp',
-    'PctWdWet',
-    'PctBl',
-    'PctConif',
-    'PctCrop',
-    'PctDecid',
-    'PctGrs',
-    'PctHay',
-    'PctHbWet',
-    'PctIce'
+    'pctmxfst',
+    'pctow',
+    'pctshrb',
+    'pcturbhi',
+    'pcturblo',
+    'pcturbmd',
+    'pcturbop',
+    'pctwdwet',
+    'pctbl',
+    'pctconif',
+    'pctcrop',
+    'pctdecid',
+    'pctgrs',
+    'pcthay',
+    'pcthbwet',
+    'pctice'
   )
   # Create a data frame of all NLCD Metric and year combinations.
   all_comb <- expand.grid(nlcd, year_vec)
