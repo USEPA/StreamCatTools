@@ -32,6 +32,7 @@
 #' Syntax: county=<county1>,<county1>
 #'
 #' @param region Return metric information for COMIDs within a specified hydroregion.
+#' Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L' 
 #' Syntax: region=<regionid1>,<regionid2>
 #'
 #' @param conus Return all COMIDs in the conterminous United States.
@@ -55,19 +56,19 @@
 #' \donttest{
 #' df <- sc_get_data(comid='179', aoi='cat', metric='fert')
 #'
-#' df <- sc_get_data(metric='PctGrs2006', aoi='ws', region='Region01')
+#' df <- sc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')
 #'
-#' df <- sc_get_data(metric='PctUrbMd2006', aoi='wsrp100',
+#' df <- sc_get_data(metric='pcturbmd2006', aoi='wsrp100',
 #' comid='1337420')
 #'
-#' df <- sc_get_data(metric='PctUrbMd2006,DamDens',
+#' df <- sc_get_data(metric='pcturbmd2006,damdens',
 #' aoi='cat,ws', comid='179,1337,1337420')
 #'
-#' df <- sc_get_data(metric='PctUrbMd2006,DamDens',
+#' df <- sc_get_data(metric='pcturbmd2006,damdens',
 #' aoi='cat,ws', comid='179,1337,1337420',
 #' showAreaSqKm=TRUE, showPctFull=TRUE)
 #'
-#' df <- sc_get_data(metric='PctUrbMd2006,DamDens',
+#' df <- sc_get_data(metric='pcturbmd2006,damdens',
 #' aoi='cat,ws', comid='179,1337,1337420', countOnly=TRUE)
 #'
 #' df <- sc_get_data(metric='ThalwagDepth', comid='179,1337,1337420')
@@ -183,17 +184,17 @@ sc_get_data <- function(comid = NULL,
 #'
 #' @examples
 #' \donttest{
-#' df <- sc_nlcd(year='2001', aoi='catchment',comid='179,1337,1337420')
+#' df <- sc_nlcd(year='2001', aoi='cat',comid='179,1337,1337420')
 #'
-#' df <- sc_nlcd(comid='1337420', year='2001', aoi='watershed', region='01')
+#' df <- sc_nlcd(comid='1337420', year='2001', aoi='ws', region='Region01')
 #'
-#' df <- sc_nlcd(year='2001', aoi='watershed', region='01',
+#' df <- sc_nlcd(year='2001', aoi='ws', region='Region01',
 #' countOnly=TRUE)
 #'
-#' df <- sc_nlcd(year='2001', aoi='watershed', region='01',
+#' df <- sc_nlcd(year='2001', aoi='ws', region='Region01',
 #' showAreaSqKm=FALSE, showPctFull=TRUE)
 #'
-#' df <- sc_nlcd(year='2001, 2006', aoi='catchment,watershed',
+#' df <- sc_nlcd(year='2001, 2006', aoi='cat,ws',
 #' comid='179,1337,1337420')
 #' }
 #' @export

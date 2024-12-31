@@ -36,16 +36,16 @@
 #' \donttest{
 #' df <- lc_get_data(comid='23794487', aoi='cat', metric='fert')
 #'
-#' df <- lc_get_data(metric='PctUrbMd2006', aoi='ws',
+#' df <- lc_get_data(metric='pcturbmd2006', aoi='ws',
 #' comid='24083377')
 #'
-#' df <- lc_get_data(metric='PctUrbMd2006', aoi='ws',
+#' df <- lc_get_data(metric='pcturb,d2006', aoi='ws',
 #' comid='24083377', showAreaSqKm=FALSE, showPctFull=TRUE)
 #'
-#' df <- lc_get_data(metric='PctUrbMd2006,DamDens',
+#' df <- lc_get_data(metric='pcturbmd2006,damdens',
 #' aoi='cat,ws', comid='23783629,23794487,23812618')
 #'
-#' df <- lc_get_data(metric='PctUrbMd2006,DamDens',
+#' df <- lc_get_data(metric='pcturbmd2006,damdens',
 #' aoi='cat,ws', comid='23783629,23794487,23812618',
 #' countOnly=TRUE)
 #'
@@ -121,15 +121,15 @@ lc_get_data <- function(metric = NULL,
 #' @examples
 #' \donttest{
 #'
-#' df <- lc_nlcd(comid='23783629', year='2019', aoi='watershed')
+#' df <- lc_nlcd(comid='23783629', year='2019', aoi='ws')
 #'
-#' df <- lc_nlcd(year='2016', aoi='catchment',
+#' df <- lc_nlcd(year='2016', aoi='cat',
 #' comid='23783629,23794487,23812618', showAreaSqKm=FALSE, showPctFull=TRUE)
 #'
-#' df <- lc_nlcd(year='2016', aoi='catchment',
+#' df <- lc_nlcd(year='2016', aoi='cat',
 #' comid='23783629,23794487,23812618', countOnly=TRUE)
 #'
-#' df <- lc_nlcd(year='2016, 2019', aoi='catchment,watershed',
+#' df <- lc_nlcd(year='2016, 2019', aoi='cat,ws',
 #' comid='23783629,23794487,23812618')
 #' }
 #' @export
