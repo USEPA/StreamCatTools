@@ -38,10 +38,10 @@ flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_sou
 # get StreamCat metrics
 comids <- paste(as.integer(flowline_nldi$UT_flowlines$nhdplus_comid), collapse=",",sep="")
 
-df <- sc_get_data(metric='PctImp2011', aoi='catchment', comid=comids)
+df <- sc_get_data(metric='pctimp2011', aoi='cat', comid=comids)
 
 flowline_nldi <- flowline_nldi$UT_flowlines
-flowline_nldi$PCTIMP2011CAT <- df$PCTIMP2011CAT[match(flowline_nldi$nhdplus_comid, df$COMID)]
+flowline_nldi$PCTIMP2011CAT <- df$pctimp2011cat[match(flowline_nldi$nhdplus_comid, df$comid)]
 
 basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
 ```
@@ -76,10 +76,10 @@ comids <- nrsa_sf$COMID
 comids <- comids[!is.na(comids)]
 comids <- comids[c(1:700)]
 comids <- paste(comids,collapse=',')
-df <- sc_get_data(metric='PctCrop2006', aoi='watershed', comid=comids)
+df <- sc_get_data(metric='pctcrop2006', aoi='ws', comid=comids)
 
 # glimpse(df)
-df$COMID <- as.integer(df$COMID)
+df$COMID <- as.integer(df$comid)
 nrsa_sf <- dplyr::left_join(nrsa_sf, df, by='COMID')
 ```
 
@@ -94,7 +94,7 @@ mmi <- readr::read_csv("https://www.epa.gov/sites/production/files/2015-09/bentc
 nrsa_sf <- dplyr::left_join(nrsa_sf, mmi[,c('SITE_ID','BENT_MMI_COND')], by='SITE_ID')
 bxplt <- nrsa_sf %>% 
   tidyr::drop_na(BENT_MMI_COND) %>%
-  ggplot2::ggplot(aes(x=PCTCROP2006WS, y=BENT_MMI_COND))+
+  ggplot2::ggplot(aes(x=pctcrop2006ws, y=BENT_MMI_COND))+
   ggplot2::geom_boxplot()
 suppressWarnings(print(bxplt))
 ```

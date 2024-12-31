@@ -42,10 +42,10 @@ library(StreamCatTools)
 The `StreamCatTools` package was designed to simplify the use of [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) data in R, leveraging the new [API for StreamCat](https://intranet.ord.epa.gov/sswr/streamcat-web-tools). 
 
 ## StreamCat API
-We can actually pull data into R from the [StreamCat API](https://java.epa.gov/StreamCAT/metrics/about.jsp) by simply using the `read_csv` function from the `readr` package.  We have to hard-wire parameters and are limited in the number of records returned through a `GET` request.
+We can  pull data into R from the [StreamCat API](https://usepa.github.io/StreamCatWebServices_Public/#/) by simply passing a URL to extract from json.  We have to hard-wire parameters though and are limited in the number of records returned through a `GET` request.
 ```{r API}
-df <- readr::read_csv("https://java.epa.gov/StreamCAT/metrics?name=fert&areaOfInterest=catchment&comid=179", show_col_types = FALSE)
-knitr::kable(df)
+res <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/metrics?name=fert&areaOfInterest=cat&comid=179")
+res$items
 ```
 
 ## List API parameters
@@ -75,34 +75,34 @@ fullname
 ## Get data for COMIDs
 In this example we access several variables, for several areas of interest, and for several COMIDs using the `sc_get_data` function.  Loads data into a tibble we can view.
 ```{r get_data}
-df <- sc_get_data(metric='PctUrbMd2006,DamDens,TRIDens', aoi='riparian_catchment,catchment,watershed', comid='179,1337,1337420')
+df <- sc_get_data(metric='pcturbmd2006,damdens,tridens', aoi='rp100cat,cat,ws', comid='179,1337,1337420')
 knitr::kable(df)
 ```
 
 ## Get data for county
 In this example we access a couple variables at the watershed scale for the area of interest of a county (Benton County in this case) using the `sc_get_data` function. 
 ```{r counties}
-df <- sc_get_data(metric='pctwdwet2006', aoi='watershed', county='41003')
+df <- sc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
 knitr::kable(head(df))
 ```
 
 ## Get NLCD data
 In this example we access National Land Cover Dataset (NLCD) data for 2001, just at the catchment level for several COMIDs using the `sc_nlcd` function.  Loads data into a tibble we can view.
 ```{r get_nlcd}
-df <- sc_nlcd(year='2001', aoi='catchment',
+df <- sc_nlcd(year='2001', aoi='cat',
               comid='179,1337,1337420')
 knitr::kable(df)
 ```
 
 We can also pass a couple years for a different area of interest for another region like a county.
 ```{r get_nlcd2}
-df <- sc_nlcd(year='2006, 2019', aoi='watershed',
+df <- sc_nlcd(year='2006, 2019', aoi='ws',
               county='41003')
 knitr::kable(head(df))
 ```
 
 ## Get COMIDs
-In this example we use the `sc_get_comid` function to find COMIDs for USGS stream gages we load into R. We use a .csv file with coordinate columns and a known coordinate reference system.  We'll use an example dataset of large dams in Oregon from the [Oregon Spatial Data Library]
+In this example we use the `sc_get_comid` function to find COMIDs for USGS stream gages we load into R. We use a .csv file with coordinate columns and a known coordinate reference system.
 ```{r comids, eval=FALSE}
 gages = readr::read_csv(system.file("extdata","Gages_flowdata.csv", package = "StreamCatTools"),show_col_types = FALSE)
 # we'll just grab a few variables to keep things simple
@@ -111,8 +111,8 @@ gages_coms <- sc_get_comid(gages, xcoord='LON_SITE',                   ycoord='L
 
 # Add the COMID we found back to gages data frame
 gages$COMID <- strsplit(gages_coms, ",")[[1]]
-df <- sc_get_data(metric='huden2010', aoi='watershed', comid=gages_coms)
-df$COMID <- as.character(df$COMID)
+df <- sc_get_data(metric='huden2010', aoi='ws', comid=gages_coms)
+df$COMID <- as.character(df$comid)
 gages <- dplyr::left_join(gages, df, by='COMID')
 knitr::kable(head(gages))
 ```
@@ -120,14 +120,14 @@ knitr::kable(head(gages))
 ## Get data for a hydroregion
 In this example we access a couple watershed-only metrics for a particular NHDPlus hydroregion using the `sc_get_data` function.
 ```{r hydroregion}
-df <- sc_get_data(metric='PctWdWet2006', aoi='watershed', region='17')
+df <- sc_get_data(metric='pctwdwet2006', aoi='ws', region='Region17')
 knitr::kable(head(df))
 ```
 
 ## Get data for CONUS
 In this example we access a metric for conus using the `sc_get_data` function - this is shown for demonstration but not run as it takes a bit of time
 ```{r conus, eval=FALSE}
-# df <- sc_get_data(metric='om', aoi='watershed', conus='true')
+# df <- sc_get_data(metric='om', aoi='ws', conus='true')
 # knitr::kable(head(df))
 ```
 
