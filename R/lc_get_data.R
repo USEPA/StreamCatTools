@@ -77,11 +77,7 @@ lc_get_data <- function(metric = NULL,
     httr2::resp_body_string() |> 
     jsonlite::fromJSON()
   # End of function. Return a data frame.
-  if (is.null(countOnly)){
-    df <- df$items |> 
-      dplyr::select(comid, everything()) 
-  }
-  return(df)
+  return(df$items)
 }
 
 #' @title Get NLCD Data

@@ -126,7 +126,7 @@ sc_get_data <- function(comid = NULL,
     httr2::resp_body_string() |> 
     jsonlite::fromJSON()
     # End of function. Return a data frame.
-    return(df)
+    return(df$items)
 }
 
 #' @title Get NLCD Data
