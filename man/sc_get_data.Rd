@@ -5,30 +5,41 @@
 \title{Get StreamCat data}
 \usage{
 sc_get_data(
+  comid = NULL,
   metric = NULL,
   aoi = NULL,
-  comid = NULL,
+  showAreaSqKm = NULL,
+  showPctFull = NULL,
   state = NULL,
   county = NULL,
   region = NULL,
-  showAreaSqKm = NULL,
-  showPctFull = NULL,
   conus = NULL,
   countOnly = NULL
 )
 }
 \arguments{
-\item{metric}{Name(s) of metrics to query
-Syntax: name=<name1>,<name2>}
-
-\item{aoi}{Specify the area of interest described by a metric. By default, all available areas of interest
-for a given metric are returned.
-Syntax: areaOfInterest=<value1>,<value2>
-Values: catchment|watershed|riparian_catchment|riparian_watershed|other}
-
 \item{comid}{Return metric information for specific COMIDs.  Needs to be a character string
 and function will convert to this format if needed.
 Syntax: comid=<comid1>,<comid2>}
+
+\item{metric}{Name(s) of metrics to query
+Syntax: name=<name1>,<name2>}
+
+\item{aoi}{Specify the area of interest described by a metric. For riparian area (catrp100 and wsrp100)
+if the metric does not have data for the riparian area, no data is returned for that AOI.
+Certain metrics have no AOI specified for StreamCat so AOI needs to be left null.  These
+metrics are: BankfullDepth, BankfullWidth, CHEM_V2_1, CONN, HABT, HYD, ICI, IWI, TEMP, WettedWidth,
+prg_bmmi, and all the mast, msst, mwst metrics
+ 
+Syntax: areaOfInterest=<value1>,<value2>
+Values: cat|ws|catrp100|wsrp100}
+
+\item{showAreaSqKm}{Return the area in square kilometers of a given area of interest.
+The default value is false.
+Values: true|false}
+
+\item{showPctFull}{Return the pctfull for each dataset. The default value is false.
+Values: true|false}
 
 \item{state}{Return metric information for COMIDs within a specific state. Use a state's abbreviation to
 query for a given state.
@@ -39,14 +50,8 @@ Users must use the FIPS code, not county name, as a way to disambiguate counties
 Syntax: county=<county1>,<county1>}
 
 \item{region}{Return metric information for COMIDs within a specified hydroregion.
+Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L' 
 Syntax: region=<regionid1>,<regionid2>}
-
-\item{showAreaSqKm}{Return the area in square kilometers of a given area of interest.
-The default value is false.
-Values: true|false}
-
-\item{showPctFull}{Return the pctfull for each dataset. The default value is false.
-Values: true|false}
 
 \item{conus}{Return all COMIDs in the conterminous United States.
 The default value is false.
@@ -57,7 +62,7 @@ count (COLUMNCOUNT) that the server expects to return in a request. The default 
 Values: true|false}
 }
 \value{
-A tibble of desired StreamCat metrics
+A data frame of StreamCat metrics
 }
 \description{
 Function to return StreamCat catchment and watershed metrics using the StreamCat API.  The function allows a user to get
@@ -65,23 +70,24 @@ specific metric data aggregated by area of interest, returned by comid(s), hydro
 }
 \examples{
 \donttest{
-df <- sc_get_data(comid='179', aoi='catchment', metric='fert')
+df <- sc_get_data(comid='179', aoi='cat', metric='fert')
 
-df <- sc_get_data(metric='PctGrs2006', aoi='watershed', region='01')
+df <- sc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')
 
-df <- sc_get_data(metric='PctUrbMd2006', aoi='riparian_catchment',
+df <- sc_get_data(metric='pcturbmd2006', aoi='wsrp100',
 comid='1337420')
 
-df <- sc_get_data(metric='PctUrbMd2006,DamDens',
-aoi='catchment,watershed', comid='179,1337,1337420')
+df <- sc_get_data(metric='pcturbmd2006,damdens',
+aoi='cat,ws', comid='179,1337,1337420')
 
-df <- sc_get_data(metric='PctUrbMd2006,DamDens',
-aoi='catchment,watershed', comid='179,1337,1337420',
-showAreaSqKm=FALSE, showPctFull=TRUE)
+df <- sc_get_data(metric='pcturbmd2006,damdens',
+aoi='cat,ws', comid='179,1337,1337420',
+showAreaSqKm=TRUE, showPctFull=TRUE)
 
-df <- sc_get_data(metric='PctUrbMd2006,DamDens',
-aoi='catchment,watershed', comid='179,1337,1337420', countOnly=TRUE)
+df <- sc_get_data(metric='pcturbmd2006,damdens',
+aoi='cat,ws', comid='179,1337,1337420', countOnly=TRUE)
 
+df <- sc_get_data(metric='ThalwagDepth', comid='179,1337,1337420')
  }
 }
 \author{

@@ -46,19 +46,19 @@ specific metric data aggregated by area of interest, returned by comid(s), hydro
 }
 \examples{
 \donttest{
-df <- lc_get_data(comid='23794487', aoi='catchment', metric='fert')
+df <- lc_get_data(comid='23794487', aoi='cat', metric='fert')
 
-df <- lc_get_data(metric='PctUrbMd2006', aoi='watershed',
+df <- lc_get_data(metric='pcturbmd2006', aoi='ws',
 comid='24083377')
 
-df <- lc_get_data(metric='PctUrbMd2006', aoi='watershed',
+df <- lc_get_data(metric='pcturb,d2006', aoi='ws',
 comid='24083377', showAreaSqKm=FALSE, showPctFull=TRUE)
 
-df <- lc_get_data(metric='PctUrbMd2006,DamDens',
-aoi='catchment,watershed', comid='23783629,23794487,23812618')
+df <- lc_get_data(metric='pcturbmd2006,damdens',
+aoi='cat,ws', comid='23783629,23794487,23812618')
 
-df <- lc_get_data(metric='PctUrbMd2006,DamDens',
-aoi='catchment,watershed', comid='23783629,23794487,23812618',
+df <- lc_get_data(metric='pcturbmd2006,damdens',
+aoi='cat,ws', comid='23783629,23794487,23812618',
 countOnly=TRUE)
 
  }

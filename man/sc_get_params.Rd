@@ -7,7 +7,8 @@
 sc_get_params(param = NULL)
 }
 \arguments{
-\item{param}{Either name or area to grab JSON of parameters in API
+\item{param}{List of available parameters in the API for the following options:
+name, areaofInterest, region, state, county
 Syntax: param=<value1>,<value2>
 Values: name|area}
 }

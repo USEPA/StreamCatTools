@@ -18,7 +18,7 @@ A lookup of the full name for a given StreamCat metric
 Function to retrieve a full metric name based on the short name using the StreamCat API.
 }
 \examples{
-fullname <- sc_fullname(metric='name')
+fullname <- sc_fullname(metric='clay')
 }
 \author{
 Marc Weber
