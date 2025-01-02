@@ -85,9 +85,9 @@ aoi='cat,ws', comid='179,1337,1337420',
 showAreaSqKm=TRUE, showPctFull=TRUE)
 
 df <- sc_get_data(metric='pcturbmd2006,damdens',
-aoi='cat,ws', comid='179,1337,1337420', countOnly=TRUE)
+aoi='cat,ws', comid='179,1337,1337420', countOnly='true')
 
-df <- sc_get_data(metric='ThalwagDepth', comid='179,1337,1337420')
+df <- sc_get_data(metric='ThalwagDepth', comid='179,1337,1337420',aoi='other')
  }
 }
 \author{

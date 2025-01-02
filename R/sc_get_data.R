@@ -69,9 +69,9 @@
 #' showAreaSqKm=TRUE, showPctFull=TRUE)
 #'
 #' df <- sc_get_data(metric='pcturbmd2006,damdens',
-#' aoi='cat,ws', comid='179,1337,1337420', countOnly=TRUE)
+#' aoi='cat,ws', comid='179,1337,1337420', countOnly='true')
 #'
-#' df <- sc_get_data(metric='ThalwagDepth', comid='179,1337,1337420')
+#' df <- sc_get_data(metric='ThalwagDepth', comid='179,1337,1337420',aoi='other')
 #'  }
 #' @export
 
@@ -104,7 +104,6 @@ sc_get_data <- function(comid = NULL,
       if (stringr::str_detect(aoi,'riparian_watershed')) {
         aoi <- gsub('riparian_watershed','wsrp100',aoi)
       }
-      if (aoi == 'other') aoi <- NULL
     }
     if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) |is.null(aoi)){
       stop('Must provide at a minimum valid comid, metric and aoi to the function')
@@ -125,8 +124,12 @@ sc_get_data <- function(comid = NULL,
     # extract response body as string
     httr2::resp_body_string() |> 
     jsonlite::fromJSON()
-    # End of function. Return a data frame.
-    return(df$items)
+  # End of function. Return a data frame.
+  if (is.null(countOnly)){
+    df <- df$items  |> 
+      dplyr::select(comid, dplyr::everything())
+    return(df)
+  } else return(df$items)
 }
 
 #' @title Get NLCD Data

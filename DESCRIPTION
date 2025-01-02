@@ -1,6 +1,6 @@
 Package: StreamCatTools
 Type: Package
-Title: Tools to work with the StreamCat API within R and access the full suite of StreamCat and LakeCat metrics.
+Title: Tools to work with the StreamCat API within R and access the full suite of StreamCat and LakeCat metrics
 Version: 0.3.0
 Authors@R: c(person(given = "Marc", 
                     family = "Weber", 
@@ -35,7 +35,8 @@ Suggests:
   xml2,
   magrittr,
   readr,
-  tidyr
+  tidyr,
+  stringr
 Encoding: UTF-8
 URL: https://usepa.github.io/StreamCatTools/, https://github.com/USEPA/StreamCatTools
 VignetteBuilder: knitr,rmarkdown
