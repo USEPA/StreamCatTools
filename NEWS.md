@@ -1,3 +1,9 @@
+# StreamCatTools 0.4.0
+
+-   Overhauled all functions to use the new [epa.api.gov](https://api.epa.gov/StreamCat) endpoints for StreamCat described in [swagger documentation](https://usepa.github.io/StreamCatWebServices_Public/#/)
+-   Streamlined sc_get_data and lc_get_data requests with `httr2` 
+-   Adopted functionality in all package functions to use the Oracle ORDs Database REST API rather than previous JAVA REST service
+
 # StreamCatTools 0.3.0
 
 -   Incorporated POST requests in `httr2` requests to deal with many COMIDs in requests

@@ -1,7 +1,7 @@
 Package: StreamCatTools
 Type: Package
 Title: Tools to work with the StreamCat API within R and access the full suite of StreamCat and LakeCat metrics
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: c(person(given = "Marc", 
                     family = "Weber", 
                     role = c("aut", "cre"), 
@@ -10,6 +10,10 @@ Authors@R: c(person(given = "Marc",
                     family = "Hill",
                     role = "ctb",
                     email = "hill.ryan@epa.gov"),
+             person(given = "Travis",
+                    family = "Hudson",
+                    role = "ctb",
+                    email = "hudson.travis@epa.gov"),       
              person(given = "David",
                     family = "Rebhuhn",
                     role = "ctb",
