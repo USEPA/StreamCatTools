@@ -22,7 +22,7 @@ Authors@R: c(person(given = "Marc",
                     family = "Smith",
                     role = "ctb"))       
 Description: Tools for using the StreamCat and LakeCat API and interacting with StreamCat and LakeCatdata.
-Depends: R (>= 3.5.1)
+Depends: R (>= 4.0)
 Imports: 
     sf,
     nhdplusTools,

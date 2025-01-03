@@ -5,4 +5,7 @@ articles:
   Applications: Applications.html
   Introduction: Introduction.html
   LakeCat: LakeCat.html
-last_built: 2025-01-03T00:01Z
+last_built: 2025-01-03T00:25Z
+urls:
+  reference: usepa.github.io/StreamCatTools/reference
+  article: usepa.github.io/StreamCatTools/articles
