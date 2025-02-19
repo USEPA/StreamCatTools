@@ -25,29 +25,14 @@ test_that("sc_get_params for name parameters", {
 test_that("sc_get_params for state parameters", {
   params <- sc_get_params(param='state')
   expect_true(exists("params"))
-  expect_equal(length(params),49)
-})
-
-test_that("sc_get_params for state name parameters", {
-  params <- sc_get_params(param='state_name')
-  expect_true(exists("params"))
-  expect_equal(length(params),49)
-})
-
-test_that("sc_get_params for state fips parameters", {
-  params <- sc_get_params(param='state_fips')
-  expect_true(exists("params"))
-  expect_equal(length(params),49)
+  expect_equal(nrow(params),49)
+  expect_equal(names(params), c("st_fips","st_abbr","st_name"))
 })
 
 test_that("sc_get_params for county parameters", {
   params <- sc_get_params(param='county')
   expect_true(exists("params"))
-  expect_equal(length(params),3108)
+  expect_equal(nrow(params),3108)
+  expect_equal(names(params), c("fips","state","county_name"))
 })
 
-test_that("sc_get_params for county fips parameters", {
-  params <- sc_get_params(param='county_fips')
-  expect_true(exists("params"))
-  expect_equal(length(params),3108)
-})
