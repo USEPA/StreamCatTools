@@ -7,7 +7,8 @@
 #' Marc Weber
 #'
 #' @param param List of available parameters in the API for the following options:
-#' name, areaofInterest, region, state, county
+#' name, areaofInterest, region, state, county.  State and county return a data
+#' frame that includes FIPS codes, names and state abbreviations 
 #' Syntax: param=<value1>,<value2>
 #' Values: name|area
 #'
@@ -17,16 +18,35 @@
 #' @examples
 #' params <- sc_get_params(param='name')
 #' params <- sc_get_params(param='areaOfInterest')
+#' params <- sc_get_params(param='state')
+#' params <- sc_get_params(param='county')
 
 sc_get_params <- function(param = NULL) {
   resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/metrics")$items
   if (param=='areaOfInterest'){
     params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]
     params <- c(gsub(" ","", params),'other')
-  }  else {
+    params <- params[order(params)]
+  }  else if(param == 'name') {
     params <- resp$name_options[[1]][[1]]
+    params <- params[order(params)]
+  } else if(param == 'region'){
+    params <- resp$region_options[[1]][[1]]
+    params <- params[order(params)]
+  } else if(param == 'state'){
+    params <- resp$state_options[[1]]
+    params <- params[!params$st_abbr %in% c('AK','HI','PR'),]
+    params$st_fips <- as.character(params$st_fips)
+    params$st_fips[nchar(params$st_fips) < 2] <- paste0('0',params$st_fips[nchar(params$st_fips) < 2])
+    params <- params[order(params$st_name),]
+    rownames(params) <- 1:nrow(params)
+  } else if(param == 'county'){
+    params <- resp$county_options[[1]]
+    params$fips <- as.character(params$fips)
+    params$fips[nchar(params$fips) < 5] <- paste0('0',params$fips[nchar(params$fips) < 5])
+    params <- params[with(params,order(state,county_name)),]
+    rownames(params) <- 1:nrow(params)
   }
-  params <- params[order(params)]
   return(params)
 }
 
