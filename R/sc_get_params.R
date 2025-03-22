@@ -16,7 +16,8 @@
 #' @export
 #'
 #' @examples
-#' params <- sc_get_params(param='name')
+#' params <- sc_get_params(param='variable_info')
+#' params <- sc_get_params(param='metric_names')
 #' params <- sc_get_params(param='areaOfInterest')
 #' params <- sc_get_params(param='state')
 #' params <- sc_get_params(param='county')
@@ -27,11 +28,7 @@ sc_get_params <- function(param = NULL) {
     params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]
     params <- c(gsub(" ","", params),'other')
     params <- params[order(params)]
-  }  else if(param == 'legal_name_values') {
-    api_response <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
-      httr2::req_perform() |>
-      httr2::resp_body_string() |>
-      readr::read_csv()
+  }  else if(param == 'metric_names') {
     params <- resp$name_options[[1]][[1]]
     params <- params[order(params)]
   } else if(param == 'variable_info') {
@@ -39,9 +36,13 @@ sc_get_params <- function(param = NULL) {
       httr2::req_perform() |>
       httr2::resp_body_string() |>
       readr::read_csv() |> 
-      dplyr::select(-UUID,-DATE_DOWNLOADED,-METADATA)
-  }
-  else if(param == 'region'){
+      dplyr::select(-UUID,-DATE_DOWNLOADED,-METADATA) |> 
+      dplyr::rename(dataset=FINAL_TABLE,category=INDICATOR_CATEGORY, 
+                    metric=METRIC_NAME,aoi=AOI, year=YEAR, 
+                    short_description=WEBTOOL_NAME,units=METRIC_UNITS,
+                    long_description=METRIC_DESCRIPTION, dsid=DSID,
+                    source_name=SOURCE_NAME, source_URL=SOURCE_URL)
+  } else if(param == 'region'){
     params <- resp$region_options[[1]][[1]]
     params <- params[order(params)]
   } else if(param == 'state'){

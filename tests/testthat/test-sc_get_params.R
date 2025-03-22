@@ -16,7 +16,7 @@ test_that("sc_get_params for region parameters", {
                         "Region13","Region14","Region15","Region16","Region17","Region18"))
 })
 
-test_that("sc_get_params for name parameters", {
+test_that("sc_get_params for metric name parameters", {
   params <- sc_get_params(param='name')
   expect_true(exists("params"))
   expect_equal(length(params),644)

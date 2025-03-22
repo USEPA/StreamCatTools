@@ -7,7 +7,8 @@
 #' @author
 #' Marc Weber
 #'
-#' @param metric Name(s) of metrics to query
+#' @param metric Name(s) of metrics to query.  This is a comma delimited list of metrics or
+#' or if metric='all' then all metrics will be queried. 
 #' Syntax: name=<name1>,<name2>
 #'
 #' @param aoi Specify the area of interest described by a metric. For riparian area (catrp100 and wsrp100)
@@ -90,10 +91,11 @@ sc_get_data <- function(comid = NULL,
   # Base API URL.
   req <- httr2::request('https://api.epa.gov/StreamCat/streams/metrics')
   # Collapse comids into a single string separated by a comma.
-    if (!is.null(comid))
+  if (!is.null(comid)){
     comid <- paste(comid, collapse = ",")
+  }
   # Force old and odd naming convention to behave correctly
-    if (!is.null(aoi)){
+  if (!is.null(aoi)){
       if (stringr::str_detect(aoi,'catchment')) {
         aoi <- gsub('catchment','cat',aoi)
       }
@@ -107,21 +109,42 @@ sc_get_data <- function(comid = NULL,
         aoi <- gsub('riparian_watershed','wsrp100',aoi)
       }
     }
-    if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) |is.null(aoi)){
-      stop('Must provide at a minimum valid comid, metric and aoi to the function')
-    }
-    items = unlist(strsplit(metric,','))
-    items = gsub(" ","",items)
-    items = gsub("\n","",items)
-    params <- sc_get_params(param='name')
-    if (!all(items %in% params)){
-      stop("One or more of the provided metric names do not match the expected metrics names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
-    }
+  if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) |is.null(aoi)){
+    stop('Must provide at a minimum valid comid, metric and aoi to the function')
+  }
+    
+  if (metric=='all'){
+    metric <- sc_get_params(param='metric_names')
+    var_info <- sc_get_params(param='variable_info')
+    test <- aoi
+    var_info <- var_info |> 
+      dplyr::filter(grepl(test, tolower(var_info$aoi)))
+    var_met <- tolower(unlist(strsplit(var_info$metric,"\\[.*\\]" )))
+    patterns <- c(as.character(1984:2025))
+    clean_vector <- stringr::str_remove_all(metric, paste(patterns, collapse = "|")) 
+    pattern <- tolower(stringr::str_remove_all(metric, paste(patterns, collapse = "|")))[tolower(stringr::str_remove_all(metric, paste(patterns, collapse = "|"))) %in% var_met]
+    pattern <- unique(pattern)
+    
+    
+    pattern <- paste0("^", pattern, "(?![a-zA-Z])",
+                      collapse = "|")
+    result <- metric[grepl(pattern, metric, perl = TRUE)]
+    metric <- paste(result, collapse=",")
+
+  }
+  items = unlist(strsplit(metric,','))
+  items = gsub(" ","",items)
+  items = gsub("\n","",items)
+  params <- sc_get_params(param='metric_names')
+  if (!all(items %in% params)){
+    stop("One or more of the provided metric names do not match the expected metrics names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
+  }
   df <- req |>
     httr2::req_method("POST") |>
     httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
                        showpctfull=showPctFull,state=state,county=county,region=region,
                        conus=conus,countOnly=countOnly) |>
+    httr2::req_throttle(capacity = 100, fill_time_s = 60) |> 
     httr2::req_perform() |> 
     # extract response body as string
     httr2::resp_body_string() |> 
