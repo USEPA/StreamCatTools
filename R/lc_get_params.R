@@ -25,9 +25,7 @@
 lc_get_params <- function(param = NULL) {
   resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/lakes/metrics")$items
   if (param=='areaOfInterest'){
-    params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]
-    params <- c(gsub(" ","", params),'other')
-    params <- params[1:2]
+    params <- resp$name_options[[1]][[1]]
     params <- params[order(params)]
   }  else if(param == 'metric_names') {
     params <- resp$name_options[[1]][[1]]
