@@ -31,3 +31,10 @@ test_that("sc_get_data for a county and ws metrics returns a data frame", {
   expect_equal(nrow(df), 632)
   expect_equal(ncol(df), 2)
   })
+
+test_that("sc_get_data for a county and ws metrics returns a data frame", {
+  df <- sc_get_data(comid='1337420',metric='all', aoi='ws')
+  expect_true(exists("df"))
+  expect_equal(nrow(df),1)
+  expect_equal(ncol(df), 534)
+})

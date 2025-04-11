@@ -69,12 +69,14 @@
 #'
 #' df <- sc_get_data(metric='pcturbmd2006,damdens',
 #' aoi='cat,ws', comid='179,1337,1337420',
-#' showAreaSqKm=TRUE, showPctFull=TRUE)
+#' showAreaSqKm='true', showPctFull='true')
 #'
 #' df <- sc_get_data(metric='pcturbmd2006,damdens',
 #' aoi='cat,ws', comid='179,1337,1337420', countOnly='true')
 #'
 #' df <- sc_get_data(metric='ThalwagDepth', comid='179,1337,1337420',aoi='other')
+#' 
+#' df <- sc_get_data(comid='179', aoi='cat', metric='all')
 #'  }
 #' @export
 
@@ -89,7 +91,8 @@ sc_get_data <- function(comid = NULL,
                         conus = NULL,
                         countOnly = NULL) {
   # Base API URL.
-  req <- httr2::request('https://api.epa.gov/StreamCat/streams/metrics')
+  base_url <- 'https://api.epa.gov/StreamCat/streams/metrics'
+  req <- httr2::request(base_url)
   # Collapse comids into a single string separated by a comma.
   if (!is.null(comid)){
     comid <- paste(comid, collapse = ",")
@@ -114,48 +117,90 @@ sc_get_data <- function(comid = NULL,
   }
     
   if (metric=='all'){
-    metric <- sc_get_params(param='metric_names')
+    metrics <- sc_get_params(param='metric_names')
     var_info <- sc_get_params(param='variable_info')
     test <- aoi
     var_info <- var_info |> 
       dplyr::filter(grepl(test, tolower(var_info$aoi)))
     var_met <- tolower(unlist(strsplit(var_info$metric,"\\[.*\\]" )))
     patterns <- c(as.character(1984:2025))
-    clean_vector <- stringr::str_remove_all(metric, paste(patterns, collapse = "|")) 
-    pattern <- tolower(stringr::str_remove_all(metric, paste(patterns, collapse = "|")))[tolower(stringr::str_remove_all(metric, paste(patterns, collapse = "|"))) %in% var_met]
+    clean_vector <- stringr::str_remove_all(metrics, paste(patterns, collapse = "|")) 
+    pattern <- tolower(stringr::str_remove_all(metrics, paste(patterns, collapse = "|")))[tolower(stringr::str_remove_all(metrics, paste(patterns, collapse = "|"))) %in% var_met]
     pattern <- unique(pattern)
     
+    pattern_regex <- paste0("^(", paste(pattern, collapse = "|"), ")", collapse = "")
     
-    pattern <- paste0("^", pattern, "(?![a-zA-Z])",
-                      collapse = "|")
-    result <- metric[grepl(pattern, metric, perl = TRUE)]
-    metric <- paste(result, collapse=",")
-
+    # Filter metrics 
+    selected <- metrics[stringr::str_detect(metrics, stringr::regex(pattern_regex, ignore_case = TRUE))]
+    # temporary workaround for a mystery metric
+    selected <- selected[!selected=="pctburnarea1984"]
+    selected <- selected[!duplicated(selected)]
+    metric1 <- paste(selected[1:450], collapse=",")
+    metric2 <- paste(selected[451:length(selected)], collapse=",")
+    df1 <- req |>
+      httr2::req_method("POST") |>
+      httr2::req_headers(comid=comid,aoi=aoi,name=metric1,showareasqkm=showAreaSqKm,
+                         showpctfull=showPctFull,state=state,county=county,region=region,
+                         conus=conus,countOnly=countOnly) |>
+      httr2::req_method("POST") |>
+      httr2::req_throttle(rate = 30 / 60) |> 
+      httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
+      req_perform() |> 
+      httr2::resp_body_string() |> 
+      jsonlite::fromJSON()
+    df2 <- req |>
+      httr2::req_method("POST") |>
+      httr2::req_headers(comid=comid,aoi=aoi,name=metric2,showareasqkm=showAreaSqKm,
+                         showpctfull=showPctFull,state=state,county=county,region=region,
+                         conus=conus,countOnly=countOnly) |>
+      httr2::req_method("POST") |>
+      httr2::req_throttle(rate = 30 / 60) |> 
+      httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
+      req_perform() |> 
+      httr2::resp_body_string() |> 
+      jsonlite::fromJSON()
+    # Return a data frame
+    if (is.null(countOnly)){
+      df1 <- df1$items  |> 
+        dplyr::select(comid, dplyr::everything())
+      df2 <- df2$items  |> 
+        dplyr::select(comid, dplyr::everything()) 
+      repeat_fields <- names(df2)[names(df2) %in% names(df1)]
+      repeat_fields <- repeat_fields[repeat_fields!='comid']
+      df2 <- df2 |> 
+        dplyr::select(!repeat_fields)
+      df <- dplyr::left_join(df1, df2)  
+      return(df)
+    } else return(df1$items)
+  } else {
+    items = unlist(strsplit(metric,','))
+    items = gsub(" ","",items)
+    items = gsub("\n","",items)
+    params <- sc_get_params(param='metric_names')
+    if (!all(items %in% params)){
+      stop("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
+    }
+    df <- req |>
+      httr2::req_method("POST") |>
+      httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
+                         showpctfull=showPctFull,state=state,county=county,region=region,
+                         conus=conus,countOnly=countOnly) |>
+      httr2::req_method("POST") |>
+      httr2::req_throttle(rate = 30 / 60) |> 
+      httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
+      req_perform() |> 
+      httr2::resp_body_string() |> 
+      jsonlite::fromJSON()
+    # Return a data frame
+    if (is.null(countOnly)){
+      df <- df$items  |> 
+        dplyr::select(comid, dplyr::everything())
+      return(df)
+    } else return(df$items)
   }
-  items = unlist(strsplit(metric,','))
-  items = gsub(" ","",items)
-  items = gsub("\n","",items)
-  params <- sc_get_params(param='metric_names')
-  if (!all(items %in% params)){
-    stop("One or more of the provided metric names do not match the expected metrics names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
-  }
-  df <- req |>
-    httr2::req_method("POST") |>
-    httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
-                       showpctfull=showPctFull,state=state,county=county,region=region,
-                       conus=conus,countOnly=countOnly) |>
-    httr2::req_throttle(capacity = 100, fill_time_s = 60) |> 
-    httr2::req_perform() |> 
-    # extract response body as string
-    httr2::resp_body_string() |> 
-    jsonlite::fromJSON()
-  # End of function. Return a data frame.
-  if (is.null(countOnly)){
-    df <- df$items  |> 
-      dplyr::select(comid, dplyr::everything())
-    return(df)
-  } else return(df$items)
+    
 }
+
 
 #' @title Get NLCD Data
 #'
@@ -222,7 +267,6 @@ sc_get_data <- function(comid = NULL,
 #' comid='179,1337,1337420')
 #' }
 #' @export
-
 
 sc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL, state = NULL,
                     county = NULL, region = NULL, showAreaSqKm = NULL,
