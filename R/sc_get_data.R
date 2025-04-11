@@ -145,7 +145,7 @@ sc_get_data <- function(comid = NULL,
       httr2::req_method("POST") |>
       httr2::req_throttle(rate = 30 / 60) |> 
       httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
-      req_perform() |> 
+      httr2::req_perform() |> 
       httr2::resp_body_string() |> 
       jsonlite::fromJSON()
     df2 <- req |>
@@ -156,7 +156,7 @@ sc_get_data <- function(comid = NULL,
       httr2::req_method("POST") |>
       httr2::req_throttle(rate = 30 / 60) |> 
       httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
-      req_perform() |> 
+      httr2::req_perform() |> 
       httr2::resp_body_string() |> 
       jsonlite::fromJSON()
     # Return a data frame
@@ -188,7 +188,7 @@ sc_get_data <- function(comid = NULL,
       httr2::req_method("POST") |>
       httr2::req_throttle(rate = 30 / 60) |> 
       httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
-      req_perform() |> 
+      httr2::req_perform() |> 
       httr2::resp_body_string() |> 
       jsonlite::fromJSON()
     # Return a data frame

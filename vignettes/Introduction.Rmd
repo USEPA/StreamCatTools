@@ -53,7 +53,7 @@ List StreamCat parameters: Get a list of available StreamCat values for certain 
 ```{r params}
 region_params <- sc_get_params(param='areaOfInterest')
 
-name_params <- sc_get_params(param='name')
+name_params <- sc_get_params(param='metric_name')
 
 print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
 print(paste0('A selection of available StreamCat metrics include: ',paste(name_params[1:10],collapse = ', ')))

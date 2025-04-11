@@ -25,7 +25,7 @@ test_that("sc_get_params for metric_names parameters", {
 test_that("sc_get_params for variable_info parameters", {
   params <- sc_get_params(param='variable_info')
   expect_true(exists("params"))
-  expect_equal(length(params),644)
+  expect_equal(nrow(params),145)
 })
 
 test_that("sc_get_params for state parameters", {
