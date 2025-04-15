@@ -84,6 +84,8 @@ nrsa_sf <- dplyr::left_join(nrsa_sf, df, by='COMID')
 ```
 
 ```{r nars_ggplot, warning=FALSE}
+#| fig.alt: >
+#|   NRSA Benthic MMI versus  % Crop in Watershed from 2006 NLCD.
 # download mmi from NARS web page
 library(dplyr)
 library(ggplot2)
@@ -95,6 +97,7 @@ nrsa_sf <- dplyr::left_join(nrsa_sf, mmi[,c('SITE_ID','BENT_MMI_COND')], by='SIT
 bxplt <- nrsa_sf %>% 
   tidyr::drop_na(BENT_MMI_COND) %>%
   ggplot2::ggplot(aes(x=pctcrop2006ws, y=BENT_MMI_COND))+
-  ggplot2::geom_boxplot()
+  ggplot2::geom_boxplot()+
+  ggplot2::ggtitle('NRSA Benthic MMI versus % Crop in Watershed from 2006 NLCD')
 suppressWarnings(print(bxplt))
 ```

@@ -39,7 +39,7 @@ res$items
 
 List LakeCat parameters: Get a list of available LakeCat values for certain parameters using the `lc_get_params` function (right now just metric names and areas of interest for this function) via the API
 
-```{r}
+```{r params}
 library(StreamCatTools)
 region_params <- lc_get_params(param='areaOfInterest')
 
@@ -47,6 +47,12 @@ name_params <- lc_get_params(param='metric_name')
 
 print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
 print(paste0('A selection of available LakrCat metrics include: ',paste(name_params[1:10],collapse = ', ')))
+```
+
+We can also see what metrics are available for what areas of interest and what years using the `sc_get_params` function (which returns a tibble of information about StreamCat metrics):
+```{r params2}
+var_info <- lc_get_params(param='variable_info')
+head(var_info)
 ```
 
 Look up the display name or names for a metric using the `lc_fullname` function via the API

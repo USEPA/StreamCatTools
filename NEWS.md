@@ -1,3 +1,5 @@
+# StreamCatTools 0.4.1
+
 # StreamCatTools 0.4.0
 
 -   Overhauled all functions to use the new [epa.api.gov](https://api.epa.gov/StreamCat) endpoints for StreamCat described in [swagger documentation](https://usepa.github.io/StreamCatWebServices_Public/#/)

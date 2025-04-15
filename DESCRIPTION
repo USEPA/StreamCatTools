@@ -45,5 +45,5 @@ Encoding: UTF-8
 URL: https://usepa.github.io/StreamCatTools/, https://github.com/USEPA/StreamCatTools
 VignetteBuilder: knitr,rmarkdown
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 License: CC0
