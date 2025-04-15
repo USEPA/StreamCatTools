@@ -115,7 +115,9 @@ sc_get_data <- function(comid = NULL,
   if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) |is.null(aoi)){
     stop('Must provide at a minimum valid comid, metric and aoi to the function')
   }
-    
+  if (!is.null(conus) & metric=='all'){
+    stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
+  }  
   if (metric=='all'){
     metrics <- sc_get_params(param='metric_names')
     var_info <- sc_get_params(param='variable_info')
@@ -167,8 +169,7 @@ sc_get_data <- function(comid = NULL,
         dplyr::select(comid, dplyr::everything()) 
       repeat_fields <- names(df2)[names(df2) %in% names(df1)]
       repeat_fields <- repeat_fields[repeat_fields!='comid']
-      df2 <- df2 |> 
-        dplyr::select(!repeat_fields)
+      df2 <- df2[,!(names(df2) %in% repeat_fields)]
       df <- dplyr::left_join(df1, df2)  
       return(df)
     } else return(df1$items)
