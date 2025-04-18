@@ -2,7 +2,7 @@ context("Test that sc_nlcd is pulling in StreamCat API data")
 
 
 test_that("sc_get_data for a sample COMID returns a data frame", {
-            df <- sc_nlcd(year='2001', aoi='cat',
+            df <- sc_nlcd(year='2019', aoi='cat',
                               comid='179,1337,1337420')
             expect_true(exists("df"))
             expect_equal(nrow(df), 3)

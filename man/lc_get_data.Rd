@@ -5,15 +5,23 @@
 \title{Get LakeCat data}
 \usage{
 lc_get_data(
+  comid = NULL,
   metric = NULL,
   aoi = NULL,
-  comid = NULL,
   showAreaSqKm = NULL,
   showPctFull = NULL,
+  state = NULL,
+  county = NULL,
+  region = NULL,
+  conus = NULL,
   countOnly = NULL
 )
 }
 \arguments{
+\item{comid}{Return metric information for specific COMIDs.  Needs to be a character string
+and function will convert to this format if needed.
+Syntax: comid=<comid1>,<comid2>}
+
 \item{metric}{Name(s) of metrics to query
 Syntax: name=<name1>,<name2>}
 
@@ -21,10 +29,6 @@ Syntax: name=<name1>,<name2>}
 for a given metric are returned.
 Syntax: areaOfInterest=<value1>,<value2>
 Values: catchment|watershed|}
-
-\item{comid}{Return metric information for specific COMIDs.  Needs to be a character string
-and function will convert to this format if needed.
-Syntax: comid=<comid1>,<comid2>}
 
 \item{showAreaSqKm}{Return the area in square kilometers of a given area of interest.
 The default value is false.
@@ -51,6 +55,10 @@ df <- lc_get_data(comid='23794487', aoi='cat', metric='fert')
 df <- lc_get_data(metric='pcturbmd2006', aoi='ws',
 comid='24083377')
 
+df <- lc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')
+
+df <- lc_get_data(metric='pctwdwet2006', aoi='ws', county='19')
+
 df <- lc_get_data(metric='pcturb,d2006', aoi='ws',
 comid='24083377', showAreaSqKm=FALSE, showPctFull=TRUE)
 
@@ -60,6 +68,8 @@ aoi='cat,ws', comid='23783629,23794487,23812618')
 df <- lc_get_data(metric='pcturbmd2006,damdens',
 aoi='cat,ws', comid='23783629,23794487,23812618',
 countOnly=TRUE)
+
+df <- lc_get_data(comid='23783629', aoi='ws', metric='all')
 
  }
 }

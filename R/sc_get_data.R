@@ -269,9 +269,16 @@ sc_get_data <- function(comid = NULL,
 #' }
 #' @export
 
-sc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL, state = NULL,
-                    county = NULL, region = NULL, showAreaSqKm = NULL,
-                    showPctFull = NULL, conus = NULL, countOnly = NULL) {
+sc_nlcd <- function(year = '2019',
+                    comid = NULL,
+                    aoi = NULL,
+                    showAreaSqKm = NULL,
+                    showPctFull = NULL,
+                    state = NULL,
+                    county = NULL,
+                    region = NULL,
+                    conus = NULL,
+                    countOnly = NULL) {
   # year must be a character string.
   year_chr <-  as.character(year)
   # split multiple years supplied as a single string into
@@ -316,13 +323,13 @@ sc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL, state = NULL,
   all_comb <- expand.grid(nlcd, year_vec)
   # Concatenate the NLCD metric name with the supplied year(s) to create
   # valid metric names to submit to the API.
-  nlcd_mets <- paste0(all_comb$Var1,
+  metric <- paste0(all_comb$Var1,
                       all_comb$Var2,
                       collapse = ",",
                       recycle0 = TRUE)
   # Query the API.
   final_df <- sc_get_data(
-    metric = nlcd_mets,
+    metric = metric,
     aoi = aoi,
     comid = comid,
     state = state,

@@ -39,11 +39,11 @@ res$items
 
 List LakeCat parameters: Get a list of available LakeCat values for certain parameters using the `lc_get_params` function (right now just metric names and areas of interest for this function) via the API
 
-```{r params}
+```{r name_params}
 library(StreamCatTools)
 region_params <- lc_get_params(param='areaOfInterest')
 
-name_params <- lc_get_params(param='metric_name')
+name_params <- lc_get_params(param='metric_names')
 
 print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
 print(paste0('A selection of available LakrCat metrics include: ',paste(name_params[1:10],collapse = ', ')))
@@ -100,7 +100,7 @@ knitr::kable(head(df))
 ```
 
 ## Get all metrics for COMIDs or an Area of Interest
-We can also get all LakeCat metrics for a set of COMIDs or an area of interest.  Please do not request all metrics for conus in order not to overload requests to the server.
+We can also get all LakeCat metrics for a set of COMIDs or an area of interest.  **Please do not request all metrics for conus in order not to overload requests to the server.**
 ```{r all}
 df <- lc_get_data(comid='23783629', aoi='ws', metric='all')
 knitr::kable(head(df))
