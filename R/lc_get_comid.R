@@ -46,8 +46,8 @@
 lc_get_comid <- function(dd = NULL, xcoord = NULL, 
                          ycoord=NULL, crsys=NULL, buffer=NULL) {
   if (!'sf' %in% class(dd) & ((is.null(xcoord)) | 
-                                    (is.null(ycoord)) |
-                                     (is.null(crsys)))) {
+                              (is.null(ycoord)) |
+                              (is.null(crsys)))) {
     "\nMake sure you supply parameters for xcoord, ycoord, and a crs as an epsg code."
   } else {
     dd <- sf::st_as_sf(dd, coords = c(xcoord, ycoord), crs = crsys, remove = FALSE)
@@ -60,10 +60,12 @@ lc_get_comid <- function(dd = NULL, xcoord = NULL,
     } else {
       wb <- nhdplusTools::get_waterbodies(dd[i,], buffer=buffer)
     }
-    comid <- wb |>
-      dplyr::pull(comid)
-    if (length(comid)==0L) comid <- NA else comid <- comid
-    return(comid)
+    if (!is.null(wb)){
+      comid <- wb |>
+        dplyr::pull(comid)
+      if (length(comid)==0L) comid <- NA else comid <- comid
+      return(comid)
+    } 
   }))
   output <- as.data.frame(output)
   names(output)[1] <- 'COMID'
