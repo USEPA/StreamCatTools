@@ -60,10 +60,12 @@ lc_get_comid <- function(dd = NULL, xcoord = NULL,
     } else {
       wb <- nhdplusTools::get_waterbodies(dd[i,], buffer=buffer)
     }
-    comid <- wb |>
-      dplyr::pull(comid)
+    if (!is.null(wb)){
+      comid <- wb |>
+        dplyr::pull(comid)
     if (length(comid)==0L) comid <- NA else comid <- comid
-    return(comid)
+      return(comid)
+    } 
   }))
   output <- as.data.frame(output)
   names(output)[1] <- 'COMID'
