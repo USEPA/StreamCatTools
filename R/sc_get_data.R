@@ -15,7 +15,7 @@
 #' Certain metrics have no AOI specified for StreamCat so AOI needs to be left null.  These
 #' metrics are: BankfullDepth, BankfullWidth, CHEM_V2_1, CONN, HABT, HYD, ICI, IWI, TEMP, WettedWidth,
 #' prg_bmmi, and all the mast, msst, mwst metrics
-#'  
+#'
 #' Syntax: areaOfInterest=<value1>,<value2>
 #' Values: cat|ws|catrp100|wsrp100
 #'
@@ -32,7 +32,7 @@
 #' Syntax: county=<county1>,<county1>
 #'
 #' @param region Return metric information for COMIDs within a specified hydroregion.
-#' Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L' 
+#' Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L'
 #' Syntax: region=<regionid1>,<regionid2>
 #'
 #' @param conus Return all COMIDs in the conterminous United States.
@@ -57,7 +57,7 @@
 #' df <- sc_get_data(comid='179', aoi='cat', metric='fert')
 #'
 #' df <- sc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')
-#' 
+#'
 #' df <- sc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
 #'
 #' df <- sc_get_data(metric='pcturbmd2006', aoi='wsrp100',
@@ -90,8 +90,9 @@ sc_get_data <- function(comid = NULL,
   # Base API URL.
   req <- httr2::request('https://api.epa.gov/StreamCat/streams/metrics')
   # Collapse comids into a single string separated by a comma.
-    if (!is.null(comid))
-    comid <- paste(comid, collapse = ",")
+    if (!is.null(comid)){
+      comid <- paste(comid, collapse = ",")
+    }
   # Force old and odd naming convention to behave correctly
     if (!is.null(aoi)){
       if (stringr::str_detect(aoi,'catchment')) {
@@ -122,13 +123,13 @@ sc_get_data <- function(comid = NULL,
     httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
                        showpctfull=showPctFull,state=state,county=county,region=region,
                        conus=conus,countOnly=countOnly) |>
-    httr2::req_perform() |> 
+    httr2::req_perform() |>
     # extract response body as string
-    httr2::resp_body_string() |> 
+    httr2::resp_body_string() |>
     jsonlite::fromJSON()
   # End of function. Return a data frame.
   if (is.null(countOnly)){
-    df <- df$items  |> 
+    df <- df$items  |>
       dplyr::select(comid, dplyr::everything())
     return(df)
   } else return(df$items)
