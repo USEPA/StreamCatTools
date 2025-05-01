@@ -16,20 +16,36 @@
 #' @export
 #'
 #' @examples
-#' params <- sc_get_params(param='name')
+#' params <- sc_get_params(param='variable_info')
+#' params <- sc_get_params(param='metric_names')
 #' params <- sc_get_params(param='areaOfInterest')
 #' params <- sc_get_params(param='state')
 #' params <- sc_get_params(param='county')
 
 sc_get_params <- function(param = NULL) {
+  UUID <- DATE_DOWNLOADED <- METADATA <- FINAL_TABLE<- NULL
+  INDICATOR_CATEGORY <- METRIC_NAME <- AOI <- YEAR <- NULL
+  WEBTOOL_NAME <- METRIC_UNITS <- METRIC_DESCRIPTION <- DSID <- NULL
+  SOURCE_NAME <- SOURCE_URL <- UUID <- DATE_DOWNLOADED <- NULL
   resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/metrics")$items
   if (param=='areaOfInterest'){
     params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]
     params <- c(gsub(" ","", params),'other')
     params <- params[order(params)]
-  }  else if(param == 'name') {
+  }  else if(param == 'metric_names') {
     params <- resp$name_options[[1]][[1]]
     params <- params[order(params)]
+  } else if(param == 'variable_info') {
+    params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
+      httr2::req_perform() |>
+      httr2::resp_body_string() |>
+      readr::read_csv() |> 
+      dplyr::select(-UUID,-DATE_DOWNLOADED,-METADATA) |> 
+      dplyr::rename(dataset=FINAL_TABLE,category=INDICATOR_CATEGORY, 
+                    metric=METRIC_NAME,aoi=AOI, year=YEAR, 
+                    short_description=WEBTOOL_NAME,units=METRIC_UNITS,
+                    long_description=METRIC_DESCRIPTION, dsid=DSID,
+                    source_name=SOURCE_NAME, source_URL=SOURCE_URL)
   } else if(param == 'region'){
     params <- resp$region_options[[1]][[1]]
     params <- params[order(params)]
@@ -70,7 +86,6 @@ sc_get_params <- function(param = NULL) {
 
 sc_fullname <- function(metric = NULL) {
   resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/datadictionary")$items
-  resp <- as.data.frame(resp$dictionary)
   result <- unique(resp[resp$metric_prefix %in% unlist(strsplit(metric, split = ',')), 1])
   return(result)
 }

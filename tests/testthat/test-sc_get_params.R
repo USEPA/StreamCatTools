@@ -16,10 +16,16 @@ test_that("sc_get_params for region parameters", {
                         "Region13","Region14","Region15","Region16","Region17","Region18"))
 })
 
-test_that("sc_get_params for name parameters", {
-  params <- sc_get_params(param='name')
+test_that("sc_get_params for metric_names parameters", {
+  params <- sc_get_params(param='metric_names')
   expect_true(exists("params"))
-  expect_equal(length(params),644)
+  expect_equal(length(params),1109)
+})
+
+test_that("sc_get_params for variable_info parameters", {
+  params <- sc_get_params(param='variable_info')
+  expect_true(exists("params"))
+  expect_equal(nrow(params),147)
 })
 
 test_that("sc_get_params for state parameters", {

@@ -63,7 +63,7 @@ lc_get_comid <- function(dd = NULL, xcoord = NULL,
     if (!is.null(wb)){
       comid <- wb |>
         dplyr::pull(comid)
-      if (length(comid)==0L) comid <- NA else comid <- comid
+    if (length(comid)==0L) comid <- NA else comid <- comid
       return(comid)
     } 
   }))

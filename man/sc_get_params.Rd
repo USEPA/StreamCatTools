@@ -8,7 +8,8 @@ sc_get_params(param = NULL)
 }
 \arguments{
 \item{param}{List of available parameters in the API for the following options:
-name, areaofInterest, region, state, county
+name, areaofInterest, region, state, county.  State and county return a data
+frame that includes FIPS codes, names and state abbreviations 
 Syntax: param=<value1>,<value2>
 Values: name|area}
 }
@@ -19,8 +20,11 @@ A list of all the current StreamCat values for a given parameter
 Function to return available StreamCat parameters using the StreamCat API.
 }
 \examples{
-params <- sc_get_params(param='name')
+params <- sc_get_params(param='variable_info')
+params <- sc_get_params(param='metric_names')
 params <- sc_get_params(param='areaOfInterest')
+params <- sc_get_params(param='state')
+params <- sc_get_params(param='county')
 }
 \author{
 Marc Weber

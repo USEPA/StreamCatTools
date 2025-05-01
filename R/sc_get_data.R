@@ -7,7 +7,8 @@
 #' @author
 #' Marc Weber
 #'
-#' @param metric Name(s) of metrics to query
+#' @param metric Name(s) of metrics to query.  This is a comma delimited list of metrics or
+#' or if metric='all' then all metrics will be queried. 
 #' Syntax: name=<name1>,<name2>
 #'
 #' @param aoi Specify the area of interest described by a metric. For riparian area (catrp100 and wsrp100)
@@ -68,12 +69,14 @@
 #'
 #' df <- sc_get_data(metric='pcturbmd2006,damdens',
 #' aoi='cat,ws', comid='179,1337,1337420',
-#' showAreaSqKm=TRUE, showPctFull=TRUE)
+#' showAreaSqKm='true', showPctFull='true')
 #'
 #' df <- sc_get_data(metric='pcturbmd2006,damdens',
 #' aoi='cat,ws', comid='179,1337,1337420', countOnly='true')
 #'
-#' df <- sc_get_data(metric='ThalwagDepth', comid='179,1337,1337420',aoi='other')
+#' df <- sc_get_data(metric='thalwagdepth', comid='179,1337,1337420',aoi='other')
+#' 
+#' df <- sc_get_data(comid='179', aoi='ws', metric='all')
 #'  }
 #' @export
 
@@ -88,13 +91,14 @@ sc_get_data <- function(comid = NULL,
                         conus = NULL,
                         countOnly = NULL) {
   # Base API URL.
-  req <- httr2::request('https://api.epa.gov/StreamCat/streams/metrics')
+  base_url <- 'https://api.epa.gov/StreamCat/streams/metrics'
+  req <- httr2::request(base_url)
   # Collapse comids into a single string separated by a comma.
-    if (!is.null(comid)){
-      comid <- paste(comid, collapse = ",")
-    }
+  if (!is.null(comid)){
+    comid <- paste(comid, collapse = ",")
+  }
   # Force old and odd naming convention to behave correctly
-    if (!is.null(aoi)){
+  if (!is.null(aoi)){
       if (stringr::str_detect(aoi,'catchment')) {
         aoi <- gsub('catchment','cat',aoi)
       }
@@ -108,32 +112,39 @@ sc_get_data <- function(comid = NULL,
         aoi <- gsub('riparian_watershed','wsrp100',aoi)
       }
     }
-    if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) |is.null(aoi)){
-      stop('Must provide at a minimum valid comid, metric and aoi to the function')
-    }
-    items = unlist(strsplit(metric,','))
-    items = gsub(" ","",items)
-    items = gsub("\n","",items)
-    params <- sc_get_params(param='name')
-    if (!all(items %in% params)){
-      stop("One or more of the provided metric names do not match the expected metrics names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
-    }
+  if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) |is.null(aoi)){
+    stop('Must provide at a minimum valid comid, metric and aoi to the function')
+  }
+  if (!is.null(conus) & metric=='all'){
+    stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
+  }  
+  metric = tolower(metric)
+  items = unlist(strsplit(metric,','))
+  items = gsub(" ","",items)
+  items = gsub("\n","",items)
+  params <- sc_get_params(param='metric_names')
+  if (metric != 'all' & !all(items %in% params)){
+    stop("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
+  }
   df <- req |>
     httr2::req_method("POST") |>
     httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
                        showpctfull=showPctFull,state=state,county=county,region=region,
                        conus=conus,countOnly=countOnly) |>
-    httr2::req_perform() |>
-    # extract response body as string
-    httr2::resp_body_string() |>
+    httr2::req_method("POST") |>
+    httr2::req_throttle(rate = 30 / 60) |> 
+    httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
+    httr2::req_perform() |> 
+    httr2::resp_body_string() |> 
     jsonlite::fromJSON()
-  # End of function. Return a data frame.
-  if (is.null(countOnly)){
-    df <- df$items  |>
-      dplyr::select(comid, dplyr::everything())
-    return(df)
-  } else return(df$items)
+    # Return a data frame
+    if (is.null(countOnly)){
+      df <- df$items  |> 
+        dplyr::select(comid, dplyr::everything())
+      return(df)
+    } else return(df$items)
 }
+
 
 #' @title Get NLCD Data
 #'
@@ -201,10 +212,16 @@ sc_get_data <- function(comid = NULL,
 #' }
 #' @export
 
-
-sc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL, state = NULL,
-                    county = NULL, region = NULL, showAreaSqKm = NULL,
-                    showPctFull = NULL, conus = NULL, countOnly = NULL) {
+sc_nlcd <- function(year = '2019',
+                    comid = NULL,
+                    aoi = NULL,
+                    showAreaSqKm = NULL,
+                    showPctFull = NULL,
+                    state = NULL,
+                    county = NULL,
+                    region = NULL,
+                    conus = NULL,
+                    countOnly = NULL) {
   # year must be a character string.
   year_chr <-  as.character(year)
   # split multiple years supplied as a single string into
@@ -249,13 +266,13 @@ sc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL, state = NULL,
   all_comb <- expand.grid(nlcd, year_vec)
   # Concatenate the NLCD metric name with the supplied year(s) to create
   # valid metric names to submit to the API.
-  nlcd_mets <- paste0(all_comb$Var1,
+  metric <- paste0(all_comb$Var1,
                       all_comb$Var2,
                       collapse = ",",
                       recycle0 = TRUE)
   # Query the API.
   final_df <- sc_get_data(
-    metric = nlcd_mets,
+    metric = metric,
     aoi = aoi,
     comid = comid,
     state = state,

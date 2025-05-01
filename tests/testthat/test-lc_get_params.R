@@ -17,7 +17,7 @@ test_that("lc_get_params for region parameters", {
 })
 
 test_that("lc_get_params for name parameters", {
-  params <- lc_get_params(param='name')
+  params <- lc_get_params(param='metric_names')
   expect_true(exists("params"))
   expect_equal(length(params),497)
 })

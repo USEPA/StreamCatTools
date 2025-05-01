@@ -18,6 +18,22 @@
 #' @param comid Return metric information for specific COMIDs.  Needs to be a character string
 #' and function will convert to this format if needed.
 #' Syntax: comid=<comid1>,<comid2>
+#' 
+#' @param state Return metric information for COMIDs within a specific state. Use a state's abbreviation to
+#' query for a given state.
+#' Syntax: state=<state1>,<state2>
+#'
+#' @param county Return metric information for COMIDs within a specific county.
+#' Users must use the FIPS code, not county name, as a way to disambiguate counties.
+#' Syntax: county=<county1>,<county1>
+#'
+#' @param region Return metric information for COMIDs within a specified hydroregion.
+#' Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L' 
+#' Syntax: region=<regionid1>,<regionid2>
+#'
+#' @param conus Return all COMIDs in the conterminous United States.
+#' The default value is false.
+#' Values: true|false
 #'
 #' @param showAreaSqKm Return the area in square kilometers of a given area of interest.
 #' The default value is false.
@@ -39,7 +55,11 @@
 #' df <- lc_get_data(metric='pcturbmd2006', aoi='ws',
 #' comid='24083377')
 #'
-#' df <- lc_get_data(metric='pcturb,d2006', aoi='ws',
+#' df <- lc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')
+#' 
+#' df <- lc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
+#' 
+#' df <- lc_get_data(metric='pcturbmd2006', aoi='ws',
 #' comid='24083377', showAreaSqKm=FALSE, showPctFull=TRUE)
 #'
 #' df <- lc_get_data(metric='pcturbmd2006,damdens',
@@ -48,18 +68,25 @@
 #' df <- lc_get_data(metric='pcturbmd2006,damdens',
 #' aoi='cat,ws', comid='23783629,23794487,23812618',
 #' countOnly=TRUE)
+#' 
+#' df <- lc_get_data(comid='23783629', aoi='ws', metric='all')
 #'
 #'  }
 #' @export
 
-lc_get_data <- function(metric = NULL,
+lc_get_data <- function(comid = NULL,
+                        metric = NULL,
                         aoi = NULL,
-                        comid = NULL,
                         showAreaSqKm = NULL,
                         showPctFull = NULL,
+                        state = NULL,
+                        county = NULL,
+                        region = NULL,
+                        conus = NULL,
                         countOnly = NULL) {
   # Base API URL.
-  req <- httr2::request('https://api.epa.gov/StreamCat/lakes/metrics')
+  # req <- httr2::request('https://api.epa.gov/StreamCat/lakes/metrics')
+  req <- httr2::request('https://ordspub.epa.gov/ords/streamcat/streamcat/lakecat/metrics')
   # Collapse comids into a single string separated by a comma.
   if (!is.null(comid))
     comid <- paste(comid, collapse = ",")
@@ -68,15 +95,40 @@ lc_get_data <- function(metric = NULL,
     if (aoi == 'catchment') aoi <- 'cat'
     if (aoi == 'watershed') aoi <- 'ws'
   }
+  if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) |is.null(aoi)){
+    stop('Must provide at a minimum valid comid, metric and aoi to the function')
+  }
+  if (!is.null(conus) & metric=='all'){
+    stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
+  } 
+  metric = tolower(metric)
+  items = unlist(strsplit(metric,','))
+  items = gsub(" ","",items)
+  items = gsub("\n","",items)
+  params <- sc_get_params(param='metric_names')
+  if (metric != 'all' & !all(items %in% params)){
+    stop("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
+  }
+  metric = tolower(metric)
+  items = unlist(strsplit(metric,','))
+  items = gsub(" ","",items)
+  items = gsub("\n","",items)
+  params <- sc_get_params(param='metric_names')
+  if (metric != 'all' & !all(items %in% params)){
+    stop("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
+  }
   df <- req |>
     httr2::req_method("POST") |>
     httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
-                       showpctfull=showPctFull,countOnly=countOnly) |>
+                       showpctfull=showPctFull,state=state,county=county,region=region,
+                       conus=conus,countOnly=countOnly) |>
+    httr2::req_method("POST") |>
+    httr2::req_throttle(rate = 30 / 60) |> 
+    httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
     httr2::req_perform() |> 
-    # extract response body as string
     httr2::resp_body_string() |> 
     jsonlite::fromJSON()
-  # End of function. Return a data frame.
+  # Return a data frame
   if (is.null(countOnly)){
     df <- df$items  |> 
       dplyr::select(comid, dplyr::everything())

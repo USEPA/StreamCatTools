@@ -22,7 +22,8 @@ sc_get_data(
 and function will convert to this format if needed.
 Syntax: comid=<comid1>,<comid2>}
 
-\item{metric}{Name(s) of metrics to query
+\item{metric}{Name(s) of metrics to query.  This is a comma delimited list of metrics or
+or if metric='all' then all metrics will be queried. 
 Syntax: name=<name1>,<name2>}
 
 \item{aoi}{Specify the area of interest described by a metric. For riparian area (catrp100 and wsrp100)
@@ -74,6 +75,8 @@ df <- sc_get_data(comid='179', aoi='cat', metric='fert')
 
 df <- sc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')
 
+df <- sc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
+
 df <- sc_get_data(metric='pcturbmd2006', aoi='wsrp100',
 comid='1337420')
 
@@ -82,12 +85,14 @@ aoi='cat,ws', comid='179,1337,1337420')
 
 df <- sc_get_data(metric='pcturbmd2006,damdens',
 aoi='cat,ws', comid='179,1337,1337420',
-showAreaSqKm=TRUE, showPctFull=TRUE)
+showAreaSqKm='true', showPctFull='true')
 
 df <- sc_get_data(metric='pcturbmd2006,damdens',
 aoi='cat,ws', comid='179,1337,1337420', countOnly='true')
 
-df <- sc_get_data(metric='ThalwagDepth', comid='179,1337,1337420',aoi='other')
+df <- sc_get_data(metric='thalwagdepth', comid='179,1337,1337420',aoi='other')
+
+df <- sc_get_data(comid='179', aoi='ws', metric='all')
  }
 }
 \author{

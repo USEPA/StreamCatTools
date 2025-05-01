@@ -17,3 +17,21 @@ test_that("lc_get_data for a county and ws metrics returns a data frame", {
             expect_equal(nrow(df), 1)
             expect_equal(ncol(df), 5)
           })
+
+test_that("lc_get_data for a hydroregion and ws metrics returns a data frame", {
+  df <- lc_get_data(metric='pctwdwet2006', aoi='ws', 
+                    region='Region01')
+  expect_true(exists("df"))
+  expect_equal(nrow(df), 12633)
+  expect_equal(ncol(df), 2)
+})
+
+test_that("lc_get_data for a county and ws metrics returns a data frame", {
+  df <- lc_get_data(metric='pctwdwet2006', aoi='ws', 
+                    county='41003')
+  expect_true(exists("df"))
+  expect_equal(nrow(df), 23)
+  expect_equal(ncol(df), 2)
+})
+
+
