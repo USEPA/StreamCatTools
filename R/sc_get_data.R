@@ -16,7 +16,7 @@
 #' Certain metrics have no AOI specified for StreamCat so AOI needs to be left null.  These
 #' metrics are: BankfullDepth, BankfullWidth, CHEM_V2_1, CONN, HABT, HYD, ICI, IWI, TEMP, WettedWidth,
 #' prg_bmmi, and all the mast, msst, mwst metrics
-#'  
+#'
 #' Syntax: areaOfInterest=<value1>,<value2>
 #' Values: cat|ws|catrp100|wsrp100
 #'
@@ -33,7 +33,7 @@
 #' Syntax: county=<county1>,<county1>
 #'
 #' @param region Return metric information for COMIDs within a specified hydroregion.
-#' Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L' 
+#' Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L'
 #' Syntax: region=<regionid1>,<regionid2>
 #'
 #' @param conus Return all COMIDs in the conterminous United States.
@@ -58,7 +58,7 @@
 #' df <- sc_get_data(comid='179', aoi='cat', metric='fert')
 #'
 #' df <- sc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')
-#' 
+#'
 #' df <- sc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
 #'
 #' df <- sc_get_data(metric='pcturbmd2006', aoi='wsrp100',

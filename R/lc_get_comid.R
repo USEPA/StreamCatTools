@@ -46,8 +46,8 @@
 lc_get_comid <- function(dd = NULL, xcoord = NULL, 
                          ycoord=NULL, crsys=NULL, buffer=NULL) {
   if (!'sf' %in% class(dd) & ((is.null(xcoord)) | 
-                                    (is.null(ycoord)) |
-                                     (is.null(crsys)))) {
+                              (is.null(ycoord)) |
+                              (is.null(crsys)))) {
     "\nMake sure you supply parameters for xcoord, ycoord, and a crs as an epsg code."
   } else {
     dd <- sf::st_as_sf(dd, coords = c(xcoord, ycoord), crs = crsys, remove = FALSE)
