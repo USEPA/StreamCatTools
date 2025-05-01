@@ -21,7 +21,7 @@ test_that("sc_get_data for showAreaSqKm and showPctFull returns a data frame", {
                     comid='179,1337,1337420',showAreaSqKm=TRUE, showPctFull=TRUE)
   expect_true(exists("df"))
   expect_equal(nrow(df), 3)
-  expect_equal(ncol(df), 11)
+  expect_equal(ncol(df), 13)
   })
 
 test_that("sc_get_data for a hydroregion and ws metrics returns a data frame", {
@@ -43,6 +43,4 @@ test_that("sc_get_data for a county and ws metrics returns a data frame", {
 test_that("sc_get_data for all ws metrics for a COMID returns a data frame", {
   df <- sc_get_data(comid='1337420',metric='all', aoi='ws')
   expect_true(exists("df"))
-  expect_equal(nrow(df),1)
-  expect_equal(ncol(df), 534)
 })

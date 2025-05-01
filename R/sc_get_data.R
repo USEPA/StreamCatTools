@@ -76,7 +76,7 @@
 #'
 #' df <- sc_get_data(metric='thalwagdepth', comid='179,1337,1337420',aoi='other')
 #' 
-#' df <- sc_get_data(comid='179', aoi='cat', metric='all')
+#' df <- sc_get_data(comid='179', aoi='ws', metric='all')
 #'  }
 #' @export
 

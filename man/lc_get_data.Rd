@@ -57,7 +57,7 @@ comid='24083377')
 
 df <- lc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')
 
-df <- lc_get_data(metric='pctwdwet2006', aoi='ws', county='19')
+df <- lc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
 
 df <- lc_get_data(metric='pcturb,d2006', aoi='ws',
 comid='24083377', showAreaSqKm=FALSE, showPctFull=TRUE)
