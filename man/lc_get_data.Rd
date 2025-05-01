@@ -20,11 +20,7 @@ lc_get_data(
 \arguments{
 \item{comid}{Return metric information for specific COMIDs.  Needs to be a character string
 and function will convert to this format if needed.
-Syntax: comid=<comid1>,<comid2>
-
-#' @param state Return metric information for COMIDs within a specific state. Use a state's abbreviation to
-query for a given state.
-Syntax: state=<state1>,<state2>}
+Syntax: comid=<comid1>,<comid2>}
 
 \item{metric}{Name(s) of metrics to query
 Syntax: name=<name1>,<name2>}
@@ -40,6 +36,10 @@ Values: true|false}
 
 \item{showPctFull}{Return the pctfull for each dataset. The default value is false.
 Values: true|false}
+
+\item{state}{Return metric information for COMIDs within a specific state. Use a state's abbreviation to
+query for a given state.
+Syntax: state=<state1>,<state2>}
 
 \item{county}{Return metric information for COMIDs within a specific county.
 Users must use the FIPS code, not county name, as a way to disambiguate counties.

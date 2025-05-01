@@ -19,7 +19,7 @@
 #' and function will convert to this format if needed.
 #' Syntax: comid=<comid1>,<comid2>
 #' 
-#' #' @param state Return metric information for COMIDs within a specific state. Use a state's abbreviation to
+#' @param state Return metric information for COMIDs within a specific state. Use a state's abbreviation to
 #' query for a given state.
 #' Syntax: state=<state1>,<state2>
 #'
