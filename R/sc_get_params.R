@@ -23,6 +23,10 @@
 #' params <- sc_get_params(param='county')
 
 sc_get_params <- function(param = NULL) {
+  UUID <- DATE_DOWNLOADED <- METADATA <- FINAL_TABLE<- NULL
+  INDICATOR_CATEGORY <- METRIC_NAME <- AOI <- YEAR <- NULL
+  WEBTOOL_NAME <- METRIC_UNITS <- METRIC_DESCRIPTION <- DSID <- NULL
+  SOURCE_NAME <- SOURCE_URL <- UUID <- DATE_DOWNLOADED <- NULL
   resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/metrics")$items
   if (param=='areaOfInterest'){
     params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]

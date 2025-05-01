@@ -43,7 +43,7 @@
 #' 
 #' df <- lc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
 #' 
-#' df <- lc_get_data(metric='pcturb,d2006', aoi='ws',
+#' df <- lc_get_data(metric='pcturbmd2006', aoi='ws',
 #' comid='24083377', showAreaSqKm=FALSE, showPctFull=TRUE)
 #'
 #' df <- lc_get_data(metric='pcturbmd2006,damdens',
