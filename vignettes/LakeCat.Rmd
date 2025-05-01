@@ -95,7 +95,7 @@ knitr::kable(df)
 ## Get data for county
 In this example we access a couple variables at the watershed scale for the area of interest of a county (Benton County in this case) using the `sc_get_data` function. 
 ```{r countydata}
-df <- lc_get_data(metric='pctwdwet2006', aoi='ws', county='19')
+df <- lc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
 knitr::kable(head(df))
 ```
 

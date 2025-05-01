@@ -115,12 +115,12 @@ returns a tibble of information about StreamCat metrics):</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 11</span></span></span>
 <span><span class="co">#&gt;   category     metric aoi   year  short_description long_description units  dsid</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Anthropogen… AgKff… Cat,… <span style="color: #BB0000;">NA</span>    Ag Soil Erodibil… Mean of STATSGO… Unit…    28</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Natural      Al2O3… Cat,… <span style="color: #BB0000;">NA</span>    Mean Lithologica… Mean % of litho… Perc…    13</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Base         AreaS… Ws    <span style="color: #BB0000;">NA</span>    Watershed Area S… Watershed area … Squa…    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Natural      BFI[A… Cat,… <span style="color: #BB0000;">NA</span>    Base Flow Index   Base flow is th… Perc…     2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Natural      Bankf… Other <span style="color: #BB0000;">NA</span>    Predicted Bankfu… Predicted bankf… Mete…   125</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Natural      Bankf… Other <span style="color: #BB0000;">NA</span>    Predicted Bankfu… Predicted bankf… Mete…   125</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Anthropogen… NABD_… Cat,… <span style="color: #BB0000;">NA</span>    NABD Dam Density  Density of geor… Coun…    33</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Anthropogen… NABD_… Cat,… <span style="color: #BB0000;">NA</span>    NABD NID Reservo… Volume all rese… Cubi…    33</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Anthropogen… NABD_… Cat,… <span style="color: #BB0000;">NA</span>    NABD Normal Rese… Volume all rese… Cubi…    33</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Natural      Preci… Cat,… <span style="color: #BB0000;">NA</span>    Surplus Precipit… This dataset re… Kilo…    75</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Natural      Rckde… Cat,… <span style="color: #BB0000;">NA</span>    Mean Bedrock Dep… Mean depth (cm)… Cent…    56</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Soils        agkff… Cat,… <span style="color: #BB0000;">NA</span>    Ag Soil Erodibil… Mean of STATSGO… Unit…    28</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: dataset &lt;chr&gt;, source_name &lt;chr&gt;, source_URL &lt;chr&gt;</span></span></span></code></pre></div>
 <p>Look up the display name or names for a metric using the
 <code>lc_fullname</code> function via the API</p>
@@ -128,13 +128,12 @@ returns a tibble of information about StreamCat metrics):</p>
 <code class="sourceCode R"><span><span class="va">metric</span><span class="op">=</span><span class="st">'pcthbwet2016'</span></span>
 <span><span class="va">fullname</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_fullname.html">lc_fullname</a></span><span class="op">(</span><span class="va">metric</span><span class="op">)</span></span>
 <span><span class="va">fullname</span></span>
-<span><span class="co">#&gt; [1] "Herbaceous Wetland Percentage 2016"</span></span></code></pre></div>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metric</span><span class="op">=</span><span class="st">'pctdecid2019,fert'</span></span>
 <span><span class="va">fullname</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_fullname.html">lc_fullname</a></span><span class="op">(</span><span class="va">metric</span><span class="op">)</span></span>
 <span><span class="va">fullname</span></span>
-<span><span class="co">#&gt; [1] "Deciduous Forest Percentage 2019"                   </span></span>
-<span><span class="co">#&gt; [2] "Synthetic Nitrogen Fertilizer Application Mean Rate"</span></span></code></pre></div>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="get-waterbody-comids">Get Waterbody COMIDs<a class="anchor" aria-label="anchor" href="#get-waterbody-comids"></a>
@@ -239,7 +238,7 @@ view.</p>
 for the area of interest of a county (Benton County in this case) using
 the <code>sc_get_data</code> function.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_data.html">lc_get_data</a></span><span class="op">(</span>metric<span class="op">=</span><span class="st">'pctwdwet2006'</span>, aoi<span class="op">=</span><span class="st">'ws'</span>, county<span class="op">=</span><span class="st">'19'</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_data.html">lc_get_data</a></span><span class="op">(</span>metric<span class="op">=</span><span class="st">'pctwdwet2006'</span>, aoi<span class="op">=</span><span class="st">'ws'</span>, county<span class="op">=</span><span class="st">'41003'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -248,28 +247,28 @@ the <code>sc_get_data</code> function.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">531</td>
-<td align="right">8.687577</td>
+<td align="right">23768945</td>
+<td align="right">0.1662971</td>
 </tr>
 <tr class="even">
-<td align="right">541</td>
-<td align="right">88.775510</td>
+<td align="right">23768987</td>
+<td align="right">0.0000000</td>
 </tr>
 <tr class="odd">
-<td align="right">581</td>
-<td align="right">5.319404</td>
+<td align="right">23888156</td>
+<td align="right">0.4161465</td>
 </tr>
 <tr class="even">
-<td align="right">685</td>
-<td align="right">14.137984</td>
+<td align="right">23768895</td>
+<td align="right">0.1344990</td>
 </tr>
 <tr class="odd">
-<td align="right">699</td>
-<td align="right">2.339181</td>
+<td align="right">23769007</td>
+<td align="right">1.0194538</td>
 </tr>
 <tr class="even">
-<td align="right">735</td>
-<td align="right">11.732688</td>
+<td align="right">23768947</td>
+<td align="right">0.5524862</td>
 </tr>
 </tbody>
 </table>
@@ -278,13 +277,48 @@ the <code>sc_get_data</code> function.</p>
 <h2 id="get-all-metrics-for-comids-or-an-area-of-interest">Get all metrics for COMIDs or an Area of Interest<a class="anchor" aria-label="anchor" href="#get-all-metrics-for-comids-or-an-area-of-interest"></a>
 </h2>
 <p>We can also get all LakeCat metrics for a set of COMIDs or an area of
-interest. Please do not request all metrics for conus in order not to
-overload requests to the server.</p>
+interest. <strong>Please do not request all metrics for conus in order
+not to overload requests to the server.</strong></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_data.html">lc_get_data</a></span><span class="op">(</span>comid<span class="op">=</span><span class="st">'23783629'</span>, aoi<span class="op">=</span><span class="st">'ws'</span>, metric<span class="op">=</span><span class="st">'all'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
 <col width="0%">
 <col width="0%">
 <col width="0%">
@@ -762,6 +796,41 @@ overload requests to the server.</p>
 <th align="right">pctmodsev2014ws</th>
 <th align="right">pctnonprocmask2014ws</th>
 <th align="right">pctundsev2014ws</th>
+<th align="right">mtbs1984ws</th>
+<th align="right">mtbs1985ws</th>
+<th align="right">mtbs1986ws</th>
+<th align="right">mtbs1987ws</th>
+<th align="right">mtbs1988ws</th>
+<th align="right">mtbs1989ws</th>
+<th align="right">mtbs1990ws</th>
+<th align="right">mtbs1991ws</th>
+<th align="right">mtbs1992ws</th>
+<th align="right">mtbs1993ws</th>
+<th align="right">mtbs1994ws</th>
+<th align="right">mtbs1995ws</th>
+<th align="right">mtbs1996ws</th>
+<th align="right">mtbs1997ws</th>
+<th align="right">mtbs1998ws</th>
+<th align="right">mtbs1999ws</th>
+<th align="right">mtbs2000ws</th>
+<th align="right">mtbs2001ws</th>
+<th align="right">mtbs2002ws</th>
+<th align="right">mtbs2003ws</th>
+<th align="right">mtbs2004ws</th>
+<th align="right">mtbs2005ws</th>
+<th align="right">mtbs2006ws</th>
+<th align="right">mtbs2007ws</th>
+<th align="right">mtbs2008ws</th>
+<th align="right">mtbs2009ws</th>
+<th align="right">mtbs2010ws</th>
+<th align="right">mtbs2011ws</th>
+<th align="right">mtbs2012ws</th>
+<th align="right">mtbs2013ws</th>
+<th align="right">mtbs2014ws</th>
+<th align="right">mtbs2015ws</th>
+<th align="right">mtbs2016ws</th>
+<th align="right">mtbs2017ws</th>
+<th align="right">mtbs2018ws</th>
 <th align="right">agkffactws</th>
 <th align="right">kffactws</th>
 <th align="right">huden2010ws</th>
@@ -770,6 +839,7 @@ overload requests to the server.</p>
 <th align="right">inorgnwetdep2008ws</th>
 <th align="right">nh42008ws</th>
 <th align="right">no32008ws</th>
+<th align="right">sn2008ws</th>
 <th align="right">pctalkintruvolws</th>
 <th align="right">pctalluvcoastws</th>
 <th align="right">pctcarbresidws</th>
@@ -904,6 +974,7 @@ overload requests to the server.</p>
 <th align="right">rdcrsws</th>
 <th align="right">rddensws</th>
 <th align="right">runoffws</th>
+<th align="right">wetindexws</th>
 <th align="right">damdensws</th>
 <th align="right">damnidstorws</th>
 <th align="right">damnrmstorws</th>
@@ -928,8 +999,13 @@ overload requests to the server.</p>
 <th align="right">pctnonagintrodmanagvegws</th>
 <th align="right">pestic1997ws</th>
 <th align="right">precip8110ws</th>
+<th align="right">tmax8110ws</th>
+<th align="right">tmean8110ws</th>
+<th align="right">tmin8110ws</th>
 <th align="right">precip2008ws</th>
 <th align="right">precip2009ws</th>
+<th align="right">tmean2008ws</th>
+<th align="right">tmean2009ws</th>
 <th align="right">cbnfws</th>
 <th align="right">fertws</th>
 <th align="right">manurews</th>
@@ -940,8 +1016,8 @@ overload requests to the server.</p>
 <th align="right">mgows</th>
 <th align="right">na2ows</th>
 <th align="right">p2o5ws</th>
-<th align="right">sws</th>
 <th align="right">sio2ws</th>
+<th align="right">sws</th>
 <th align="right">bfiws</th>
 <th align="right">canaldensws</th>
 <th align="right">clayws</th>
@@ -1159,9 +1235,12 @@ overload requests to the server.</p>
 <th align="right">pcturbop2019ws</th>
 <th align="right">pctwdwet2019ws</th>
 <th align="right">npdesdensws</th>
+<th align="right">superfunddensws</th>
+<th align="right">tridensws</th>
 <th align="right">omws</th>
 <th align="right">permws</th>
 <th align="right">rckdepws</th>
+<th align="right">wtdepws</th>
 <th align="right">pctfrstloss2001ws</th>
 <th align="right">pctfrstloss2002ws</th>
 <th align="right">pctfrstloss2003ws</th>
@@ -1183,32 +1262,22 @@ overload requests to the server.</p>
 <th align="right">pctimp2013ws</th>
 <th align="right">pctimp2016ws</th>
 <th align="right">pctimp2019ws</th>
-<th align="right">pctimp2001slp20ws</th>
-<th align="right">pctimp2004slp20ws</th>
-<th align="right">pctimp2006slp20ws</th>
-<th align="right">pctimp2008slp20ws</th>
-<th align="right">pctimp2011slp20ws</th>
-<th align="right">pctimp2013slp20ws</th>
-<th align="right">pctimp2016slp20ws</th>
-<th align="right">pctimp2019slp20ws</th>
-<th align="right">pctimp2001slp10ws</th>
-<th align="right">pctimp2004slp10ws</th>
-<th align="right">pctimp2006slp10ws</th>
-<th align="right">pctimp2008slp10ws</th>
-<th align="right">pctimp2011slp10ws</th>
-<th align="right">pctimp2013slp10ws</th>
-<th align="right">pctimp2016slp10ws</th>
-<th align="right">pctimp2019slp10ws</th>
-<th align="right">sn2008ws</th>
-<th align="right">wetindexws</th>
-<th align="right">tmax8110ws</th>
-<th align="right">tmean8110ws</th>
-<th align="right">tmin8110ws</th>
-<th align="right">tmean2008ws</th>
-<th align="right">tmean2009ws</th>
-<th align="right">superfunddensws</th>
-<th align="right">tridensws</th>
-<th align="right">wtdepws</th>
+<th align="right">pctimpslphigh2001ws</th>
+<th align="right">pctimpslphigh2004ws</th>
+<th align="right">pctimpslphigh2006ws</th>
+<th align="right">pctimpslphigh2008ws</th>
+<th align="right">pctimpslphigh2011ws</th>
+<th align="right">pctimpslphigh2013ws</th>
+<th align="right">pctimpslphigh2016ws</th>
+<th align="right">pctimpslphigh2019ws</th>
+<th align="right">pctimpslpmid2001ws</th>
+<th align="right">pctimpslpmid2004ws</th>
+<th align="right">pctimpslpmid2006ws</th>
+<th align="right">pctimpslpmid2008ws</th>
+<th align="right">pctimpslpmid2011ws</th>
+<th align="right">pctimpslpmid2013ws</th>
+<th align="right">pctimpslpmid2016ws</th>
+<th align="right">pctimpslpmid2019ws</th>
 <th align="right">slopews</th>
 <th align="right">wdrw_ldws</th>
 </tr></thead>
@@ -1227,6 +1296,41 @@ overload requests to the server.</p>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">5.637929</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1.875955</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.543233</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">5.052282</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0.2356484</td>
 <td align="right">0.5842783</td>
 <td align="right">0.7493086</td>
@@ -1234,6 +1338,7 @@ overload requests to the server.</p>
 <td align="right">1.774634</td>
 <td align="right">1.261661</td>
 <td align="right">3.530727</td>
+<td align="right">224.5275</td>
 <td align="right">0</td>
 <td align="right">3.954554</td>
 <td align="right">0</td>
@@ -1368,6 +1473,7 @@ overload requests to the server.</p>
 <td align="right">0.2351888</td>
 <td align="right">1.193335</td>
 <td align="right">1822.654</td>
+<td align="right">654.5787</td>
 <td align="right">0.0008875</td>
 <td align="right">498097.5</td>
 <td align="right">169681.6</td>
@@ -1392,8 +1498,13 @@ overload requests to the server.</p>
 <td align="right">0.3268504</td>
 <td align="right">0.0128735</td>
 <td align="right">2205.557</td>
+<td align="right">12.76105</td>
+<td align="right">7.264357</td>
+<td align="right">-4.038394</td>
 <td align="right">2187.239</td>
 <td align="right">1892.191</td>
+<td align="right">6.940714</td>
+<td align="right">7.336437</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -1404,8 +1515,8 @@ overload requests to the server.</p>
 <td align="right">4.26524</td>
 <td align="right">2.812915</td>
 <td align="right">0.2878032</td>
-<td align="right">0.0297734</td>
 <td align="right">55.1177</td>
+<td align="right">0.0297734</td>
 <td align="right">68.62486</td>
 <td align="right">0</td>
 <td align="right">14.52621</td>
@@ -1623,9 +1734,12 @@ overload requests to the server.</p>
 <td align="right">0.8217587</td>
 <td align="right">0.1733297</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">2.803794</td>
 <td align="right">12.44819</td>
 <td align="right">120.0767</td>
+<td align="right">181.6733</td>
 <td align="right">0.0798755</td>
 <td align="right">1.324096</td>
 <td align="right">2.41136</td>
@@ -1663,16 +1777,6 @@ overload requests to the server.</p>
 <td align="right">0.1474512</td>
 <td align="right">0.1477601</td>
 <td align="right">0.1518069</td>
-<td align="right">224.5275</td>
-<td align="right">654.5787</td>
-<td align="right">12.76105</td>
-<td align="right">7.264357</td>
-<td align="right">-4.038394</td>
-<td align="right">6.940714</td>
-<td align="right">7.336437</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">181.6733</td>
 <td align="right">34.34347</td>
 <td align="right">0</td>
 </tr></tbody>
