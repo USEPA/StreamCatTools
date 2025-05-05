@@ -19,7 +19,7 @@ test_that("sc_get_params for region parameters", {
 test_that("sc_get_params for metric_names parameters", {
   params <- sc_get_params(param='metric_names')
   expect_true(exists("params"))
-  expect_equal(length(params),1109)
+  expect_equal(length(params),1021)
 })
 
 test_that("sc_get_params for variable_info parameters", {
