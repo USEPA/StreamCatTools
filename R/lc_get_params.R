@@ -35,6 +35,7 @@ lc_get_params <- function(param = NULL) {
     params <- params[!params %in% c('catrp100','wsrp100','other')]
   }  else if(param == 'metric_names') {
     params <- resp$name_options[[1]][[1]]
+    params <- params[!duplicated(params)]
     params <- params[order(params)]
   } else if(param == 'variable_info') {
     params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
