@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 ```
 
 ## Accessing and working with [LakeCat](https://www.epa.gov/national-aquatic-resource-surveys/lakecat-dataset)
-The `StreamCatTools` package was designed to simplify the use of [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) data in R, leveraging the new [API for StreamCat](https://intranet.ord.epa.gov/sswr/streamcat-web-tools).  We now have functionality in the [StreamCat API](https://java.epa.gov/StreamCAT/metrics/about.jsp) for accessing and working with LakeCat data and have added functions in `StreamCatTools` to access LakeCata data in R using the API.
+The `StreamCatTools` package was designed to simplify the use of [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) data in R, leveraging the new [API for StreamCat](https://api.epa.gov/StreamCat/streams/metrics).  We now have functionality in the [StreamCat API](https://api.epa.gov/StreamCat/streams/metrics) for accessing and working with LakeCat data and have added functions in `StreamCatTools` to access LakeCata data in R using the API.
 
 We can actually pull data into R from LakeCat by simply passing a URL to extract from json. We have to hard-wire parameters and are limited in the number of records returned through a `GET` request.
 ```{r, message=FALSE, eval=FALSE}
