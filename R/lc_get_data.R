@@ -85,8 +85,7 @@ lc_get_data <- function(comid = NULL,
                         conus = NULL,
                         countOnly = NULL) {
   # Base API URL.
-  # req <- httr2::request('https://api.epa.gov/StreamCat/lakes/metrics')
-  req <- httr2::request('https://ordspub.epa.gov/ords/streamcat/streamcat/lakecat/metrics')
+  req <- httr2::request('https://api.epa.gov/StreamCat/lakes/metrics')
   # Collapse comids into a single string separated by a comma.
   if (!is.null(comid))
     comid <- paste(comid, collapse = ",")
