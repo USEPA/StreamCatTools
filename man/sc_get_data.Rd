@@ -31,7 +31,7 @@ if the metric does not have data for the riparian area, no data is returned for 
 Certain metrics have no AOI specified for StreamCat so AOI needs to be left null.  These
 metrics are: BankfullDepth, BankfullWidth, CHEM_V2_1, CONN, HABT, HYD, ICI, IWI, TEMP, WettedWidth,
 prg_bmmi, and all the mast, msst, mwst metrics
- 
+
 Syntax: areaOfInterest=<value1>,<value2>
 Values: cat|ws|catrp100|wsrp100}
 
@@ -51,7 +51,7 @@ Users must use the FIPS code, not county name, as a way to disambiguate counties
 Syntax: county=<county1>,<county1>}
 
 \item{region}{Return metric information for COMIDs within a specified hydroregion.
-Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L' 
+Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L'
 Syntax: region=<regionid1>,<regionid2>}
 
 \item{conus}{Return all COMIDs in the conterminous United States.

@@ -102,7 +102,7 @@ knitr::kable(head(df))
 ```
 
 ## Get all metrics for COMIDs or an Area of Interest
-We can also get all StreamCat metrics for a set of COMIDs or an area of interest.  **Please do not request all metrics for conus in order not to overload requests to the server**.
+We can also get all StreamCat metrics for a set of COMIDs or an area of interest.  **Please do not request metric='all' and aoi='conus' in order not to overload requests to the server.  Requesting metric='all' for a state or multiple states or hydroregions will also take a long time to process**.
 ```{r all}
 df <- sc_get_data(comid='179', aoi='cat', metric='all')
 knitr::kable(head(df))

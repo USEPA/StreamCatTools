@@ -117,7 +117,10 @@ sc_get_data <- function(comid = NULL,
   }
   if (!is.null(conus) & metric=='all'){
     stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
-  }  
+  } 
+  if (metric=='all'){
+    warning("Using metric='all' with a large aoi may take a considerable amount of time to return results - request may timeout if multiple AOIs are requested")
+  }
   metric = tolower(metric)
   items = unlist(strsplit(metric,','))
   items = gsub(" ","",items)

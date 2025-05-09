@@ -13,15 +13,21 @@ Authors@R: c(person(given = "Marc",
              person(given = "Travis",
                     family = "Hudson",
                     role = "ctb",
-                    email = "hudson.travis@epa.gov"),       
+                    email = "travish1842@gmail.com"),
+             person(given = "Allen",
+                    family = "Brookes",
+                    role = "ctb",
+                    email = "brookes.allen@epa.gov"),
              person(given = "David",
                     family = "Rebhuhn",
                     role = "ctb",
-                    email = "rebhuhn.david@epa.gov"),
+                    email = "rebhuhnd@gmail.com"),
              person(given = "Zachary",
                     family = "Smith",
                     role = "ctb"))       
-Description: Tools for using the StreamCat and LakeCat API and interacting with StreamCat and LakeCatdata.
+Description: Functions for using the StreamCat and LakeCat API and interacting with the
+             StreamCat and LakeCat database. Convenience functions in the package wrap
+             the API for StreamCat on <https://api.epa.gov/StreamCat/streams/metrics>
 Depends: R (>= 4.0)
 Imports: 
     sf,
@@ -40,7 +46,8 @@ Suggests:
   magrittr,
   readr,
   tidyr,
-  stringr
+  stringr,
+  curl (>= 6.0.0)
 Encoding: UTF-8
 URL: https://usepa.github.io/StreamCatTools/, https://github.com/USEPA/StreamCatTools
 VignetteBuilder: knitr,rmarkdown
