@@ -289,3 +289,7 @@ sc_nlcd <- function(year = '2019',
   # End of function. Return a data frame.
   return(final_df)
 }
+
+ignore_unused_imports <- function() {
+  curl::curl_parse_url()
+}
