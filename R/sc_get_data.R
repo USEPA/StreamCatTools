@@ -127,7 +127,7 @@ sc_get_data <- function(comid = NULL,
   items = gsub("\n","",items)
   params <- sc_get_params(param='metric_names')
   if (metric != 'all' & !all(items %in% params)){
-    stop("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
+    warning("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
   }
   df <- req |>
     httr2::req_method("POST") |>
