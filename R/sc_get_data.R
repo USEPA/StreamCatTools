@@ -96,6 +96,9 @@ sc_get_data <- function(comid = NULL,
   # Collapse comids into a single string separated by a comma.
   if (!is.null(comid)){
     comid <- paste(comid, collapse = ",")
+    if (length(strsplit(comid, ",")[[1]]) > 700){
+      comids_split <- split(COMIDs, ceiling(seq_along(COMIDs)/750))
+    }
   }
   # Force old and odd naming convention to behave correctly
   if (!is.null(aoi)){
@@ -119,7 +122,7 @@ sc_get_data <- function(comid = NULL,
     stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
   } 
   if (metric=='all'){
-    warning("Using metric='all' with a large aoi may take a considerable amount of time to return results - request may timeout if multiple AOIs are requested")
+    message("Using metric='all' with a large aoi may take a considerable amount of time to return results - request may timeout if multiple AOIs are requested")
   }
   metric = tolower(metric)
   items = unlist(strsplit(metric,','))
@@ -127,8 +130,33 @@ sc_get_data <- function(comid = NULL,
   items = gsub("\n","",items)
   params <- sc_get_params(param='metric_names')
   if (metric != 'all' & !all(items %in% params)){
-    warning("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
+    message("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
   }
+  if (exists('comid_split')){
+    create_post_request <- function(comids) {
+      df <- req |>
+        httr2::req_method("POST") |>
+        httr2::req_headers(comid=comids,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
+                           showpctfull=showPctFull,state=state,county=county,region=region,
+                           conus=conus,countOnly=countOnly) |>
+        httr2::req_method("POST") |>
+        httr2::req_throttle(rate = 30 / 60) |> 
+        httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
+        httr2::req_perform() |> 
+        httr2::resp_body_string() |> 
+        jsonlite::fromJSON() 
+      # Return a data frame
+      if (is.null(countOnly)){
+        df <- df$items  |> 
+          dplyr::select(comid, dplyr::everything())
+        return(df)
+      } else return(df$items)
+    }
+    # Create a list of requests using purrr::map()
+    df <- purrr::map_dfr(comids_split, create_post_request)
+    return(df)
+    
+  } else {
   df <- req |>
     httr2::req_method("POST") |>
     httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
@@ -146,6 +174,7 @@ sc_get_data <- function(comid = NULL,
         dplyr::select(comid, dplyr::everything())
       return(df)
     } else return(df$items)
+  }
 }
 
 
