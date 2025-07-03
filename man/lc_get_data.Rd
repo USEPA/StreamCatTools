@@ -85,7 +85,6 @@ df <- lc_get_data(metric='pcturbmd2006,damdens',
 aoi='cat,ws', comid='23783629,23794487,23812618',
 countOnly=TRUE)
 
-df <- lc_get_data(comid='23783629', aoi='ws', metric='all')
 
  }
 }

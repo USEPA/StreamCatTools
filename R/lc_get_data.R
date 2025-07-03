@@ -69,7 +69,6 @@
 #' aoi='cat,ws', comid='23783629,23794487,23812618',
 #' countOnly=TRUE)
 #' 
-#' df <- lc_get_data(comid='23783629', aoi='ws', metric='all')
 #'
 #'  }
 #' @export
@@ -87,8 +86,12 @@ lc_get_data <- function(comid = NULL,
   # Base API URL.
   req <- httr2::request('https://api.epa.gov/StreamCat/lakes/metrics')
   # Collapse comids into a single string separated by a comma.
-  if (!is.null(comid))
+  if (!is.null(comid)){
     comid <- paste(comid, collapse = ",")
+    if (length(strsplit(comid, ",")[[1]]) > 700){
+      comids_split <- split(comid, ceiling(seq_along(comid)/700))
+    }
+  }
   # Force old and odd naming convention to behave correctly
   if (!is.null(aoi)){
     if (aoi == 'catchment') aoi <- 'cat'
@@ -100,13 +103,8 @@ lc_get_data <- function(comid = NULL,
   if (!is.null(conus) & metric=='all'){
     stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
   } 
-  metric = tolower(metric)
-  items = unlist(strsplit(metric,','))
-  items = gsub(" ","",items)
-  items = gsub("\n","",items)
-  params <- sc_get_params(param='metric_names')
-  if (metric != 'all' & !all(items %in% params)){
-    stop("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
+  if (metric=='all'){
+    message("Using metric='all' with a large aoi may take a considerable amount of time to return results - request may timeout if multiple AOIs are requested")
   }
   metric = tolower(metric)
   items = unlist(strsplit(metric,','))
@@ -114,25 +112,59 @@ lc_get_data <- function(comid = NULL,
   items = gsub("\n","",items)
   params <- sc_get_params(param='metric_names')
   if (metric != 'all' & !all(items %in% params)){
-    stop("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
+    message("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
   }
-  df <- req |>
-    httr2::req_method("POST") |>
-    httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
-                       showpctfull=showPctFull,state=state,county=county,region=region,
-                       conus=conus,countOnly=countOnly) |>
-    httr2::req_method("POST") |>
-    httr2::req_throttle(rate = 30 / 60) |> 
-    httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
-    httr2::req_perform() |> 
-    httr2::resp_body_string() |> 
-    jsonlite::fromJSON()
-  # Return a data frame
-  if (is.null(countOnly)){
-    df <- df$items  |> 
-      dplyr::select(comid, dplyr::everything())
+  metric = tolower(metric)
+  items = unlist(strsplit(metric,','))
+  items = gsub(" ","",items)
+  items = gsub("\n","",items)
+  params <- sc_get_params(param='metric_names')
+  if (metric != 'all' & !all(items %in% params)){
+    message("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='name') to list valid metric names for StreamCat")
+  }
+  if (exists('comid_split')){
+    create_post_request <- function(comids) {
+      df <- req |>
+        httr2::req_method("POST") |>
+        httr2::req_headers(comid=comids,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
+                           showpctfull=showPctFull,state=state,county=county,region=region,
+                           conus=conus,countOnly=countOnly) |>
+        httr2::req_method("POST") |>
+        httr2::req_throttle(rate = 30 / 60) |> 
+        httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
+        httr2::req_perform() |> 
+        httr2::resp_body_string() |> 
+        jsonlite::fromJSON() 
+      # Return a data frame
+      if (is.null(countOnly)){
+        df <- df$items  |> 
+          dplyr::select(comid, dplyr::everything())
+        return(df)
+      } else return(df$items)
+    }
+    # Create a list of requests using purrr::map()
+    df <- purrr::map_dfr(comids_split, create_post_request)
     return(df)
-  } else return(df$items)
+    
+  } else {
+    df <- req |>
+      httr2::req_method("POST") |>
+      httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
+                         showpctfull=showPctFull,state=state,county=county,region=region,
+                         conus=conus,countOnly=countOnly) |>
+      httr2::req_method("POST") |>
+      httr2::req_throttle(rate = 30 / 60) |> 
+      httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
+      httr2::req_perform() |> 
+      httr2::resp_body_string() |> 
+      jsonlite::fromJSON()
+    # Return a data frame
+    if (is.null(countOnly)){
+      df <- df$items  |> 
+        dplyr::select(comid, dplyr::everything())
+      return(df)
+    } else return(df$items)
+  }
 }
 
 #' @title Get NLCD Data
