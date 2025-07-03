@@ -1,6 +1,9 @@
 # StreamCatTools 0.6.0
 
+-   Added functionality in `sc_get_data` and `lc_get_data` to accommodate large numbers (e.g. > 700) COMIDs in header for POST request
+
 # StreamCatTools 0.5.0
+
 -   Overhauled `sc_get_data` and `lc_get_data` functions to be able to pull all metrics from StreamCat or LakeCat for an area of interest
 -   Updated `sc_get_data` and `lc_get_data` to be able to pass hundreds of COMIDs at a time as a function parameter and not error out in call to server
 -   Updated `sc_get_params` and `lc_get_params` to now return variable information, as well as just metric names and full names, and return tables of state and county abbreviations, names and FIPS codes
