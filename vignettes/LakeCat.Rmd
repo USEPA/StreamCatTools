@@ -99,13 +99,6 @@ df <- lc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
 knitr::kable(head(df))
 ```
 
-## Get all metrics for COMIDs or an Area of Interest
-We can also get all LakeCat metrics for a set of COMIDs or an area of interest.  **Please do not request all metrics for conus in order not to overload requests to the server.**
-```{r all}
-df <- lc_get_data(comid='23783629', aoi='ws', metric='all')
-knitr::kable(head(df))
-```
-
 ## Get NLCD data
 
 In this example we access National Land Cover Dataset (NLCD) data for 2019, just at the catchment level for several COMIDs using the `lc_nlcd` function. Loads data into a tibble we can view.

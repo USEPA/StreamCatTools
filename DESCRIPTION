@@ -47,7 +47,8 @@ Suggests:
   magrittr,
   readr,
   tidyr,
-  stringr
+  stringr,
+  purrr
 Encoding: UTF-8
 URL: https://usepa.github.io/StreamCatTools/, https://github.com/USEPA/StreamCatTools
 VignetteBuilder: knitr,rmarkdown

@@ -88,7 +88,6 @@ lc_get_params <- function(param = NULL) {
 
 lc_fullname <- function(metric = NULL) {
   resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/lakes/datadictionary")$items
-  resp <- as.data.frame(resp$dictionary)
-  result <- unique(resp[resp$metric_prefix %in% unlist(strsplit(metric, split = ',')), 1])
+  result <- unique(resp$short_display_name[resp$metric_prefix==metric])
   return(result)
 }

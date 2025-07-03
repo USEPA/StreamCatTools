@@ -69,7 +69,6 @@
 #' aoi='cat,ws', comid='23783629,23794487,23812618',
 #' countOnly=TRUE)
 #' 
-#' df <- lc_get_data(comid='23783629', aoi='ws', metric='all')
 #'
 #'  }
 #' @export
@@ -90,7 +89,7 @@ lc_get_data <- function(comid = NULL,
   if (!is.null(comid)){
     comid <- paste(comid, collapse = ",")
     if (length(strsplit(comid, ",")[[1]]) > 700){
-      comids_split <- split(COMIDs, ceiling(seq_along(COMIDs)/750))
+      comids_split <- split(comid, ceiling(seq_along(comid)/700))
     }
   }
   # Force old and odd naming convention to behave correctly

@@ -97,7 +97,7 @@ sc_get_data <- function(comid = NULL,
   if (!is.null(comid)){
     comid <- paste(comid, collapse = ",")
     if (length(strsplit(comid, ",")[[1]]) > 700){
-      comids_split <- split(COMIDs, ceiling(seq_along(COMIDs)/750))
+      comids_split <- split(comid, ceiling(seq_along(comid)/700))
     }
   }
   # Force old and odd naming convention to behave correctly

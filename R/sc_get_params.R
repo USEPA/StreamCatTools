@@ -87,6 +87,6 @@ sc_get_params <- function(param = NULL) {
 
 sc_fullname <- function(metric = NULL) {
   resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/datadictionary")$items
-  result <- unique(resp[resp$metric_prefix %in% unlist(strsplit(metric, split = ',')), 1])
+  result <- unique(resp$short_display_name[resp$metric_prefix==metric])
   return(result)
 }
