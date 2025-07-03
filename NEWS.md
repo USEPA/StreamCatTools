@@ -1,3 +1,5 @@
+# StreamCatTools 0.6.0
+
 # StreamCatTools 0.5.0
 -   Overhauled `sc_get_data` and `lc_get_data` functions to be able to pull all metrics from StreamCat or LakeCat for an area of interest
 -   Updated `sc_get_data` and `lc_get_data` to be able to pass hundreds of COMIDs at a time as a function parameter and not error out in call to server
