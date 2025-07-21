@@ -66,25 +66,26 @@ specific metric data aggregated by area of interest, returned by comid(s), hydro
 
 
 <dl><dt id="arg-comid">comid<a class="anchor" aria-label="anchor" href="#arg-comid"></a></dt>
-<dd><p>Return metric information for specific COMIDs.  Needs to be a character string
-and function will convert to this format if needed.
+<dd><p>Return metric information for specific COMIDs. Can be a comma-delimited list, a character vector,
+or any object that can be coerced to a comma-delimited list with <code><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></code>.
+One of <code>comid</code>, <code>county</code>, <code>state</code>, or <code>region</code> is required unless <code>conus = TRUE</code>.
 Syntax: comid=&lt;comid1&gt;,&lt;comid2&gt;</p></dd>
 
 
 <dt id="arg-metric">metric<a class="anchor" aria-label="anchor" href="#arg-metric"></a></dt>
-<dd><p>Name(s) of metrics to query.  This is a comma delimited list of metrics or
-or if metric='all' then all metrics will be queried.
+<dd><p>Name(s) of metrics to query. Must be character string with comma-delimited list of metrics,
+or, if <code>metric='all'</code> then all metrics will be queried. <em><strong>Not</strong> case-sensitive</em>.
 Syntax: name=&lt;name1&gt;,&lt;name2&gt;</p></dd>
 
 
 <dt id="arg-aoi">aoi<a class="anchor" aria-label="anchor" href="#arg-aoi"></a></dt>
-<dd><p>Specify the area of interest described by a metric. For riparian area (catrp100 and wsrp100)
-if the metric does not have data for the riparian area, no data is returned for that AOI.
-Certain metrics have no AOI specified for StreamCat so AOI needs to be left null.  These
-metrics are: BankfullDepth, BankfullWidth, CHEM_V2_1, CONN, HABT, HYD, ICI, IWI, TEMP, WettedWidth,
-prg_bmmi, and all the mast, msst, mwst metrics</p>
+<dd><p>Name(s) of areas of interest to query.
+If a metric does not have data for a given AOI, no data is returned for that AOI.
+Certain metrics that have no AOI specified for StreamCat need the AOI to be specified as <code>'other'</code>. These
+metrics include: BankfullDepth, BankfullWidth, ThalwagDepth (sic), CHEM_V2_1, CONN, HABT, HYD, ICI, IWI, TEMP, WettedWidth,
+prg_bmmi, and all the mast, msst, mwst metrics. <em>Case-sensitive</em>.</p>
 <p>Syntax: areaOfInterest=&lt;value1&gt;,&lt;value2&gt;
-Values: cat|ws|catrp100|wsrp100</p></dd>
+Values: cat|ws|catrp100|wsrp100|other</p></dd>
 
 
 <dt id="arg-showareasqkm">showAreaSqKm<a class="anchor" aria-label="anchor" href="#arg-showareasqkm"></a></dt>
@@ -100,25 +101,27 @@ Values: true|false</p></dd>
 
 <dt id="arg-state">state<a class="anchor" aria-label="anchor" href="#arg-state"></a></dt>
 <dd><p>Return metric information for COMIDs within a specific state. Use a state's abbreviation to
-query for a given state.
+query for a given state. One of <code>comid</code>, <code>county</code>, <code>state</code>, or <code>region</code> is required unless <code>conus = TRUE</code>.
 Syntax: state=&lt;state1&gt;,&lt;state2&gt;</p></dd>
 
 
 <dt id="arg-county">county<a class="anchor" aria-label="anchor" href="#arg-county"></a></dt>
 <dd><p>Return metric information for COMIDs within a specific county.
 Users must use the FIPS code, not county name, as a way to disambiguate counties.
+One of <code>comid</code>, <code>county</code>, <code>state</code>, or <code>region</code> is required unless <code>conus = TRUE</code>.
 Syntax: county=&lt;county1&gt;,&lt;county1&gt;</p></dd>
 
 
 <dt id="arg-region">region<a class="anchor" aria-label="anchor" href="#arg-region"></a></dt>
 <dd><p>Return metric information for COMIDs within a specified hydroregion.
-Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L'
+Hydroregions are specified using full name i.e. <code>'Region01'</code>, <code>'Region03N'</code>, <code>'Region10L'</code>
+One of <code>comid</code>, <code>county</code>, <code>state</code>, or <code>region</code> is required unless <code>conus = TRUE</code>.
 Syntax: region=&lt;regionid1&gt;,&lt;regionid2&gt;</p></dd>
 
 
 <dt id="arg-conus">conus<a class="anchor" aria-label="anchor" href="#arg-conus"></a></dt>
 <dd><p>Return all COMIDs in the conterminous United States.
-The default value is false.
+The default value is false. If true, <code>comid</code>, <code>county</code>, <code>state</code>, and <code>region</code> are ignored.
 Values: true|false</p></dd>
 
 
@@ -159,7 +162,9 @@ Values: true|false</p></dd>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">sc_get_data</span><span class="op">(</span>metric<span class="op">=</span><span class="st">'pcturbmd2006,damdens'</span>,</span></span>
 <span class="r-in"><span>aoi<span class="op">=</span><span class="st">'cat,ws'</span>, comid<span class="op">=</span><span class="st">'179,1337,1337420'</span>, countOnly<span class="op">=</span><span class="st">'true'</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">sc_get_data</span><span class="op">(</span>metric<span class="op">=</span><span class="st">'thalwagdepth'</span>, comid<span class="op">=</span><span class="st">'179,1337,1337420'</span>,aoi<span class="op">=</span><span class="st">'other'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">sc_get_data</span><span class="op">(</span>metric<span class="op">=</span><span class="st">'thalwagdepth'</span>, comid<span class="op">=</span><span class="st">'179,1337,1337420'</span>, aoi<span class="op">=</span><span class="st">'other'</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">sc_get_data</span><span class="op">(</span>metric<span class="op">=</span><span class="st">'thalwagdepth'</span>, comid<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'179'</span>,<span class="st">'1337'</span>,<span class="st">'1337420'</span><span class="op">)</span>, aoi<span class="op">=</span><span class="st">'other'</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">sc_get_data</span><span class="op">(</span>comid<span class="op">=</span><span class="st">'179'</span>, aoi<span class="op">=</span><span class="st">'ws'</span>, metric<span class="op">=</span><span class="st">'all'</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using metric='all' with a large aoi may take a considerable amount of time to return results - request may timeout if multiple AOIs are requested</span>
