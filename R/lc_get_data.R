@@ -7,32 +7,37 @@
 #' @author
 #' Marc Weber
 #'
-#' @param metric Name(s) of metrics to query
+#' @param metric Name(s) of metrics to query. Must be character string with comma-delimited list of metrics. \emph{\strong{Not} case-sensitive}.
 #' Syntax: name=<name1>,<name2>
 #'
 #' @param aoi Specify the area of interest described by a metric. By default, all available areas of interest
-#' for a given metric are returned.
+#' for a given metric are returned. \emph{Case-sensitive}.
 #' Syntax: areaOfInterest=<value1>,<value2>
 #' Values: catchment|watershed|
 #'
-#' @param comid Return metric information for specific COMIDs.  Needs to be a character string
-#' and function will convert to this format if needed.
+#' @param comid Return metric information for specific COMIDs. Can be a comma-delimited list, a character vector,
+#' or any object that can be coerced to a comma-delimited list with \code{\link[base]{paste}}. 
+#' One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}.
 #' Syntax: comid=<comid1>,<comid2>
 #' 
 #' @param state Return metric information for COMIDs within a specific state. Use a state's abbreviation to
-#' query for a given state.
+#' query for a given state. One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}. 
+#' If specified \emph{and valid}, \code{comid} and \code{county} are ignored. \emph{Case-sensitive}.
 #' Syntax: state=<state1>,<state2>
 #'
 #' @param county Return metric information for COMIDs within a specific county.
 #' Users must use the FIPS code, not county name, as a way to disambiguate counties.
+#' One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}. If specified \emph{and valid}, \code{comid} is ignored.
 #' Syntax: county=<county1>,<county1>
 #'
 #' @param region Return metric information for COMIDs within a specified hydroregion.
-#' Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L' 
+#' Hydroregions are specified using full name i.e. \code{'Region01'}, \code{'Region03N'}, \code{'Region10L'}
+#' One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}.  
+#' If specified \emph{and valid}, \code{comid}, \code{county}, and \code{state} are ignored. \emph{Case-sensitive}.
 #' Syntax: region=<regionid1>,<regionid2>
 #'
-#' @param conus Return all COMIDs in the conterminous United States.
-#' The default value is false.
+#' @param conus Return all COMIDs in the conterminous United States. Character string (\emph{\strong{Not} case-sensitive}) or logical.
+#' The default value is false. If true, \code{comid}, \code{county}, \code{state}, and \code{region} are ignored.
 #' Values: true|false
 #'
 #' @param showAreaSqKm Return the area in square kilometers of a given area of interest.
@@ -46,7 +51,7 @@
 #' count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
 #' Values: true|false
 #'
-#' @return A tibble of desired StreamCat metrics
+#' @return A tibble of desired StreamCat metrics. If data are missing for all rows of a given metric, then the column for that metric will not exist. If data are missing for only some rows, then they will be specified with NA.
 #'
 #' @examples
 #' \donttest{
@@ -65,6 +70,9 @@
 #' df <- lc_get_data(metric='pcturbmd2006,damdens',
 #' aoi='cat,ws', comid='23783629,23794487,23812618')
 #'
+#' df <- lc_get_data(metric='pcturbmd2006,damdens',
+#' aoi='cat,ws', comid=c('23783629','23794487','23812618'))
+#' 
 #' df <- lc_get_data(metric='pcturbmd2006,damdens',
 #' aoi='cat,ws', comid='23783629,23794487,23812618',
 #' countOnly=TRUE)
@@ -97,7 +105,7 @@ lc_get_data <- function(comid = NULL,
     if (aoi == 'catchment') aoi <- 'cat'
     if (aoi == 'watershed') aoi <- 'ws'
   }
-  if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) |is.null(aoi)){
+  if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) | is.null(aoi)){
     stop('Must provide at a minimum valid comid, metric and aoi to the function')
   }
   if (!is.null(conus) & metric=='all'){
