@@ -41,7 +41,7 @@ lc_get_params <- function(param = NULL) {
     params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
       httr2::req_perform() |>
       httr2::resp_body_string() |>
-      readr::read_csv() |> 
+      readr::read_csv(show_col_types = FALSE) |> 
       dplyr::select(-UUID,-DATE_DOWNLOADED,-METADATA) |> 
       dplyr::rename(dataset=FINAL_TABLE,category=INDICATOR_CATEGORY, 
                     metric=METRIC_NAME,aoi=AOI, year=YEAR, 
