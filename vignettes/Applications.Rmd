@@ -36,9 +36,11 @@ nldi_feature <- list(featureSource = "comid", featureID = start_comid)
 flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
 
 # get StreamCat metrics
-comids <- paste(as.integer(flowline_nldi$UT_flowlines$nhdplus_comid), collapse=",",sep="")
+df <- sc_get_data(metric='pctimp2011', aoi='cat', comid=flowline_nldi$UT_flowlines$nhdplus_comid)
 
-df <- sc_get_data(metric='pctimp2011', aoi='cat', comid=comids)
+# We can also pull out comids the following way:
+# comids <- paste(as.integer(flowline_nldi$UT_flowlines$nhdplus_comid), collapse=",",sep="")
+# df <- sc_get_data(metric='pctimp2011', aoi='cat', comid=comids)
 
 flowline_nldi <- flowline_nldi$UT_flowlines
 flowline_nldi$PCTIMP2011CAT <- df$pctimp2011cat[match(flowline_nldi$nhdplus_comid, df$comid)]
