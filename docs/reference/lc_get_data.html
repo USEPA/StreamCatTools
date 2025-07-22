@@ -67,19 +67,20 @@ specific metric data aggregated by area of interest, returned by comid(s), hydro
 
 
 <dl><dt id="arg-comid">comid<a class="anchor" aria-label="anchor" href="#arg-comid"></a></dt>
-<dd><p>Return metric information for specific COMIDs.  Needs to be a character string
-and function will convert to this format if needed.
+<dd><p>Return metric information for specific COMIDs. Can be a comma-delimited list, a character vector,
+or any object that can be coerced to a comma-delimited list with <code><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></code>.
+One of <code>comid</code>, <code>county</code>, <code>state</code>, or <code>region</code> is required unless <code>conus='true'</code>.
 Syntax: comid=&lt;comid1&gt;,&lt;comid2&gt;</p></dd>
 
 
 <dt id="arg-metric">metric<a class="anchor" aria-label="anchor" href="#arg-metric"></a></dt>
-<dd><p>Name(s) of metrics to query
+<dd><p>Name(s) of metrics to query. Must be character string with comma-delimited list of metrics. <em><strong>Not</strong> case-sensitive</em>.
 Syntax: name=&lt;name1&gt;,&lt;name2&gt;</p></dd>
 
 
 <dt id="arg-aoi">aoi<a class="anchor" aria-label="anchor" href="#arg-aoi"></a></dt>
 <dd><p>Specify the area of interest described by a metric. By default, all available areas of interest
-for a given metric are returned.
+for a given metric are returned. <em>Case-sensitive</em>.
 Syntax: areaOfInterest=&lt;value1&gt;,&lt;value2&gt;
 Values: catchment|watershed|</p></dd>
 
@@ -97,25 +98,29 @@ Values: true|false</p></dd>
 
 <dt id="arg-state">state<a class="anchor" aria-label="anchor" href="#arg-state"></a></dt>
 <dd><p>Return metric information for COMIDs within a specific state. Use a state's abbreviation to
-query for a given state.
+query for a given state. One of <code>comid</code>, <code>county</code>, <code>state</code>, or <code>region</code> is required unless <code>conus='true'</code>.
+If specified <em>and valid</em>, <code>comid</code> and <code>county</code> are ignored. <em>Case-sensitive</em>.
 Syntax: state=&lt;state1&gt;,&lt;state2&gt;</p></dd>
 
 
 <dt id="arg-county">county<a class="anchor" aria-label="anchor" href="#arg-county"></a></dt>
 <dd><p>Return metric information for COMIDs within a specific county.
 Users must use the FIPS code, not county name, as a way to disambiguate counties.
+One of <code>comid</code>, <code>county</code>, <code>state</code>, or <code>region</code> is required unless <code>conus='true'</code>. If specified <em>and valid</em>, <code>comid</code> is ignored.
 Syntax: county=&lt;county1&gt;,&lt;county1&gt;</p></dd>
 
 
 <dt id="arg-region">region<a class="anchor" aria-label="anchor" href="#arg-region"></a></dt>
 <dd><p>Return metric information for COMIDs within a specified hydroregion.
-Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L'
+Hydroregions are specified using full name i.e. <code>'Region01'</code>, <code>'Region03N'</code>, <code>'Region10L'</code>
+One of <code>comid</code>, <code>county</code>, <code>state</code>, or <code>region</code> is required unless <code>conus='true'</code>.
+If specified <em>and valid</em>, <code>comid</code>, <code>county</code>, and <code>state</code> are ignored. <em>Case-sensitive</em>.
 Syntax: region=&lt;regionid1&gt;,&lt;regionid2&gt;</p></dd>
 
 
 <dt id="arg-conus">conus<a class="anchor" aria-label="anchor" href="#arg-conus"></a></dt>
-<dd><p>Return all COMIDs in the conterminous United States.
-The default value is false.
+<dd><p>Return all COMIDs in the conterminous United States. Character string (<em><strong>Not</strong> case-sensitive</em>) or logical.
+The default value is false. If true, <code>comid</code>, <code>county</code>, <code>state</code>, and <code>region</code> are ignored.
 Values: true|false</p></dd>
 
 
@@ -127,7 +132,7 @@ Values: true|false</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble of desired StreamCat metrics</p>
+    <p>A tibble of desired StreamCat metrics. If data are missing for all rows of a given metric, then the column for that metric will not exist. If data are missing for only some rows, then they will be specified with NA.</p>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -151,6 +156,9 @@ Values: true|false</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">lc_get_data</span><span class="op">(</span>metric<span class="op">=</span><span class="st">'pcturbmd2006,damdens'</span>,</span></span>
 <span class="r-in"><span>aoi<span class="op">=</span><span class="st">'cat,ws'</span>, comid<span class="op">=</span><span class="st">'23783629,23794487,23812618'</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">lc_get_data</span><span class="op">(</span>metric<span class="op">=</span><span class="st">'pcturbmd2006,damdens'</span>,</span></span>
+<span class="r-in"><span>aoi<span class="op">=</span><span class="st">'cat,ws'</span>, comid<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'23783629'</span>,<span class="st">'23794487'</span>,<span class="st">'23812618'</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">lc_get_data</span><span class="op">(</span>metric<span class="op">=</span><span class="st">'pcturbmd2006,damdens'</span>,</span></span>
 <span class="r-in"><span>aoi<span class="op">=</span><span class="st">'cat,ws'</span>, comid<span class="op">=</span><span class="st">'23783629,23794487,23812618'</span>,</span></span>

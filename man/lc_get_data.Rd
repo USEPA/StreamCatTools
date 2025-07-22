@@ -18,15 +18,16 @@ lc_get_data(
 )
 }
 \arguments{
-\item{comid}{Return metric information for specific COMIDs.  Needs to be a character string
-and function will convert to this format if needed.
+\item{comid}{Return metric information for specific COMIDs. Can be a comma-delimited list, a character vector,
+or any object that can be coerced to a comma-delimited list with \code{\link[base]{paste}}. 
+One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}.
 Syntax: comid=<comid1>,<comid2>}
 
-\item{metric}{Name(s) of metrics to query
+\item{metric}{Name(s) of metrics to query. Must be character string with comma-delimited list of metrics. \emph{\strong{Not} case-sensitive}.
 Syntax: name=<name1>,<name2>}
 
 \item{aoi}{Specify the area of interest described by a metric. By default, all available areas of interest
-for a given metric are returned.
+for a given metric are returned. \emph{Case-sensitive}.
 Syntax: areaOfInterest=<value1>,<value2>
 Values: catchment|watershed|}
 
@@ -38,19 +39,23 @@ Values: true|false}
 Values: true|false}
 
 \item{state}{Return metric information for COMIDs within a specific state. Use a state's abbreviation to
-query for a given state.
+query for a given state. One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}. 
+If specified \emph{and valid}, \code{comid} and \code{county} are ignored. \emph{Case-sensitive}.
 Syntax: state=<state1>,<state2>}
 
 \item{county}{Return metric information for COMIDs within a specific county.
 Users must use the FIPS code, not county name, as a way to disambiguate counties.
+One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}. If specified \emph{and valid}, \code{comid} is ignored.
 Syntax: county=<county1>,<county1>}
 
 \item{region}{Return metric information for COMIDs within a specified hydroregion.
-Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L' 
+Hydroregions are specified using full name i.e. \code{'Region01'}, \code{'Region03N'}, \code{'Region10L'}
+One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}.  
+If specified \emph{and valid}, \code{comid}, \code{county}, and \code{state} are ignored. \emph{Case-sensitive}.
 Syntax: region=<regionid1>,<regionid2>}
 
-\item{conus}{Return all COMIDs in the conterminous United States.
-The default value is false.
+\item{conus}{Return all COMIDs in the conterminous United States. Character string (\emph{\strong{Not} case-sensitive}) or logical.
+The default value is false. If true, \code{comid}, \code{county}, \code{state}, and \code{region} are ignored.
 Values: true|false}
 
 \item{countOnly}{Return a CSV containing only the row count (ROWCOUNT) and the column
@@ -58,7 +63,7 @@ count (COLUMNCOUNT) that the server expects to return in a request. The default 
 Values: true|false}
 }
 \value{
-A tibble of desired StreamCat metrics
+A tibble of desired StreamCat metrics. If data are missing for all rows of a given metric, then the column for that metric will not exist. If data are missing for only some rows, then they will be specified with NA.
 }
 \description{
 Function to return LakeCat metrics using the StreamCat API.  The function allows a user to get
@@ -80,6 +85,9 @@ comid='24083377', showAreaSqKm=FALSE, showPctFull=TRUE)
 
 df <- lc_get_data(metric='pcturbmd2006,damdens',
 aoi='cat,ws', comid='23783629,23794487,23812618')
+
+df <- lc_get_data(metric='pcturbmd2006,damdens',
+aoi='cat,ws', comid=c('23783629','23794487','23812618'))
 
 df <- lc_get_data(metric='pcturbmd2006,damdens',
 aoi='cat,ws', comid='23783629,23794487,23812618',

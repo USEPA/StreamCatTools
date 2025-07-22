@@ -67,7 +67,7 @@ Function to retrieve all NLCD metrics for a given year using the StreamCat API.
 \donttest{
 df <- sc_nlcd(year='2001', aoi='cat',comid='179,1337,1337420')
 
-df <- sc_nlcd(comid='1337420', year='2001', aoi='ws', region='Region01')
+df <- sc_nlcd(year='2001', aoi='ws', region='Region01')
 
 df <- sc_nlcd(year='2001', aoi='ws', region='Region01',
 countOnly=TRUE)

@@ -18,22 +18,23 @@ sc_get_data(
 )
 }
 \arguments{
-\item{comid}{Return metric information for specific COMIDs.  Needs to be a character string
-and function will convert to this format if needed.
+\item{comid}{Return metric information for specific COMIDs. Can be a comma-delimited list, a character vector,
+or any object that can be coerced to a comma-delimited list with \code{\link[base]{paste}}. 
+One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}.
 Syntax: comid=<comid1>,<comid2>}
 
-\item{metric}{Name(s) of metrics to query.  This is a comma delimited list of metrics or
-or if metric='all' then all metrics will be queried. 
+\item{metric}{Name(s) of metrics to query. Must be character string with comma-delimited list of metrics,
+or, if \code{metric='all'} then all metrics will be queried. \emph{\strong{Not} case-sensitive}.
 Syntax: name=<name1>,<name2>}
 
-\item{aoi}{Specify the area of interest described by a metric. For riparian area (catrp100 and wsrp100)
-if the metric does not have data for the riparian area, no data is returned for that AOI.
-Certain metrics have no AOI specified for StreamCat so AOI needs to be left null.  These
-metrics are: BankfullDepth, BankfullWidth, CHEM_V2_1, CONN, HABT, HYD, ICI, IWI, TEMP, WettedWidth,
-prg_bmmi, and all the mast, msst, mwst metrics
+\item{aoi}{Name(s) of areas of interest to query.
+If a metric does not have data for a given AOI, no data is returned for that AOI.
+Certain metrics that have no AOI specified for StreamCat need the AOI to be specified as \code{'other'}. These
+metrics include: BankfullDepth, BankfullWidth, ThalwagDepth (sic), CHEM_V2_1, CONN, HABT, HYD, ICI, IWI, TEMP, WettedWidth,
+prg_bmmi, and all the mast, msst, mwst metrics. \emph{Case-sensitive}. 
 
 Syntax: areaOfInterest=<value1>,<value2>
-Values: cat|ws|catrp100|wsrp100}
+Values: cat|ws|catrp100|wsrp100|other}
 
 \item{showAreaSqKm}{Return the area in square kilometers of a given area of interest.
 The default value is false.
@@ -43,19 +44,23 @@ Values: true|false}
 Values: true|false}
 
 \item{state}{Return metric information for COMIDs within a specific state. Use a state's abbreviation to
-query for a given state.
+query for a given state. One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}. 
+If specified \emph{and valid}, \code{comid} and \code{county} are ignored. \emph{Case-sensitive}.
 Syntax: state=<state1>,<state2>}
 
 \item{county}{Return metric information for COMIDs within a specific county.
 Users must use the FIPS code, not county name, as a way to disambiguate counties.
+One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}. If specified \emph{and valid}, \code{comid} is ignored.
 Syntax: county=<county1>,<county1>}
 
 \item{region}{Return metric information for COMIDs within a specified hydroregion.
-Hydroregions are specified using full name i.e. 'Region01', 'Region03N', 'Region10L'
+Hydroregions are specified using full name i.e. \code{'Region01'}, \code{'Region03N'}, \code{'Region10L'}
+One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}.  
+If specified \emph{and valid}, \code{comid}, \code{county}, and \code{state} are ignored. \emph{Case-sensitive}.
 Syntax: region=<regionid1>,<regionid2>}
 
-\item{conus}{Return all COMIDs in the conterminous United States.
-The default value is false.
+\item{conus}{Return all COMIDs in the conterminous United States. Character string (\emph{\strong{Not} case-sensitive}) or logical.
+The default value is false. If true, \code{comid}, \code{county}, \code{state}, and \code{region} are ignored.
 Values: true|false}
 
 \item{countOnly}{Return a CSV containing only the row count (ROWCOUNT) and the column
@@ -63,7 +68,7 @@ count (COLUMNCOUNT) that the server expects to return in a request. The default 
 Values: true|false}
 }
 \value{
-A data frame of StreamCat metrics
+A data frame of StreamCat metrics. If data are missing for all rows of a given metric, then the column for that metric will not exist. If data are missing for only some rows, then they will be specified with NA.
 }
 \description{
 Function to return StreamCat catchment and watershed metrics using the StreamCat API.  The function allows a user to get
@@ -90,7 +95,9 @@ showAreaSqKm='true', showPctFull='true')
 df <- sc_get_data(metric='pcturbmd2006,damdens',
 aoi='cat,ws', comid='179,1337,1337420', countOnly='true')
 
-df <- sc_get_data(metric='thalwagdepth', comid='179,1337,1337420',aoi='other')
+df <- sc_get_data(metric='thalwagdepth', comid='179,1337,1337420', aoi='other')
+
+df <- sc_get_data(metric='thalwagdepth', comid=c('179','1337','1337420'), aoi='other')
 
 df <- sc_get_data(comid='179', aoi='ws', metric='all')
  }
