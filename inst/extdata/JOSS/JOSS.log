@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.7.25)  25 JUL 2025 12:32
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.7.25)  25 JUL 2025 16:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -981,7 +981,7 @@ Package hyperref Warning: Suppressing link with empty target on input line 309.
 Package hyperref Warning: Suppressing link with empty target on input line 309.
 
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 334.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 343.
 
 
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
@@ -994,47 +994,11 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 368.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 374.
 [1
 
 ]
-Overfull \hbox (1145.66139pt too wide) in paragraph at lines 394--394
-[]\TU/lmtt/m/n/10 ## Installing 35 packages: rlang, glue, cli, bit, purrr, bit64, Rcpp, units, e1071, sf, s2, maplegend, classInt, sp, raster, terra, digest, curl, utf8, stringi, pillar, generics, tibble, R.oo, openssl, tzdb, httr2, pbapply, data.table, zip, arrow, mapsf, maptiles, dataRetrieval, nhdplusTools 
- []
-
-
-
-File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
-<C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
-
-Package fancyhdr Warning: \headheight is too small (62.59596pt): 
-(fancyhdr)                Make it at least 63.55022pt, for example:
-(fancyhdr)                \setlength{\headheight}{63.55022pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
-
-[2]
-Overfull \hbox (48.41139pt too wide) in paragraph at lines 441--441
-[]\TU/lmtt/m/n/10 ## -- R CMD build -----------------------------------------------------------------[] 
- []
-
-
-Overfull \hbox (1098.41139pt too wide) in paragraph at lines 442--442
-[]\TU/lmtt/m/n/10 ##          checking for file 'C:\Users\mweber\AppData\Local\Temp\RtmpItl2by\remotes6ce08342428c2\USEPA-StreamCatTools-72a916c/DESCRIPTION' ...  v  checking for file 'C:\Users\mweber\AppData\Local\Temp\RtmpItl2by\remotes6ce08342428c2\USEPA-StreamCatTools-72a916c/DESCRIPTION' (686ms)[] 
- []
-
-
-Overfull \hbox (79.91139pt too wide) in paragraph at lines 444--444
-[]\TU/lmtt/m/n/10 ##    checking DESCRIPTION meta-information ...  v  checking DESCRIPTION meta-information[] 
- []
-
-
-Overfull \hbox (90.41139pt too wide) in paragraph at lines 445--445
-[]\TU/lmtt/m/n/10 ##       -  checking for LF line-endings in source and make files and shell scripts (394ms)[] 
- []
-
-
-Underfull \hbox (badness 1642) in paragraph at lines 498--503
+Underfull \hbox (badness 1642) in paragraph at lines 387--392
 \TU/lmr/m/n/10 The lake-catchment (LakeCat) dataset: Characterizing landscape features for
  []
 
@@ -1049,18 +1013,7 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
-[3]
-
-File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
-<C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
-
-Package fancyhdr Warning: \headheight is too small (62.59596pt): 
-(fancyhdr)                Make it at least 63.55022pt, for example:
-(fancyhdr)                \setlength{\headheight}{63.55022pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
-
-[4] (./JOSS.aux)
+[2] (./JOSS.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-07-19>
@@ -1072,12 +1025,12 @@ Package logreq Info: Writing requests to 'JOSS.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 36886 strings out of 470473
- 757706 string characters out of 5489801
- 1644022 words of memory out of 5000000
- 64668 multiletter control sequences out of 15000+600000
- 633689 words of font info for 87 fonts, out of 8000000 for 9000
+ 36880 strings out of 470473
+ 757627 string characters out of 5489801
+ 1640024 words of memory out of 5000000
+ 64660 multiletter control sequences out of 15000+600000
+ 633697 words of font info for 88 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  84i,12n,87p,1193b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on JOSS.pdf (4 pages).
+Output written on JOSS.pdf (2 pages).

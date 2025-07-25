@@ -14,7 +14,7 @@ authors:
     orcid: 0000-0001-9583-0426
     affiliation: 2
   - name: Travis Hudson
-  - name: Alan Brooks
+  - name: Alan Brookes
   - name: Selia Markley
   
 affiliations:
@@ -45,13 +45,13 @@ How it works
 
 Installing `StreamCatTools` 
 ```{r, eval = FALSE}
-install.packages("SSN2")
+# library(remotes)
+# install_github("USEPA/StreamCatTools", build_vignettes=FALSE)
 ```
 
 `StreamCatTools` is loaded into an **R** session:
 ```{r, warning = FALSE}
-library(remotes)
-install_github("USEPA/StreamCatTools", build_vignettes=FALSE)
+library(StreamCatTools)
 ```
 
 Examples
