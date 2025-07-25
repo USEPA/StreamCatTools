@@ -1,0 +1,99 @@
+---
+title: "NNI in StreamCat"
+author: "Marc Weber"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+format: 
+  html:
+    self-contained: true
+---
+
+## Farm N for Calapooia catchments
+
+```{r}
+#|warning: false
+#|message: false
+
+library(StreamCatTools)
+start_comid = 23763517
+nldi_feature <- list(featureSource = "comid", featureID = start_comid)
+
+flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
+
+# get StreamCat metrics
+comids <- paste(as.integer(flowline_nldi$UT_flowlines$nhdplus_comid), collapse=",",sep="")
+
+df <- sc_get_data(metric='n_ff_2016', aoi='cat', comid=comids, showAreaSqKm=TRUE)
+
+flowline_nldi <- flowline_nldi$UT_flowlines
+flowline_nldi$Farm_Nitrogon_2016 <- df$n_ff_2016cat[match(flowline_nldi$nhdplus_comid, df$comid)]
+
+basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
+```
+
+## Map the Results
+```{r}
+#|warning: false
+#|message: false
+library(ggplot2)
+library(ggspatial)
+flowline_nldi |> 
+  ggplot() + geom_sf(aes(colour = Farm_Nitrogon_2016)) + 
+  scale_y_continuous() +
+  scale_color_distiller(palette = "Spectral") +
+  labs(color = "Kg Nitrogen") + 
+  theme_minimal(12) + 
+  ggtitle('Farm Nitrogen at the Catchment Scale for \nthe Calapooia River Basin 2016')
+```
+
+## Look at change through time Calapooia Farm Nitrogen
+```{r}
+#|warning: false
+#|message: false
+df1 <- sc_get_data(metric='n_ff_1987', aoi='cat', comid=comids)
+df2 <- sc_get_data(metric='n_ff_2017', aoi='cat', comid=comids)
+df2$n_ff_1987cat <- df1$n_ff_1987cat[match(df2$comid, df1$comid)]
+df2$Farm_Nitrogen_Difference <- df2$n_ff_2017cat-df2$n_ff_1987cat
+flowline_nldi$Farm_Nitrogen_Difference <- df2$Farm_Nitrogen_Difference[match(flowline_nldi$nhdplus_comid, df2$comid)]
+```
+
+## Map the Results
+```{r}
+#|warning: false
+#|message: false
+library(ggplot2)
+library(ggspatial)
+flowline_nldi |> 
+  ggplot() + geom_sf(aes(colour = Farm_Nitrogen_Difference)) + 
+  scale_y_continuous() + 
+  labs(color = "Kg Nitrogen")+ 
+  scale_color_distiller(palette = "Spectral") +
+  theme_minimal(12) + 
+  ggtitle('Farm Nitrogen Change at the Catchment Scale for \nthe Calapooia River Basin from 1987 to 2017')
+```
+
+## Crop Fixation for the Calapooia Watershed 
+```{r}
+#|warning: false
+#|message: false
+
+options(scipen=3)
+# get StreamCat metrics
+df <- sc_get_data(metric='n_cf_2017', aoi='ws', comid=comids)
+
+flowline_nldi$CropNFixation <- df$n_cf_2017ws[match(flowline_nldi$nhdplus_comid, df$comid)]
+```
+
+## Map the Results
+```{r}
+#|warning: false
+#|message: false
+library(ggplot2)
+library(ggspatial)
+flowline_nldi |> 
+  ggplot() + geom_sf(aes(colour = CropNFixation)) + 
+  scale_y_continuous() +
+  scale_color_distiller(palette = "Spectral") +
+  labs(colour = "Kg Nitrogen") + 
+  theme_minimal(12) + 
+  ggtitle('Watershed Crop Nitrogen Fixation \nfor the Calapooia River Basin 2017')
+```
