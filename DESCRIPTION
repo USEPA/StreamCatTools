@@ -16,14 +16,12 @@ Authors@R: c(person(given = "Marc",
                     email = "travish1842@gmail.com"),
              person(given = "Allen",
                     family = "Brookes",
-                    role = "ctb",
-                    email = "brookes.allen@epa.gov"),
-             person(given = "David",
-                    family = "Rebhuhn",
-                    role = "ctb",
-                    email = "rebhuhnd@gmail.com"),
+                    role = "ctb"),
              person(given = "Zachary",
                     family = "Smith",
+                    role = "ctb")),
+             person(given = "Ryan",
+                    family = "McMinds",
                     role = "ctb"))       
 Description: Functions for using the StreamCat and LakeCat API and interacting with the
              StreamCat and LakeCat database. Convenience functions in the package wrap
