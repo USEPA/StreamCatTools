@@ -16,12 +16,13 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' params <- sc_get_params(param='variable_info')
 #' params <- sc_get_params(param='metric_names')
 #' params <- sc_get_params(param='areaOfInterest')
 #' params <- sc_get_params(param='state')
 #' params <- sc_get_params(param='county')
-
+#' }
 sc_get_params <- function(param = NULL) {
   UUID <- DATE_DOWNLOADED <- METADATA <- FINAL_TABLE<- NULL
   INDICATOR_CATEGORY <- METRIC_NAME <- AOI <- YEAR <- NULL

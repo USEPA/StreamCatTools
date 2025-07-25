@@ -28,7 +28,7 @@ Authors@R: c(person(given = "Marc",
 Description: Functions for using the StreamCat and LakeCat API and interacting with the
              StreamCat and LakeCat database. Convenience functions in the package wrap
              the API for StreamCat on <https://api.epa.gov/StreamCat/streams/metrics>.
-Depends: R (>= 4.0)
+Depends: R (>= 4.1.0)
 Imports: 
     sf,
     nhdplusTools,
