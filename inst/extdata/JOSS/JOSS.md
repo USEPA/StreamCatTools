@@ -33,11 +33,11 @@ journal: JOSS
 
 # Summary
 
-`StreamCatTools` provides functions for easily working with, visualizing and analyzing the StreamCat[@hill2016streamcat] and LakeCat[@hill2018lakecat] data and API within **R**. StreamCat and LakeCat provide hundreds of landscape metrics for both the local catchment and full watershed for every stream reach and lake depicted in the medium resolution National Hydrography Dataset Plus Version 2.1 (NHDPlus21)[@mckay2012nhdplus]
+`StreamCatTools` provides functions for easily working with, visualizing and analyzing the StreamCat[@hill2016streamcat] and LakeCat[@hill2018lakecat] data and API within **R**. StreamCat and LakeCat provide hundreds of landscape metrics for both the local catchment and full watershed for every stream reach and lake depicted in the medium resolution National Hydrography Dataset Plus Version 2.1 (NHDPlusV21)[@mckay2012nhdplus]
 
 # Statement of Need
 
-StreamCat is awesome! 
+Easily accessible, robust, and consistent watershed data is an underpinning of hydrology research, water quality monitoring programs, and predictive modelling applications, to name just a few examples.  The StreamCat[@hill2016streamcat] and LakeCat[@hill2018lakecat] datasets fill this need by providing nationally consistent watershed data that has had stringent quality control applied for the conterminous United States (CONUS). The data encompasses hundreds of watershed metrics for every stream reach and lake feature represented in the NHDPlusV21[@mckay2012nhdplus]. StreamCatTools fills this need for easily accessible watershed metrics for CONUS by: (1) providing a simple interface in R to the StreamCat and LakeCat web services, (2) providing convenient functionality to find available StreamCat and LakeCat metric names and information, (3) extracting StreamCat and LakeCat metrics by COMID (a unique identifier in the NHDPlusV2 framework), by state, by county, by NHD Hydroregion, or for all of CONUS. Providing this valuable watershed data via web services in R follows the FAIR principles laid out in [@wilkinson2016fair].
 
 # Package Overview
 
