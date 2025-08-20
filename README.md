@@ -4,7 +4,6 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![Downloads](https://cranlogs.r-pkg.org/badges/StreamCatTools)](https://cran.r-project.org/package=StreamCatTools)
 <!-- badges: end -->
 
 
