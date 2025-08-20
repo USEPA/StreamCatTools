@@ -1,6 +1,6 @@
 Package: StreamCatTools
 Type: Package
-Title: Tools to Work with the StreamCat API Within R and Access the Full Suite of StreamCat and LakeCat Metrics
+Title: Tools to Work with the 'StreamCat' API Within R and Access the Full Suite of 'StreamCat' and 'LakeCat' Metrics
 Version: 0.6.0
 Authors@R: c(person(given = "Marc", 
                     family = "Weber", 
@@ -25,9 +25,9 @@ Authors@R: c(person(given = "Marc",
              person(given = "Zachary",
                     family = "Smith",
                     role = "ctb"))       
-Description: Functions for using the StreamCat and LakeCat API and interacting with the
-             StreamCat and LakeCat database. Convenience functions in the package wrap
-             the API for StreamCat on <https://api.epa.gov/StreamCat/streams/metrics>.
+Description: Functions for using the 'StreamCat' and 'LakeCat' API and interacting with the
+             'StreamCat' and 'LakeCat' database. Convenience functions in the package wrap
+             the API for 'StreamCat' on <https://api.epa.gov/StreamCat/streams/metrics>.
 Depends: R (>= 4.0)
 Imports: 
     sf,
@@ -51,7 +51,9 @@ Suggests:
   purrr
 Encoding: UTF-8
 URL: https://usepa.github.io/StreamCatTools/, https://github.com/USEPA/StreamCatTools
+BugReports: https://github.com/USEPA/StreamCatTools/issues
 VignetteBuilder: knitr,rmarkdown
 LazyData: true
 RoxygenNote: 7.3.2
 License: CC0
+NeedsCompilation: no
