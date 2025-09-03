@@ -33,7 +33,7 @@ install_github("USEPA/StreamCatTools", build_vignettes=TRUE)
 library(StreamCatTools)
 ```
 
-To view the vignette in RStudio, run
+To view the vignettes in RStudio, run
 ```r
 vignette("Introduction", "StreamCatTools")
 vignette("Applications", "StreamCatTools")
