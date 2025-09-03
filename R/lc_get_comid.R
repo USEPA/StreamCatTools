@@ -71,9 +71,7 @@ lc_get_comid <- function(dd = NULL, xcoord = NULL,
   names(output)[1] <- 'COMID'
   if (any(is.na(output$COMID))){
     missing <- which(is.na(output$COMID))
-    message(cat('The following row(s) in the input file came back with no corresponding COMIDS: ',as.character(missing),'\n 
-    because the site(s) were outside the boundary of any NHDPlus Waterbody features. Any NA values in\n 
-    this list of COMIDs will be dropped by default in lc_get_data()'))
+    message(paste0('Row number ', as.character(missing), ' came back with no corresponding COMIDS because the site(s) were outside the boundary of any NHDPlus Waterbody features. Any NA values in this list of COMIDs will be dropped by default in lc_get_data()'))
   }
   comids <- paste(output$COMID, collapse=',')
   return(comids)

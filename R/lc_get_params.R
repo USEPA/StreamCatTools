@@ -16,11 +16,13 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' params <- lc_get_params(param='variable_info')
 #' params <- lc_get_params(param='metric_names')
 #' params <- lc_get_params(param='areaOfInterest')
 #' params <- lc_get_params(param='state')
 #' params <- lc_get_params(param='county')
+#' }
 
 lc_get_params <- function(param = NULL) {
   UUID <- DATE_DOWNLOADED <- METADATA <- FINAL_TABLE<- NULL
