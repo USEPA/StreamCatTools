@@ -1,31 +1,43 @@
 # StreamCatTools <img src="man/figures/logo.png" align="right" alt="" width="150" />
 
-
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/StreamCatTools)](https://cran.r-project.org/package=StreamCatTools)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![CRAN](http://www.r-pkg.org/badges/version/StreamCatTools)](https://cran.r-project.org/package=StreamCatTools)
+[![cran checks](https://badges.cranchecks.info/worst/StreamCatTools.svg)](https://cran.r-project.org/web/checks/check_results_StreamCatTools.html)
 [![R-CMD-check](https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml)
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![Downloads](https://cranlogs.r-pkg.org/badges/StreamCatTools)](https://cran.r-project.org/package=StreamCatTools)
 <!-- badges: end -->
-
 
 ## StreamCatTools: Tools to work with the [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) API within R and access the full suite of StreamCat and [LakeCat](https://www.epa.gov/national-aquatic-resource-surveys/lakecat-dataset) metrics.
 
 
-`StreamCatTools` is an R package for accessing [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) and [LakeCat](https://www.epa.gov/national-aquatic-resource-surveys/lakecat-dataset) data via the [StreamCat API]() and for working with site data in conjunction with StreamCat and NHDPlus. 
+`StreamCatTools` is an R package for accessing [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) and [LakeCat](https://www.epa.gov/national-aquatic-resource-surveys/lakecat-dataset) data via the [StreamCat API](https://usepa.github.io/StreamCatWebServices_Public/#/) and for working with site data in conjunction with StreamCat and NHDPlus. 
 
 ### Installation
 
-You can install and load the most recent approved version from GitHub by running:
+## Installation
+
+You can install and load the most recent approved version from CRAN by running
+
+```r
+# install the most recent approved version from CRAN
+install.packages("StreamCatTools")
+# load the most recent approved version from CRAN
+library(StreamCatTools)
+```
+You can install and load the most recent development version from GitHub by running:
 
 ```r
 library(remotes)
-install_github("USEPA/StreamCatTools", build_vignettes=FALSE)
+install_github("USEPA/StreamCatTools", build_vignettes=TRUE)
+library(StreamCatTools)
 ```
 
-To view the vignette in RStudio, run
+To view the vignettes in RStudio, run
 ```r
 vignette("Introduction", "StreamCatTools")
+vignette("Applications", "StreamCatTools")
+vignette("LakeCat", "StreamCatTools")
 ```
 ### Contributing
 Contributions to development of the package are welcome and encouraged. Please consider the following guidlelines for contributing to `StreamCatTools`:
@@ -38,7 +50,7 @@ Contributions to development of the package are welcome and encouraged. Please c
 - If you contribute to documentation, running `devtools::document()` and then `pkgdown::build_site()` will refresh the help docs and pkgdown pages (but do not push these packagedown changes - they are to verify changes locally)
 
 ### Python Implementation of StreamCat API
-[PyNHD](https://github.com/hyriver/pynhd), part of the [HyRiver](https://github.com/hyriver) suite of Python packages, also provides access to StreamCat data via the API in Python, along with other NHDPlus value-added attributes for catchments and catchment and network accumulated values for catchments available via [USGS ScienceBase](https://sciencebase.usgs.gov/)
+[PyNHD](https://github.com/hyriver/pynhd), part of the [HyRiver](https://github.com/hyriver) suite of Python packages, also provides access to StreamCat data via the API in Python, along with other NHDPlus value-added attributes for catchments and catchment and network accumulated values for catchments available via [USGS ScienceBase](https://www.sciencebase.gov/catalog/)
 
 ### Recommended Citation:
 ```
