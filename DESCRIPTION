@@ -1,10 +1,6 @@
 Package: StreamCatTools
 Type: Package
-<<<<<<< HEAD
-Title: Tools to Work with the 'StreamCat' API Within R and Access the Full Suite of 'StreamCat' and 'LakeCat' Metrics
-=======
-Title: StreamCat Tools
->>>>>>> master
+Title: 'StreamCatTools'
 Version: 0.6.0
 Authors@R: c(person(given = "Marc", 
                     family = "Weber", 
@@ -29,17 +25,11 @@ Authors@R: c(person(given = "Marc",
              person(given = "Zachary",
                     family = "Smith",
                     role = "ctb"))       
-<<<<<<< HEAD
-Description: Functions for using the 'StreamCat' and 'LakeCat' API and interacting with the
-             'StreamCat' and 'LakeCat' database. Convenience functions in the package wrap
-             the API for 'StreamCat' on <https://api.epa.gov/StreamCat/streams/metrics>.
-Depends: R (>= 4.0)
-=======
-Description: Tools for using the 'StreamCat' and 'LakeCat' API and interacting with the
-             'StreamCat' and 'LakeCat' database. Convenience functions in the package wrap
-             the API for 'StreamCat' on <https://api.epa.gov/StreamCat/streams/metrics>.
+Description: Tools for using the 'StreamCat' and 'LakeCat' API and 
+             interacting with the 'StreamCat' and 'LakeCat' database. 
+             Convenience functions in the package wrap the API for 'StreamCat' 
+             on <https://api.epa.gov/StreamCat/streams/metrics>.
 Depends: R (>= 4.1.0)
->>>>>>> master
 Imports: 
     sf,
     nhdplusTools,

@@ -16,16 +16,29 @@
 
 ### Installation
 
-You can install and load the most recent approved version from GitHub by running:
+## Installation
+
+You can install and load the most recent approved version from CRAN by running
+
+```r
+# install the most recent approved version from CRAN
+install.packages("StreamCatTools")
+# load the most recent approved version from CRAN
+library(StreamCatTools)
+```
+You can install and load the most recent development version from GitHub by running:
 
 ```r
 library(remotes)
-install_github("USEPA/StreamCatTools", build_vignettes=FALSE)
+install_github("USEPA/StreamCatTools", build_vignettes=TRUE)
+library(StreamCatTools)
 ```
 
-To view the vignette in RStudio, run
+To view the vignettes in RStudio, run
 ```r
 vignette("Introduction", "StreamCatTools")
+vignette("Applications", "StreamCatTools")
+vignette("LakeCat", "StreamCatTools")
 ```
 ### Contributing
 Contributions to development of the package are welcome and encouraged. Please consider the following guidlelines for contributing to `StreamCatTools`:
