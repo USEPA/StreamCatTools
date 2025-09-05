@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Access Farm Nitrogn data for a watershed
+## Access Farm Nitrogen data for a watershed
 In this example we access a single National Nutrient Inventory (NNI) metric for the Calapooia River basin using the `sc_get_data` function. We use the `nhdplusTools` library to pull in flowlines and the watershed boundary for the Calapooia River basin, plot the selected NNI metric for the Calapooia River and show the watershed.
 ```{r farmn, results='hide'}
 library(StreamCatTools)
