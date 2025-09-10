@@ -1,3 +1,5 @@
+# StreamCatTools (development version)
+
 # StreamCatTools 0.6.0
 
 -   Added functionality in `sc_get_data` and `lc_get_data` to accommodate large numbers (e.g. > 700) COMIDs in header for POST request
