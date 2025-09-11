@@ -90,6 +90,6 @@ lc_get_params <- function(param = NULL) {
 
 lc_fullname <- function(metric = NULL) {
   resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/lakes/datadictionary")$items
-  result <- unique(resp$short_display_name[resp$metric_prefix==metric])
+  result <- unique(resp$short_display_name[resp$metric_prefix %in% metric])
   return(result)
 }
