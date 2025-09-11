@@ -162,7 +162,8 @@ sc_get_data <- function(comid = NULL,
       } else return(df$items)
     }
     # Create a list of requests using purrr::map()
-    df <- purrr::map_dfr(comids_split, create_post_request)
+    res <- lapply(comids_split, create_post_request)
+    df <- bind_rows(res)
     return(df)
     
   } else {
