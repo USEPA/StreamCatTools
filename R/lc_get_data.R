@@ -97,7 +97,9 @@ lc_get_data <- function(comid = NULL,
   if (!is.null(comid)){
     comid <- paste(comid, collapse = ",")
     if (length(strsplit(comid, ",")[[1]]) > 700){
-      comids_split <- split(comid, ceiling(seq_along(comid)/700))
+      chunk_size <- 700
+      group_factor <- ceiling(seq_along(strsplit(comid, ",")[[1]]) / chunk_size)
+      comids_split <- split(strsplit(comid, ",")[[1]], group_factor)
     }
   }
   # Force old and odd naming convention to behave correctly
