@@ -96,11 +96,6 @@ lc_get_data <- function(comid = NULL,
   # Collapse comids into a single string separated by a comma.
   if (!is.null(comid)){
     comid <- paste(comid, collapse = ",")
-    if (length(strsplit(comid, ",")[[1]]) > 700){
-      chunk_size <- 700
-      group_factor <- ceiling(seq_along(strsplit(comid, ",")[[1]]) / chunk_size)
-      comids_split <- split(strsplit(comid, ",")[[1]], group_factor)
-    }
   }
   # Force old and odd naming convention to behave correctly
   if (!is.null(aoi)){
@@ -124,50 +119,29 @@ lc_get_data <- function(comid = NULL,
   if (metric != 'all' & !all(items %in% params)){
     message("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use lc_get_params(param='metric_names') to list valid metric names for StreamCat")
   }
-  if (exists('comid_split')){
-    create_post_request <- function(comids) {
-      df <- req |>
-        httr2::req_method("POST") |>
-        httr2::req_headers(comid=comids,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
-                           showpctfull=showPctFull,state=state,county=county,region=region,
-                           conus=conus,countOnly=countOnly) |>
-        httr2::req_method("POST") |>
-        httr2::req_throttle(rate = 30 / 60) |> 
-        httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
-        httr2::req_perform() |> 
-        httr2::resp_body_string() |> 
-        jsonlite::fromJSON() 
-      # Return a data frame
-      if (is.null(countOnly)){
-        df <- df$items  |> 
-          dplyr::select(comid, dplyr::everything())
-        return(df)
-      } else return(df$items)
-    }
-    # Create a list of requests using purrr::map()
-    df <- purrr::map_dfr(comids_split, create_post_request)
+  header_data <- list(comid=comid,aoi=aoi,name=metric,
+                      showareasqkm=showAreaSqKm,showpctfull=showPctFull,
+                      state=state,county=county,region=region,conus=conus,
+                      countOnly=countOnly
+  )
+  df <- req |>
+    httr2::req_method("POST") |>
+    httr2::req_headers("Content-Type" = "application/x-www-form-urlencoded") |>
+    httr2::req_method("POST") |>
+    httr2::req_body_form(!!!header_data) |> 
+    httr2::req_throttle(rate = 30 / 60) |> 
+    httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
+    httr2::req_perform() |> 
+    httr2::resp_body_string() |> 
+    jsonlite::fromJSON()
+  # Return a data frame
+  if (is.null(countOnly)){
+    df <- df$items  |> 
+      dplyr::select(comid, dplyr::everything())
     return(df)
-    
-  } else {
-    df <- req |>
-      httr2::req_method("POST") |>
-      httr2::req_headers(comid=comid,aoi=aoi,name=metric,showareasqkm=showAreaSqKm,
-                         showpctfull=showPctFull,state=state,county=county,region=region,
-                         conus=conus,countOnly=countOnly) |>
-      httr2::req_method("POST") |>
-      httr2::req_throttle(rate = 30 / 60) |> 
-      httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
-      httr2::req_perform() |> 
-      httr2::resp_body_string() |> 
-      jsonlite::fromJSON()
-    # Return a data frame
-    if (is.null(countOnly)){
-      df <- df$items  |> 
-        dplyr::select(comid, dplyr::everything())
-      return(df)
-    } else return(df$items)
-  }
+  } else return(df$items)
 }
+
 
 #' @title Get NLCD Data
 #'
