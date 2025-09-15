@@ -1,8 +1,10 @@
 # StreamCatTools 0.7.0
 
--   Fixed behavior in `sc_get_data` and `lc_get_data` for breaking long 
-    strings of COMIDs into a list to iterate though so that POST header
-    does not exceed limit for API
+-   Updated both `sc_get_data` and `lc_get_data` to pass parameters in
+    POST request body rather than header, providing ability to pass lengthy
+    lists of COMIDS to those requests
+-   Fixed a bug in package tests that was causing an error when 
+    running `testthat`    
     
 # StreamCatTools 0.6.0
 
