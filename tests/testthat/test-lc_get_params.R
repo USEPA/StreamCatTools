@@ -1,5 +1,16 @@
 context("Test that lc_get_params is pulling in StreamCat API parameters")
 
+test_that("lc_get_params for metric_names parameters", {
+  params <- lc_get_params(param='metric_names')
+  expect_true(exists("params"))
+  expect_gt(length(params),500)
+})
+
+test_that("sc_get_params for variable_info parameters", {
+  params <- sc_get_params(param='variable_info')
+  expect_true(exists("params"))
+  expect_gt(nrow(params),100)
+})
 
 test_that("lc_get_params for area of interest parameters", {
   params <- lc_get_params(param='areaOfInterest')

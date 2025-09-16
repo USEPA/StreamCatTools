@@ -1,10 +1,29 @@
-This is an initial release for an R package we think is now stable and 
-ready for CRAN. Thank you.
+This is a minor update to address a [CRAN error based on an erroneous package
+test](https://cran.r-project.org/web/checks/check_results_StreamCatTools.html)
+that is now fixed, and to add some critical enhanced handling to two 
+particular functions.
 
 -------
+
+## Resubmission
+
+This is a resubmission. 
+
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes
+Here is the output from `devtools::check()` on R Version 4.4.1,
+devtools version 2.4.5, and Windows 11 x64 operating system
 
-* This is a new release.
+0 errors ✔ | 0 warnings ✔ | 2 notes ✖
 
+R CMD check succeeded
+
+NOTES:
+
+checking installed package size ... NOTE
+    installed size is  5.0Mb
+    sub-directories of 1Mb or more:
+      doc   4.4Mb
+
+checking for future file timestamps ... NOTE
+  unable to verify current time
