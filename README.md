@@ -15,8 +15,6 @@
 
 ### Installation
 
-## Installation
-
 You can install and load the most recent approved version from CRAN by running
 
 ```r
