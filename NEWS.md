@@ -1,21 +1,34 @@
-# StreamCatTools (development version)
+# StreamCatTools 0.7.0
 
+-   Updated both `sc_get_data` and `lc_get_data` to pass parameters in
+    POST request body rather than header, providing ability to pass lengthy
+    lists of COMIDS to those requests
+-   Fixed a bug in package tests that was causing an error when 
+    running `testthat`    
+    
 # StreamCatTools 0.6.0
 
--   Added functionality in `sc_get_data` and `lc_get_data` to accommodate large numbers (e.g. > 700) COMIDs in header for POST request
+-   Added functionality in `sc_get_data` and `lc_get_data` to accommodate 
+    large numbers (e.g. > 700) COMIDs in header for POST request
 
 # StreamCatTools 0.5.0
 
--   Overhauled `sc_get_data` and `lc_get_data` functions to be able to pull all metrics from StreamCat or LakeCat for an area of interest
--   Updated `sc_get_data` and `lc_get_data` to be able to pass hundreds of COMIDs at a time as a function parameter and not error out in call to server
--   Updated `sc_get_params` and `lc_get_params` to now return variable information, as well as just metric names and full names, and return tables of state and county abbreviations, names and FIPS codes
+-   Overhauled `sc_get_data` and `lc_get_data` functions to be able to pull 
+    all metrics from StreamCat or LakeCat for an area of interest
+-   Updated `sc_get_data` and `lc_get_data` to be able to pass hundreds of 
+    COMIDs at a time as a function parameter and not error out in call to server
+-   Updated `sc_get_params` and `lc_get_params` to now return variable information,
+    as well as just metric names and full names, and return tables of state and 
+    county abbreviations, names and FIPS codes
 
 
 # StreamCatTools 0.4.0
 
--   Overhauled all functions to use the new [api.epa.gov](https://api.epa.gov/StreamCat/streams/metrics) endpoints for StreamCat described in [swagger documentation](https://usepa.github.io/StreamCatWebServices_Public/#/)
+-   Overhauled all functions to use the new [api.epa.gov](https://api.epa.gov/StreamCat/streams/metrics) 
+    endpoints for StreamCat described in [swagger documentation](https://usepa.github.io/StreamCatWebServices_Public/#/)
 -   Streamlined sc_get_data and lc_get_data requests with `httr2` 
--   Adopted functionality in all package functions to use the Oracle ORDs Database REST API rather than previous JAVA REST service
+-   Adopted functionality in all package functions to use the Oracle ORDs Database 
+    REST API rather than previous JAVA REST service
 
 # StreamCatTools 0.3.0
 
@@ -37,7 +50,8 @@
 
 # StreamCatTools 0.1.1.9001
 
--   API is publicly released and the package works now for everyone (not just those inside EPA network)
+-   API is publicly released and the package works now for everyone (not just those 
+    inside EPA network)
 
 # StreamCatTools 0.1.1.9000
 

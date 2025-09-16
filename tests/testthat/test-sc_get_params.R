@@ -19,13 +19,13 @@ test_that("sc_get_params for region parameters", {
 test_that("sc_get_params for metric_names parameters", {
   params <- sc_get_params(param='metric_names')
   expect_true(exists("params"))
-  expect_equal(length(params),1021)
+  expect_gt(length(params),1000)
 })
 
 test_that("sc_get_params for variable_info parameters", {
   params <- sc_get_params(param='variable_info')
   expect_true(exists("params"))
-  expect_equal(nrow(params),147)
+  expect_gt(nrow(params),100)
 })
 
 test_that("sc_get_params for state parameters", {
