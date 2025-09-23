@@ -36,7 +36,7 @@ jobs:
             install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
           )
           print(cov)
-          covr::to_cobertura(cov)
+          covr::to_cobertura(cov, filename = "cobertura.xml")
         shell: Rscript {0}
 
       - name: Show testthat output
@@ -63,7 +63,7 @@ jobs:
       - name: Comment coverage
         uses: 5monkeys/cobertura-action@master
         with:
-          name: coverage-report
+          report_name: cobertura.xml
           path: ${{ runner.temp }}/package
           minimum_coverage: 10
           show_missing: true
