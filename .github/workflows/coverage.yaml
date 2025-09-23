@@ -58,13 +58,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: ${{ runner.temp }}/
+          path: ${{ runner.temp }}/package/cobertura.xml
 
       - name: Comment coverage
         uses: 5monkeys/cobertura-action@master
         with:
           report_name: cobertura.xml
-          path: ${{ runner.temp }}
+          path: ${{ runner.temp }}/package
           minimum_coverage: 10
           show_missing: true
           link_missing_lines: true
