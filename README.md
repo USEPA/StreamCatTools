@@ -1,7 +1,6 @@
 # StreamCatTools <img src="man/figures/logo.png" align="right" alt="" width="150" />
 
 <!-- badges: start -->
-=======
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![CRAN](http://www.r-pkg.org/badges/version/StreamCatTools)](https://cran.r-project.org/package=StreamCatTools)
 [![cran checks](https://badges.cranchecks.info/worst/StreamCatTools.svg)](https://cran.r-project.org/web/checks/check_results_StreamCatTools.html)
