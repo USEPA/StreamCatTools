@@ -63,8 +63,8 @@ jobs:
       - name: Comment coverage
         uses: 5monkeys/cobertura-action@master
         with:
-          report_name: cobertura.xml
-          path: ${{ runner.temp }}/package
+          report_name: coverage-report
+          path: ./cobertura.xml
           minimum_coverage: 10
           show_missing: true
           link_missing_lines: true
