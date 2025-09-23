@@ -36,7 +36,7 @@ jobs:
             install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
           )
           print(cov)
-          covr::to_cobertura(cov)
+          covr::to_cobertura(cov, filename = ./package/cobertura.xml)
         shell: Rscript {0}
 
       - name: Show testthat output
