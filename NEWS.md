@@ -1,3 +1,7 @@
+# StreamCatTools (development version)
+
+- Added code coverage to the package
+
 # StreamCatTools 0.7.0
 
 -   Updated both `sc_get_data` and `lc_get_data` to pass parameters in
