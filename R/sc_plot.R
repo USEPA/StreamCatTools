@@ -14,7 +14,11 @@
 #' Syntax: com=<COMID>
 #' 
 #' @param include.nue Include time series of nitrogen use efficiency in the returned plot. 
-#' The default value is false. 
+#' The default value is true. 
+#' Values: true|false 
+#' 
+#' @param include.inset Include inset map that shows the location of the COMID and its basin. 
+#' The default value is true. 
 #' Values: true|false 
 #'
 #' @return
@@ -25,42 +29,16 @@
 #' \donttest
 #' p <- sc_plotnni(comid='1337420')
 #' p <- sc_plotnni(comid='1337420', include.nue=TRUE)
+#' p <- sc_plotnni(comid='1337420', include.inset=FALSE)
 
-sc_plotnni <- function(com, include.nue = FALSE){
+sc_plotnni <- function(comid, include.nue = FALSE, include.inset = TRUE){
   
   # Get StreamCat data
-  nni <- sc_get_data(metric = 'n_dep_1990,n_ff_1990,n_uf_1990,n_lw_1990,n_hw_1990,n_ags_1990,n_cf_1990,n_cr_1990,p_cr_1990,p_lw_1990,p_hw_1990,p_uf_1990,p_ff_1990,
-                     p_ags_1990,n_dep_1991,n_ff_1991,n_uf_1991,n_lw_1991,n_hw_1991,n_ags_1991,n_cf_1991,n_cr_1991,p_cr_1991,p_lw_1991,p_hw_1991,p_uf_1991,p_ff_1991,p_ags_1991,
-                     n_dep_1992,n_ff_1992,n_uf_1992,n_lw_1992,n_hw_1992,n_ags_1992,n_cf_1992,n_cr_1992,p_cr_1992,p_lw_1992,p_hw_1992,p_uf_1992,p_ff_1992,p_ags_1992,
-                     n_dep_1993,n_ff_1993,n_uf_1993,n_lw_1993,n_hw_1993,n_ags_1993,n_cf_1993,n_cr_1993,p_cr_1993,p_lw_1993,p_hw_1993,p_uf_1993,p_ff_1993,p_ags_1993,
-                     n_dep_1994,n_ff_1994,n_uf_1994,n_lw_1994,n_hw_1994,n_ags_1994,n_cf_1994,n_cr_1994,p_cr_1994,p_lw_1994,p_hw_1994,p_uf_1994,p_ff_1994,p_ags_1994,
-                     n_dep_1995,n_ff_1995,n_uf_1995,n_lw_1995,n_hw_1995,n_ags_1995,n_cf_1995,n_cr_1995,p_cr_1995,p_lw_1995,p_hw_1995,p_uf_1995,p_ff_1995,p_ags_1995,
-                     n_dep_1996,n_ff_1996,n_uf_1996,n_lw_1996,n_hw_1996,n_ags_1996,n_cf_1996,n_cr_1996,p_cr_1996,p_lw_1996,p_hw_1996,p_uf_1996,p_ff_1996,p_ags_1996,
-                     n_dep_1997,n_ff_1997,n_uf_1997,n_lw_1997,n_hw_1997,n_ags_1997,n_cf_1997,n_cr_1997,p_cr_1997,p_lw_1997,p_hw_1997,p_uf_1997,p_ff_1997,p_ags_1997,
-                     n_dep_1998,n_ff_1998,n_uf_1998,n_lw_1998,n_hw_1998,n_ags_1998,n_cf_1998,n_cr_1998,p_cr_1998,p_lw_1998,p_hw_1998,p_uf_1998,p_ff_1998,p_ags_1998,
-                     n_dep_1999,n_ff_1999,n_uf_1999,n_lw_1999,n_hw_1999,n_ags_1999,n_cf_1999,n_cr_1999,p_cr_1999,p_lw_1999,p_hw_1999,p_uf_1999,p_ff_1999,p_ags_1999,
-                     n_dep_2000,n_ff_2000,n_uf_2000,n_lw_2000,n_hw_2000,n_ags_2000,n_cf_2000,n_cr_2000,p_cr_2000,p_lw_2000,p_hw_2000,p_uf_2000,p_ff_2000,p_ags_2000,
-                     n_dep_2001,n_ff_2001,n_uf_2001,n_lw_2001,n_hw_2001,n_ags_2001,n_cf_2001,n_cr_2001,p_cr_2001,p_lw_2001,p_hw_2001,p_uf_2001,p_ff_2001,p_ags_2001,
-                     n_dep_2002,n_ff_2002,n_uf_2002,n_lw_2002,n_hw_2002,n_ags_2002,n_cf_2002,n_cr_2002,p_cr_2002,p_lw_2002,p_hw_2002,p_uf_2002,p_ff_2002,p_ags_2002,
-                     n_dep_2003,n_ff_2003,n_uf_2003,n_lw_2003,n_hw_2003,n_ags_2003,n_cf_2003,n_cr_2003,p_cr_2003,p_lw_2003,p_hw_2003,p_uf_2003,p_ff_2003,p_ags_2003,
-                     n_dep_2004,n_ff_2004,n_uf_2004,n_lw_2004,n_hw_2004,n_ags_2004,n_cf_2004,n_cr_2004,p_cr_2004,p_lw_2004,p_hw_2004,p_uf_2004,p_ff_2004,p_ags_2004,
-                     n_dep_2005,n_ff_2005,n_uf_2005,n_lw_2005,n_hw_2005,n_ags_2005,n_cf_2005,n_cr_2005,p_cr_2005,p_lw_2005,p_hw_2005,p_uf_2005,p_ff_2005,p_ags_2005,
-                     n_dep_2006,n_ff_2006,n_uf_2006,n_lw_2006,n_hw_2006,n_ags_2006,n_cf_2006,n_cr_2006,p_cr_2006,p_lw_2006,p_hw_2006,p_uf_2006,p_ff_2006,p_ags_2006,
-                     n_dep_2007,n_ff_2007,n_uf_2007,n_lw_2007,n_hw_2007,n_ags_2007,n_cf_2007,n_cr_2007,p_cr_2007,p_lw_2007,p_hw_2007,p_uf_2007,p_ff_2007,p_ags_2007,
-                     n_dep_2008,n_ff_2008,n_uf_2008,n_lw_2008,n_hw_2008,n_ags_2008,n_cf_2008,n_cr_2008,p_cr_2008,p_lw_2008,p_hw_2008,p_uf_2008,p_ff_2008,p_ags_2008,
-                     n_dep_2009,n_ff_2009,n_uf_2009,n_lw_2009,n_hw_2009,n_ags_2009,n_cf_2009,n_cr_2009,p_cr_2009,p_lw_2009,p_hw_2009,p_uf_2009,p_ff_2009,p_ags_2009,
-                     n_dep_2010,n_ff_2010,n_uf_2010,n_lw_2010,n_hw_2010,n_ags_2010,n_cf_2010,n_cr_2010,p_cr_2010,p_lw_2010,p_hw_2010,p_uf_2010,p_ff_2010,p_ags_2010,
-                     n_dep_2011,n_ff_2011,n_uf_2011,n_lw_2011,n_hw_2011,n_ags_2011,n_cf_2011,n_cr_2011,p_cr_2011,p_lw_2011,p_hw_2011,p_uf_2011,p_ff_2011,p_ags_2011,
-                     n_dep_2012,n_ff_2012,n_uf_2012,n_lw_2012,n_hw_2012,n_ags_2012,n_cf_2012,n_cr_2012,p_cr_2012,p_lw_2012,p_hw_2012,p_uf_2012,p_ff_2012,p_ags_2012,
-                     n_dep_2013,n_ff_2013,n_uf_2013,n_lw_2013,n_hw_2013,n_ags_2013,n_cf_2013,n_cr_2013,p_cr_2013,p_lw_2013,p_hw_2013,p_uf_2013,p_ff_2013,p_ags_2013,
-                     n_dep_2014,n_ff_2014,n_uf_2014,n_lw_2014,n_hw_2014,n_ags_2014,n_cf_2014,n_cr_2014,p_cr_2014,p_lw_2014,p_hw_2014,p_uf_2014,p_ff_2014,p_ags_2014,
-                     n_dep_2015,n_ff_2015,n_uf_2015,n_lw_2015,n_hw_2015,n_ags_2015,n_cf_2015,n_cr_2015,p_cr_2015,p_lw_2015,p_hw_2015,p_uf_2015,p_ff_2015,p_ags_2015,
-                     n_dep_2016,n_ff_2016,n_uf_2016,n_lw_2016,n_hw_2016,n_ags_2016,n_cf_2016,n_cr_2016,p_cr_2016,p_lw_2016,p_hw_2016,p_uf_2016,p_ff_2016,p_ags_2016,
-                     n_dep_2017,n_ff_2017,n_uf_2017,n_lw_2017,n_hw_2017,n_ags_2017,n_cf_2017,n_cr_2017,p_cr_2017,p_lw_2017,p_hw_2017,p_uf_2017,p_ff_2017,p_ags_2017',
-                       aoi='ws',
-                       comid = com,
-                       showAreaSqKm = FALSE,
-                       showPctFull = FALSE)
+  nni <- sc_get_data(metric = 'n_dep_1990,n_ff_1990,n_uf_1990,n_lw_1990,n_hw_1990,n_ags_1990,n_cf_1990,n_cr_1990,p_cr_1990,p_lw_1990,p_hw_1990,p_uf_1990,p_ff_1990,p_ags_1990,n_dep_1991,n_ff_1991,n_uf_1991,n_lw_1991,n_hw_1991,n_ags_1991,n_cf_1991,n_cr_1991,p_cr_1991,p_lw_1991,p_hw_1991,p_uf_1991,p_ff_1991,p_ags_1991,n_dep_1992,n_ff_1992,n_uf_1992,n_lw_1992,n_hw_1992,n_ags_1992,n_cf_1992,n_cr_1992,p_cr_1992,p_lw_1992,p_hw_1992,p_uf_1992,p_ff_1992,p_ags_1992,n_dep_1993,n_ff_1993,n_uf_1993,n_lw_1993,n_hw_1993,n_ags_1993,n_cf_1993,n_cr_1993,p_cr_1993,p_lw_1993,p_hw_1993,p_uf_1993,p_ff_1993,p_ags_1993,n_dep_1994,n_ff_1994,n_uf_1994,n_lw_1994,n_hw_1994,n_ags_1994,n_cf_1994,n_cr_1994,p_cr_1994,p_lw_1994,p_hw_1994,p_uf_1994,p_ff_1994,p_ags_1994,n_dep_1995,n_ff_1995,n_uf_1995,n_lw_1995,n_hw_1995,n_ags_1995,n_cf_1995,n_cr_1995,p_cr_1995,p_lw_1995,p_hw_1995,p_uf_1995,p_ff_1995,p_ags_1995,n_dep_1996,n_ff_1996,n_uf_1996,n_lw_1996,n_hw_1996,n_ags_1996,n_cf_1996,n_cr_1996,p_cr_1996,p_lw_1996,p_hw_1996,p_uf_1996,p_ff_1996,p_ags_1996,n_dep_1997,n_ff_1997,n_uf_1997,n_lw_1997,n_hw_1997,n_ags_1997,n_cf_1997,n_cr_1997,p_cr_1997,p_lw_1997,p_hw_1997,p_uf_1997,p_ff_1997,p_ags_1997,n_dep_1998,n_ff_1998,n_uf_1998,n_lw_1998,n_hw_1998,n_ags_1998,n_cf_1998,n_cr_1998,p_cr_1998,p_lw_1998,p_hw_1998,p_uf_1998,p_ff_1998,p_ags_1998,n_dep_1999,n_ff_1999,n_uf_1999,n_lw_1999,n_hw_1999,n_ags_1999,n_cf_1999,n_cr_1999,p_cr_1999,p_lw_1999,p_hw_1999,p_uf_1999,p_ff_1999,p_ags_1999,n_dep_2000,n_ff_2000,n_uf_2000,n_lw_2000,n_hw_2000,n_ags_2000,n_cf_2000,n_cr_2000,p_cr_2000,p_lw_2000,p_hw_2000,p_uf_2000,p_ff_2000,p_ags_2000,n_dep_2001,n_ff_2001,n_uf_2001,n_lw_2001,n_hw_2001,n_ags_2001,n_cf_2001,n_cr_2001,p_cr_2001,p_lw_2001,p_hw_2001,p_uf_2001,p_ff_2001,p_ags_2001,n_dep_2002,n_ff_2002,n_uf_2002,n_lw_2002,n_hw_2002,n_ags_2002,n_cf_2002,n_cr_2002,p_cr_2002,p_lw_2002,p_hw_2002,p_uf_2002,p_ff_2002,p_ags_2002,n_dep_2003,n_ff_2003,n_uf_2003,n_lw_2003,n_hw_2003,n_ags_2003,n_cf_2003,n_cr_2003,p_cr_2003,p_lw_2003,p_hw_2003,p_uf_2003,p_ff_2003,p_ags_2003,n_dep_2004,n_ff_2004,n_uf_2004,n_lw_2004,n_hw_2004,n_ags_2004,n_cf_2004,n_cr_2004,p_cr_2004,p_lw_2004,p_hw_2004,p_uf_2004,p_ff_2004,p_ags_2004,n_dep_2005,n_ff_2005,n_uf_2005,n_lw_2005,n_hw_2005,n_ags_2005,n_cf_2005,n_cr_2005,p_cr_2005,p_lw_2005,p_hw_2005,p_uf_2005,p_ff_2005,p_ags_2005,n_dep_2006,n_ff_2006,n_uf_2006,n_lw_2006,n_hw_2006,n_ags_2006,n_cf_2006,n_cr_2006,p_cr_2006,p_lw_2006,p_hw_2006,p_uf_2006,p_ff_2006,p_ags_2006,n_dep_2007,n_ff_2007,n_uf_2007,n_lw_2007,n_hw_2007,n_ags_2007,n_cf_2007,n_cr_2007,p_cr_2007,p_lw_2007,p_hw_2007,p_uf_2007,p_ff_2007,p_ags_2007,n_dep_2008,n_ff_2008,n_uf_2008,n_lw_2008,n_hw_2008,n_ags_2008,n_cf_2008,n_cr_2008,p_cr_2008,p_lw_2008,p_hw_2008,p_uf_2008,p_ff_2008,p_ags_2008,n_dep_2009,n_ff_2009,n_uf_2009,n_lw_2009,n_hw_2009,n_ags_2009,n_cf_2009,n_cr_2009,p_cr_2009,p_lw_2009,p_hw_2009,p_uf_2009,p_ff_2009,p_ags_2009,n_dep_2010,n_ff_2010,n_uf_2010,n_lw_2010,n_hw_2010,n_ags_2010,n_cf_2010,n_cr_2010,p_cr_2010,p_lw_2010,p_hw_2010,p_uf_2010,p_ff_2010,p_ags_2010,n_dep_2011,n_ff_2011,n_uf_2011,n_lw_2011,n_hw_2011,n_ags_2011,n_cf_2011,n_cr_2011,p_cr_2011,p_lw_2011,p_hw_2011,p_uf_2011,p_ff_2011,p_ags_2011,n_dep_2012,n_ff_2012,n_uf_2012,n_lw_2012,n_hw_2012,n_ags_2012,n_cf_2012,n_cr_2012,p_cr_2012,p_lw_2012,p_hw_2012,p_uf_2012,p_ff_2012,p_ags_2012,n_dep_2013,n_ff_2013,n_uf_2013,n_lw_2013,n_hw_2013,n_ags_2013,n_cf_2013,n_cr_2013,p_cr_2013,p_lw_2013,p_hw_2013,p_uf_2013,p_ff_2013,p_ags_2013,n_dep_2014,n_ff_2014,n_uf_2014,n_lw_2014,n_hw_2014,n_ags_2014,n_cf_2014,n_cr_2014,p_cr_2014,p_lw_2014,p_hw_2014,p_uf_2014,p_ff_2014,p_ags_2014,n_dep_2015,n_ff_2015,n_uf_2015,n_lw_2015,n_hw_2015,n_ags_2015,n_cf_2015,n_cr_2015,p_cr_2015,p_lw_2015,p_hw_2015,p_uf_2015,p_ff_2015,p_ags_2015,n_dep_2016,n_ff_2016,n_uf_2016,n_lw_2016,n_hw_2016,n_ags_2016,n_cf_2016,n_cr_2016,p_cr_2016,p_lw_2016,p_hw_2016,p_uf_2016,p_ff_2016,p_ags_2016,n_dep_2017,n_ff_2017,n_uf_2017,n_lw_2017,n_hw_2017,n_ags_2017,n_cf_2017,n_cr_2017,p_cr_2017,p_lw_2017,p_hw_2017,p_uf_2017,p_ff_2017,p_ags_2017',
+                     aoi='ws',
+                     comid = comid,
+                     showAreaSqKm = FALSE,
+                     showPctFull = FALSE)
   
   #Create N inputs df
   
@@ -206,19 +184,17 @@ sc_plotnni <- function(com, include.nue = FALSE){
   nwsin$metric <- factor(nwsin$metric, levels = c('uf','hw','dep','lw','cf','ff'))
   pwsin$metric <- factor(pwsin$metric, levels = c('uf','hw','lw','ff'))
   
+  #Get COMID location and states for inset map
+  #states
+  states <- 
+    tigris::states(cb = TRUE, progress_bar = FALSE)  %>% 
+    filter(!STUSPS %in% c('HI', 'PR', 'AK', 'MP', 'GU', 'AS', 'VI'))  %>% 
+    st_transform(crs = 5070)
   
-  #create titles with higher level include.nue param
-  if (include.nue == TRUE){
-    nbartitle <- 'b)'
-    pbartitle <- 'd)'
-    nuetitle <- 'a)'
-    puetitle <- 'c)'
-  } else{
-    nbartitle <- 'a)'
-    pbartitle <- 'b)'
-    nuetitle <- ' '
-    puetitle <- ' '
-  }
+  #comid
+  comidint <- as.integer(comid)
+  flowline <- get_nhdplus(comid = comidint, realization = "flowline")
+  point <- st_centroid(flowline)
   
   #create N bar plot
   nbar <- ggplot() + 
@@ -234,8 +210,8 @@ sc_plotnni <- function(com, include.nue = FALSE){
                      pattern_spacing=0.025,
                      stat='identity', position='stack', 
                      pattern_size=0.05) +
-    labs(title = nbartitle,
-         y = "Inputs, Crop Removal, Surplus (million kg)",
+    labs(title = 'Nitrogen (million kg/year)',
+         y = "Budget",
          x = " ") +
     scale_fill_manual(values=colorsn,
                       labels = c('ff' = 'Farm Fertilizer',
@@ -281,8 +257,8 @@ sc_plotnni <- function(com, include.nue = FALSE){
                      pattern_alpha = 0.5, 
                      pattern_spacing=0.025,
                      stat='identity', position='stack', pattern_size=0.05) +
-    labs(title = pbartitle,
-         y = "Inputs, Crop Removal, Surplus (million kg)",
+    labs(title = 'Phosphorus (million kg/year)',
+         y = "Budget",
          x = " ") +
     scale_fill_manual(values=colorsp) + 
     scale_pattern_manual(name='Estimate Status',
@@ -315,7 +291,7 @@ sc_plotnni <- function(com, include.nue = FALSE){
     geom_line(data=nue, aes(x=year,y=nue), linewidth=1.25, color='seagreen')+
     theme_bw() + 
     scale_x_continuous(breaks=seq(1987,2017,by=5)) + 
-    labs(title = nuetitle,
+    labs(title = 'Nitrogen Use Efficiency',
          y = "%", 
          x=" ") + 
     theme(plot.title = element_text(size=9, face="bold"), 
@@ -326,7 +302,7 @@ sc_plotnni <- function(com, include.nue = FALSE){
     geom_line(data=pue, aes(x=year,y=nue, lty='Nutrient Use Efficiency'), linewidth=1.25, color="seagreen") + 
     theme_bw() + 
     scale_x_continuous(breaks=seq(1987,2017,by=5)) + 
-    labs(title = puetitle,
+    labs(title = 'Phosphorus Use Efficiency',
          y = "%", 
          x="Year") + 
     theme(plot.title = element_text(size=9, face="bold"), 
@@ -336,17 +312,40 @@ sc_plotnni <- function(com, include.nue = FALSE){
           legend.title = element_blank())  +
     guides(fill="none", pattern = "none", linetype="none")
   
+  #Create inset map
+  inset <- ggplot() +
+    geom_sf(data = states, color = "grey", fill = 'transparent', lwd = .2) + 
+    geom_sf(data = point, size = 3.5, color = "red") + theme_void()
+  
   #export final figure
   inputs <- (nbar / pbar) + plot_layout(guides = "collect")
   nue <- (nue / pue) + plot_layout(guides = "collect")
   
   if (include.nue == TRUE){
-    timenni <- (nue | inputs) 
+      timenni <- (nue | inputs)
     }
   else {
-    timenni <- inputs 
+      timenni <- inputs
     }
-  
-  return(timenni)
+
+  if (include.inset == TRUE){
+      #legend <- get_legend(
+      #  timenni + theme(legend.position = "bottom")
+      #)
+      #insetlegend <- plot_grid(
+      #  inset, legend,
+      #  ncol = 1,
+      #  rel_heights = c(2,1)
+      #)
+      timenni <- plot_grid(
+        timenni, inset,
+        ncol = 1,
+        rel_heights = c(3,1)
+      )
+      return(timenni)
+    }
+  else {
+      return(timenni)
+  }
   
 }

@@ -207,8 +207,8 @@ lc_plotnni <- function(comid, include.nue = FALSE){
                      pattern_spacing=0.025,
                      stat='identity', position='stack', 
                      pattern_size=0.05) +
-    labs(title = nbartitle,
-         y = "Inputs, Crop Removal, Surplus (million kg)",
+    labs(title = 'Nitrogen (million kg)',
+         y = "Budget",
          x = " ") +
     scale_fill_manual(values=colorsn,
                       labels = c('ff' = 'Farm Fertilizer',
@@ -254,8 +254,8 @@ lc_plotnni <- function(comid, include.nue = FALSE){
                      pattern_alpha = 0.5, 
                      pattern_spacing=0.025,
                      stat='identity', position='stack', pattern_size=0.05) +
-    labs(title = pbartitle,
-         y = "Inputs, Crop Removal, Surplus (million kg)",
+    labs(title = 'Phosphorus (million kg)',
+         y = "Budget",
          x = " ") +
     scale_fill_manual(values=colorsp) + 
     scale_pattern_manual(name='Estimate Status',
@@ -288,7 +288,7 @@ lc_plotnni <- function(comid, include.nue = FALSE){
     geom_line(data=nue, aes(x=year,y=nue), linewidth=1.25, color='seagreen')+
     theme_bw() + 
     scale_x_continuous(breaks=seq(1987,2017,by=5)) + 
-    labs(title = nuetitle,
+    labs(title = 'Nitrogen Use Efficiency',
          y = "%", 
          x=" ") + 
     theme(plot.title = element_text(size=9, face="bold"), 
@@ -299,7 +299,7 @@ lc_plotnni <- function(comid, include.nue = FALSE){
     geom_line(data=pue, aes(x=year,y=nue, lty='Nutrient Use Efficiency'), linewidth=1.25, color="seagreen") + 
     theme_bw() + 
     scale_x_continuous(breaks=seq(1987,2017,by=5)) + 
-    labs(title = puetitle,
+    labs(title = 'Phosphorus Use Efficiency',
          y = "%", 
          x="Year") + 
     theme(plot.title = element_text(size=9, face="bold"), 
