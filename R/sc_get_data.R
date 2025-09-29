@@ -341,12 +341,12 @@ ignore_unused_imports <- function() {
 #'
 #' @examples\donttest{
 #' df <- sc_getnni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
-#' comid='23783629,23794487,23812618')
+#' comid=179,1337,1337420')
 #' 
 #' df <- sc_getnni(year='2015', aoi='cat',
-#' comid='23783629', countOnly=TRUE)
+#' comid='179', countOnly=TRUE)
 #' 
-#' df <- sc_getnni(comid='23783629', year='2011, 2012', aoi='ws')
+#' df <- sc_getnni(comid='179', year='2011, 2012', aoi='ws')
 #' }
 
 sc_get_nni <- function(year, aoi = NULL, comid = NULL,
