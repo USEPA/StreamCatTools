@@ -29,7 +29,7 @@ sf object.  The function generates a vector of COMID
 values a user can then pass to sc_get_data function
 }
 \examples{
-\donttest{
+\dontrun{
 
 dd <- data.frame(x = c(-122.649,-100.348,-75.186,-106.675),
 y = c(45.085, 35.405,42.403,38.721))

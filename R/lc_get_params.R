@@ -16,12 +16,14 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' params <- lc_get_params(param='variable_info')
 #' params <- lc_get_params(param='metric_names')
-#' params <- lc_get_params(param='areaOfInterest')
+#' params <- sc_get_params(param='categories')
+#' params <- lc_get_params(param='aoi')
 #' params <- lc_get_params(param='state')
 #' params <- lc_get_params(param='county')
+#' params <- sc_get_params(param='datasets')
 #' }
 
 lc_get_params <- function(param = NULL) {
@@ -40,7 +42,7 @@ lc_get_params <- function(param = NULL) {
     params <- params[!duplicated(params)]
     params <- params[order(params)]
   } else if(param == 'variable_info') {
-    params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
+    params <- httr2::request('https://api.epa.gov/StreamCat/lakes/variable_info') |>
       httr2::req_perform() |>
       httr2::resp_body_string() |>
       readr::read_csv(show_col_types = FALSE) |> 
@@ -50,6 +52,20 @@ lc_get_params <- function(param = NULL) {
                     short_description=WEBTOOL_NAME,units=METRIC_UNITS,
                     long_description=METRIC_DESCRIPTION, dsid=DSID,
                     source_name=SOURCE_NAME, source_URL=SOURCE_URL)
+  } else if(param == 'categories'){
+    params <- httr2::request('https://api.epa.gov/StreamCat/lakes/variable_info') |>
+      httr2::req_perform() |>
+      httr2::resp_body_string() |>
+      readr::read_csv(show_col_types = FALSE) |> 
+      dplyr::select(INDICATOR_CATEGORY)
+    params <- sort(unique(params$INDICATOR_CATEGORY))
+  } else if(param == 'datasets'){
+    params <- httr2::request('https://api.epa.gov/StreamCat/lakes/variable_info') |>
+      httr2::req_perform() |>
+      httr2::resp_body_string() |>
+      readr::read_csv(show_col_types = FALSE) |> 
+      dplyr::select(DSNAME)
+    params <- sort(unique(params$DSNAME[!is.na(params$DSNAME)]))  
   } else if(param == 'region'){
     params <- resp$region_options[[1]][[1]]
     params <- params[order(params)]
@@ -92,4 +108,85 @@ lc_fullname <- function(metric = NULL) {
   resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/lakes/datadictionary")$items
   result <- unique(resp$short_display_name[resp$metric_prefix %in% metric])
   return(result)
+}
+
+#' Get LakeCat Metric Names
+#'
+#' @description
+#' Function to filter LakeCat metrics metrics by category, area of interest, 
+#' dataset or year. Use `lc_get_params(categories)` or `lc_get_params(datasets)`
+#' to see all the valid category or dataset options
+#'
+#' @author
+#' Marc Weber
+#' 
+#' @param category Filter LakeCat metrics based on the metric category
+#' @param aoi Filter LakeCat metrics based on the area of interest
+#' @param year Filter LakeCat metrics based on a particular year or years
+#' @param dataset Filter LakeCat metrics based on the dataset name
+#'
+#' @return A dataframe of merics and description that match filter criteria
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' metrics <- lc_get_metric_names(category='Natural')
+#' metrics <- lc_get_metric_names(category = c('Anthropogenic','Natural'),
+#' aoi=c('Cat','Ws')} 
+
+
+lc_get_metric_names <- function(category = NULL,
+                                aoi = NULL,
+                                year = NULL,
+                                dataset = NULL) {
+  if (!is.null(aoi)){
+    if (any(stringr::str_detect(aoi,'catchment'))) {
+      aoi <- gsub('catchment','Cat',aoi)
+    }
+    if (any(stringr::str_detect(aoi,'watershed'))) {
+      aoi <- gsub('watershed','Ws',aoi)
+    }
+    if (any(stringr::str_detect(aoi,'riparian_catchment'))) {
+      aoi <- gsub('riparian_catchment','CatRp100',aoi)
+    }
+    if (any(stringr::str_detect(aoi,'riparian_watershed'))) {
+      aoi <- gsub('riparian_watershed','WsRp100',aoi)
+    }
+    aoi <- stringr::str_to_title(aoi)
+  }
+  resp <- params <- httr2::request('https://api.epa.gov/StreamCat/lakes/variable_info') |>
+    httr2::req_perform() |>
+    httr2::resp_body_string() |>
+    readr::read_csv(show_col_types = FALSE)
+  
+  filters <- list(INDICATOR_CATEGORY = category, AOI = aoi, YEAR = year,
+                  DSNAME = dataset)
+  
+  filter_data <- function(data, filters) {
+    # Filter the data frame for each non-null filter
+    filtered_data <- purrr::reduce(
+      names(filters),
+      .init = data,
+      .f = function(df, col_name) {
+        filter_values <- filters[[col_name]]
+        if (!is.null(filter_values)) {
+          df <- df %>%
+            dplyr::mutate(temp_col = stringr::str_split(.data[[col_name]], ",")) %>%
+            dplyr::filter(purrr::map_lgl(temp_col, ~ any(.x %in% filter_values))) %>%
+            dplyr::select(-temp_col)
+        }
+        df
+      }
+    )
+    return(filtered_data)
+  }
+  results <- filter_data(resp, filters)
+  results <- results |> 
+    dplyr::select(Category = INDICATOR_CATEGORY, Metric = METRIC_NAME, 
+                  AOI,Year = YEAR, Short_Name = WEBTOOL_NAME,
+                  Metric_Description = METRIC_DESCRIPTION, 
+                  Units = METRIC_UNITS, Source = SOURCE_NAME, 
+                  Dataset = DSNAME)
+  
+  return(results)
 }

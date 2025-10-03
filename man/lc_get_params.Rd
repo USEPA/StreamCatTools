@@ -20,12 +20,14 @@ A list of all the current LakeCat values for a given parameter
 Function to return available LakeCat parameters using the StreamCat API.
 }
 \examples{
-\donttest{
+\dontrun{
 params <- lc_get_params(param='variable_info')
 params <- lc_get_params(param='metric_names')
-params <- lc_get_params(param='areaOfInterest')
+params <- sc_get_params(param='categories')
+params <- lc_get_params(param='aoi')
 params <- lc_get_params(param='state')
 params <- lc_get_params(param='county')
+params <- sc_get_params(param='datasets')
 }
 }
 \author{
