@@ -110,34 +110,29 @@ lc_fullname <- function(metric = NULL) {
   return(result)
 }
 
-#' Get StreamCat Metric Names
+#' Get LakeCat Metric Names
 #'
 #' @description
-#' Function to filter StreamCat metrics metrics by category, area of interest, 
-#' dataset or year. Use `sc_get_params(categories)` or `sc_get_params(datasets)`
+#' Function to filter LakeCat metrics metrics by category, area of interest, 
+#' dataset or year. Use `lc_get_params(categories)` or `lc_get_params(datasets)`
 #' to see all the valid category or dataset options
 #'
 #' @author
 #' Marc Weber
 #' 
-#' @param category Filter StreamCat metrics based on the metric category
-#' @param aoi Filter StreamCat metrics based on the area of interest
-#' @param year Filter StreamCat metrics based on a particular year or years
-#' @param dataset Filter StreamCat metrics based on the dataset name
+#' @param category Filter LakeCat metrics based on the metric category
+#' @param aoi Filter LakeCat metrics based on the area of interest
+#' @param year Filter LakeCat metrics based on a particular year or years
+#' @param dataset Filter LakeCat metrics based on the dataset name
 #'
-#' @returns
+#' @return A dataframe of merics and description that match filter criteria
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' metrics <- sc_get_metric_names(category='Wildfire')
-#' 
-#' metrics <- sc_get_metric_names(category = c('Deposition','Climate'),
-#' aoi=c('Cat','Ws')
-#' metrics <- sc_get_metric_names(aoi='Other',
-#' dataset=c('Canal Density','Predicted Channel Widths Depths'))
-#' 
-#' } 
+#' metrics <- lc_get_metric_names(category='Natural')
+#' metrics <- lc_get_metric_names(category = c('Anthropogenic','Natural'),
+#' aoi=c('Cat','Ws')} 
 
 
 lc_get_metric_names <- function(category = NULL,
@@ -176,9 +171,9 @@ lc_get_metric_names <- function(category = NULL,
         filter_values <- filters[[col_name]]
         if (!is.null(filter_values)) {
           df <- df %>%
-            mutate(temp_col = str_split(.data[[col_name]], ",")) %>%
-            filter(purrr::map_lgl(temp_col, ~ any(.x %in% filter_values))) %>%
-            select(-temp_col)
+            dplyr::mutate(temp_col = stringr::str_split(.data[[col_name]], ",")) %>%
+            dplyr::filter(purrr::map_lgl(temp_col, ~ any(.x %in% filter_values))) %>%
+            dplyr::select(-temp_col)
         }
         df
       }

@@ -20,13 +20,14 @@ A list of all the current StreamCat values for a given parameter
 Function to return available StreamCat parameters using the StreamCat API.
 }
 \examples{
-\donttest{
+\dontrun{
 params <- sc_get_params(param='variable_info')
 params <- sc_get_params(param='metric_names')
-params <- sc_get_params(param='areaOfInterest')
+params <- sc_get_params(param='categories')
+params <- sc_get_params(param='aoi')
 params <- sc_get_params(param='state')
 params <- sc_get_params(param='county')
-}
+params <- sc_get_params(param='datasets')}
 }
 \author{
 Marc Weber

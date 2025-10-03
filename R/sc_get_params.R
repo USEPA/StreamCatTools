@@ -125,13 +125,12 @@ sc_fullname <- function(metric = NULL) {
 #' @param year Filter StreamCat metrics based on a particular year or years
 #' @param dataset Filter StreamCat metrics based on the dataset name
 #'
-#' @returns
+#' @return A dataframe of merics and description that match filter criteria
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' metrics <- sc_get_metric_names(category='Wildfire')
-#' 
 #' metrics <- sc_get_metric_names(category = c('Deposition','Climate'),
 #' aoi=c('Cat','Ws')
 #' metrics <- sc_get_metric_names(aoi='Other',
@@ -176,9 +175,9 @@ sc_get_metric_names <- function(category = NULL,
         filter_values <- filters[[col_name]]
         if (!is.null(filter_values)) {
           df <- df %>%
-            mutate(temp_col = str_split(.data[[col_name]], ",")) %>%
-            filter(purrr::map_lgl(temp_col, ~ any(.x %in% filter_values))) %>%
-            select(-temp_col)
+            dplyr::mutate(temp_col = stringr::str_split(.data[[col_name]], ",")) %>%
+            dplyr::filter(purrr::map_lgl(temp_col, ~ any(.x %in% filter_values))) %>%
+            dplyr::select(-temp_col)
         }
         df
       }
