@@ -59,7 +59,7 @@
 #' @return A data frame of StreamCat metrics. If data are missing for all rows of a given metric, then the column for that metric will not exist. If data are missing for only some rows, then they will be specified with NA.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' df <- sc_get_data(comid='179', aoi='cat', metric='fert')
 #'
 #' df <- sc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')
@@ -210,7 +210,7 @@ sc_get_data <- function(comid = NULL,
 #' @return A tibble of desired StreamCat metrics
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' df <- sc_nlcd(year='2001', aoi='cat',comid='179,1337,1337420')
 #'
 #' df <- sc_nlcd(year='2001', aoi='ws', region='Region01')
