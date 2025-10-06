@@ -1,4 +1,4 @@
-# StreamCatTools (development version)
+# StreamCatTools 0.8.0
 
 -   Added code coverage to the package
 -   Added two new functions - `sc_get_metric_names` and `lc_get_metric_names` 
