@@ -45,7 +45,7 @@ A tibble of desired StreamCat metrics
 Function to specifically retrieve all NLCD metrics for a given year using the StreamCat API.
 }
 \examples{
-\donttest{
+\dontrun{
 
 df <- lc_nlcd(comid='23783629', year='2019', aoi='ws')
 

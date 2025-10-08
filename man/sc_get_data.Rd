@@ -75,7 +75,7 @@ Function to return StreamCat catchment and watershed metrics using the StreamCat
 specific metric data aggregated by area of interest, returned by comid(s), hydroregion(s), state(s), or county(ies).
 }
 \examples{
-\donttest{
+\dontrun{
 df <- sc_get_data(comid='179', aoi='cat', metric='fert')
 
 df <- sc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')

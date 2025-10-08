@@ -59,7 +59,7 @@
 #' @return A data frame of StreamCat metrics. If data are missing for all rows of a given metric, then the column for that metric will not exist. If data are missing for only some rows, then they will be specified with NA.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' df <- sc_get_data(comid='179', aoi='cat', metric='fert')
 #'
 #' df <- sc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')
@@ -100,9 +100,23 @@ sc_get_data <- function(comid = NULL,
   # Base API URL.
   base_url <- 'https://api.epa.gov/StreamCat/streams/metrics'
   req <- httr2::request(base_url)
-  # Collapse comids into a single string separated by a comma.
+  if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) | is.null(aoi)){
+    stop('Must provide at a minimum valid comid, metric and aoi to the function')
+  }
+  # Collapse vectors into a single string separated by a comma.
   if (!is.null(comid)){
     comid <- paste(comid, collapse = ",")
+  }
+  metric <- paste(metric, collapse = ",")
+  aoi <- paste(aoi, collapse = ",")
+  if (!is.null(state)){
+    state <- paste(state, collapse = ",")
+  }
+  if (!is.null(county)){
+    county <- paste(county, collapse = ",")
+  }
+  if (!is.null(region)){
+    region <- paste(region, collapse = ",")
   }
   # Force old and odd naming convention to behave correctly
   if (!is.null(aoi)){
@@ -119,9 +133,7 @@ sc_get_data <- function(comid = NULL,
         aoi <- gsub('riparian_watershed','wsrp100',aoi)
       }
     }
-  if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) | is.null(aoi)){
-    stop('Must provide at a minimum valid comid, metric and aoi to the function')
-  }
+  
   if (!is.null(conus) & metric=='all'){
     stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
   } 
@@ -210,7 +222,7 @@ sc_get_data <- function(comid = NULL,
 #' @return A tibble of desired StreamCat metrics
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' df <- sc_nlcd(year='2001', aoi='cat',comid='179,1337,1337420')
 #'
 #' df <- sc_nlcd(year='2001', aoi='ws', region='Region01')
