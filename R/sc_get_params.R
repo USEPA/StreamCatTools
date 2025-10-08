@@ -8,7 +8,7 @@
 #'
 #' @param param List of available parameters in the API for the following options:
 #' name, areaofInterest, region, state, county.  State and county return a data
-#' frame that includes FIPS codes, names and state abbreviations 
+#' frame that includes FIPS codes, names and state abbreviations
 #' Syntax: param=<value1>,<value2>
 #' Values: name|area
 #'
@@ -30,6 +30,7 @@ sc_get_params <- function(param = NULL) {
   INDICATOR_CATEGORY <- METRIC_NAME <- AOI <- YEAR <- NULL
   WEBTOOL_NAME <- METRIC_UNITS <- METRIC_DESCRIPTION <- DSID <- NULL
   SOURCE_NAME <- SOURCE_URL <- UUID <- DATE_DOWNLOADED <- NULL
+  DSNAME <- NULL
   resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/metrics")$items
   if (param=='aoi'){
     params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]
@@ -43,10 +44,10 @@ sc_get_params <- function(param = NULL) {
     params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
       httr2::req_perform() |>
       httr2::resp_body_string() |>
-      readr::read_csv(show_col_types = FALSE) |> 
-      dplyr::select(-UUID,-DATE_DOWNLOADED,-METADATA) |> 
-      dplyr::rename(dataset=FINAL_TABLE,category=INDICATOR_CATEGORY, 
-                    metric=METRIC_NAME,aoi=AOI, year=YEAR, 
+      readr::read_csv(show_col_types = FALSE) |>
+      dplyr::select(-UUID,-DATE_DOWNLOADED,-METADATA) |>
+      dplyr::rename(dataset=FINAL_TABLE,category=INDICATOR_CATEGORY,
+                    metric=METRIC_NAME,aoi=AOI, year=YEAR,
                     short_description=WEBTOOL_NAME,units=METRIC_UNITS,
                     long_description=METRIC_DESCRIPTION, dsid=DSID,
                     source_name=SOURCE_NAME, source_URL=SOURCE_URL)
@@ -54,17 +55,17 @@ sc_get_params <- function(param = NULL) {
     params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
       httr2::req_perform() |>
       httr2::resp_body_string() |>
-      readr::read_csv(show_col_types = FALSE) |> 
+      readr::read_csv(show_col_types = FALSE) |>
       dplyr::select(INDICATOR_CATEGORY)
     params <- sort(unique(params$INDICATOR_CATEGORY))
   } else if(param == 'datasets'){
     params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
       httr2::req_perform() |>
       httr2::resp_body_string() |>
-      readr::read_csv(show_col_types = FALSE) |> 
+      readr::read_csv(show_col_types = FALSE) |>
       dplyr::select(DSNAME)
-    params <- sort(unique(params$DSNAME[!is.na(params$DSNAME)]))  
-  } 
+    params <- sort(unique(params$DSNAME[!is.na(params$DSNAME)]))
+  }
   else if(param == 'region'){
     params <- resp$region_options[[1]][[1]]
     params <- params[order(params)]
@@ -113,20 +114,20 @@ sc_fullname <- function(metric = NULL) {
 #' Get StreamCat Metric Names
 #'
 #' @description
-#' Function to filter StreamCat metrics metrics by category, area of interest, 
+#' Function to filter StreamCat metrics metrics by category, area of interest,
 #' dataset or year. Use `sc_get_params(categories)` or `sc_get_params(datasets)`
 #' to see all the valid category or dataset options
 #'
 #' @author
 #' Marc Weber
-#' 
+#'
 #' @param category Filter StreamCat metrics based on the metric category
 #' @param aoi Filter StreamCat metrics based on the area of interest
 #' @param year Filter StreamCat metrics based on a particular year or years
 #' @param dataset Filter StreamCat metrics based on the dataset name
 #'
 #' @return A dataframe of merics and description that match filter criteria
-#' @importFrom rlang .data
+# #' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -136,8 +137,8 @@ sc_fullname <- function(metric = NULL) {
 #' aoi=c('Cat','Ws')
 #' metrics <- sc_get_metric_names(aoi='Other',
 #' dataset=c('Canal Density','Predicted Channel Widths Depths'))
-#' 
-#' } 
+#'
+#' }
 
 
 sc_get_metric_names <- function(category = NULL,
@@ -163,10 +164,10 @@ sc_get_metric_names <- function(category = NULL,
     httr2::req_perform() |>
     httr2::resp_body_string() |>
     readr::read_csv(show_col_types = FALSE)
-  
+
   filters <- list(INDICATOR_CATEGORY = category, AOI = aoi, YEAR = year,
                   DSNAME = dataset)
-  
+
   filter_data <- function(data, filters) {
     # Filter the data frame for each non-null filter
     filtered_data <- purrr::reduce(
@@ -175,10 +176,12 @@ sc_get_metric_names <- function(category = NULL,
       .f = function(df, col_name) {
         filter_values <- filters[[col_name]]
         if (!is.null(filter_values)) {
-          df <- df  |> 
-            dplyr::mutate(temp_col = stringr::str_split(.data[[col_name]], ","))  |> 
-            dplyr::filter(purrr::map_lgl(temp_col, ~ any(.x %in% filter_values)))  |> 
-            dplyr::select(-temp_col)
+          temp_col <- stringr::str_split(df[[col_name]], ",")
+          df <- df[purrr::map_lgl(temp_col, ~ any(.x %in% filter_values)), , drop = FALSE]
+          # df <- df  |>
+          #   dplyr::mutate(temp_col = stringr::str_split(col_name, ","))  |>
+          #   dplyr::filter(purrr::map_lgl(temp_col, ~ any(.x %in% filter_values)))  |>
+          #   dplyr::select(-temp_col)
         }
         df
       }
@@ -186,12 +189,19 @@ sc_get_metric_names <- function(category = NULL,
     return(filtered_data)
   }
   results <- filter_data(resp, filters)
-  results <- results |> 
-    dplyr::select(Category = .data$INDICATOR_CATEGORY, Metric = .data$METRIC_NAME, 
-                           .data$AOI,Year = .data$YEAR, Short_Name = .data$WEBTOOL_NAME,
-                           Metric_Description = .data$METRIC_DESCRIPTION, 
-                           Units = .data$METRIC_UNITS, Source = .data$SOURCE_NAME, 
-                           Dataset = .data$DSNAME)
-      
+  names_keep <- c("INDICATOR_CATEGORY", "METRIC_NAME", "AOI", "YEAR",
+                  "WEBTOOL_NAME", "METRIC_DESCRIPTION",
+                  "METRIC_UNITS", "SOURCE_NAME", "DSNAME")
+  results <- results[, names_keep, drop = FALSE]
+  names_new <- c("Category", "Metric", "AOI", "Year", "Short_Name",
+                 "Metric_Description", "Units", "Source", "Dataset")
+  names(results) <- names_new
+  # results |>
+  #   dplyr::select(Category = INDICATOR_CATEGORY, Metric = METRIC_NAME,
+  #                        AOI,Year = YEAR, Short_Name = WEBTOOL_NAME,
+  #                        Metric_Description = METRIC_DESCRIPTION,
+  #                        Units = METRIC_UNITS, Source = SOURCE_NAME,
+  #                        Dataset = DSNAME)
+
   return(results)
 }
