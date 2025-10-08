@@ -9,7 +9,7 @@ sc_get_params(param = NULL)
 \arguments{
 \item{param}{List of available parameters in the API for the following options:
 name, areaofInterest, region, state, county.  State and county return a data
-frame that includes FIPS codes, names and state abbreviations 
+frame that includes FIPS codes, names and state abbreviations
 Syntax: param=<value1>,<value2>
 Values: name|area}
 }

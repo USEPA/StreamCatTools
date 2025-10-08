@@ -19,7 +19,7 @@ sc_get_metric_names(category = NULL, aoi = NULL, year = NULL, dataset = NULL)
 A dataframe of merics and description that match filter criteria
 }
 \description{
-Function to filter StreamCat metrics metrics by category, area of interest, 
+Function to filter StreamCat metrics metrics by category, area of interest,
 dataset or year. Use `sc_get_params(categories)` or `sc_get_params(datasets)`
 to see all the valid category or dataset options
 }
@@ -31,7 +31,7 @@ aoi=c('Cat','Ws')
 metrics <- sc_get_metric_names(aoi='Other',
 dataset=c('Canal Density','Predicted Channel Widths Depths'))
 
-} 
+}
 }
 \author{
 Marc Weber

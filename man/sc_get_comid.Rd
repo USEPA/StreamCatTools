@@ -37,7 +37,8 @@ y = c(45.085, 35.405,42.403,38.721))
 comids <- sc_get_comid(dd, xcoord='x',
                        ycoord='y', crsys=4269)
 
-dd <- sf::read_sf(system.file("shape/nc.shp", package="sf"))
+dd <- sf::st_point_on_surface(sf::read_sf(system.file("shape/nc.shp", package="sf")))
+
 comids <- sc_get_comid(dd)
                                   
 comids <- sc_get_comid(dd, xcoord='x', 

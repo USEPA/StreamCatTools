@@ -19,7 +19,7 @@ lc_get_metric_names(category = NULL, aoi = NULL, year = NULL, dataset = NULL)
 A dataframe of merics and description that match filter criteria
 }
 \description{
-Function to filter LakeCat metrics metrics by category, area of interest, 
+Function to filter LakeCat metrics metrics by category, area of interest,
 dataset or year. Use `lc_get_params(categories)` or `lc_get_params(datasets)`
 to see all the valid category or dataset options
 }
@@ -27,7 +27,7 @@ to see all the valid category or dataset options
 \dontrun{
 metrics <- lc_get_metric_names(category='Natural')
 metrics <- lc_get_metric_names(category = c('Anthropogenic','Natural'),
-aoi=c('Cat','Ws')} 
+aoi=c('Cat','Ws')}
 }
 \author{
 Marc Weber
