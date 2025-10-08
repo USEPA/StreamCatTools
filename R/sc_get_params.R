@@ -178,10 +178,6 @@ sc_get_metric_names <- function(category = NULL,
         if (!is.null(filter_values)) {
           temp_col <- stringr::str_split(df[[col_name]], ",")
           df <- df[purrr::map_lgl(temp_col, ~ any(.x %in% filter_values)), , drop = FALSE]
-          # df <- df  |>
-          #   dplyr::mutate(temp_col = stringr::str_split(col_name, ","))  |>
-          #   dplyr::filter(purrr::map_lgl(temp_col, ~ any(.x %in% filter_values)))  |>
-          #   dplyr::select(-temp_col)
         }
         df
       }
@@ -196,12 +192,6 @@ sc_get_metric_names <- function(category = NULL,
   names_new <- c("Category", "Metric", "AOI", "Year", "Short_Name",
                  "Metric_Description", "Units", "Source", "Dataset")
   names(results) <- names_new
-  # results |>
-  #   dplyr::select(Category = INDICATOR_CATEGORY, Metric = METRIC_NAME,
-  #                        AOI,Year = YEAR, Short_Name = WEBTOOL_NAME,
-  #                        Metric_Description = METRIC_DESCRIPTION,
-  #                        Units = METRIC_UNITS, Source = SOURCE_NAME,
-  #                        Dataset = DSNAME)
 
   return(results)
 }
