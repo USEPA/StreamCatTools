@@ -22,7 +22,7 @@ test_that("lc_get_metric_names", {
 })
 
 test_that("lc_get_params for area of interest parameters", {
-  params <- lc_get_params(param='areaOfInterest')
+  params <- lc_get_params(param='aoi')
   expect_true(exists("params"))
   expect_equal(params,c("cat","ws"))
 })

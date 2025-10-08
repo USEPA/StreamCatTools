@@ -51,7 +51,7 @@ res$items
 ## List API parameters
 List StreamCat parameters: Get a list of available StreamCat values for certain parameters using the `sc_get_params` function via the API
 ```{r params}
-region_params <- sc_get_params(param='areaOfInterest')
+region_params <- sc_get_params(param='aoi')
 
 name_params <- sc_get_params(param='metric_names')
 

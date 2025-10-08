@@ -32,7 +32,8 @@
 #' comids <- sc_get_comid(dd, xcoord='x',
 #'                        ycoord='y', crsys=4269)
 #' 
-#' dd <- sf::read_sf(system.file("shape/nc.shp", package="sf"))
+#' dd <- sf::st_point_on_surface(sf::read_sf(system.file("shape/nc.shp", package="sf")))
+#' 
 #' comids <- sc_get_comid(dd)
 #'                                   
 #' comids <- sc_get_comid(dd, xcoord='x', 
@@ -53,10 +54,10 @@ sc_get_comid <- function(dd = NULL, xcoord = NULL,
   } else {
     dd <- sf::st_as_sf(dd, coords = c(xcoord, ycoord), crs = crsys, remove = FALSE)
   }
-  
+  geom_col <- attr(dd, "sf_column")
   run_for <- 1:nrow(dd)
   output <- do.call(rbind, lapply(1:nrow(dd), function(i){
-    comid <- nhdplusTools::discover_nhdplus_id(dd[i,c('geometry')])
+    comid <- nhdplusTools::discover_nhdplus_id(dd[i,c(geom_col)])
     if (length(comid)==0L) comid <- NA else comid <- comid
     return(comid)
   }))

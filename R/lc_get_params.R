@@ -32,7 +32,7 @@ lc_get_params <- function(param = NULL) {
   WEBTOOL_NAME <- METRIC_UNITS <- METRIC_DESCRIPTION <- DSID <- NULL
   SOURCE_NAME <- SOURCE_URL <- UUID <- DATE_DOWNLOADED <- NULL
   resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/lakes/metrics")$items
-  if (param=='areaOfInterest'){
+  if (param=='aoi'){
     params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]
     params <- c(gsub(" ","", params),'other')
     params <- params[order(params)]
@@ -126,6 +126,7 @@ lc_fullname <- function(metric = NULL) {
 #' @param dataset Filter LakeCat metrics based on the dataset name
 #'
 #' @return A dataframe of merics and description that match filter criteria
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -170,9 +171,9 @@ lc_get_metric_names <- function(category = NULL,
       .f = function(df, col_name) {
         filter_values <- filters[[col_name]]
         if (!is.null(filter_values)) {
-          df <- df %>%
-            dplyr::mutate(temp_col = stringr::str_split(.data[[col_name]], ",")) %>%
-            dplyr::filter(purrr::map_lgl(temp_col, ~ any(.x %in% filter_values))) %>%
+          df <- df  |> 
+            dplyr::mutate(temp_col = stringr::str_split(.data[[col_name]], ","))  |> 
+            dplyr::filter(purrr::map_lgl(temp_col, ~ any(.x %in% filter_values)))  |> 
             dplyr::select(-temp_col)
         }
         df
@@ -182,11 +183,11 @@ lc_get_metric_names <- function(category = NULL,
   }
   results <- filter_data(resp, filters)
   results <- results |> 
-    dplyr::select(Category = INDICATOR_CATEGORY, Metric = METRIC_NAME, 
-                  AOI,Year = YEAR, Short_Name = WEBTOOL_NAME,
-                  Metric_Description = METRIC_DESCRIPTION, 
-                  Units = METRIC_UNITS, Source = SOURCE_NAME, 
-                  Dataset = DSNAME)
+    dplyr::select(Category = .data$INDICATOR_CATEGORY, Metric = .data$METRIC_NAME, 
+                  .data$AOI,Year = .data$YEAR, Short_Name = .data$WEBTOOL_NAME,
+                  Metric_Description = .data$METRIC_DESCRIPTION, 
+                  Units = .data$METRIC_UNITS, Source = .data$SOURCE_NAME, 
+                  Dataset = .data$DSNAME)
   
   return(results)
 }
