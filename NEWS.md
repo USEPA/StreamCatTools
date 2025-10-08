@@ -4,6 +4,8 @@
 -   Added two new functions - `sc_get_metric_names` and `lc_get_metric_names` 
     to make metric names and descriptions more searchable and slightly updated 
     parameters in both `sc_get_params` and `lc_get_params` functions
+-   Both `sc_get_data` and `lc_get_data` now accept vectors as well as comma-
+    separated strings for the metric, state, county and region parameters
 
 # StreamCatTools 0.7.0
 

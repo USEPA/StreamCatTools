@@ -94,16 +94,28 @@ lc_get_data <- function(comid = NULL,
   # Base API URL.
   req <- httr2::request('https://api.epa.gov/StreamCat/lakes/metrics')
   # Collapse comids into a single string separated by a comma.
+  if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) | is.null(aoi)){
+    stop('Must provide at a minimum valid comid, metric and aoi to the function')
+  }
+  # Collapse vectors into a single string separated by a comma.
   if (!is.null(comid)){
     comid <- paste(comid, collapse = ",")
+  }
+  metric <- paste(metric, collapse = ",")
+  aoi <- paste(aoi, collapse = ",")
+  if (!is.null(state)){
+    state <- paste(state, collapse = ",")
+  }
+  if (!is.null(county)){
+    county <- paste(county, collapse = ",")
+  }
+  if (!is.null(region)){
+    region <- paste(region, collapse = ",")
   }
   # Force old and odd naming convention to behave correctly
   if (!is.null(aoi)){
     if (aoi == 'catchment') aoi <- 'cat'
     if (aoi == 'watershed') aoi <- 'ws'
-  }
-  if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) | is.null(aoi)){
-    stop('Must provide at a minimum valid comid, metric and aoi to the function')
   }
   if (!is.null(conus) & metric=='all'){
     stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
