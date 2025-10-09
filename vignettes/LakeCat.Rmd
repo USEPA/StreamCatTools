@@ -41,7 +41,7 @@ List LakeCat parameters: Get a list of available LakeCat values for certain para
 
 ```{r name_params}
 library(StreamCatTools)
-region_params <- lc_get_params(param='areaOfInterest')
+region_params <- lc_get_params(param='aoi')
 
 name_params <- lc_get_params(param='metric_names')
 

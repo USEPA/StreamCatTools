@@ -13,11 +13,13 @@
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_fullname.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_comid.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_data.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_metric_names.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_params.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_nlcd.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/sc_fullname.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/sc_get_comid.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/sc_get_data.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/reference/sc_get_metric_names.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/sc_get_params.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/sc_nlcd.html</loc></url>
 </urlset>

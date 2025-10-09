@@ -6,25 +6,25 @@ test_that("lc_get_params for metric_names parameters", {
   expect_gt(length(params),500)
 })
 
-test_that("sc_get_params for variable_info parameters", {
-  params <- sc_get_params(param='variable_info')
+test_that("lc_get_params for variable_info parameters", {
+  params <- lc_get_params(param='variable_info')
   expect_true(exists("params"))
   expect_gt(nrow(params),100)
 })
 
-test_that("lc_get_params for area of interest parameters", {
-  params <- lc_get_params(param='areaOfInterest')
-  expect_true(exists("params"))
-  expect_equal(params,c("cat","ws"))
+test_that("lc_get_metric_names", {
+  metrics <- lc_get_metric_names(category='Natural')
+  expect_true(exists("metrics"))
+  expect_gt(nrow(metrics),70)
+  expect_equal(names(metrics), c("Category","Metric","AOI","Year", 
+                                 "Short_Name","Metric_Description","Units",
+                                 "Source","Dataset"))
 })
 
-test_that("lc_get_params for region parameters", {
-  params <- sc_get_params(param='region')
+test_that("lc_get_params for area of interest parameters", {
+  params <- lc_get_params(param='aoi')
   expect_true(exists("params"))
-  expect_equal(params,c("Region01","Region02","Region03N","Region03S","Region03W",
-                        "Region04","Region05","Region06","Region07","Region08",
-                        "Region09","Region10L","Region10U","Region11","Region12",
-                        "Region13","Region14","Region15","Region16","Region17","Region18"))
+  expect_equal(params,c("cat","ws"))
 })
 
 test_that("lc_get_params for name parameters", {
