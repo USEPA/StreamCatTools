@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Working with LakeCat data • StreamCatTools</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
@@ -26,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">StreamCatTools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +41,6 @@
 <li><a class="dropdown-item" href="../articles/Applications.html">Applications</a></li>
     <li><a class="dropdown-item" href="../articles/Introduction.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../articles/LakeCat.html">Working with LakeCat data</a></li>
-    <li><a class="dropdown-item" href="../articles/Nutrients.html">NNI in StreamCat</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -99,7 +97,7 @@ now just metric names and areas of interest for this function) via the
 API</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://usepa.github.io/StreamCatTools/">StreamCatTools</a></span><span class="op">)</span></span>
-<span><span class="va">region_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_params.html">lc_get_params</a></span><span class="op">(</span>param<span class="op">=</span><span class="st">'areaOfInterest'</span><span class="op">)</span></span>
+<span><span class="va">region_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_params.html">lc_get_params</a></span><span class="op">(</span>param<span class="op">=</span><span class="st">'aoi'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">name_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_params.html">lc_get_params</a></span><span class="op">(</span>param<span class="op">=</span><span class="st">'metric_names'</span><span class="op">)</span></span>
 <span></span>
@@ -116,12 +114,12 @@ returns a tibble of information about StreamCat metrics):</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 13</span></span></span>
 <span><span class="co">#&gt;   category     metric aoi   year  short_description long_description units  dsid</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Anthropogen… NABD_… Cat,… <span style="color: #BB0000;">NA</span>    NABD Dam Density  Density of geor… Coun…    33</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Anthropogen… NABD_… Cat,… <span style="color: #BB0000;">NA</span>    NABD NID Reservo… Volume all rese… Cubi…    33</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Anthropogen… NABD_… Cat,… <span style="color: #BB0000;">NA</span>    NABD Normal Rese… Volume all rese… Cubi…    33</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Natural      Preci… Cat,… <span style="color: #BB0000;">NA</span>    Surplus Precipit… This dataset re… Kilo…    75</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Natural      Rckde… Cat,… <span style="color: #BB0000;">NA</span>    Mean Bedrock Dep… Mean depth (cm)… Cent…    56</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Soils        agkff… Cat,… <span style="color: #BB0000;">NA</span>    Ag Soil Erodibil… Mean of STATSGO… Unit…    28</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Anthropogen… agkff… Cat,… <span style="color: #BB0000;">NA</span>    Ag Soil Erodibil… Mean of STATSGO… Unit…    10</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Natural      al2o3… Cat,… <span style="color: #BB0000;">NA</span>    Mean Lithologica… Mean % of litho… Perc…    11</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Base         areas… Ws    <span style="color: #BB0000;">NA</span>    Watershed Area S… Watershed area … Squa…    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Natural      bfi[A… Cat,… <span style="color: #BB0000;">NA</span>    Base Flow Index   Base flow is th… Perc…    12</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Anthropogen… canal… Cat,… <span style="color: #BB0000;">NA</span>    Canal Density     Density of NHDP… Kilo…    13</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Natural      cao[A… Cat,… <span style="color: #BB0000;">NA</span>    Mean Lithologica… Mean % of litho… Perc…    11</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 5 more variables: dataset &lt;chr&gt;, source_name &lt;chr&gt;, source_URL &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ACTIVE &lt;dbl&gt;, DSNAME &lt;chr&gt;</span></span></span></code></pre></div>
 <p>Look up the display name or names for a metric using the
@@ -132,10 +130,11 @@ returns a tibble of information about StreamCat metrics):</p>
 <span><span class="va">fullname</span></span>
 <span><span class="co">#&gt; [1] "Herbaceous Wetland Percentage 2016"</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">metric</span><span class="op">=</span><span class="st">'pctdecid2019,fert'</span></span>
+<code class="sourceCode R"><span><span class="va">metric</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'pctdecid2019'</span>,<span class="st">'fert'</span><span class="op">)</span></span>
 <span><span class="va">fullname</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_fullname.html">lc_fullname</a></span><span class="op">(</span><span class="va">metric</span><span class="op">)</span></span>
 <span><span class="va">fullname</span></span>
-<span><span class="co">#&gt; character(0)</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Deciduous Forest Percentage 2019"                   </span></span>
+<span><span class="co">#&gt; [2] "Synthetic Nitrogen Fertilizer Application Mean Rate"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="get-waterbody-comids">Get Waterbody COMIDs<a class="anchor" aria-label="anchor" href="#get-waterbody-comids"></a>
@@ -395,7 +394,7 @@ the <code>sc_get_data</code> function.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
