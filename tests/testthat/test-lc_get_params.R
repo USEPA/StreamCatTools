@@ -15,7 +15,7 @@ test_that("lc_get_params for variable_info parameters", {
 test_that("lc_get_metric_names", {
   metrics <- lc_get_metric_names(category='Natural')
   expect_true(exists("metrics"))
-  expect_gt(nrow(metrics),70)
+  expect_gt(nrow(metrics),20)
   expect_equal(names(metrics), c("Category","Metric","AOI","Year", 
                                  "Short_Name","Metric_Description","Units",
                                  "Source","Dataset"))

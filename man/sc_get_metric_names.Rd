@@ -27,7 +27,7 @@ to see all the valid category or dataset options
 \dontrun{
 metrics <- sc_get_metric_names(category='Wildfire')
 metrics <- sc_get_metric_names(category = c('Deposition','Climate'),
-aoi=c('Cat','Ws')
+aoi=c('Cat','Ws'))
 metrics <- sc_get_metric_names(aoi='Other',
 dataset=c('Canal Density','Predicted Channel Widths Depths'))
 

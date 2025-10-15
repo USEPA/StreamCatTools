@@ -76,6 +76,7 @@ metric='pctdecid2019,fert'
 fullname <- sc_fullname(metric)
 fullname
 ```
+
 We can additionally get a data frame of state FIPS codes, abbreviations and names, and the same information for counties as well using `sc_get_params`:
 ```{r states}
 states <- sc_get_params(param='state')
@@ -85,6 +86,13 @@ head(states)
 ```{r counties}
 counties <- sc_get_params(param='county')
 head(counties)
+```
+
+## Filter metric information by criteria
+We can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric data set names, or the Areas of Interest the metrics are available for.
+```{r get_metric_names}
+metrics <- sc_get_metric_names(category = c('Deposition','Climate'),aoi=c('Cat','Ws'))
+head(metrics)
 ```
 
 ## Get data for COMIDs

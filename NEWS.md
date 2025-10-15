@@ -1,3 +1,5 @@
+# StreamCatTools (development version)
+
 # StreamCatTools 0.8.0
 
 -   Added code coverage to the package
