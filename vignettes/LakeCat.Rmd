@@ -68,6 +68,13 @@ fullname <- lc_fullname(metric)
 fullname
 ```
 
+## Filter metric information by criteria
+We can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric data set names, or the Areas of Interest the metrics are available for.
+```{r get_metric_names}
+metrics <- lc_get_metric_names(category = c('Anthropogenic','Natural'), aoi=c('Cat','Ws'))
+head(metrics)
+```
+
 ## Get Waterbody COMIDs
 In this example we use the `lc_get_comid` function to find COMIDs for a set of example lake locations we load into R.`lc_get_comid` is just a simple wrapper for `get_waterbodies` in the [nhdplusTools](https://doi-usgs.github.io/nhdplusTools/) R package. We can then use the COMIDs we derive for our lake locations to get LakeCat metrics for these lakes as we show in after this.
 ```{r comids, warning=FALSE, message=FALSE}
