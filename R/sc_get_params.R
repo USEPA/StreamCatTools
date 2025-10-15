@@ -31,58 +31,63 @@ sc_get_params <- function(param = NULL) {
   WEBTOOL_NAME <- METRIC_UNITS <- METRIC_DESCRIPTION <- DSID <- NULL
   SOURCE_NAME <- SOURCE_URL <- UUID <- DATE_DOWNLOADED <- NULL
   DSNAME <- NULL
-  resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/metrics")$items
-  if (param=='aoi'){
-    params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]
-    params <- c(gsub(" ","", params),'other')
-    params <- params[order(params)]
-  }  else if(param == 'metric_names') {
-    params <- resp$name_options[[1]][[1]]
-    params <- params[!duplicated(params)]
-    params <- params[order(params)]
-  } else if(param == 'variable_info') {
-    params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
-      httr2::req_perform() |>
-      httr2::resp_body_string() |>
-      readr::read_csv(show_col_types = FALSE) |>
-      dplyr::select(-UUID,-DATE_DOWNLOADED,-METADATA) |>
-      dplyr::rename(dataset=FINAL_TABLE,category=INDICATOR_CATEGORY,
-                    metric=METRIC_NAME,aoi=AOI, year=YEAR,
-                    short_description=WEBTOOL_NAME,units=METRIC_UNITS,
-                    long_description=METRIC_DESCRIPTION, dsid=DSID,
-                    source_name=SOURCE_NAME, source_URL=SOURCE_URL)
-  } else if(param == 'categories'){
-    params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
-      httr2::req_perform() |>
-      httr2::resp_body_string() |>
-      readr::read_csv(show_col_types = FALSE) |>
-      dplyr::select(INDICATOR_CATEGORY)
-    params <- sort(unique(params$INDICATOR_CATEGORY))
-  } else if(param == 'datasets'){
-    params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
-      httr2::req_perform() |>
-      httr2::resp_body_string() |>
-      readr::read_csv(show_col_types = FALSE) |>
-      dplyr::select(DSNAME)
-    params <- sort(unique(params$DSNAME[!is.na(params$DSNAME)]))
-  }
-  else if(param == 'region'){
-    params <- resp$region_options[[1]][[1]]
-    params <- params[order(params)]
-  } else if(param == 'state'){
-    params <- resp$state_options[[1]]
-    params <- params[!params$st_abbr %in% c('AK','HI','PR'),]
-    params$st_fips <- as.character(params$st_fips)
-    params$st_fips[nchar(params$st_fips) < 2] <- paste0('0',params$st_fips[nchar(params$st_fips) < 2])
-    params <- params[order(params$st_name),]
-    rownames(params) <- 1:nrow(params)
-  } else if(param == 'county'){
-    params <- resp$county_options[[1]]
-    params$fips <- as.character(params$fips)
-    params$fips[nchar(params$fips) < 5] <- paste0('0',params$fips[nchar(params$fips) < 5])
-    params <- params[with(params,order(state,county_name)),]
-    rownames(params) <- 1:nrow(params)
-  }
+  resp <- tryCatch({
+    jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/metrics")$items
+    if (param=='aoi'){
+      params <- strsplit(stringr::str_sub(resp$aoi_param_info[[1]]$options,2,-2),",")[[1]]
+      params <- c(gsub(" ","", params),'other')
+      params <- params[order(params)]
+    }  else if(param == 'metric_names') {
+      params <- resp$name_options[[1]][[1]]
+      params <- params[!duplicated(params)]
+      params <- params[order(params)]
+    } else if(param == 'variable_info') {
+      params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
+        httr2::req_perform() |>
+        httr2::resp_body_string() |>
+        readr::read_csv(show_col_types = FALSE) |>
+        dplyr::select(-UUID,-DATE_DOWNLOADED,-METADATA) |>
+        dplyr::rename(dataset=FINAL_TABLE,category=INDICATOR_CATEGORY,
+                      metric=METRIC_NAME,aoi=AOI, year=YEAR,
+                      short_description=WEBTOOL_NAME,units=METRIC_UNITS,
+                      long_description=METRIC_DESCRIPTION, dsid=DSID,
+                      source_name=SOURCE_NAME, source_URL=SOURCE_URL)
+    } else if(param == 'categories'){
+      params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
+        httr2::req_perform() |>
+        httr2::resp_body_string() |>
+        readr::read_csv(show_col_types = FALSE) |>
+        dplyr::select(INDICATOR_CATEGORY)
+      params <- sort(unique(params$INDICATOR_CATEGORY))
+    } else if(param == 'datasets'){
+      params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
+        httr2::req_perform() |>
+        httr2::resp_body_string() |>
+        readr::read_csv(show_col_types = FALSE) |>
+        dplyr::select(DSNAME)
+      params <- sort(unique(params$DSNAME[!is.na(params$DSNAME)]))
+    }
+    else if(param == 'region'){
+      params <- resp$region_options[[1]][[1]]
+      params <- params[order(params)]
+    } else if(param == 'state'){
+      params <- resp$state_options[[1]]
+      params <- params[!params$st_abbr %in% c('AK','HI','PR'),]
+      params$st_fips <- as.character(params$st_fips)
+      params$st_fips[nchar(params$st_fips) < 2] <- paste0('0',params$st_fips[nchar(params$st_fips) < 2])
+      params <- params[order(params$st_name),]
+      rownames(params) <- 1:nrow(params)
+    } else if(param == 'county'){
+      params <- resp$county_options[[1]]
+      params$fips <- as.character(params$fips)
+      params$fips[nchar(params$fips) < 5] <- paste0('0',params$fips[nchar(params$fips) < 5])
+      params <- params[with(params,order(state,county_name)),]
+      rownames(params) <- 1:nrow(params)
+    }
+  },error = function(e) {
+    message("An error occurred during req_perform(); the service may be down or function parameters may be mis-specified: ", e$message)
+    return(NULL)
+  })
   return(params)
 }
 
@@ -105,8 +110,13 @@ sc_get_params <- function(param = NULL) {
 #' fullname <- sc_fullname(metric='clay')
 
 sc_fullname <- function(metric = NULL) {
-  resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/datadictionary")$items
-  result <- unique(resp$short_display_name[resp$metric_prefix %in% metric])
+  result <- tryCatch({
+    resp <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/datadictionary")$items
+    resp <- unique(resp$short_display_name[resp$metric_prefix %in% metric])
+  },error = function(e) {
+    message("An error occurred during req_perform(); the service may be down or function parameters may be mis-specified: ", e$message)
+    return(NULL)
+  })
   return(result)
 }
 
@@ -160,10 +170,15 @@ sc_get_metric_names <- function(category = NULL,
     }
     aoi <- stringr::str_to_title(aoi)
   }
-  resp <- params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
+  resp <- tryCatch({
+    params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
     httr2::req_perform() |>
     httr2::resp_body_string() |>
     readr::read_csv(show_col_types = FALSE)
+  },error = function(e) {
+    message("An error occurred during req_perform(); the service may be down or function parameters may be mis-specified: ", e$message)
+    return(NULL)
+  })
 
   filters <- list(INDICATOR_CATEGORY = category, AOI = aoi, YEAR = year,
                   DSNAME = dataset)
@@ -176,7 +191,8 @@ sc_get_metric_names <- function(category = NULL,
       .f = function(df, col_name) {
         filter_values <- filters[[col_name]]
         if (!is.null(filter_values)) {
-          temp_col <- stringr::str_split(df[[col_name]], ",")
+          # Split the column values by comma
+          temp_col <- stringr::str_split(df[[col_name]], ", ")
           df <- df[purrr::map_lgl(temp_col, ~ any(.x %in% filter_values)), , drop = FALSE]
         }
         df

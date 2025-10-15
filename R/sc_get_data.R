@@ -153,7 +153,8 @@ sc_get_data <- function(comid = NULL,
                       state=state,county=county,region=region,conus=conus,
                       countOnly=countOnly
   )
-  df <- req |>
+  df <- tryCatch({
+    req |>
     httr2::req_method("POST") |>
     httr2::req_headers("Content-Type" = "application/x-www-form-urlencoded") |>
     httr2::req_method("POST") |>
@@ -163,12 +164,24 @@ sc_get_data <- function(comid = NULL,
     httr2::req_perform() |> 
     httr2::resp_body_string() |> 
     jsonlite::fromJSON()
+  },error = function(e) {
+    message("An error occurred during req_perform(); the service may be down or function parameters may be mis-specified: ", e$message)
+    return(NULL)
+  })
+  # Return a data frame if success
+  if (exists("df") && !is.null(df)){
     # Return a data frame
+      if (is.null(countOnly)){
+        df <- df$items  |> 
+          dplyr::select(comid, dplyr::everything())
+        return(df)
+      } else return(df$items)
     if (is.null(countOnly)){
       df <- df$items  |> 
         dplyr::select(comid, dplyr::everything())
       return(df)
     } else return(df$items)
+  }
 }
 
 
