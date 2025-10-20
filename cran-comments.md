@@ -4,6 +4,10 @@ This is a patch update that:
 - Handles a web service being down in vignettes
 - Due to the lapse in government funding in federal agencies in the US, 
   the web service StreamCatTools is built around may be down for some time
+- Because of the lapse in government funding in federal agencies in the US, I
+  may not be able to respond readily to any CRAN emails to my government 
+  email account weber.marc@epa.gov but my personal email is mweber36@gmail.com
+  
 
 -------
 
