@@ -1,7 +1,7 @@
 Package: StreamCatTools
 Type: Package
 Title: 'StreamCatTools'
-Version: 0.9.0.9000
+Version: 0.9.1
 Authors@R: c(person(given = "Marc", 
                     family = "Weber", 
                     role = c("aut", "cre"), 

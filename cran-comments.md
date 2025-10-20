@@ -3,7 +3,7 @@ This is a patch update that:
 - Handles a web service being down in testing using `testthat::skip_on_cran()`
 - Handles a web service being down in vignettes
 - Due to the lapse in government funding in federal agencies in the US, 
-  the web service StreamCatTools is built around may be donw for some time
+  the web service StreamCatTools is built around may be down for some time
 
 -------
 
