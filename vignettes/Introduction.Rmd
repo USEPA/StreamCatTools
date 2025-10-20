@@ -43,7 +43,7 @@ The `StreamCatTools` package was designed to simplify the use of [StreamCat](htt
 
 ## StreamCat API
 We can  pull data into R from the [StreamCat API](https://usepa.github.io/StreamCatWebServices_Public/#/) by simply passing a URL to extract from json.  We have to hard-wire parameters though and are limited in the number of records returned through a `GET` request.
-```{r API}
+```{r , message=FALSE, eval=FALSE}
 res <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/metrics?name=fert&areaOfInterest=cat&comid=179")
 res$items
 ```
@@ -55,65 +55,110 @@ region_params <- sc_get_params(param='aoi')
 
 name_params <- sc_get_params(param='metric_names')
 
-print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
-print(paste0('A selection of available StreamCat metrics include: ',paste(name_params[1:10],collapse = ', ')))
+if (exists('region_params')){ 
+  if (!is.null(region_params)){
+  print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
+  }
+} else print('the service appears to be down currently') 
+if (exists('name_params')){ 
+  if (!is.null(name_params)){
+print(paste0('A selection of available LakrCat metrics include: ',paste(name_params[1:10],collapse = ', ')))
+  }
+} else print('the service appears to be down currently') 
 ```
+
 We can also see what metrics are available for what areas of interest and what years using the `sc_get_params` function (which returns a tibble of information about StreamCat metrics):
 ```{r params2}
 var_info <- sc_get_params(param='variable_info')
-head(var_info)
+if (exists('var_info')){ 
+  if (!is.null(var_info)){
+  head(var_info)
+  }
+} else print('the service appears to be down currently')
 ```
 
 We can look up the display name or names for a metric using the `sc_fullname` function via the API
 ```{r fullnames}
 metric='pcthbwet2011'
 fullname <- sc_fullname(metric)
+if (exists('fullname')){ 
+  if (!is.null(fullname)){
 fullname
+  }
+} else print('the service appears to be down currently')
 ```
 
 ```{r fullnames2}
 metric='pctdecid2019,fert'
 fullname <- sc_fullname(metric)
+if (exists('fullname')){ 
+  if (!is.null(fullname)){
 fullname
+  }
+} else print('the service appears to be down currently')
 ```
 
 We can additionally get a data frame of state FIPS codes, abbreviations and names, and the same information for counties as well using `sc_get_params`:
 ```{r states}
 states <- sc_get_params(param='state')
-head(states)
+if (exists('states')){ 
+  if (!is.null(states)){
+  knitr::kable(head(states))
+  }
+} else print('the service appears to be down currently')
 ```
 
 ```{r counties}
 counties <- sc_get_params(param='county')
-head(counties)
+if (exists('counties')){ 
+  if (!is.null(counties)){ 
+  knitr::kable(head(counties))
+  }
+} else print('the service appears to be down currently')
 ```
 
 ## Filter metric information by criteria
 We can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric data set names, or the Areas of Interest the metrics are available for.
 ```{r get_metric_names}
 metrics <- sc_get_metric_names(category = c('Deposition','Climate'),aoi=c('Cat','Ws'))
-head(metrics)
+if (exists('metrics')){ 
+  if (!is.null(metrics)){ 
+  head(metrics)
+  }
+} else print('the service appears to be down currently')
 ```
 
 ## Get data for COMIDs
 In this example we access several variables, for several areas of interest, and for several COMIDs using the `sc_get_data` function.  Loads data into a tibble we can view.
 ```{r get_data}
 df <- sc_get_data(metric='pcturbmd2006,damdens,tridens', aoi='rp100cat,cat,ws', comid='179,1337,1337420')
-knitr::kable(df)
+if (exists('df')){ 
+  if (!is.null(df)){  
+  knitr::kable(df)
+  }
+} else print('the service appears to be down currently')
 ```
 
 ## Get data for county
 In this example we access a couple variables at the watershed scale for the area of interest of a county (Benton County in this case) using the `sc_get_data` function. 
 ```{r countydata}
 df <- sc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
-knitr::kable(head(df))
+if (exists('df')){ 
+  if (!is.null(df)){  
+  knitr::kable(head(df))
+  }
+} else print('the service appears to be down currently')
 ```
 
 ## Get all metrics for COMIDs or an Area of Interest
 We can also get all StreamCat metrics for a set of COMIDs or an area of interest.  **Please do not request metric='all' and aoi='conus' in order not to overload requests to the server.  Requesting metric='all' for a state or multiple states or hydroregions will also take a long time to process**.
 ```{r all}
 df <- sc_get_data(comid='179', aoi='cat', metric='all')
-knitr::kable(head(df))
+if (exists('df')){ 
+  if (!is.null(df)){ 
+  knitr::kable(head(df))
+  }
+} else print('the service appears to be down currently')
 ```
 
 ## Get NLCD data
@@ -121,14 +166,22 @@ In this example we access National Land Cover Dataset (NLCD) data for 2001, just
 ```{r get_nlcd}
 df <- sc_nlcd(year='2001', aoi='cat',
               comid='179,1337,1337420')
-knitr::kable(df)
+if (exists('df')){ 
+  if (!is.null(df)){ 
+  knitr::kable(df)
+  }
+} else print('the service appears to be down currently')
 ```
 
 We can also pass a couple years for a different area of interest for another region like a county.
 ```{r get_nlcd2}
 df <- sc_nlcd(year='2006, 2019', aoi='ws',
               county='41003')
-knitr::kable(head(df))
+if (exists('df')){ 
+  if (!is.null(df)){ 
+  knitr::kable(head(df))
+  }
+} else print('the service appears to be down currently')
 ```
 
 ## Get COMIDs
@@ -142,22 +195,30 @@ gages_coms <- sc_get_comid(gages, xcoord='LON_SITE',                   ycoord='L
 # Add the COMID we found back to gages data frame
 gages$COMID <- strsplit(gages_coms, ",")[[1]]
 df <- sc_get_data(metric='huden2010', aoi='ws', comid=gages_coms)
-df$COMID <- as.character(df$comid)
-gages <- dplyr::left_join(gages, df, by='COMID')
-knitr::kable(head(gages))
+if (exists('df')){ 
+  if (!is.null(df)){ 
+  df$COMID <- as.character(df$comid)
+  gages <- dplyr::left_join(gages, df, by='COMID')
+  knitr::kable(head(gages))
+  }
+} else print('the service appears to be down currently')
 ```
 
 ## Get data for a hydroregion
 In this example we access a couple watershed-only metrics for a particular NHDPlus hydroregion using the `sc_get_data` function.
 ```{r hydroregion}
 df <- sc_get_data(metric='pctwdwet2006', aoi='ws', region='Region17')
-knitr::kable(head(df))
+if (exists('df')){ 
+  if (!is.null(df)){ 
+  knitr::kable(head(df))
+  }
+} else print('the service appears to be down currently')
 ```
 
 ## Get data for CONUS
 In this example we access a metric for conus using the `sc_get_data` function - this is shown for demonstration but not run as it takes a bit of time
 ```{r conus, eval=FALSE}
-# df <- sc_get_data(metric='om', aoi='ws', conus='true')
-# knitr::kable(head(df))
+df <- sc_get_data(metric='om', aoi='ws', conus='true')
+knitr::kable(head(df))
 ```
 

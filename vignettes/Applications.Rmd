@@ -37,21 +37,28 @@ flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_sou
 
 # get StreamCat metrics
 df <- sc_get_data(metric='pctimp2011', aoi='cat', comid=flowline_nldi$UT_flowlines$nhdplus_comid)
-
-# We can also pull out comids the following way:
-# comids <- paste(as.integer(flowline_nldi$UT_flowlines$nhdplus_comid), collapse=",",sep="")
-# df <- sc_get_data(metric='pctimp2011', aoi='cat', comid=comids)
-
-flowline_nldi <- flowline_nldi$UT_flowlines
-flowline_nldi$PCTIMP2011CAT <- df$pctimp2011cat[match(flowline_nldi$nhdplus_comid, df$comid)]
-
-basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
+if (exists('flowline_nldi')){ 
+  if (!is.null(flowline_nldi)){ 
+  # We can also pull out comids the following way:
+  # comids <- paste(as.integer(flowline_nldi$UT_flowlines$nhdplus_comid), collapse=",",sep="")
+  # df <- sc_get_data(metric='pctimp2011', aoi='cat', comid=comids)
+  
+  flowline_nldi <- flowline_nldi$UT_flowlines
+  flowline_nldi$PCTIMP2011CAT <- df$pctimp2011cat[match(flowline_nldi$nhdplus_comid, df$comid)]
+  
+  basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
+  }
+} else print('the service appears to be down currently')   
 ```
 
 ```{r wshd pt2}
 library(mapview)
-mapview::mapviewOptions(fgb=FALSE)
-mapview::mapview(basin, alpha.regions=.08) + mapview::mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
+if (exists('flowline_nldi')){ 
+  if (!is.null(flowline_nldi)){
+    mapview::mapviewOptions(fgb=FALSE)
+    mapview::mapview(basin, alpha.regions=.08) +     mapview::mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
+  }
+} else print('the service appears to be down currently') 
 ```
 
 ### Working with NARS data
