@@ -44,59 +44,35 @@ library(StreamCatTools)
 region_params <- lc_get_params(param='aoi')
 
 name_params <- lc_get_params(param='metric_names')
-if (exists('region_params')){ 
-  if (!is.null(region_params)){ 
-  print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
-  }
-} else print('the service appears to be down currently')
 
-if (exists('name_params')){ 
-  if (!is.null(name_params)){ 
-print(paste0('A selection of available LakrCat metrics include: ',paste(name_params[1:10],collapse = ', ')))
-  }
-} else print('the service appears to be down currently') 
+print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
+print(paste0('A selection of available LakrCat metrics include: ',paste(name_params[1:10],collapse = ', '))) 
 ```
 
 We can also see what metrics are available for what areas of interest and what years using the `sc_get_params` function (which returns a tibble of information about StreamCat metrics):
 ```{r params2}
 var_info <- lc_get_params(param='variable_info')
-if (exists('var_info')){ 
-  if (!is.null(var_info)){  
-  head(var_info)
-  }
-} else print('the service appears to be down currently')
+head(var_info)
 ```
 
 Look up the display name or names for a metric using the `lc_fullname` function via the API
 ```{r fullnames}
 metric='pcthbwet2016'
 fullname <- lc_fullname(metric)
-if (exists('fullname')){ 
-  if (!is.null(fullname)){
 fullname
-  }
-} else print('the service appears to be down currently')
 ```
 
 ```{r fullnames2}
 metric=c('pctdecid2019','fert')
 fullname <- lc_fullname(metric)
-if (exists('fullname')){ 
-  if (!is.null(fullname)){
 fullname
-  }
-} else print('the service appears to be down currently')
 ```
 
 ## Filter metric information by criteria
 We can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric data set names, or the Areas of Interest the metrics are available for.
 ```{r get_metric_names}
 metrics <- lc_get_metric_names(category = c('Anthropogenic','Natural'), aoi=c('Cat','Ws'))
-if (exists('metrics')){ 
-  if (!is.null(metrics)){
 head(metrics)
-  }
-} else print('the service appears to be down currently')
 ```
 
 ## Get Waterbody COMIDs
@@ -115,22 +91,19 @@ In this example we access several variables, for several areas of interest, and 
 
 ```{r get_data}
 df <- lc_get_data(metric='pcturbmd2006,damdens', aoi='cat,ws', comid=comids)
-if (exists('df')){ 
-  if (!is.null(df)){ 
-  knitr::kable(df)
-  }
-} else print('the service appears to be down currently')
+knitr::kable(df)
+```
+
+```{r get_data2}
+df <- lc_get_data(metric='pcturbmd2006,damdens', aoi='cat,ws', comid='23783629,23794487,23812618')
+knitr::kable(df)
 ```
 
 ## Get data for county
 In this example we access a couple variables at the watershed scale for the area of interest of a county (Benton County in this case) using the `sc_get_data` function. 
 ```{r countydata}
 df <- lc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
-if (exists('df')){ 
-  if (!is.null(df)){ 
-  knitr::kable(head(df))
-  }
-} else print('the service appears to be down currently')
+knitr::kable(head(df))
 ```
 
 ## Get NLCD data
@@ -139,9 +112,5 @@ In this example we access National Land Cover Dataset (NLCD) data for 2019, just
 
 ```{r get_nlcd}
 df <- lc_nlcd(comid='23783629,23794487,23812618', year='2019', aoi='ws')
-if (exists('df')){ 
-  if (!is.null(df)){
-  knitr::kable(df)
-  }
-} else print('the service appears to be down currently')
+knitr::kable(df)
 ```
