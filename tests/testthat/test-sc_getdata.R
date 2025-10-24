@@ -9,6 +9,7 @@ test_that("sc_get_data for a sample COMID returns a data frame", {
 })
 
 test_that("sc_get_data for multiple COMIDs and areas and metrics returns a data frame", {
+  testthat::skip_on_cran()
   df <- sc_get_data(metric='pcturbmd2006,pctconif2008,rddens', 
                     aoi='cat,ws', 
                     comid='179,1337,1337420')
@@ -27,6 +28,7 @@ test_that("sc_get_data for showAreaSqKm and showPctFull returns a data frame", {
   })
 
 test_that("sc_get_data for a hydroregion and ws metrics returns a data frame", {
+  testthat::skip_on_cran()
   df <- sc_get_data(metric='pctwdwet2006', aoi='ws', 
                     region='Region01')
   expect_true(exists("df"))
@@ -35,6 +37,7 @@ test_that("sc_get_data for a hydroregion and ws metrics returns a data frame", {
 })
 
 test_that("sc_get_data for a county and ws metrics returns a data frame", {
+  testthat::skip_on_cran()
   df <- sc_get_data(metric='pctwdwet2006', aoi='ws', 
                     county='41003')
   expect_true(exists("df"))

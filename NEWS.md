@@ -1,9 +1,7 @@
 # StreamCatTools 0.9.1
 
 - Handles a web service being down in testing using `testthat::skip_on_cran()`
-- Handles a web service being down in vignettes
-- Due to the lapse in government funding in federal agencies in the US, 
-  the web service StreamCatTools is built around may be down for some time
+- Converts most vignettes to articles and adds one new `Start Here` vignette
   
 # StreamCatTools 0.9.0
 
