@@ -70,7 +70,7 @@ Function to return LakeCat metrics using the StreamCat API.  The function allows
 specific metric data aggregated by area of interest, returned by comid(s), hydroregion(s), state(s), or county(ies).
 }
 \examples{
-\donttest{
+\dontrun{
 df <- lc_get_data(comid='23794487', aoi='cat', metric='fert')
 
 df <- lc_get_data(metric='pcturbmd2006', aoi='ws',

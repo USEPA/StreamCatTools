@@ -41,12 +41,12 @@ List LakeCat parameters: Get a list of available LakeCat values for certain para
 
 ```{r name_params}
 library(StreamCatTools)
-region_params <- lc_get_params(param='areaOfInterest')
+region_params <- lc_get_params(param='aoi')
 
 name_params <- lc_get_params(param='metric_names')
 
 print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
-print(paste0('A selection of available LakrCat metrics include: ',paste(name_params[1:10],collapse = ', ')))
+print(paste0('A selection of available LakrCat metrics include: ',paste(name_params[1:10],collapse = ', '))) 
 ```
 
 We can also see what metrics are available for what areas of interest and what years using the `sc_get_params` function (which returns a tibble of information about StreamCat metrics):
@@ -66,6 +66,13 @@ fullname
 metric=c('pctdecid2019','fert')
 fullname <- lc_fullname(metric)
 fullname
+```
+
+## Filter metric information by criteria
+We can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric data set names, or the Areas of Interest the metrics are available for.
+```{r get_metric_names}
+metrics <- lc_get_metric_names(category = c('Anthropogenic','Natural'), aoi=c('Cat','Ws'))
+head(metrics)
 ```
 
 ## Get Waterbody COMIDs

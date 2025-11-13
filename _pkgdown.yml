@@ -1,4 +1,11 @@
 url: https://usepa.github.io/StreamCatTools/
 template:
   bootstrap: 5
-
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - StartHere
+  - Articles/Introduction
+  - Articles/LakeCat
+  - Articles/Applications
