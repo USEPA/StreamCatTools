@@ -5,7 +5,7 @@ articles:
 - title: Articles
   navbar: ~
   contents:
-  - Introduction
-  - LakeCat
-  - Applications
-
+  - StartHere
+  - Articles/Introduction
+  - Articles/LakeCat
+  - Articles/Applications
