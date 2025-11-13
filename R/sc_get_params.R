@@ -179,7 +179,6 @@ sc_get_metric_names <- function(category = NULL,
 
   filters <- list(INDICATOR_CATEGORY = category, AOI = aoi, YEAR = year,
                   DSNAME = dataset)
-
   filter_data <- function(data, filters) {
     # Filter the data frame for each non-null filter
     filtered_data <- purrr::reduce(
@@ -197,14 +196,17 @@ sc_get_metric_names <- function(category = NULL,
     )
     return(filtered_data)
   }
-  results <- filter_data(resp, filters)
-  names_keep <- c("INDICATOR_CATEGORY", "METRIC_NAME", "AOI", "YEAR",
-                  "WEBTOOL_NAME", "METRIC_DESCRIPTION",
-                  "METRIC_UNITS", "SOURCE_NAME", "DSNAME")
-  results <- results[, names_keep, drop = FALSE]
-  names_new <- c("Category", "Metric", "AOI", "Year", "Short_Name",
-                 "Metric_Description", "Units", "Source", "Dataset")
-  names(results) <- names_new
+  if (exists('resp') & !is.null(resp)){ 
+    results <- filter_data(resp, filters)
+    names_keep <- c("INDICATOR_CATEGORY", "METRIC_NAME", "AOI", "YEAR",
+                    "WEBTOOL_NAME", "METRIC_DESCRIPTION",
+                    "METRIC_UNITS", "SOURCE_NAME", "DSNAME")
+    results <- results[, names_keep, drop = FALSE]
+    names_new <- c("Category", "Metric", "AOI", "Year", "Short_Name",
+                   "Metric_Description", "Units", "Source", "Dataset")
+    names(results) <- names_new
+  } else
+    results <- 'the service appears to be down currently'
 
   return(results)
 }

@@ -12,7 +12,7 @@ output:
       smooth_scroll: no
     toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{Applications withs StreamCatTools}
+  %\VignetteIndexEntry{Applications with StreamCatTools}
   %\VignetteEncoding{UTF-8}{inputenc}
   %\VignetteEngine{knitr::rmarkdown}
 ---
@@ -45,7 +45,7 @@ df <- sc_get_data(metric='pctimp2011', aoi='cat', comid=flowline_nldi$UT_flowlin
 flowline_nldi <- flowline_nldi$UT_flowlines
 flowline_nldi$PCTIMP2011CAT <- df$pctimp2011cat[match(flowline_nldi$nhdplus_comid, df$comid)]
 
-basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
+basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)   
 ```
 
 ```{r wshd pt2}
