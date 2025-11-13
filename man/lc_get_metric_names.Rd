@@ -27,7 +27,7 @@ to see all the valid category or dataset options
 \dontrun{
 metrics <- lc_get_metric_names(category='Natural')
 metrics <- lc_get_metric_names(category = c('Anthropogenic','Natural'),
-aoi=c('Cat','Ws')}
+aoi=c('Cat','Ws'))}
 }
 \author{
 Marc Weber

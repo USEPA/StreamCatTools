@@ -26,24 +26,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Installing and loading StreamCatTools
-To install, currently you need to install from GitHub using devtools
-```{r, message=FALSE, eval=FALSE}
-library(devtools)
-install_github('USEPA/StreamCatTools')
-```
-
-After installing load the library
-```{r, message=FALSE}
-library(StreamCatTools)
-```
-
-## Background
-The `StreamCatTools` package was designed to simplify the use of [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) data in R, leveraging the new [API for StreamCat](https://api.epa.gov/StreamCat/streams/metrics). 
-
 ## StreamCat API
 We can  pull data into R from the [StreamCat API](https://usepa.github.io/StreamCatWebServices_Public/#/) by simply passing a URL to extract from json.  We have to hard-wire parameters though and are limited in the number of records returned through a `GET` request.
-```{r API}
+```{r , message=FALSE, eval=FALSE}
 res <- jsonlite::fromJSON("https://api.epa.gov/StreamCat/streams/metrics?name=fert&areaOfInterest=cat&comid=179")
 res$items
 ```
@@ -51,6 +36,7 @@ res$items
 ## List API parameters
 List StreamCat parameters: Get a list of available StreamCat values for certain parameters using the `sc_get_params` function via the API
 ```{r params}
+library(StreamCatTools)
 region_params <- sc_get_params(param='aoi')
 
 name_params <- sc_get_params(param='metric_names')
@@ -58,6 +44,7 @@ name_params <- sc_get_params(param='metric_names')
 print(paste0('region parameters are: ', paste(region_params,collapse = ', ')))
 print(paste0('A selection of available StreamCat metrics include: ',paste(name_params[1:10],collapse = ', ')))
 ```
+
 We can also see what metrics are available for what areas of interest and what years using the `sc_get_params` function (which returns a tibble of information about StreamCat metrics):
 ```{r params2}
 var_info <- sc_get_params(param='variable_info')
@@ -76,6 +63,7 @@ metric='pctdecid2019,fert'
 fullname <- sc_fullname(metric)
 fullname
 ```
+
 We can additionally get a data frame of state FIPS codes, abbreviations and names, and the same information for counties as well using `sc_get_params`:
 ```{r states}
 states <- sc_get_params(param='state')
@@ -85,6 +73,13 @@ head(states)
 ```{r counties}
 counties <- sc_get_params(param='county')
 head(counties)
+```
+
+## Filter metric information by criteria
+We can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric data set names, or the Areas of Interest the metrics are available for.
+```{r get_metric_names}
+metrics <- sc_get_metric_names(category = c('Deposition','Climate'),aoi=c('Cat','Ws'))
+head(metrics)
 ```
 
 ## Get data for COMIDs
@@ -149,7 +144,7 @@ knitr::kable(head(df))
 ## Get data for CONUS
 In this example we access a metric for conus using the `sc_get_data` function - this is shown for demonstration but not run as it takes a bit of time
 ```{r conus, eval=FALSE}
-# df <- sc_get_data(metric='om', aoi='ws', conus='true')
-# knitr::kable(head(df))
+df <- sc_get_data(metric='om', aoi='ws', conus='true')
+knitr::kable(head(df))
 ```
 

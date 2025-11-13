@@ -5,7 +5,7 @@
 [![CRAN](http://www.r-pkg.org/badges/version/StreamCatTools)](https://cran.r-project.org/package=StreamCatTools)
 [![cran checks](https://badges.cranchecks.info/worst/StreamCatTools.svg)](https://cran.r-project.org/web/checks/check_results_StreamCatTools.html)
 [![R-CMD-check](https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml)
-[![Downloads](https://cranlogs.r-pkg.org/badges/StreamCatTools)](https://cran.r-project.org/package=StreamCatTools)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/StreamCatTools)](https://cran.r-project.org/package=StreamCatTools)
 [![CodeCov](https://img.shields.io/badge/test%20coverage-86.9%25-388600.svg)](https://img.shields.io/badge/test%20coverage-86.9%25-388600.svg)
 <!-- badges: end -->
 

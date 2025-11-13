@@ -25,7 +25,11 @@
 
     <a class="navbar-brand me-2" href="../index.html">StreamCatTools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
+<<<<<<< HEAD
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.9000</small>
+=======
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
+>>>>>>> master
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,9 +42,9 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/Applications.html">Applications</a></li>
-    <li><a class="dropdown-item" href="../articles/Introduction.html">Getting Started</a></li>
+<li><a class="dropdown-item" href="../articles/Introduction.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../articles/LakeCat.html">Working with LakeCat data</a></li>
+    <li><a class="dropdown-item" href="../articles/Applications.html">Applications</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -114,10 +118,10 @@ returns a tibble of information about StreamCat metrics):</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 13</span></span></span>
 <span><span class="co">#&gt;   category     metric aoi   year  short_description long_description units  dsid</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Anthropogen… agkff… Cat,… <span style="color: #BB0000;">NA</span>    Ag Soil Erodibil… Mean of STATSGO… Unit…    10</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Soils        agkff… Cat,… <span style="color: #BB0000;">NA</span>    Ag Soil Erodibil… Mean of STATSGO… Unit…    10</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Natural      al2o3… Cat,… <span style="color: #BB0000;">NA</span>    Mean Lithologica… Mean % of litho… Perc…    11</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Base         areas… Ws    <span style="color: #BB0000;">NA</span>    Watershed Area S… Watershed area … Squa…    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Natural      bfi[A… Cat,… <span style="color: #BB0000;">NA</span>    Base Flow Index   Base flow is th… Perc…    12</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Climate      bfi[A… Cat,… <span style="color: #BB0000;">NA</span>    Base Flow Index   Base flow is th… Perc…    12</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Anthropogen… canal… Cat,… <span style="color: #BB0000;">NA</span>    Canal Density     Density of NHDP… Kilo…    13</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Natural      cao[A… Cat,… <span style="color: #BB0000;">NA</span>    Mean Lithologica… Mean % of litho… Perc…    11</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 5 more variables: dataset &lt;chr&gt;, source_name &lt;chr&gt;, source_URL &lt;chr&gt;,</span></span></span>
@@ -137,6 +141,25 @@ returns a tibble of information about StreamCat metrics):</p>
 <span><span class="co">#&gt; [2] "Synthetic Nitrogen Fertilizer Application Mean Rate"</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="filter-metric-information-by-criteria">Filter metric information by criteria<a class="anchor" aria-label="anchor" href="#filter-metric-information-by-criteria"></a>
+</h2>
+<p>We can also filter metric names and information by the metric
+year(s), the indicator categories for metrics, the metric data set
+names, or the Areas of Interest the metrics are available for.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_metric_names.html">lc_get_metric_names</a></span><span class="op">(</span>category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Anthropogenic'</span>,<span class="st">'Natural'</span><span class="op">)</span>, aoi<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Cat'</span>,<span class="st">'Ws'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">metrics</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 9</span></span></span>
+<span><span class="co">#&gt;   Category Metric AOI   Year  Short_Name Metric_Description Units Source Dataset</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Natural  al2o3… Cat,… <span style="color: #BB0000;">NA</span>    Mean Lith… Mean % of litholo… Perc… USGS … USGS G…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Anthrop… canal… Cat,… <span style="color: #BB0000;">NA</span>    Canal Den… Density of NHDPlu… Kilo… Falco… Canal …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Natural  cao[A… Cat,… <span style="color: #BB0000;">NA</span>    Mean Lith… Mean % of litholo… Perc… USGS … USGS G…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Anthrop… cbnf[… Cat,… <span style="color: #BB0000;">NA</span>    Cultivate… Mean rate of biol… Kilo… Envir… Agricu…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Anthrop… coalm… Cat,… <span style="color: #BB0000;">NA</span>    Coal Mine… Density of coal m… Coun… USGS … Coal M…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Natural  comps… Cat,… <span style="color: #BB0000;">NA</span>    Mean Lith… Mean lithological… Perc… USGS … USGS G…</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="get-waterbody-comids">Get Waterbody COMIDs<a class="anchor" aria-label="anchor" href="#get-waterbody-comids"></a>
 </h2>
 <p>In this example we use the <code>lc_get_comid</code> function to find
@@ -145,7 +168,7 @@ R.<code>lc_get_comid</code> is just a simple wrapper for
 <code>get_waterbodies</code> in the <a href="https://doi-usgs.github.io/nhdplusTools/" class="external-link">nhdplusTools</a> R
 package. We can then use the COMIDs we derive for our lake locations to
 get LakeCat metrics for these lakes as we show in after this.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">89.198</span>,<span class="op">-</span><span class="fl">114.125</span>,<span class="op">-</span><span class="fl">122.044</span><span class="op">)</span>,</span>
 <span>                 y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">45.502</span>,<span class="fl">47.877</span>,<span class="fl">43.730</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span>coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'x'</span>, <span class="st">'y'</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
@@ -161,7 +184,7 @@ function. We’ll show using both the COMIDS we derived with
 <code>lc_get_comid</code> function in previous chunk as well as with
 known COMIDS for NHDPlus waterbodies. Loads data into a tibble we can
 view.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_data.html">lc_get_data</a></span><span class="op">(</span>metric<span class="op">=</span><span class="st">'pcturbmd2006,damdens'</span>, aoi<span class="op">=</span><span class="st">'cat,ws'</span>, comid<span class="op">=</span><span class="va">comids</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -196,7 +219,7 @@ view.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_data.html">lc_get_data</a></span><span class="op">(</span>metric<span class="op">=</span><span class="st">'pcturbmd2006,damdens'</span>, aoi<span class="op">=</span><span class="st">'cat,ws'</span>, comid<span class="op">=</span><span class="st">'23783629,23794487,23812618'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -238,7 +261,7 @@ view.</p>
 <p>In this example we access a couple variables at the watershed scale
 for the area of interest of a county (Benton County in this case) using
 the <code>sc_get_data</code> function.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_get_data.html">lc_get_data</a></span><span class="op">(</span>metric<span class="op">=</span><span class="st">'pctwdwet2006'</span>, aoi<span class="op">=</span><span class="st">'ws'</span>, county<span class="op">=</span><span class="st">'41003'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -280,7 +303,7 @@ the <code>sc_get_data</code> function.</p>
 <p>In this example we access National Land Cover Dataset (NLCD) data for
 2019, just at the catchment level for several COMIDs using the
 <code>lc_nlcd</code> function. Loads data into a tibble we can view.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lc_nlcd.html">lc_nlcd</a></span><span class="op">(</span>comid<span class="op">=</span><span class="st">'23783629,23794487,23812618'</span>, year<span class="op">=</span><span class="st">'2019'</span>, aoi<span class="op">=</span><span class="st">'ws'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">

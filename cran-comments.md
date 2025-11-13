@@ -1,8 +1,14 @@
-This is a minor update that
+This is a patch update that:
 
-- Adds code covereage to the package
-- Adds two new functions to the package
-- Allows passing of vectors as parameters to two of the package functions 
+- Handles a web service being down in testing using `testthat::skip_on_cran()`
+- Handles a web service being down in vignettes by converting most vignettes to
+  articles and leaving just one `Start Here` vignette
+- Due to the lapse in government funding in federal agencies in the US, 
+  the web service StreamCatTools is built around may be down for some time
+- Because of the lapse in government funding in federal agencies in the US, I
+  may not be able to respond readily to any CRAN emails to my government 
+  email account weber.marc@epa.gov but my personal email is mweber36@gmail.com
+  
 
 -------
 
@@ -12,19 +18,9 @@ This is a resubmission.
 
 ## R CMD check results
 
-Here is the output from `devtools::check()` on R Version 4.4.1,
+Here is the output from `devtools::check()` on R Version R version 4.5.0,
 devtools version 2.4.6, and Windows 11 x64 operating system
 
-0 errors ✔ | 0 warnings ✔ | 2 notes ✖
+Duration: 2m 20.4s
 
-R CMD check succeeded
-
-NOTES:
-
-checking installed package size ... NOTE
-    installed size is  5.0Mb
-    sub-directories of 1Mb or more:
-      doc   4.4Mb
-
-checking for future file timestamps ... NOTE
-  unable to verify current time
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔

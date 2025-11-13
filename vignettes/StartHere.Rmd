@@ -1,0 +1,67 @@
+---
+title: "Start Here"
+output: 
+  html_document:
+    theme: flatly
+    keep_md: yes
+    number_sections: true
+    highlighted: default 
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Start Here}
+  %\VignetteEncoding{UTF-8}{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  warning = FALSE, 
+  message = FALSE
+)
+```
+
+## Installing and loading StreamCatTools
+To install, you can install from CRAN:
+```{r, message=FALSE, eval=FALSE}
+install.packages("StreamCatTools")
+```
+
+Or you can install from GitHub:
+```{r, message=FALSE, eval=FALSE}
+library(devtools)
+install_github('USEPA/StreamCatTools')
+```
+
+After installing load the library
+```{r, message=FALSE}
+library(StreamCatTools)
+```
+
+## Background
+The `StreamCatTools` package was designed to simplify the use of [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) data in R, leveraging the new [API for StreamCat](https://api.epa.gov/StreamCat/streams/metrics). 
+
+# Vignettes in `StreamCatTools`
+
+There are three additional vignettes in `StreamCatTools` that are available on our website [here](https://usepa.github.io/StreamCatTools/) under the "Articles" tab:
+
+1. Introduction
+  * An overview of the basic fucntionality of the package
+2. LakeCat
+  * An overview of accessing data for lakes within the package and functions to do so
+3. Applications
+  * A more in depth walk through with specific use-case examples and demonstrations
+
+These vignettes cover some of the core functions (and arguments within those functions) in `StreamCatTools`. Help files for a particular function are viewable by running `?function_name` after loading `StreamCatTools`. For example, to learn more about the `sc_get_data()` function, run `?sc-get_data`.
+
+# Citation information
+
+If you use `StreamCatTools` in your work, please cite it. You can view the most recent citation by running
+```{r}
+citation("StreamCatTools")
+```

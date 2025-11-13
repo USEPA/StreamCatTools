@@ -1,9 +1,13 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://usepa.github.io/StreamCatTools/404.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/Applications.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/articles/Articles/Applications.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/articles/Articles/Introduction.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/articles/Articles/LakeCat.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/index.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/Introduction.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/LakeCat.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/articles/StartHere.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/authors.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/index.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/LICENSE-text.html</loc></url>

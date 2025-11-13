@@ -2,10 +2,11 @@ pandoc: '3.4'
 pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
-  Applications: Applications.html
-  Introduction: Introduction.html
-  LakeCat: LakeCat.html
-last_built: 2025-10-09T16:47Z
+  Articles/Applications: Articles/Applications.html
+  Articles/Introduction: Articles/Introduction.html
+  Articles/LakeCat: Articles/LakeCat.html
+  StartHere: StartHere.html
+last_built: 2025-11-13T16:41Z
 urls:
   reference: https://usepa.github.io/StreamCatTools/reference
   article: https://usepa.github.io/StreamCatTools/articles
