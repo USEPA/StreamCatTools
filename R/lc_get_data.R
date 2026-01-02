@@ -282,3 +282,32 @@ lc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL,
   # End of function. Return a data frame.
   return(final_df)
 }
+
+# Lake Watershed code stub here
+library(arrow)
+library(dplyr)
+library(tictoc)
+# Standard parquet filtered read
+
+# Open a connection to the Parquet file
+pq_data <- open_dataset("D:/LakeCatWatersheds.parquet")
+# Get the column names
+pq_data$schema$names
+# Filter rows by a condition and select specific columns
+tic()
+filtered_data <- pq_data  |> 
+  filter(GNIS_NAME == "Crater Lake") 
+# Execute the query and load the result into an R data frame
+final_df <- filtered_data  |> 
+  collect()
+toc()
+
+# duckdb way
+library(duckdb)
+library(duckspatial)
+con <- dbConnect(duckdb::duckdb())
+dbExecute(con, "INSTALL spatial;")
+dbExecute(con, "LOAD spatial;")
+tic()
+data <- dbGetQuery(con, "SELECT * FROM 'D:/LakeCatWatersheds.parquet' WHERE GNIS_NAME = 'Crater Lake';")
+toc()
