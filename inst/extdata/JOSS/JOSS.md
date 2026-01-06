@@ -50,7 +50,7 @@ Easily accessible, robust, and consistent watershed data is an underpinning of h
 
 }
 
-\caption{The StreamCat framework: a backend Oracle database, web services exposed through api.gov, and functions in the StreamCatTools which simplify accesss and analyzing the data in R via the API.}(\#fig:flowchart)
+\caption{The StreamCat framework: a backend Oracle database, web services exposed through api.gov, and functions in StreamCatTools which simplify accesss and analyzing the data in R via the API.}(\#fig:flowchart)
 \end{figure}
 
 The core functionality of `StreamCatTools` entails simplifying the calls to the API for StreamCat and LakeCat data within the R programming language to allow a user to: 1) ask for details on available StreamCat and LakeCat metrics 2) Reference sites with location information to NHDPLusV2 catchments for stream and lake features in order to ask for StreamCat and LakeCat metrics and 3) Get StreamCat and LakeCat watershed metrics by COMID, by state, by county, by hydroregion, or for all of CONUS.  Additional functionality is provided in convenience functions get data all data for particular years for particular data sources such as the National Land Cover Database (NLCD) [@usgs_nlcd] and the National Nutrient Inventory (NNI) [@nutinventory].

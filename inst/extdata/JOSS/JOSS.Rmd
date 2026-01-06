@@ -44,7 +44,7 @@ Easily accessible, robust, and consistent watershed data is an underpinning of h
 
 `StreamCatTools` provides a simple streamlined set of functions to easily query and ingest watershed landscape metrics into an R session. Figure \@ref(fig:flowchart) shows the overall framework of the StreamCat database, application programming interface, and functionality in the package that simplifies data access in R using web services for the StreamCat and LakeCat datasets. 
 
-```{r flowchart, fig.cap="The StreamCat framework: a backend Oracle database, web services exposed through api.gov, and functions in the StreamCatTools which simplify accesss and analyzing the data in R via the API.", echo=FALSE, label="flowchart",  out.width="70%", fig.align="center"}
+```{r flowchart, fig.cap="The StreamCat framework: a backend Oracle database, web services exposed through api.gov, and functions in StreamCatTools which simplify accesss and analyzing the data in R via the API.", echo=FALSE, label="flowchart",  out.width="70%", fig.align="center"}
 knitr::include_graphics("Flowchart.png")
 ```
 
