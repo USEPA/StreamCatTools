@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.5)  6 JAN 2026 16:43
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.7)  7 JAN 2026 09:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -805,7 +805,11 @@ File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 \c@eu@=\count483
 \c@eu@i=\count484
 \c@mkern=\count485
-) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/microtype.sty
+) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verbatim
+(c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2024/04/24 v2.1b Standard LaTeX package
+)) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/microtype.sty
 Package: microtype 2025/07/09 v3.2b Micro-typographical refinements (RS)
 \MT@toks=\toks45
 \MT@tempbox=\box77
@@ -906,32 +910,79 @@ Package: footnote 1997/01/28 1.13 Save footnotes around boxes
 )
 \cslhangindent=\skip106
 \csllabelwidth=\skip107
-\@quotelevel=\count500
-\@quotereset=\count501
+(c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fvextra/fvextra.sty
+Package: fvextra 2025/05/29 v1.13.2 fvextra - extensions and patches for fancyvrb
+(c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lineno/lineno.sty
+Package: lineno 2025/05/13 line numbers on paragraphs v5.5
+\linenopenalty=\count500
+\output=\toks49
+\linenoprevgraf=\count501
+\linenumbersep=\dimen319
+\linenumberwidth=\dimen320
+\c@linenumber=\count502
+\c@pagewiselinenumber=\count503
+\c@LN@truepage=\count504
+\c@internallinenumber=\count505
+\c@internallinenumbers=\count506
+\quotelinenumbersep=\dimen321
+\bframerule=\dimen322
+\bframesep=\dimen323
+\bframebox=\box87
+\@LN@amsmath@ams@eqpen=\count507
+)
+\c@FancyVerbWriteLine=\count508
+\c@FancyVerbBufferLine=\count509
+\c@FV@TrueTabGroupLevel=\count510
+\c@FV@TrueTabCounter=\count511
+\FV@TabBox@Group=\box88
+\FV@bgcolorstructbox=\box89
+\FV@TmpLength=\skip108
+\c@FV@HighlightLinesStart=\count512
+\c@FV@HighlightLinesStop=\count513
+\FV@LoopCount=\count514
+\FV@NCharsBox=\box90
+\FV@BreakIndent=\dimen324
+\FV@BreakIndentNChars=\count515
+\FV@BreakSymbolSepLeft=\dimen325
+\FV@BreakSymbolSepLeftNChars=\count516
+\FV@BreakSymbolSepRight=\dimen326
+\FV@BreakSymbolSepRightNChars=\count517
+\FV@BreakSymbolIndentLeft=\dimen327
+\FV@BreakSymbolIndentLeftNChars=\count518
+\FV@BreakSymbolIndentRight=\dimen328
+\FV@BreakSymbolIndentRightNChars=\count519
+\c@FancyVerbLineBreakLast=\count520
+\FV@LineBox=\box91
+\FV@LineIndentBox=\box92
+\c@FV@BreakBufferDepth=\count521
+\FV@LineWidth=\dimen329
+)
+\@quotelevel=\count522
+\@quotereset=\count523
 (./JOSS.aux)
 \openout1 = `JOSS.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 287.
-LaTeX Font Info:    ... okay on input line 287.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 287.
-LaTeX Font Info:    ... okay on input line 287.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 287.
-LaTeX Font Info:    ... okay on input line 287.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 287.
-LaTeX Font Info:    ... okay on input line 287.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 287.
-LaTeX Font Info:    ... okay on input line 287.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 287.
-LaTeX Font Info:    ... okay on input line 287.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 287.
-LaTeX Font Info:    ... okay on input line 287.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 287.
-LaTeX Font Info:    ... okay on input line 287.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 287.
-LaTeX Font Info:    ... okay on input line 287.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 287.
-LaTeX Font Info:    ... okay on input line 287.
-Package hyperref Info: Link coloring ON on input line 287.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 297.
+LaTeX Font Info:    ... okay on input line 297.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 297.
+LaTeX Font Info:    ... okay on input line 297.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 297.
+LaTeX Font Info:    ... okay on input line 297.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 297.
+LaTeX Font Info:    ... okay on input line 297.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 297.
+LaTeX Font Info:    ... okay on input line 297.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 297.
+LaTeX Font Info:    ... okay on input line 297.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 297.
+LaTeX Font Info:    ... okay on input line 297.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 297.
+LaTeX Font Info:    ... okay on input line 297.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 297.
+LaTeX Font Info:    ... okay on input line 297.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 297.
+LaTeX Font Info:    ... okay on input line 297.
+Package hyperref Info: Link coloring ON on input line 297.
 (./JOSS.out) (./JOSS.out)
 \@outlinefile=\write6
 \openout6 = `JOSS.out'.
@@ -956,8 +1007,8 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'JOSS.bbl' not found.
 No file JOSS.bbl.
-Package biblatex Info: Reference section=0 on input line 287.
-Package biblatex Info: Reference segment=0 on input line 287.
+Package biblatex Info: Reference section=0 on input line 297.
+Package biblatex Info: Reference segment=0 on input line 297.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -992,13 +1043,13 @@ Package biblatex Info: Reference segment=0 on input line 287.
 * \@reversemargintrue
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \microtypecontext on input line 287.
-Package microtype Info: Applying patch `item' on input line 287.
-Package microtype Info: Applying patch `toc' on input line 287.
-Package microtype Info: Applying patch `eqnum' on input line 287.
-Package microtype Info: Applying patch `footnote' on input line 287.
-Package microtype Info: Applying patch `verbatim' on input line 287.
-LaTeX Info: Redefining \microtypesetup on input line 287.
+LaTeX Info: Redefining \microtypecontext on input line 297.
+Package microtype Info: Applying patch `item' on input line 297.
+Package microtype Info: Applying patch `toc' on input line 297.
+Package microtype Info: Applying patch `eqnum' on input line 297.
+Package microtype Info: Applying patch `footnote' on input line 297.
+Package microtype Info: Applying patch `verbatim' on input line 297.
+LaTeX Info: Redefining \microtypesetup on input line 297.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1014,26 +1065,26 @@ Package microtype Info: Loading generic protrusion settings for font family
 (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 288.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 298.
 (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 288.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 298.
 (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 
-Package hyperref Warning: Suppressing link with empty target on input line 314.
+Package hyperref Warning: Suppressing link with empty target on input line 324.
 
 
-Package hyperref Warning: Suppressing link with empty target on input line 314.
+Package hyperref Warning: Suppressing link with empty target on input line 324.
 
 
-Package hyperref Warning: Suppressing link with empty target on input line 314.
+Package hyperref Warning: Suppressing link with empty target on input line 324.
 
 (./JOSS.toc)
 \tf@toc=\write7
@@ -1049,14 +1100,14 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 327.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 337.
 [1
 
 ]
 File: Flowchart.png Graphic file (type bmp)
 <Flowchart.png>
-LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 356.
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <9> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 366.
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1067,18 +1118,7 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [2]
-File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
-<C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
-
-Package fancyhdr Warning: \headheight is too small (62.59596pt): 
-(fancyhdr)                Make it at least 63.55022pt, for example:
-(fancyhdr)                \setlength{\headheight}{63.55022pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
-
-[3]
-Underfull \hbox (badness 1642) in paragraph at lines 434--435
-\TU/lmr/m/n/10 The lake-catchment (LakeCat) dataset: Characterizing landscape features for
+Overfull \vbox (2.65453pt too high) detected at line 420
  []
 
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
@@ -1090,7 +1130,23 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
+[3]
+File: JOSS_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type pdf)
+<use JOSS_files/figure-latex/unnamed-chunk-4-1.pdf>
+File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
+<C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
+
+Package fancyhdr Warning: \headheight is too small (62.59596pt): 
+(fancyhdr)                Make it at least 63.55022pt, for example:
+(fancyhdr)                \setlength{\headheight}{63.55022pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
+
 [4]
+Underfull \hbox (badness 1642) in paragraph at lines 446--447
+\TU/lmr/m/n/10 The lake-catchment (LakeCat) dataset: Characterizing landscape features for
+ []
+
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1112,11 +1168,11 @@ Package logreq Info: Writing requests to 'JOSS.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 37339 strings out of 470195
- 766815 string characters out of 5477096
- 1655370 words of memory out of 5000000
- 65378 multiletter control sequences out of 15000+600000
- 634593 words of font info for 88 fonts, out of 8000000 for 9000
+ 38592 strings out of 470195
+ 793731 string characters out of 5477096
+ 1681884 words of memory out of 5000000
+ 66607 multiletter control sequences out of 15000+600000
+ 634625 words of font info for 92 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  84i,12n,94p,1193b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s
 

@@ -13,14 +13,25 @@ authors:
     orcid: 0000-0001-9583-0426
     affiliation: 2
   - name: Travis Hudson
+    orcid:  
+    affiliation: 3
   - name: Selia Markley
+    orcid: 
+    affiliation: 4
   - name: Alan Brookes
+    orcid: 
+    affiliation: 2
   
 affiliations:
  - name: Office of Water, United States Environmental Protection Agency
    index: 1
  - name: Office of Research and Development, United States Environmental Protection Agency
    index: 2
+ - name: Oak Ridge Associated Universities Student Services Contractor c/o United States Environmental Protection Agency
+   index: 3
+ - name: Oak Ridge Institude for Science and Education Fellow c/o United States Environmental Protection Agency
+   index: 4
+
 citation_author: Weber et. al.
 date: 25 July 2025
 year: 2025
@@ -30,6 +41,16 @@ output:
     base_format: rticles::joss_article
 csl: apa.csl
 journal: JOSS
+
+header-includes:
+  - \usepackage{graphicx}
+  - \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+  - \providecommand{\pandocnewline}{\\}
+  - \providecommand{\pandocbounded}[1]{#1}
+  - \providecommand{\pandocboundedpreserve}[1]{#1}
+  - \usepackage{fvextra}  % extends fancyvrb
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,breakautoindent=true,commandchars=\\\{\},fontsize=\small}
+  - \DefineVerbatimEnvironment{Verbatim}{Verbatim}{breaklines,breakanywhere,breakautoindent=true,fontsize=\small}
 ---
 
 # Summary
@@ -91,35 +112,36 @@ We can easily visualize derived watershed metrics in `StreamCatTools` by using f
 
 
 ``` r
-# library(nhdplusTools)
-# library(ggplot2)
-# library(ggspatial)
-# library(StreamCatTools)
-# 
-# start_comid = 23763517
-# nldi_feature <- list(featureSource = "comid", featureID = start_comid)
-# flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
-# df <- sc_get_data(metric='pctimp2019', aoi='cat', comid=flowline_nldi$UT_flowlines$nhdplus_comid)
-# flowline_nldi <- flowline_nldi$UT_flowlines
-# flowline_nldi$PCTIMP2019 <- df$pctimp2019cat[match(flowline_nldi$nhdplus_comid, df$comid)]
-# basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
-# 
-# calapooia <- ggplot() +
-#     geom_sf(data = basin,
-#             fill = NA,
-#             color = "black",
-#             linewidth = 1) +
-#     geom_sf(data = flowline_nldi,
-#             aes(colour = PCTIMP2019)) +
-#     scale_y_continuous() +
-#     scale_color_distiller(palette = "Spectral") +
-#     labs(color = "Pct Imperviousness") +
-#     theme_minimal(12) +
-#     ggtitle('Percent Imperviousness for \nthe Calapooia River Basin 2019')
-# 
-# plot(calapooia)
+library(nhdplusTools)
+library(ggplot2)
+library(ggspatial)
+library(StreamCatTools)
+
+start_comid = 23763517
+nldi_feature <- list(featureSource = "comid", featureID = start_comid)
+flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
+df <- sc_get_data(metric='pctimp2019', aoi='cat', comid=flowline_nldi$UT_flowlines$nhdplus_comid)
+flowline_nldi <- flowline_nldi$UT_flowlines
+flowline_nldi$PCTIMP2019 <- df$pctimp2019cat[match(flowline_nldi$nhdplus_comid, df$comid)]
+basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
+
+calapooia <- ggplot() +
+    geom_sf(data = basin,
+            fill = NA,
+            color = "black",
+            linewidth = 1) +
+    geom_sf(data = flowline_nldi,
+            aes(colour = PCTIMP2019)) +
+    scale_y_continuous() +
+    scale_color_distiller(palette = "Spectral") +
+    labs(color = "Pct Imperviousness") +
+    theme_minimal(12) +
+    ggtitle('Percent Imperviousness for \nthe Calapooia River Basin 2019')
+
+plot(calapooia)
 ```
 
+![](JOSS_files/figure-latex/unnamed-chunk-4-1.pdf)<!-- --> 
 
 Also show: new functionality for accessing and plotting NNI data.  Perhaps any other uses or applications we are aware of (such as CASTools R Shiny app).
 
