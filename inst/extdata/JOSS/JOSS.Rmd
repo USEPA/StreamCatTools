@@ -110,11 +110,6 @@ We can easily visualize derived watershed metrics in `StreamCatTools` by using f
 # 
 # plot(calapooia)
 ```
-```{r my-plot-chunk, fig.height = 4, fig.width = 6}
-library(ggplot2)
-my_plot <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
-print(my_plot) # Explicitly print the plot
-```
 
 
 Also show: new functionality for accessing and plotting NNI data.  Perhaps any other uses or applications we are aware of (such as CASTools R Shiny app).

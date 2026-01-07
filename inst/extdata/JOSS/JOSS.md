@@ -91,31 +91,33 @@ We can easily visualize derived watershed metrics in `StreamCatTools` by using f
 
 
 ``` r
-library(nhdplusTools)
-library(ggplot2)
-library(ggspatial)
-library(StreamCatTools)
-
+# library(nhdplusTools)
+# library(ggplot2)
+# library(ggspatial)
+# library(StreamCatTools)
+# 
 # start_comid = 23763517
 # nldi_feature <- list(featureSource = "comid", featureID = start_comid)
 # flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
 # df <- sc_get_data(metric='pctimp2019', aoi='cat', comid=flowline_nldi$UT_flowlines$nhdplus_comid)
 # flowline_nldi <- flowline_nldi$UT_flowlines
 # flowline_nldi$PCTIMP2019 <- df$pctimp2019cat[match(flowline_nldi$nhdplus_comid, df$comid)]
-# basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature) 
+# basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
 # 
-# ggplot() + 
-#   geom_sf(data = basin, 
-#           fill = NA, 
-#           color = "black", 
-#           linewidth = 1) + 
-#   geom_sf(data = flowline_nldi,
-#           aes(colour = PCTIMP2019)) + 
-#   scale_y_continuous() +
-#   scale_color_distiller(palette = "Spectral") +
-#   labs(color = "Pct Imperviousness") + 
-#   theme_minimal(12) + 
-#   ggtitle('Percent Imperviousness for \nthe Calapooia River Basin 2019')
+# calapooia <- ggplot() +
+#     geom_sf(data = basin,
+#             fill = NA,
+#             color = "black",
+#             linewidth = 1) +
+#     geom_sf(data = flowline_nldi,
+#             aes(colour = PCTIMP2019)) +
+#     scale_y_continuous() +
+#     scale_color_distiller(palette = "Spectral") +
+#     labs(color = "Pct Imperviousness") +
+#     theme_minimal(12) +
+#     ggtitle('Percent Imperviousness for \nthe Calapooia River Basin 2019')
+# 
+# plot(calapooia)
 ```
 
 
