@@ -48,15 +48,17 @@ Easily accessible, robust, and consistent watershed data is an underpinning of h
 knitr::include_graphics("Flowchart.png")
 ```
 
-The core functionality of `StreamCatTools` entails simplifying the calls to the API for StreamCat and LakeCat data within the R programming language to allow a user to: 1) ask for details on available StreamCat and LakeCat metrics 2) Reference sites with location information to NHDPLusV2 catchments for stream and lake features in order to ask for StreamCat and LakeCat metrics and 3) Get StreamCat and LakeCat watershed metrics by COMID, by state, by county, by hydroregion, or for all of CONUS.  Additional functionality is provided in convenience functions get data all data for particular years for particular data sources such as the National Land Cover Database (NLCD) [@usgs_nlcd] and the National Nutrient Inventory (NNI) [@nutinventory].
+The core functionality of `StreamCatTools` simplifies the calls to the API for StreamCat and LakeCat data within the R programming language to allow a user to: 1) ask for details on available StreamCat and LakeCat metrics 2) Reference sites with location information to NHDPLusV2 catchments for stream and lake features in order to ask for StreamCat and LakeCat metrics and 3) Get StreamCat and LakeCat watershed metrics by COMID, by state, by county, by hydroregion, or for all of CONUS.  Additional functionality is provided in convenience functions get data all data for particular years for particular data sources such as the National Land Cover Database (NLCD) [@usgs_nlcd] and the National Nutrient Inventory (NNI) [@nutinventory].  The core functions in `StreamCatTools` leverage the `httr2` library `httr2`[@wickham2025httr2] for a modern, pipeable API for working with web APIs.
 
 Installing `StreamCatTools` 
+
 ```{r, eval = FALSE}
 # library(remotes)
 # install_github("USEPA/StreamCatTools", build_vignettes=FALSE)
 ```
 
 `StreamCatTools` is loaded into an **R** session:
+
 ```{r, warning = FALSE}
 library(StreamCatTools)
 ```
@@ -65,13 +67,61 @@ As we detail in the [package introduction page](https://usepa.github.io/StreamCa
 
 The primary package functionality is in the `sc_get_data` and `lc_get_data` functions which allow users to extract whatever suite of metrics they are interested in from StreamCat or LakeCat using a provided set of unique identifiers of COMIDs for NHDPlusV2, or request a set of metrics for a given state(s), county(ies), hydroregion(s), or all of CONUS.  Additionally, convenience functions are provided for accessing the NLCD and NNI datasets using `sc_nlcd` and `lc_nlcd` and `sc_nni` and `lc_nni`. 
 
+An example of a simple request for several watershed metrics for a particular stream reach in `StreamCatTools` looks like the following:
+
+```{r}
+df <- sc_get_data(metric='pcturbmd2019,damdens',
+                  aoi='cat,ws', 
+                  comid='179,1337,1337420')
+```
+
+Where we are asking in the first line for the percent of NLCD 1019 medium intensity developed land and the number of dams and in the second line specifying at the drainage to the local reach scale (i.e. 'cat', short for catchment) and the full watershed scale as our areas of interest, and requesting this data just for three NHDPlusV2 stream segments specified by their three COMID values.
+
 # Applications
 
-We'll flesh this out with: examples from `StreamCatTools` page showing plotting of watersheds with particular data, merging with NLA data, and new functionality for accessing and plotting NNI data.  Perhaps any other uses / applications we are aware of (such as CASTools R Shiny app).
+We can easily visualize derived watershed metrics in `StreamCatTools` by using functions from `nhdplusTools` and `ggplot2`, as in this example where plot plot the NLCD percent imperiousness for the the local drainage (catchment in NHDPlusV2 syntax) and dispay the values mapped to each stream reach as well as displaying the overall basin boundary:
+
+```{r}
+# library(nhdplusTools)
+# library(ggplot2)
+# library(ggspatial)
+# library(StreamCatTools)
+# 
+# start_comid = 23763517
+# nldi_feature <- list(featureSource = "comid", featureID = start_comid)
+# flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
+# df <- sc_get_data(metric='pctimp2019', aoi='cat', comid=flowline_nldi$UT_flowlines$nhdplus_comid)
+# flowline_nldi <- flowline_nldi$UT_flowlines
+# flowline_nldi$PCTIMP2019 <- df$pctimp2019cat[match(flowline_nldi$nhdplus_comid, df$comid)]
+# basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
+# 
+# calapooia <- ggplot() +
+#     geom_sf(data = basin,
+#             fill = NA,
+#             color = "black",
+#             linewidth = 1) +
+#     geom_sf(data = flowline_nldi,
+#             aes(colour = PCTIMP2019)) +
+#     scale_y_continuous() +
+#     scale_color_distiller(palette = "Spectral") +
+#     labs(color = "Pct Imperviousness") +
+#     theme_minimal(12) +
+#     ggtitle('Percent Imperviousness for \nthe Calapooia River Basin 2019')
+# 
+# plot(calapooia)
+```
+```{r my-plot-chunk, fig.height = 4, fig.width = 6}
+library(ggplot2)
+my_plot <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+print(my_plot) # Explicitly print the plot
+```
+
+
+Also show: new functionality for accessing and plotting NNI data.  Perhaps any other uses or applications we are aware of (such as CASTools R Shiny app).
 
 # Acknowledgements
 
-Examples of using StreamCat and LakeCat make extensive use of `nhdplusTools`[@blodgett2016nhdplustools] and the functions for accessing the API are facilitated through use of `httr2`. Figures were created using `ggplot2` [@wickham2016ggplot2]. 
+Examples of using StreamCat and LakeCat make extensive use of `nhdplusTools`[@blodgett2016nhdplustools] and the functions for accessing the API are facilitated through use of `httr2`[@wickham2025httr2]. Figures were created using `ggplot2` [@wickham2016ggplot2]. 
 
 We would like to sincerely thank the editor and reviewers for all of their helpful feedback which greatly improved both the software and the manuscript.
 

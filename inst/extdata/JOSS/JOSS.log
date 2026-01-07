@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.5)  6 JAN 2026 11:32
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.5)  6 JAN 2026 16:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -23,7 +23,7 @@ File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 \belowcaptionskip=\skip50
 \bibindent=\dimen148
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/marginnote/marginnote.sty
-Package: marginnote 2018/08/09 1.4b non floating margin notes for LaTeX
+Package: marginnote 2026/01/02 1.4d non floating margin notes for LaTeX 
 \c@mn@abspage=\count279
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
@@ -1039,6 +1039,8 @@ Package hyperref Warning: Suppressing link with empty target on input line 314.
 \tf@toc=\write7
 \openout7 = `JOSS.toc'.
 
+File: Flowchart.png Graphic file (type bmp)
+<Flowchart.png>
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1049,12 +1051,10 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 327.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 342.
 [1
 
 ]
-File: Flowchart.png Graphic file (type bmp)
-<Flowchart.png>
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `TU/lmtt/b/n' tried instead on input line 356.
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
@@ -1067,47 +1067,22 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [2]
-Underfull \hbox (badness 1642) in paragraph at lines 388--389
-\TU/lmr/m/n/10 The lake-catchment (LakeCat) dataset: Characterizing landscape features for
- []
+! Undefined control sequence.
+l.420 \pandocbounded
+                    {\includegraphics[keepaspectratio]{JOSS_files/figure-lat...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
-<C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
-
-Package fancyhdr Warning: \headheight is too small (62.59596pt): 
-(fancyhdr)                Make it at least 63.55022pt, for example:
-(fancyhdr)                \setlength{\headheight}{63.55022pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
-
-[3]
-File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
-<C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
-
-Package fancyhdr Warning: \headheight is too small (62.59596pt): 
-(fancyhdr)                Make it at least 63.55022pt, for example:
-(fancyhdr)                \setlength{\headheight}{63.55022pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
-
-[4] (./JOSS.aux)
- ***********
-LaTeX2e <2025-11-01>
-L3 programming layer <2025-12-29>
- ***********
-Package rerunfilecheck Info: File `JOSS.out' has not changed.
-(rerunfilecheck)             Checksum: 9D7E021D231EE773030D1F7DB7F1CCE6;717.
-Package logreq Info: Writing requests to 'JOSS.run.xml'.
-\openout1 = `JOSS.run.xml'.
-
- ) 
+ 
 Here is how much of TeX's memory you used:
- 37338 strings out of 470195
- 766793 string characters out of 5477096
- 1655295 words of memory out of 5000000
- 65377 multiletter control sequences out of 15000+600000
- 634593 words of font info for 88 fonts, out of 8000000 for 9000
+ 37278 strings out of 470195
+ 765673 string characters out of 5477096
+ 1657487 words of memory out of 5000000
+ 65328 multiletter control sequences out of 15000+600000
+ 632886 words of font info for 79 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  84i,12n,94p,1193b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-Output written on JOSS.pdf (4 pages).
+Output written on JOSS.pdf (2 pages).
