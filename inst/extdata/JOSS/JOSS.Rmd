@@ -71,11 +71,15 @@ Easily accessible, robust, and consistent watershed data is an underpinning of h
 knitr::include_graphics("Flowchart.png")
 ```
 
-The core functions in `StreamCatTools` leverage the `httr2` library [@wickham2025httr2] for a modern, pipeable method for working with APIs. Specifically, `StreamCatTools` simplifies the calls to the API for StreamCat and LakeCat data within the R programming language to allow a user to: (1)<!-- Open and closed parentheses to be consistent with numbering above --> access details on available StreamCat and LakeCat metrics, (2) match users' sites to NHDPlusV21 waterbodies (streams or lakes) to access StreamCat and Lakecat data, and (3) retrieve StreamCat and LakeCat watershed metrics by COMID, by state, by county, by hydroregion, or for all of CONUS.  Additionally, several convenience functions retrieve data from particular years for data with time series, such as the National Land Cover Database (NLCD) [@usgs_nlcd] <!-- citation looks odd in PDF --> and the National Nutrient Inventory (NNI) [@nutinventory]. 
+The core functions in `StreamCatTools` leverage the `httr2` library [@wickham2025httr2] for a modern, pipeable method for working with APIs. Specifically, `StreamCatTools` simplifies the calls to the API for StreamCat and LakeCat data within the R programming language to allow a user to: (1) access details on available StreamCat and LakeCat metrics, (2) match users' sites to NHDPlusV21 waterbodies (streams or lakes) to access StreamCat and Lakecat data, and (3) retrieve StreamCat and LakeCat watershed metrics by COMID, by state, by county, by hydroregion, or for all of CONUS.  Additionally, several convenience functions retrieve data from particular years for data with time series, such as the National Land Cover Database (NLCD) [@usgsnlcd] <!-- citation looks odd in PDF --> and the National Nutrient Inventory (NNI) [@nutinventory]. 
 
-Installing `StreamCatTools` 
-<!-- Should we note that it is avaible on CRAN as well as GitHub? -->
+You can install the most recent version of `StreamCatTools` from CRAN by running:
 
+```{r}
+# install.packages("StreamCatTools")
+```
+
+You can install the most recent development version from GitHub by running:
 ```{r, eval = FALSE}
 # library(remotes)
 # install_github("USEPA/StreamCatTools", build_vignettes=FALSE)
@@ -87,7 +91,7 @@ Installing `StreamCatTools`
 library(StreamCatTools)
 ```
 
-`StreamCatTools` includes several functions to facilitate accessing and working with the data. First, users can list metric names and find out more about StreamCat and LakeCat data available in  using using the `sc_get_params` function. This function also provides details about metrics, such as area of interest for which data are available (e.g., local catchment vs. watershed) and years of available data if applicable. `sc_get_params` returns a tibble which facilitates automated access and searches of metric characteristics. Additional functions provided for getting metadata about the underlying StreamCat and LakeCat data include the `sc_fullname` and `lc_fullname` functions and the `sc_get_params` and `lc_get_params` functions, respectively. <!-- Some of this seems redundant to what we just said. Also, the use of "we" seems informal here --> We can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric dataset names, or the areas of interest the metrics are available for using the `sc_get_metric_names` or `lc_get_metric_names` functions. More details on these functions can be found at the [package introduction page](https://usepa.github.io/StreamCatTools/articles/Articles/Introduction.html). 
+`StreamCatTools` includes several functions to facilitate accessing and working with the data. First, users can list metric names and find out more about StreamCat and LakeCat data available in StreamCat using using the `sc_get_params` function. This function also provides details about metrics, such as area of interest for which data are available (e.g., local catchment vs. watershed) and years of available data if applicable. `sc_get_params` returns a tibble which facilitates automated access and searches of metric characteristics. Additional functions provided for getting metadata about the underlying StreamCat and LakeCat data include the `sc_fullname` and `lc_fullname` functions and the `sc_get_params` and `lc_get_params` functions, respectively. <!-- Some of this seems redundant to what we just said (will think about word-smithing - MW) --> Users can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric dataset names, or the areas of interest the metrics are available for using the `sc_get_metric_names` or `lc_get_metric_names` functions. More details on these functions can be found at the [package introduction page](https://usepa.github.io/StreamCatTools/articles/Articles/Introduction.html). 
 
 The primary package functionality is in the `sc_get_data` and `lc_get_data` functions which allow users to extract catchment or watershed metrics of interest by providing NHDPlusV21 COMIDs for streams or lakes within the database. Users can also request data for a given state(s), county(ies), hydroregion(s), or all of CONUS.  Additionally, convenience functions are provided for accessing the NLCD and NNI datasets, respectively, using `sc_nlcd` and `lc_nlcd` and `sc_nni` and `lc_nni`. 
 
@@ -134,7 +138,7 @@ calapooia <- ggplot() +
 
 plot(calapooia)
 ```
-<!-- I assume this is a note to yourself -->
+<!-- To Do -->
 Also show: new functionality for accessing and plotting NNI data.  Perhaps any other uses or applications we are aware of (such as CASTools R Shiny app).
 
 # Acknowledgements

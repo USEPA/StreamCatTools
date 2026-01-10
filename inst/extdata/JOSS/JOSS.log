@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.7)  7 JAN 2026 09:11
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.7)  9 JAN 2026 16:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1107,7 +1107,7 @@ LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
 File: Flowchart.png Graphic file (type bmp)
 <Flowchart.png>
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <9> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 366.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 374.
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1118,7 +1118,7 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [2]
-Overfull \vbox (2.65453pt too high) detected at line 420
+Overfull \vbox (0.65453pt too high) detected at line 428
  []
 
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
@@ -1131,8 +1131,13 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [3]
-File: JOSS_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type pdf)
-<use JOSS_files/figure-latex/unnamed-chunk-4-1.pdf>
+File: JOSS_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type pdf)
+<use JOSS_files/figure-latex/unnamed-chunk-5-1.pdf>
+
+Underfull \hbox (badness 10000) in paragraph at lines 430--432
+[][]
+ []
+
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1143,7 +1148,7 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [4]
-Underfull \hbox (badness 1642) in paragraph at lines 446--447
+Underfull \hbox (badness 1642) in paragraph at lines 453--454
 \TU/lmr/m/n/10 The lake-catchment (LakeCat) dataset: Characterizing landscape features for
  []
 
@@ -1169,11 +1174,11 @@ Package logreq Info: Writing requests to 'JOSS.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
  38592 strings out of 470195
- 793731 string characters out of 5477096
- 1681884 words of memory out of 5000000
+ 793730 string characters out of 5477096
+ 1682949 words of memory out of 5000000
  66607 multiletter control sequences out of 15000+600000
  634625 words of font info for 92 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 84i,12n,94p,1193b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,12n,94p,1302b,850s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on JOSS.pdf (5 pages).
