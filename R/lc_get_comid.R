@@ -27,7 +27,7 @@
 #' @return A new sf data frame with a populated 'COMID' column
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' 
 #' dd <- data.frame(x = c(-89.198,-114.125,-122.044),
 #' y = c(45.502,47.877,43.730))

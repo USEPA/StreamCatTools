@@ -54,7 +54,7 @@
 #' @return A tibble of desired StreamCat metrics. If data are missing for all rows of a given metric, then the column for that metric will not exist. If data are missing for only some rows, then they will be specified with NA.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' df <- lc_get_data(comid='23794487', aoi='cat', metric='fert')
 #'
 #' df <- lc_get_data(metric='pcturbmd2006', aoi='ws',
@@ -94,16 +94,28 @@ lc_get_data <- function(comid = NULL,
   # Base API URL.
   req <- httr2::request('https://api.epa.gov/StreamCat/lakes/metrics')
   # Collapse comids into a single string separated by a comma.
+  if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) | is.null(aoi)){
+    stop('Must provide at a minimum valid comid, metric and aoi to the function')
+  }
+  # Collapse vectors into a single string separated by a comma.
   if (!is.null(comid)){
     comid <- paste(comid, collapse = ",")
+  }
+  metric <- paste(metric, collapse = ",")
+  aoi <- paste(aoi, collapse = ",")
+  if (!is.null(state)){
+    state <- paste(state, collapse = ",")
+  }
+  if (!is.null(county)){
+    county <- paste(county, collapse = ",")
+  }
+  if (!is.null(region)){
+    region <- paste(region, collapse = ",")
   }
   # Force old and odd naming convention to behave correctly
   if (!is.null(aoi)){
     if (aoi == 'catchment') aoi <- 'cat'
     if (aoi == 'watershed') aoi <- 'ws'
-  }
-  if ((is.null(comid) & is.null(state) & is.null(county) & is.null(region) & is.null(conus)) | is.null(metric) | is.null(aoi)){
-    stop('Must provide at a minimum valid comid, metric and aoi to the function')
   }
   if (!is.null(conus) & metric=='all'){
     stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
@@ -124,7 +136,8 @@ lc_get_data <- function(comid = NULL,
                       state=state,county=county,region=region,conus=conus,
                       countOnly=countOnly
   )
-  df <- req |>
+  df <- tryCatch({
+    req |>
     httr2::req_method("POST") |>
     httr2::req_headers("Content-Type" = "application/x-www-form-urlencoded") |>
     httr2::req_method("POST") |>
@@ -134,12 +147,24 @@ lc_get_data <- function(comid = NULL,
     httr2::req_perform() |> 
     httr2::resp_body_string() |> 
     jsonlite::fromJSON()
-  # Return a data frame
-  if (is.null(countOnly)){
-    df <- df$items  |> 
-      dplyr::select(comid, dplyr::everything())
-    return(df)
-  } else return(df$items)
+  },error = function(e) {
+    message("An error occurred during req_perform(); the service may be down or function parameters may be mis-specified: ", e$message)
+    return(NULL)
+  })
+  # Return a data frame if success
+  if (exists("df") && !is.null(df)){
+    # Return a data frame
+    if (is.null(countOnly)){
+      df <- df$items  |> 
+        dplyr::select(comid, dplyr::everything())
+      return(df)
+    } else return(df$items)
+    if (is.null(countOnly)){
+      df <- df$items  |> 
+        dplyr::select(comid, dplyr::everything())
+      return(df)
+    } else return(df$items)
+  }
 }
 
 
@@ -178,7 +203,7 @@ lc_get_data <- function(comid = NULL,
 #' @return A tibble of desired StreamCat metrics
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #'
 #' df <- lc_nlcd(comid='23783629', year='2019', aoi='ws')
 #'
