@@ -35,10 +35,14 @@ Imports:
     nhdplusTools,
     jsonlite,
     httr2,
-    curl (>= 6.0.0)
+    curl (>= 6.0.0),
+    ggpattern,
+    patchwork,
+    cowplot,
+    tigris,
+    ggplot2
 Suggests: 
   dplyr,
-  ggplot2,
   mapview,
   testthat, 
   knitr, 
@@ -49,10 +53,7 @@ Suggests:
   readr,
   tidyr,
   stringr,
-  purrr,
-  ggpattern,
-  patchwork,
-  cowplot
+  purrr
 Encoding: UTF-8
 URL: https://usepa.github.io/StreamCatTools/, https://github.com/USEPA/StreamCatTools
 BugReports: https://github.com/USEPA/StreamCatTools/issues
