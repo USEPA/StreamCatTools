@@ -43,15 +43,15 @@ lc_plotnni <- function(comid, include.nue = FALSE){
     substr(col, 3, nchar(col) -2)
   })
   
-  nin <- nin %>%
-    pivot_longer(
+  nin <- nin |>
+    tidyr::pivot_longer(
       cols = everything(),
       names_to = c("metric", "year"),
       names_sep = "_",
       values_to = "value"
-    ) %>%
-    mutate(year = as.integer(year)) %>%
-    mutate(value = value / 1000000)
+    ) |>
+    dplyr::mutate(year = as.integer(year)) |>
+    dplyr::mutate(value = value / 1000000)
   
   #Create P inputs df
   
@@ -61,15 +61,15 @@ lc_plotnni <- function(comid, include.nue = FALSE){
     substr(col, 3, nchar(col) -2)
   })
   
-  pin <- pin %>%
-    pivot_longer(
+  pin <- pin |>
+    tidyr::pivot_longer(
       cols = everything(),
       names_to = c("metric", "year"),
       names_sep = "_",
       values_to = "value"
-    ) %>%
-    mutate(year = as.integer(year)) %>%
-    mutate(value = value / 1000000)
+    ) |>
+    dplyr::mutate(year = as.integer(year)) |>
+    dplyr::mutate(value = value / 1000000)
   
   #Create N dfs for lines (cr, agsur, nue)
   
@@ -79,32 +79,32 @@ lc_plotnni <- function(comid, include.nue = FALSE){
     substr(col, 3, nchar(col) -2)
   })
   
-  nlines <- nlines %>%
-    pivot_longer(
+  nlines <- nlines |>
+    tidyr::pivot_longer(
       cols = everything(),
       names_to = c("metric","year"),
       names_sep = "_",
       values_to = "value"
-    ) %>%
-    mutate(year = as.integer(year)) %>%
-    mutate(value = value / 1000000) %>%
-    pivot_wider(
+    ) |>
+    dplyr::mutate(year = as.integer(year)) |>
+    dplyr::mutate(value = value / 1000000) |>
+    tidyr::pivot_wider(
       names_from = 'metric', 
       values_from = 'value'
-    ) %>%
-    mutate(totag = ags + cr)  %>%
-    mutate(nue = (cr / totag) * 100) %>%
-    pivot_longer(
+    ) |>
+    dplyr::mutate(totag = ags + cr) |>
+    dplyr::mutate(nue = (cr / totag) * 100) |>
+    tidyr::pivot_longer(
       cols = !year, 
       names_to="metric", 
       values_to="value")
   
-  ncrag <- nlines %>%
-    filter(metric %in% c('ags', 'cr'))
+  ncrag <- nlines |>
+    dplyr::filter(metric %in% c('ags', 'cr'))
   
-  nue <- nlines %>%
-    filter(metric == 'nue') %>%
-    pivot_wider(names_from = 'metric',
+  nue <- nlines |>
+    dplyr::filter(metric == 'nue') |>
+    tidyr::pivot_wider(names_from = 'metric',
                 values_from = 'value')
   
   #Create P dfs for lines (cr, agsur, pue)
@@ -116,43 +116,43 @@ lc_plotnni <- function(comid, include.nue = FALSE){
   })
   
   
-  plines <- plines %>%
-    pivot_longer(
+  plines <- plines |>
+    tidyr::pivot_longer(
       cols = everything(),
       names_to = c("metric","year"),
       names_sep = "_",
       values_to = "value"
-    ) %>%
-    mutate(year = as.integer(year)) %>%
-    mutate(value = value / 1000000) %>%
-    pivot_wider(
+    ) |>
+    dplyr::mutate(year = as.integer(year)) |>
+    dplyr::mutate(value = value / 1000000) |>
+    tidyr::pivot_wider(
       names_from = 'metric', 
       values_from = 'value'
-    ) %>%
-    mutate(totag = ags + cr)  %>%
-    mutate(nue = (cr / totag) * 100) %>%
-    pivot_longer(
+    ) |>
+    dplyr::mutate(totag = ags + cr) |>
+    dplyr::mutate(nue = (cr / totag) * 100) |>
+    tidyr::pivot_longer(
       cols = !year, 
       names_to="metric", 
       values_to="value")
   
-  pcrag <- plines %>%
-    filter(metric %in% c('ags', 'cr'))
+  pcrag <- plines |>
+    dplyr::filter(metric %in% c('ags', 'cr'))
   
-  pue <- plines %>%
-    filter(metric == 'nue') %>%
-    pivot_wider(names_from = 'metric',
+  pue <- plines |>
+    dplyr::filter(metric == 'nue') |>
+    tidyr::pivot_wider(names_from = 'metric',
                 values_from = 'value')
   
-  pdf <- bind_rows(plines, pin)
+  pdf <- dplyr::bind_rows(plines, pin)
   
-  ndf <- bind_rows(nlines, nin)
+  ndf <- dplyr::bind_rows(nlines, nin)
   
   #create estimate column
   knownfertyrs <- c(1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,
                     2005,2006,2007,2008,2009,2010,2011,2012,2017)
-  nwsin <- nin %>%
-    mutate(estimated=case_when(
+  nwsin <- nin |>
+    dplyr::mutate(estimated=dplyr::case_when(
       metric == "dep" ~ FALSE,
       metric == "hw" ~ FALSE,
       metric == "cf" & year %in% c(1987,1992,1997,2002,2007,2012, 2017) ~ FALSE,
@@ -162,9 +162,9 @@ lc_plotnni <- function(comid, include.nue = FALSE){
       TRUE ~ TRUE
     )) 
   
-  pwsin <- pin %>%
-    filter(metric != 'cr') %>%
-    mutate(estimated=case_when(
+  pwsin <- pin |>
+    dplyr::filter(metric != 'cr') |>
+    dplyr::mutate(estimated=dplyr::case_when(
       metric == "hw" ~ FALSE,
       metric == "lw" & year %in% c(1987,1992,1997,2002,2007,2012,2017) ~ FALSE,
       metric == "ff" & year %in% knownfertyrs ~ FALSE,
@@ -195,7 +195,7 @@ lc_plotnni <- function(comid, include.nue = FALSE){
   
   #create N bar plot
   nbar <- ggplot() + 
-    geom_bar_pattern(data = nwsin, 
+    ggpattern::geom_bar_pattern(data = nwsin, 
                      aes(x=year,y=value, fill=metric, 
                          pattern=factor(estimated, levels=c(TRUE,FALSE),
                                         labels=c('Estimated','Non-Estimated'))),
@@ -243,7 +243,7 @@ lc_plotnni <- function(comid, include.nue = FALSE){
   
   #create p bar plot
   pbar <- ggplot() + 
-    geom_bar_pattern(data = pwsin, 
+    ggpattern::geom_bar_pattern(data = pwsin, 
                      aes(x=year,y=value, fill=metric, 
                          pattern=factor(estimated, levels=c(TRUE,FALSE),
                                         labels=c('Estimated','Non-Estimated'))), 
@@ -310,11 +310,11 @@ lc_plotnni <- function(comid, include.nue = FALSE){
     guides(fill="none", pattern = "none", linetype="none")
   
   #export final figure
-  inputs <- (nbar / pbar) + plot_layout(guides = "collect")
-  nue <- (nue / pue) + plot_layout(guides = "collect")
+  inputs <- patchwork::wrap_plots(nbar, pbar, ncol=1, guides="collect")
+  nue <- patchwork::wrap_plots(nue, pue, ncol=1, guides="collect")
   
   if (include.nue == TRUE){
-    timenni <- (nue | inputs) 
+    timenni <- patchwork::wrap_plots(nue, inputs, ncol=2) 
   }
   else {
     timenni <- inputs 
