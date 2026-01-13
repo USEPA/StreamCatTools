@@ -33,13 +33,6 @@ is reflective of data linearly interpolated between agricultural census years.
 
 Mississippi-Atchafalaya River Basin
 ```{r, warning = FALSE, message = FALSE}
-library(StreamCatTools)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(ggpattern)
-library(patchwork)
-library(cowplot)
 com <- '22812041'
 sc_plotnni(comid = com, include.nue = TRUE)
 ```
