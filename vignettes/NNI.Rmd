@@ -170,13 +170,25 @@ pperc <- pperc %>%
   filter(metric != 'usgsww') %>%
   rename('Source' = 'metric', 'Phosphorus Percent Change' = 'perchange')
 
-left_join(nperc, pperc, by = 'Source')
+perc <- left_join(nperc, pperc, by = 'Source')
+
+perc <- perc %>% mutate(
+  Source = case_when(
+    Source == 'ff' ~ 'Farm Fertilizer',
+    Source == 'uf' ~ 'Urban Fertilizer',
+    Source == 'lw' ~ 'Livestock Waste',
+    Source == 'cf' ~ 'Crop N-Fixation',
+    Source == 'dep' ~ 'Atmos. Deposition',
+    Source == 'hw' ~ 'Human Waste'
+  )
+)
+tibble(perc)
 ```
 
 Local catchment and watershed N and P inputs to the Platte River Basin
-```{r}
+```{r, warning=FALSE, message=FALSE}
 com <- 17416474
-sc_get_nni(year='2017', comid=com, aoi='cat,ws')
+tibble(sc_get_nni(year='2017', comid=com, aoi='cat,ws'))
 ```
 
 
