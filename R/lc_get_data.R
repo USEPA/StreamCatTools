@@ -319,13 +319,13 @@ lc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL,
 #' @export
 #'
 #' @examples\donttest{
-#' df <- lc_getnni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
+#' df <- lc_get_nni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
 #' comid='23783629,23794487,23812618')
 #' 
-#' df <- lc_getnni(year='2015', aoi='cat',
+#' df <- lc_get_nni(year='2015', aoi='cat',
 #' comid='23783629', countOnly=TRUE)
 #' 
-#' df <- lc_getnni(comid='23783629', year='2011, 2012', aoi='ws')
+#' df <- lc_get_nni(comid='23783629', year='2011, 2012', aoi='ws')
 #' }
 
 lc_get_nni <- function(year, aoi = NULL, comid = NULL,

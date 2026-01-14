@@ -365,13 +365,13 @@ ignore_unused_imports <- function() {
 #' @export
 #'
 #' @examples\donttest{
-#' df <- sc_getnni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
+#' df <- sc_get_nni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
 #' comid=179,1337,1337420')
 #' 
-#' df <- sc_getnni(year='2015', aoi='cat',
+#' df <- sc_get_nni(year='2015', aoi='cat',
 #' comid='179', countOnly=TRUE)
 #' 
-#' df <- sc_getnni(comid='179', year='2011, 2012', aoi='ws')
+#' df <- sc_get_nni(comid='179', year='2011, 2012', aoi='ws')
 #' }
 
 sc_get_nni <- function(year, aoi = NULL, comid = NULL,
