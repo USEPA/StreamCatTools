@@ -372,11 +372,14 @@ ignore_unused_imports <- function() {
 #' comid='179', countOnly=TRUE)
 #' 
 #' df <- sc_get_nni(comid='179', year='2011, 2012', aoi='ws')
+#' 
+#' df <- sc_get_nni(year='2015, 2016, 2017', county='41003', aoi='ws')
 #' }
 
 sc_get_nni <- function(year, aoi = NULL, comid = NULL,
-                      showAreaSqKm = TRUE, showPctFull = NULL,
-                      countOnly = NULL) {
+                      showAreaSqKm = TRUE, state = NULL,
+                      county = NULL, region = NULL,conus = NULL, 
+                      showPctFull = NULL,countOnly = NULL) {
   # year must be a character string.
   year_chr <-  as.character(year)
   # split multiple years supplied as a single string into
@@ -476,10 +479,13 @@ sc_get_nni <- function(year, aoi = NULL, comid = NULL,
     metric = nni_mets_all,
     aoi = aoi,
     comid = comid,
+    state = state,
+    county = county,
     showAreaSqKm = showAreaSqKm,
     showPctFull = showPctFull,
+    conus = conus,
     countOnly = countOnly
   )
-  # End of function. Return a data frame.
+  # End of function. Return a data frame
   return(final_df)
 }
