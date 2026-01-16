@@ -22,9 +22,10 @@
 #' @export
 #'
 #' @examples
-#' \donttest
+#' \dontrun{
 #' p <- lc_plotnni(comid='23794487')
 #' p <- lc_plotnni(comid='23794487', include.nue=TRUE)
+#' }
 
 lc_plotnni <- function(comid, include.nue = FALSE){
   

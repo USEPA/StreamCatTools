@@ -25,11 +25,16 @@
 #' Return plot as an object.
 #' @export
 #'
+#' @import ggplot2
+#' @import ggpattern
+#' 
 #' @examples
-#' \donttest
+#' \dontrun{
 #' p <- sc_plotnni(comid='1337420')
 #' p <- sc_plotnni(comid='1337420', include.nue=TRUE)
 #' p <- sc_plotnni(comid='1337420', include.inset=FALSE)
+#' }
+
 
 sc_plotnni <- function(comid, include.nue = FALSE, include.inset = TRUE){
   message("If the plot does not render to the plot window when calling the function either save the plot or resize the plot window")

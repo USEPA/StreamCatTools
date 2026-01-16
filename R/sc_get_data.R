@@ -362,9 +362,9 @@ ignore_unused_imports <- function() {
 #' Values: true|false
 #'
 #' @return A tibble of desired StreamCat metrics
-#' @export
 #'
-#' @examples\donttest{
+#' @examples
+#' \dontrun{
 #' df <- sc_get_nni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
 #' comid=179,1337,1337420')
 #' 
@@ -375,6 +375,7 @@ ignore_unused_imports <- function() {
 #' 
 #' df <- sc_get_nni(year='2015, 2016, 2017', county='41003', aoi='ws')
 #' }
+#' #' @export
 
 sc_get_nni <- function(year, aoi = NULL, comid = NULL,
                       showAreaSqKm = TRUE, state = NULL,
