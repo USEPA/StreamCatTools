@@ -34,18 +34,20 @@ is reflective of data linearly interpolated between agricultural census years.
 Mississippi-Atchafalaya River Basin
 ```{r, warning = FALSE, message = FALSE}
 library(StreamCatTools)
+library(ggplot2)
+library(ggpattern)
 com <- '22812041'
 sc_plotnni(comid = com, include.nue = TRUE)
 ```
 
 Neuse River, North Carolina
-```{r, warning = FALSE, message = FAlSE}
+```{r, warning=FALSE, message=FALSE}
 com <- '10975909'
 sc_plotnni(comid = com)
 ```
 
 Lake Kanasatka, New Hampshire
-```{r}
+```{r,warning=FALSE, message=FALSE}
 com = '6738112'
 lc_plotnni(comid = com)
 ```
@@ -56,7 +58,7 @@ are returned for available years.
 
 ## Cuyahoga River
 Return dataframe of NNI metrics for Cuyahoga River
-```{r}
+```{r,warning=FALSE, message=FALSE}
 com <- 15588532
 years <- '1987, 1992, 1997, 2002, 2007, 2012, 2017'
 cuyahoga <- sc_get_nni(year=years,
@@ -66,7 +68,7 @@ cuyahoga <- sc_get_nni(year=years,
 colnames(cuyahoga)
 ```
 Transform sc_get_nni dataframe into long dataframe
-```{r}
+```{r,warning=FALSE, message=FALSE}
 nin <- cuyahoga[, grepl("^(n)", names(cuyahoga)) & 
                   !grepl("(cr)", names(cuyahoga)) & 
                   !grepl("(ags)", names(cuyahoga)) & 
@@ -76,14 +78,14 @@ names(nin) <- sapply(names(nin), function(col){
   substr(col, 3, nchar(col) -2)
 })
   
-nin <- nin %>%
-  pivot_longer(
+nin <- nin |>
+  tidyr::pivot_longer(
     cols = everything(),
     names_to = c("metric", "year"),
     names_sep = "_",
     values_to = "value"
-  ) %>%
-  mutate(year = as.integer(year))
+  ) |>
+  dplyr::mutate(year = as.integer(year))
 
 pin <- cuyahoga[, grepl("^(p)", names(cuyahoga)) & 
                   !grepl("(cr)", names(cuyahoga)) & 
@@ -94,23 +96,23 @@ names(pin) <- sapply(names(pin), function(col){
   substr(col, 3, nchar(col) -2)
 })
   
-pin <- pin %>%
-  pivot_longer(
+pin <- pin |>
+  tidyr::pivot_longer(
     cols = everything(),
     names_to = c("metric", "year"),
     names_sep = "_",
     values_to = "value"
-  ) %>%
-  mutate(year = as.integer(year))
+  ) |>
+  dplyr::mutate(year = as.integer(year))
 ```
 
 Pie Chart of Sources of N and P to the Cuyahoga River in 2012
-```{r}
-n2012 <- nin %>% 
-  filter(year == '2012')
+```{r,warning=FALSE, message=FALSE}
+n2012 <- nin |> 
+  dplyr::filter(year == '2012')
 
-p2012 <- pin %>%
-  filter(year == '2012')
+p2012 <- pin |>
+  dplyr::filter(year == '2012')
 
 colorsn <- c('ff' = '#A3CC51', 'lw'='#B26F2C','hw'='#E51932','uf'='black', 'dep'='#6db6ff', 'cf'='#FFD700', 'usgsww' = 'pink')
 colorsp <- c('ff' = '#A3CC51', 'lw'='#B26F2C','hw'='#E51932','uf'='black', 'usgsww' = 'pink')
@@ -139,35 +141,35 @@ p <- ggplot(pin, aes(x = "", y = value, fill = metric)) +
   labs(title = "Phosphorus") + 
   guides(fill = 'none')
 
-n + p + plot_layout(guides = "collect")
+n + p + patchwork::plot_layout(guides = "collect")
 ```
 
 Percent change of N and P inputs from 1992 to 2017
-```{r}
-nperc <- nin %>%
-  filter(year %in% c('1992', '2017')) %>%
-  pivot_wider(values_from = 'value',
+```{r,warning=FALSE, message=FALSE}
+nperc <- nin |>
+  dplyr::filter(year %in% c('1992', '2017')) |>
+  tidyr::pivot_wider(values_from = 'value',
               names_from = 'year')
 nperc$perchange <- (nperc$`2017` - nperc$`1992`) / nperc$`1992` * 100
-nperc <- nperc %>%
-  select(metric, perchange) %>%
-  filter(metric != 'usgsww') %>%
-  rename('Source' = 'metric', 'Nitrogen Percent Change' = 'perchange')
+nperc <- nperc |>
+  dplyr::select(metric, perchange) |>
+  dplyr::filter(metric != 'usgsww') |>
+  dplyr::rename('Source' = 'metric', 'Nitrogen Percent Change' = 'perchange')
 
-pperc <- pin %>%
-  filter(year %in% c('1992', '2017')) %>%
-  pivot_wider(values_from = 'value',
+pperc <- pin |>
+  dplyr::filter(year %in% c('1992', '2017')) |>
+  tidyr::pivot_wider(values_from = 'value',
               names_from = 'year')
 pperc$perchange <- (pperc$`2017` - pperc$`1992`) / pperc$`1992` * 100
-pperc <- pperc %>%
-  select(metric, perchange) %>%
-  filter(metric != 'usgsww') %>%
-  rename('Source' = 'metric', 'Phosphorus Percent Change' = 'perchange')
+pperc <- pperc |>
+  dplyr::select(metric, perchange) |>
+  dplyr::filter(metric != 'usgsww') |>
+  dplyr::rename('Source' = 'metric', 'Phosphorus Percent Change' = 'perchange')
 
-perc <- left_join(nperc, pperc, by = 'Source')
+perc <- dplyr::left_join(nperc, pperc, by = 'Source')
 
-perc <- perc %>% mutate(
-  Source = case_when(
+perc <- perc |> dplyr::mutate(
+  Source = dplyr::case_when(
     Source == 'ff' ~ 'Farm Fertilizer',
     Source == 'uf' ~ 'Urban Fertilizer',
     Source == 'lw' ~ 'Livestock Waste',
@@ -176,13 +178,13 @@ perc <- perc %>% mutate(
     Source == 'hw' ~ 'Human Waste'
   )
 )
-tibble(perc)
+tibble::tibble(perc)
 ```
 
 Local catchment and watershed N and P inputs to the Platte River Basin
-```{r, warning=FALSE, message=FALSE}
+```{r,warning=FALSE, message=FALSE}
 com <- 17416474
-tibble(sc_get_nni(year='2017', comid=com, aoi='cat,ws'))
+tibble::tibble(sc_get_nni(year='2017', comid=com, aoi='cat,ws'))
 ```
 
 
@@ -206,7 +208,7 @@ basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
 ```
 
 ## Map the Results
-```{r map1, results='hide', message='false'}
+```{r map1, results='hide', message=FALSE}
 library(ggplot2)
 library(ggspatial)
 flowline_nldi |> 
@@ -219,7 +221,7 @@ flowline_nldi |>
 ```
 
 ## Look at change through time Calapooia Farm Nitrogen
-```{r change, results='hide', message='false'}
+```{r change, results='hide', message=FALSE}
 df1 <- sc_get_data(metric='n_ff_1987', aoi='cat', comid=comids)
 df2 <- sc_get_data(metric='n_ff_2017', aoi='cat', comid=comids)
 df2$n_ff_1987cat <- df1$n_ff_1987cat[match(df2$comid, df1$comid)]
@@ -228,7 +230,7 @@ flowline_nldi$Farm_Nitrogen_Difference <- df2$Farm_Nitrogen_Difference[match(flo
 ```
 
 ## Map the Results
-```{r map2, results='hide', message='false'}
+```{r map2, results='hide', message=FALSE}
 flowline_nldi |> 
   ggplot() + geom_sf(aes(colour = Farm_Nitrogen_Difference)) + 
   scale_y_continuous() + 
@@ -248,7 +250,7 @@ flowline_nldi$CropNFixation <- df$n_cf_2017ws[match(flowline_nldi$nhdplus_comid,
 ```
 
 ## Map the Results
-```{r map3, results='hide', message='false'}
+```{r map3, results='hide', message=FALSE}
 flowline_nldi |> 
   ggplot() + geom_sf(aes(colour = CropNFixation)) + 
   scale_y_continuous() +
