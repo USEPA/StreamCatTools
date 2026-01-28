@@ -171,6 +171,8 @@ lc_get_data <- function(comid = NULL,
 #' @title Get NLCD Data
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#' `lc_nlcd()` was renamed to `lc_get_nlcd()` to create a more consistent API.
 #' Function to specifically retrieve all NLCD metrics for a given year using the StreamCat API.
 #'
 #' @author
@@ -205,21 +207,23 @@ lc_get_data <- function(comid = NULL,
 #' @examples
 #' \dontrun{
 #'
-#' df <- lc_nlcd(comid='23783629', year='2019', aoi='ws')
-#'
-#' df <- lc_nlcd(year='2016', aoi='cat',
+#' df <- lc_nlcd(comid='23783629', year='2019', aoi='ws')  # Will show a deprecation warning
+#' 
+#' df <- lc_get_nlcd(comid='23783629', year='2019', aoi='ws')
+#' 
+#' df <- lc_get_nlcd(year='2016', aoi='cat',
 #' comid='23783629,23794487,23812618', showAreaSqKm=FALSE, showPctFull=TRUE)
 #'
-#' df <- lc_nlcd(year='2016', aoi='cat',
+#' df <- lc_get_nlcd(year='2016', aoi='cat',
 #' comid='23783629,23794487,23812618', countOnly=TRUE)
 #'
-#' df <- lc_nlcd(year='2016, 2019', aoi='cat,ws',
+#' df <- lc_get_nlcd(year='2016, 2019', aoi='cat,ws',
 #' comid='23783629,23794487,23812618')
 #' }
 #' @export
 
 
-lc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL,
+lc_get_nlcd <- function(year = '2019', aoi = NULL, comid = NULL,
                     showAreaSqKm = NULL, showPctFull = NULL,
                     countOnly = NULL) {
   # year must be a character string.
@@ -282,3 +286,184 @@ lc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL,
   # End of function. Return a data frame.
   return(final_df)
 }
+
+#' @rdname lc_get_nlcd
+#' @export
+#' @keywords internal
+lc_nlcd <- function(year = '2019',
+                    comid = NULL,
+                    aoi = NULL,
+                    showAreaSqKm = NULL,
+                    showPctFull = NULL,
+                    state = NULL,
+                    county = NULL,
+                    region = NULL,
+                    conus = NULL,
+                    countOnly = NULL) {
+  lifecycle::deprecate_warn("0.10.0", "lc_nlcd()", "lc_get_nlcd()")
+  lc_get_nlcd(year = '2019',
+              comid = NULL,
+              aoi = NULL,
+              showAreaSqKm = NULL,
+              showPctFull = NULL,
+              state = NULL,
+              county = NULL,
+              region = NULL,
+              conus = NULL,
+              countOnly = NULL)
+}
+
+#' @title Get NNI
+#' 
+#' @description 
+#' Function to get all NNI data available for a given year.
+#' 
+#' @author
+#' Selia Markley
+#'
+#' @param year Years(s) of NNI metrics to query.
+#' Only valid NNI years are accepted (1987:2017)
+#' Syntax: year=<year1>,<year2>
+#' 
+#' @param aoi Specify the area of interest described by a metric. By default, all available areas of interest
+#' for a given metric are returned.
+#' Syntax: areaOfInterest=<value1>,<value2>
+#' Values: catchment|watershed
+#' 
+#' @param comid Return metric information for specific COMIDs
+#' Syntax: comid=<comid1>,<comid2>
+#' 
+#' @param showAreaSqKm Return the area in square kilometers of a given area of interest.
+#' The default value is true.
+#' Values: true|false
+#' 
+#' @param showPctFull Return the pctfull for each dataset. The default value is false.
+#' Values: true|false
+#' 
+#' @param countOnly Return a CSV containing only the row count (ROWCOUNT) and the column
+#' count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
+#' Values: true|false
+#'
+#' @return A tibble of desired StreamCat metrics
+#' @export
+#'
+#' @examples\donttest{
+#' df <- lc_get_nni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
+#' comid='23783629,23794487,23812618')
+#' 
+#' df <- lc_get_nni(year='2015', aoi='cat',
+#' comid='23783629', countOnly=TRUE)
+#' 
+#' df <- lc_get_nni(comid='23783629', year='2011, 2012', aoi='ws')
+#' }
+
+lc_get_nni <- function(year, aoi = NULL, comid = NULL,
+                    showAreaSqKm = TRUE, showPctFull = NULL,
+                    countOnly = NULL) {
+  # year must be a character string.
+  year_chr <-  as.character(year)
+  # split multiple years supplied as a single string into
+  # a vector of years.
+  year_vec <- unlist(strsplit(x = year_chr,
+                              split = ",|, "))
+  # Vector of valid NNI years to check inputs against.
+  valid_years <- c('1987',
+                   '1988',
+                   '1989',
+                   '1990',
+                   '1991',
+                   '1992',
+                   '1993',
+                   '1994',
+                   '1995',
+                   '1996',
+                   '1997',
+                   '1998',
+                   '1999',
+                   '2000',
+                   '2001',
+                   '2002',
+                   '2003',
+                   '2004',
+                   '2005',
+                   '2006',
+                   '2007',
+                   '2008',
+                   '2009',
+                   '2010',
+                   '2011',
+                   '2012',
+                   '2013',
+                   '2014',
+                   '2015',
+                   '2016',
+                   '2017')
+  # Stop early if any of the year(s) supplied are not found in the valid
+  # years vec.
+  stopifnot(
+    "year must be a valid NNI year" = any(year_vec %in% valid_years)
+  )
+  # Vector of NNI metric names.
+  nni <- c(
+      'n_leg_',
+      'n_ags_',
+      'n_ff_',
+      'n_uf_',
+      'n_cf_',
+      'n_cr_',
+      'n_hw_',
+      'n_lw_',
+      'p_leg_',
+      'p_ags_',
+      'p_ff_',
+      'p_uf_',
+      'p_cr_',
+      'p_hw_',
+      'p_lw_'
+    )
+  # Add n_dep for available years
+  ndep_year_vec <- year_vec[!year_vec %in% c('1987', '1988', '1989')]
+  ndep_comb <- expand.grid('n_dep_', ndep_year_vec)
+  ndep_mets <- paste0(ndep_comb$Var1,
+                     ndep_comb$Var2,
+                     collapse = ",",
+                     recycle0 = TRUE)
+  # Add p_dep for available years
+  pdep_year_vec <- year_vec[!year_vec %in% c('1987', '1988', '1989', '1990', '1991', '1992', '1993', '1994', '1995', '1996',
+                                             '2014', '2015', '2016', '2017')]
+  pdep_comb <- expand.grid('p_dep_', pdep_year_vec)
+  pdep_mets <- paste0(pdep_comb$Var1,
+                      pdep_comb$Var2,
+                      collapse = ",",
+                      recycle0 = TRUE)
+  # Add n_usgsww and p_usgsww for available years
+  ww_year_vec <- year_vec[year_vec %in% c('1988', '1990', '1992', '1996', '2000', '2004', '2008', '2012')]
+  ww_comb <- expand.grid(c('p_usgsww_', 'n_usgsww_'), ww_year_vec)
+  ww_mets <- paste0(ww_comb$Var1,
+                      ww_comb$Var2,
+                      collapse = ",",
+                      recycle0 = TRUE)
+  # Create a data frame of all NNI Metric and year combinations.
+  all_comb <- expand.grid(nni, year_vec)
+  # Concatenate the NLCD metric name with the supplied year(s) to create
+  # valid metric names to submit to the API.
+  nni_mets <- paste0(all_comb$Var1,
+                      all_comb$Var2,
+                      collapse = ",",
+                      recycle0 = TRUE)
+  # Combine all NNI metrics
+  nni_mets_all <- paste0(nni_mets, ",", ndep_mets, ",", pdep_mets, ",", ww_mets)
+  
+  # Query the API.
+  final_df <- lc_get_data(
+    metric = nni_mets_all,
+    aoi = aoi,
+    comid = comid,
+    showAreaSqKm = showAreaSqKm,
+    showPctFull = showPctFull,
+    countOnly = countOnly
+  )
+  # End of function. Return a data frame.
+  return(final_df)
+}
+
