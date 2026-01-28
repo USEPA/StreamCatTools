@@ -171,6 +171,8 @@ lc_get_data <- function(comid = NULL,
 #' @title Get NLCD Data
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#' `lc_nlcd()` was renamed to `lc_get_nlcd()` to create a more consistent API.
 #' Function to specifically retrieve all NLCD metrics for a given year using the StreamCat API.
 #'
 #' @author
@@ -205,21 +207,23 @@ lc_get_data <- function(comid = NULL,
 #' @examples
 #' \dontrun{
 #'
-#' df <- lc_nlcd(comid='23783629', year='2019', aoi='ws')
-#'
-#' df <- lc_nlcd(year='2016', aoi='cat',
+#' df <- lc_nlcd(comid='23783629', year='2019', aoi='ws')  # Will show a deprecation warning
+#' 
+#' df <- lc_get_nlcd(comid='23783629', year='2019', aoi='ws')
+#' 
+#' df <- lc_get_nlcd(year='2016', aoi='cat',
 #' comid='23783629,23794487,23812618', showAreaSqKm=FALSE, showPctFull=TRUE)
 #'
-#' df <- lc_nlcd(year='2016', aoi='cat',
+#' df <- lc_get_nlcd(year='2016', aoi='cat',
 #' comid='23783629,23794487,23812618', countOnly=TRUE)
 #'
-#' df <- lc_nlcd(year='2016, 2019', aoi='cat,ws',
+#' df <- lc_get_nlcd(year='2016, 2019', aoi='cat,ws',
 #' comid='23783629,23794487,23812618')
 #' }
 #' @export
 
 
-lc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL,
+lc_get_nlcd <- function(year = '2019', aoi = NULL, comid = NULL,
                     showAreaSqKm = NULL, showPctFull = NULL,
                     countOnly = NULL) {
   # year must be a character string.
@@ -283,6 +287,31 @@ lc_nlcd <- function(year = '2019', aoi = NULL, comid = NULL,
   return(final_df)
 }
 
+#' @rdname lc_get_nlcd
+#' @export
+#' @keywords internal
+lc_nlcd <- function(year = '2019',
+                    comid = NULL,
+                    aoi = NULL,
+                    showAreaSqKm = NULL,
+                    showPctFull = NULL,
+                    state = NULL,
+                    county = NULL,
+                    region = NULL,
+                    conus = NULL,
+                    countOnly = NULL) {
+  lifecycle::deprecate_warn("0.10.0", "lc_nlcd()", "lc_get_nlcd()")
+  lc_get_nlcd(year = '2019',
+              comid = NULL,
+              aoi = NULL,
+              showAreaSqKm = NULL,
+              showPctFull = NULL,
+              state = NULL,
+              county = NULL,
+              region = NULL,
+              conus = NULL,
+              countOnly = NULL)
+}
 
 #' @title Get NNI
 #' 

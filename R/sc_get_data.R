@@ -188,8 +188,11 @@ sc_get_data <- function(comid = NULL,
 #' @title Get NLCD Data
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#' `sc_nlcd()` was renamed to `sc_get_nlcd()` to create a more consistent API.
 #' Function to retrieve all NLCD metrics for a given year using the StreamCat API.
 #'
+#' 
 #' @author
 #' Marc Weber
 #'
@@ -236,22 +239,25 @@ sc_get_data <- function(comid = NULL,
 #'
 #' @examples
 #' \dontrun{
-#' df <- sc_nlcd(year='2001', aoi='cat',comid='179,1337,1337420')
+#' 
+#' df <- sc_nlcd(year='2001', aoi='cat',comid='179') # Will show a deprecation warning
+#' 
+#' df <- sc_get_nlcd(year='2001', aoi='cat',comid='179,1337,1337420')
 #'
-#' df <- sc_nlcd(year='2001', aoi='ws', region='Region01')
+#' df <- sc_get_nlcd(year='2001', aoi='ws', region='Region01')
 #'
-#' df <- sc_nlcd(year='2001', aoi='ws', region='Region01',
+#' df <- sc_get_nlcd(year='2001', aoi='ws', region='Region01',
 #' countOnly=TRUE)
 #'
 #' df <- sc_nlcd(year='2001', aoi='ws', region='Region01',
 #' showAreaSqKm=FALSE, showPctFull=TRUE)
 #'
-#' df <- sc_nlcd(year='2001, 2006', aoi='cat,ws',
+#' df <- sc_get_nlcd(year='2001, 2006', aoi='cat,ws',
 #' comid='179,1337,1337420')
 #' }
 #' @export
 
-sc_nlcd <- function(year = '2019',
+sc_get_nlcd <- function(year = '2019',
                     comid = NULL,
                     aoi = NULL,
                     showAreaSqKm = NULL,
@@ -326,8 +332,30 @@ sc_nlcd <- function(year = '2019',
   return(final_df)
 }
 
-ignore_unused_imports <- function() {
-  curl::curl_parse_url()
+#' @rdname sc_get_nlcd
+#' @export
+#' @keywords internal
+sc_nlcd <- function(year = '2019',
+                    comid = NULL,
+                    aoi = NULL,
+                    showAreaSqKm = NULL,
+                    showPctFull = NULL,
+                    state = NULL,
+                    county = NULL,
+                    region = NULL,
+                    conus = NULL,
+                    countOnly = NULL) {
+  lifecycle::deprecate_warn("0.10.0", "sc_nlcd()", "sc_get_nlcd()")
+  sc_get_nlcd(year = '2019',
+              comid = NULL,
+              aoi = NULL,
+              showAreaSqKm = NULL,
+              showPctFull = NULL,
+              state = NULL,
+              county = NULL,
+              region = NULL,
+              conus = NULL,
+              countOnly = NULL)
 }
 
 #' @title Get NNI
