@@ -49,7 +49,7 @@ Contributions to development of the package are welcome and encouraged. Please c
 - If you contribute to documentation, running `devtools::document()` and then `pkgdown::build_site()` will refresh the help docs and pkgdown pages (but do not push these packagedown changes - they are to verify changes locally)
 
 ### Python Implementation of StreamCat API
-[PyNHD](https://github.com/hyriver/pynhd), part of the [HyRiver](https://github.com/hyriver) suite of Python packages, also provides access to StreamCat data via the API in Python, along with other NHDPlus value-added attributes for catchments and catchment and network accumulated values for catchments available via [USGS ScienceBase](https://www.sciencebase.gov/catalog/)
+[PyNHD](https://github.com/hyriver/pynhd), part of the [HyRiver](https://github.com/hyriver) suite of Python packages, also provides access to StreamCat data via the API in Python, along with other NHDPlus value-added attributes for catchments and catchment and network accumulated values for catchments available via [USGS ScienceBase](https://www.usgs.gov/tools/sciencebase)
 
 ### Recommended Citation:
 ```

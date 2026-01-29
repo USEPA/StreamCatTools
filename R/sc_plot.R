@@ -44,9 +44,15 @@ sc_plotnni <- function(comid, include.nue = FALSE, include.inset = TRUE){
                      comid = comid,
                      showAreaSqKm = FALSE,
                      showPctFull = FALSE)
-  
+  # declare NULL metrics created w/in function
+  year <- NULL
+  value <- NULL
+  ags <- NULL
+  cr <- NULL
+  totag <- NULL
+  metric <- NULL
+  estimated <- NULL
   #Create N inputs df
-  
   nin <- nni[, grepl("^(n)", names(nni)) & !grepl("(cr)", names(nni)) & !grepl("(ags)", names(nni))]
   
   names(nin) <- sapply(names(nin), function(col){
@@ -55,7 +61,7 @@ sc_plotnni <- function(comid, include.nue = FALSE, include.inset = TRUE){
   
   nin <- nin |>
     tidyr::pivot_longer(
-      cols = everything(),
+      cols = tidyselect::everything(),
       names_to = c("metric", "year"),
       names_sep = "_",
       values_to = "value"
@@ -73,7 +79,7 @@ sc_plotnni <- function(comid, include.nue = FALSE, include.inset = TRUE){
   
   pin <- pin |>
     tidyr::pivot_longer(
-      cols = everything(),
+      cols = tidyselect::everything(),
       names_to = c("metric", "year"),
       names_sep = "_",
       values_to = "value"
@@ -91,7 +97,7 @@ sc_plotnni <- function(comid, include.nue = FALSE, include.inset = TRUE){
   
   nlines <- nlines |>
     tidyr::pivot_longer(
-      cols = everything(),
+      cols = tidyselect::everything(),
       names_to = c("metric","year"),
       names_sep = "_",
       values_to = "value"
@@ -128,7 +134,7 @@ sc_plotnni <- function(comid, include.nue = FALSE, include.inset = TRUE){
   
   plines <- plines |>
     tidyr::pivot_longer(
-      cols = everything(),
+      cols = tidyselect::everything(),
       names_to = c("metric","year"),
       names_sep = "_",
       values_to = "value"

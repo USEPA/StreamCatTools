@@ -378,6 +378,21 @@ sc_nlcd <- function(year = '2019',
 #' @param comid Return metric information for specific COMIDs
 #' Syntax: comid=<comid1>,<comid2>
 #' 
+##' @param state Return metric information for COMIDs within a specific state. Use a state's abbreviation to
+#' query for a given state.
+#' Syntax: state=<state1>,<state2>
+#'
+#' @param county Return metric information for COMIDs within a specific county.
+#' Users must use the FIPS code, not county name, as a way to disambiguate counties.
+#' Syntax: county=<county1>,<county1>
+#'
+#' @param region Return metric information for COMIDs within a specified hydroregion.
+#' Syntax: region=<regionid1>,<regionid2>
+#'
+#' @param conus Return all COMIDs in the conterminous United States.
+#' The default value is false.
+#' Values: true|false
+#' 
 #' @param showAreaSqKm Return the area in square kilometers of a given area of interest.
 #' The default value is true.
 #' Values: true|false
@@ -519,3 +534,6 @@ sc_get_nni <- function(year, aoi = NULL, comid = NULL,
   # End of function. Return a data frame
   return(final_df)
 }
+
+#' @importFrom curl curl_fetch_memory
+NULL

@@ -223,9 +223,16 @@ lc_get_data <- function(comid = NULL,
 #' @export
 
 
-lc_get_nlcd <- function(year = '2019', aoi = NULL, comid = NULL,
-                    showAreaSqKm = NULL, showPctFull = NULL,
-                    countOnly = NULL) {
+lc_get_nlcd <- function(year = '2019',
+                        comid = NULL,
+                        aoi = NULL,
+                        showAreaSqKm = NULL,
+                        showPctFull = NULL,
+                        state = NULL,
+                        county = NULL,
+                        region = NULL,
+                        conus = NULL,
+                        countOnly = NULL) {
   # year must be a character string.
   year_chr <-  as.character(year)
   # split multiple years supplied as a single string into
