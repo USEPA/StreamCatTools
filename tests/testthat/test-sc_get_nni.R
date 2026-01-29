@@ -1,4 +1,4 @@
-context("Test that sc_nlcd is pulling in StreamCat API data")
+context("Test that sc_get_nni is pulling in StreamCat API data")
 
 
 test_that("sc_get_nni for a sample COMID returns a data frame", {
