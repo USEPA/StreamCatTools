@@ -27,8 +27,7 @@ knitr::opts_chunk$set(
 ```
 
 ## Use sc_plotnni and lc_plotnni
-In the following examples, we use sc_plotnni and lc_plotnni functions to plot annual time series 
-of nitrogen and phosphorus budget data for a given watershed. These data are plotted from 1990-2017. Hatching on the bars
+In the following examples, we use sc_plotnni and lc_plotnni functions to plot annual time series of nitrogen and phosphorus budget data for a given watershed. These data are plotted from 1990-2017. Hatching on the bars
 is reflective of data linearly interpolated between agricultural census years.
 
 Mississippi-Atchafalaya River Basin

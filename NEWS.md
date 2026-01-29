@@ -1,7 +1,14 @@
+# StreamCatTools 0.10.0
+
+-   Adds new functions `sc_get_nni()` and `lc_get_nni()` for ease of access to 
+    National Nutrient Inventory data in StreamCat
+-   Adds new functions `sc_plot()` and `lc_plot` for plotting nitrogen and 
+    phosphorus budgets for watersheds
+
 # StreamCatTools 0.9.1
 
-- Handles a web service being down in testing using `testthat::skip_on_cran()`
-- Converts most vignettes to articles and adds one new `Start Here` vignette
+-   Handles a web service being down in testing using `testthat::skip_on_cran()`
+-   Converts most vignettes to articles and adds one new `Start Here` vignette
   
 # StreamCatTools 0.9.0
 
