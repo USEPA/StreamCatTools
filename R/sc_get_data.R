@@ -393,8 +393,9 @@ sc_nlcd <- function(year = '2019',
 #'
 #' @examples
 #' \dontrun{
+#' 
 #' df <- sc_get_nni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
-#' comid=179,1337,1337420')
+#' comid='179,1337,1337420')
 #' 
 #' df <- sc_get_nni(year='2015', aoi='cat',
 #' comid='179', countOnly=TRUE)

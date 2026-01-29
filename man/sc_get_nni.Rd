@@ -47,6 +47,20 @@ A tibble of desired StreamCat metrics
 \description{
 Function to get all NNI data available for a given year.
 }
+\examples{
+\dontrun{
+
+df <- sc_get_nni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
+comid='179,1337,1337420')
+
+df <- sc_get_nni(year='2015', aoi='cat',
+comid='179', countOnly=TRUE)
+
+df <- sc_get_nni(comid='179', year='2011, 2012', aoi='ws')
+
+df <- sc_get_nni(year='2015, 2016, 2017', county='41003', aoi='ws')
+}
+}
 \author{
 Selia Markley
 }
