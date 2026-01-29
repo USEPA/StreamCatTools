@@ -403,7 +403,7 @@ sc_nlcd <- function(year = '2019',
 #' 
 #' df <- sc_get_nni(year='2015, 2016, 2017', county='41003', aoi='ws')
 #' }
-#' #' @export
+#' @export
 
 sc_get_nni <- function(year, aoi = NULL, comid = NULL,
                       showAreaSqKm = TRUE, state = NULL,
