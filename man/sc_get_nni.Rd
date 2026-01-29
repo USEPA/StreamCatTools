@@ -34,6 +34,21 @@ Syntax: comid=<comid1>,<comid2>}
 The default value is true.
 Values: true|false}
 
+\item{state}{Return metric information for COMIDs within a specific state. Use a state's abbreviation to
+query for a given state.
+Syntax: state=<state1>,<state2>}
+
+\item{county}{Return metric information for COMIDs within a specific county.
+Users must use the FIPS code, not county name, as a way to disambiguate counties.
+Syntax: county=<county1>,<county1>}
+
+\item{region}{Return metric information for COMIDs within a specified hydroregion.
+Syntax: region=<regionid1>,<regionid2>}
+
+\item{conus}{Return all COMIDs in the conterminous United States.
+The default value is false.
+Values: true|false}
+
 \item{showPctFull}{Return the pctfull for each dataset. The default value is false.
 Values: true|false}
 

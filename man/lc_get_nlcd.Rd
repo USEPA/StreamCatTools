@@ -7,10 +7,14 @@
 \usage{
 lc_get_nlcd(
   year = "2019",
-  aoi = NULL,
   comid = NULL,
+  aoi = NULL,
   showAreaSqKm = NULL,
   showPctFull = NULL,
+  state = NULL,
+  county = NULL,
+  region = NULL,
+  conus = NULL,
   countOnly = NULL
 )
 
@@ -33,13 +37,13 @@ Only valid NLCD years are accepted (i.e. 2001, 2004, 2006, 2008,
 2011, 2013, 2016, 2019)
 Syntax: year=<year1>,<year2>}
 
+\item{comid}{Return metric information for specific COMIDs
+Syntax: comid=<comid1>,<comid2>}
+
 \item{aoi}{Specify the area of interest described by a metric. By default, all available areas of interest
 for a given metric are returned.
 Syntax: areaOfInterest=<value1>,<value2>
 Values: catchment|watershed|riparian_catchment|riparian_watershed|other}
-
-\item{comid}{Return metric information for specific COMIDs
-Syntax: comid=<comid1>,<comid2>}
 
 \item{showAreaSqKm}{Return the area in square kilometers of a given area of interest.
 The default value is false.

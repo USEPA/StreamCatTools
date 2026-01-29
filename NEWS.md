@@ -4,6 +4,8 @@
     National Nutrient Inventory data in StreamCat
 -   Adds new functions `sc_plot()` and `lc_plot` for plotting nitrogen and 
     phosphorus budgets for watersheds
+-   Adds a new article describing functions for plotting National Nutrient
+    Inventory data in StreamCat
 
 # StreamCatTools 0.9.1
 
