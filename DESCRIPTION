@@ -62,7 +62,8 @@ Suggests:
   tidyr,
   stringr,
   purrr,
-  lifecycle
+  lifecycle,
+  tidyselect
 Encoding: UTF-8
 URL: https://usepa.github.io/StreamCatTools/, https://github.com/USEPA/StreamCatTools
 BugReports: https://github.com/USEPA/StreamCatTools/issues
