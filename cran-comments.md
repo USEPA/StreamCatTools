@@ -1,4 +1,4 @@
-This is a minor update that:
+This is a patch update that:
 
 -   Adds new functions `sc_get_nni()` and `lc_get_nni()` for ease of access to 
     National Nutrient Inventory data in StreamCat

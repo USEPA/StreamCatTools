@@ -11,6 +11,12 @@
 
 -   Handles a web service being down in testing using `testthat::skip_on_cran()`
 -   Converts most vignettes to articles and adds one new `Start Here` vignette
+=======
+# StreamCatTools 0.9.1
+
+- Handles a web service being down in testing using `testthat::skip_on_cran()`
+- Converts most vignettes to articles and adds one new `Start Here` vignette
+
   
 # StreamCatTools 0.9.0
 
