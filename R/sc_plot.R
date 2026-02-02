@@ -52,6 +52,7 @@ sc_plotnni <- function(comid, include.nue = FALSE, include.inset = TRUE){
   totag <- NULL
   metric <- NULL
   estimated <- NULL
+  STUSPS <- NULL
   #Create N inputs df
   nin <- nni[, grepl("^(n)", names(nni)) & !grepl("(cr)", names(nni)) & !grepl("(ags)", names(nni))]
   
