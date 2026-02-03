@@ -1,7 +1,7 @@
 Package: StreamCatTools
 Type: Package
 Title: 'StreamCatTools'
-Version: 0.9.1
+Version: 0.10.0
 Authors@R: c(person(given = "Marc", 
                     family = "Weber", 
                     role = c("aut", "cre"), 
@@ -10,6 +10,10 @@ Authors@R: c(person(given = "Marc",
                     family = "Hill",
                     role = "ctb",
                     email = "hill.ryan@epa.gov"),
+             person(given = "Selia",
+                    family = "Markley",
+                    role = "ctb",
+                    email = "markley.selia@epa.gov"),
              person(given = "Travis",
                     family = "Hudson",
                     role = "ctb",
@@ -39,10 +43,14 @@ Imports:
     nhdplusTools,
     jsonlite,
     httr2,
-    curl (>= 6.0.0)
+    curl (>= 6.0.0),
+    ggpattern,
+    patchwork,
+    cowplot,
+    tigris,
+    ggplot2
 Suggests: 
   dplyr,
-  ggplot2,
   mapview,
   testthat, 
   knitr, 
@@ -53,7 +61,9 @@ Suggests:
   readr,
   tidyr,
   stringr,
-  purrr
+  purrr,
+  lifecycle,
+  tidyselect
 Encoding: UTF-8
 URL: https://usepa.github.io/StreamCatTools/, https://github.com/USEPA/StreamCatTools
 BugReports: https://github.com/USEPA/StreamCatTools/issues

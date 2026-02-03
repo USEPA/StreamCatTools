@@ -111,6 +111,6 @@ knitr::kable(head(df))
 In this example we access National Land Cover Dataset (NLCD) data for 2019, just at the catchment level for several COMIDs using the `lc_nlcd` function. Loads data into a tibble we can view.
 
 ```{r get_nlcd}
-df <- lc_nlcd(comid='23783629,23794487,23812618', year='2019', aoi='ws')
+df <- lc_get_nlcd(comid='23783629,23794487,23812618', year='2019', aoi='ws')
 knitr::kable(df)
 ```

@@ -6,7 +6,7 @@
 [![cran checks](https://badges.cranchecks.info/worst/StreamCatTools.svg)](https://cran.r-project.org/web/checks/check_results_StreamCatTools.html)
 [![R-CMD-check](https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/StreamCatTools)](https://cran.r-project.org/package=StreamCatTools)
-[![CodeCov](https://img.shields.io/badge/test%20coverage-86.9%25-388600.svg)](https://img.shields.io/badge/test%20coverage-86.9%25-388600.svg)
+[![CodeCov](https://img.shields.io/badge/test%20coverage-82.62%25-388600.svg)](https://img.shields.io/badge/test%20coverage-82.62%25-388600.svg)
 <!-- badges: end -->
 
 ## StreamCatTools: Tools to work with the [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) API within R and access the full suite of StreamCat and [LakeCat](https://www.epa.gov/national-aquatic-resource-surveys/lakecat-dataset) metrics.
@@ -49,7 +49,7 @@ Contributions to development of the package are welcome and encouraged. Please c
 - If you contribute to documentation, running `devtools::document()` and then `pkgdown::build_site()` will refresh the help docs and pkgdown pages (but do not push these packagedown changes - they are to verify changes locally)
 
 ### Python Implementation of StreamCat API
-[PyNHD](https://github.com/hyriver/pynhd), part of the [HyRiver](https://github.com/hyriver) suite of Python packages, also provides access to StreamCat data via the API in Python, along with other NHDPlus value-added attributes for catchments and catchment and network accumulated values for catchments available via [USGS ScienceBase](https://www.sciencebase.gov/catalog/)
+[PyNHD](https://github.com/hyriver/pynhd), part of the [HyRiver](https://github.com/hyriver) suite of Python packages, also provides access to StreamCat data via the API in Python, along with other NHDPlus value-added attributes for catchments and catchment and network accumulated values for catchments available via [USGS ScienceBase](https://www.usgs.gov/tools/sciencebase)
 
 ### Recommended Citation:
 ```

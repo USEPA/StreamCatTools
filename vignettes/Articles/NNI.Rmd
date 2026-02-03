@@ -1,0 +1,260 @@
+---
+title: "National Nutrient Inventory (NNI) Data in StreamCat"
+output: 
+  html_document:
+    theme: flatly
+    keep_md: yes
+    number_sections: true
+    highlighted: default 
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Applications withs StreamCatTools}
+  %\VignetteEncoding{UTF-8}{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  warning = FALSE, 
+  message = FALSE
+)
+```
+
+## Use sc_plotnni and lc_plotnni
+In the following examples, we use `sc_plotnni` and `lc_plotnni` functions to plot annual time series of nitrogen and phosphorus budget data for a given watershed. These data are plotted from 1990-2017. Hatching on the bars
+is reflective of data linearly interpolated between agricultural census years.
+
+Mississippi-Atchafalaya River Basin
+```{r, warning = FALSE, message = FALSE}
+library(StreamCatTools)
+library(ggplot2)
+library(ggpattern)
+com <- '22812041'
+sc_plotnni(comid = com, include.nue = TRUE)
+```
+
+Neuse River, North Carolina
+```{r, warning=FALSE, message=FALSE}
+com <- '10975909'
+sc_plotnni(comid = com)
+```
+
+Lake Kanasatka, New Hampshire
+```{r,warning=FALSE, message=FALSE}
+com = '6738112'
+lc_plotnni(comid = com)
+```
+## Use sc_get_nni and lc_get_nni to pull NNI budget data
+In these examples, we access all available NNI metrics for user-defined years. Most NNI metrics are available from 1987
+to 2017, except for nitrogen deposition, phosphorus deposition, and nitrogen and phosphorus point source loads. These metrics
+are returned for available years. 
+
+## Cuyahoga River
+Return dataframe of NNI metrics for Cuyahoga River
+```{r,warning=FALSE, message=FALSE}
+com <- 15588532
+years <- '1987, 1992, 1997, 2002, 2007, 2012, 2017'
+cuyahoga <- sc_get_nni(year=years,
+           comid=com,
+           aoi='ws',
+           showAreaSqKm=FALSE)
+colnames(cuyahoga)
+```
+Transform sc_get_nni dataframe into long dataframe
+```{r,warning=FALSE, message=FALSE}
+nin <- cuyahoga[, grepl("^(n)", names(cuyahoga)) & 
+                  !grepl("(cr)", names(cuyahoga)) & 
+                  !grepl("(ags)", names(cuyahoga)) & 
+                  !grepl("(leg)", names(cuyahoga))]
+  
+names(nin) <- sapply(names(nin), function(col){
+  substr(col, 3, nchar(col) -2)
+})
+  
+nin <- nin |>
+  tidyr::pivot_longer(
+    cols = everything(),
+    names_to = c("metric", "year"),
+    names_sep = "_",
+    values_to = "value"
+  ) |>
+  dplyr::mutate(year = as.integer(year))
+
+pin <- cuyahoga[, grepl("^(p)", names(cuyahoga)) & 
+                  !grepl("(cr)", names(cuyahoga)) & 
+                  !grepl("(ags)", names(cuyahoga)) & 
+                  !grepl("(leg)", names(cuyahoga))]
+  
+names(pin) <- sapply(names(pin), function(col){
+  substr(col, 3, nchar(col) -2)
+})
+  
+pin <- pin |>
+  tidyr::pivot_longer(
+    cols = everything(),
+    names_to = c("metric", "year"),
+    names_sep = "_",
+    values_to = "value"
+  ) |>
+  dplyr::mutate(year = as.integer(year))
+```
+
+Pie Chart of Sources of N and P to the Cuyahoga River in 2012
+```{r,warning=FALSE, message=FALSE}
+n2012 <- nin |> 
+  dplyr::filter(year == '2012')
+
+p2012 <- pin |>
+  dplyr::filter(year == '2012')
+
+colorsn <- c('ff' = '#A3CC51', 'lw'='#B26F2C','hw'='#E51932','uf'='black', 'dep'='#6db6ff', 'cf'='#FFD700', 'usgsww' = 'pink')
+colorsp <- c('ff' = '#A3CC51', 'lw'='#B26F2C','hw'='#E51932','uf'='black', 'usgsww' = 'pink')
+
+n <- ggplot(nin, aes(x = "", y = value, fill = metric)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar(theta = "y") +
+  scale_fill_manual(values = colorsn, labels = 
+                       c('ff' = 'Farm Fertilizer',
+                         'uf' = 'Urban Fertilizer',
+                         'hw' = 'Human Waste',
+                         'lw' = 'Livestock Waste',
+                         'dep' = 'Total Deposition',
+                         'usgsww' = 'Point Source Loads',
+                         'cf' = 'Crop N-Fixation')
+                     ) +
+  theme_void() +
+  labs(title = "Nitrogen",
+       fill = 'Source')
+
+p <- ggplot(pin, aes(x = "", y = value, fill = metric)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar(theta = "y") +
+  scale_fill_manual(values = colorsp) +
+  theme_void() +
+  labs(title = "Phosphorus") + 
+  guides(fill = 'none')
+
+n + p + patchwork::plot_layout(guides = "collect")
+```
+
+Percent change of N and P inputs from 1992 to 2017
+```{r,warning=FALSE, message=FALSE}
+nperc <- nin |>
+  dplyr::filter(year %in% c('1992', '2017')) |>
+  tidyr::pivot_wider(values_from = 'value',
+              names_from = 'year')
+nperc$perchange <- (nperc$`2017` - nperc$`1992`) / nperc$`1992` * 100
+nperc <- nperc |>
+  dplyr::select(metric, perchange) |>
+  dplyr::filter(metric != 'usgsww') |>
+  dplyr::rename('Source' = 'metric', 'Nitrogen Percent Change' = 'perchange')
+
+pperc <- pin |>
+  dplyr::filter(year %in% c('1992', '2017')) |>
+  tidyr::pivot_wider(values_from = 'value',
+              names_from = 'year')
+pperc$perchange <- (pperc$`2017` - pperc$`1992`) / pperc$`1992` * 100
+pperc <- pperc |>
+  dplyr::select(metric, perchange) |>
+  dplyr::filter(metric != 'usgsww') |>
+  dplyr::rename('Source' = 'metric', 'Phosphorus Percent Change' = 'perchange')
+
+perc <- dplyr::left_join(nperc, pperc, by = 'Source')
+
+perc <- perc |> dplyr::mutate(
+  Source = dplyr::case_when(
+    Source == 'ff' ~ 'Farm Fertilizer',
+    Source == 'uf' ~ 'Urban Fertilizer',
+    Source == 'lw' ~ 'Livestock Waste',
+    Source == 'cf' ~ 'Crop N-Fixation',
+    Source == 'dep' ~ 'Atmos. Deposition',
+    Source == 'hw' ~ 'Human Waste'
+  )
+)
+tibble::tibble(perc)
+```
+
+Local catchment and watershed N and P inputs to the Platte River Basin
+```{r,warning=FALSE, message=FALSE}
+com <- 17416474
+tibble::tibble(sc_get_nni(year='2017', comid=com, aoi='cat,ws'))
+```
+
+
+## Plot a single NNI metric for a given watershed
+In this example we access a single National Nutrient Inventory (NNI) metric for the Calapooia River basin using the `sc_get_data` function. We use the `nhdplusTools` library to pull in flowlines and the watershed boundary for the Calapooia River basin, plot the selected NNI metric for the Calapooia River and show the watershed.
+```{r farmn, results='hide'}
+start_comid = 23763517
+nldi_feature <- list(featureSource = "comid", featureID = start_comid)
+
+flowline_nldi <- nhdplusTools::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
+
+# get StreamCat metrics
+comids <- paste(as.integer(flowline_nldi$UT_flowlines$nhdplus_comid), collapse=",",sep="")
+
+df <- sc_get_data(metric='n_ff_2016', aoi='cat', comid=comids, showAreaSqKm=TRUE)
+
+flowline_nldi <- flowline_nldi$UT_flowlines
+flowline_nldi$Farm_Nitrogon_2016 <- df$n_ff_2016cat[match(flowline_nldi$nhdplus_comid, df$comid)]
+
+basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
+```
+
+## Map the Results
+```{r map1, results='hide', message=FALSE}
+library(ggplot2)
+library(ggspatial)
+flowline_nldi |> 
+  ggplot() + geom_sf(aes(colour = Farm_Nitrogon_2016)) + 
+  scale_y_continuous() +
+  scale_color_distiller(palette = "Spectral") +
+  labs(color = "Kg Nitrogen") + 
+  theme_minimal(12) + 
+  ggtitle('Farm Nitrogen at the Catchment Scale for \nthe Calapooia River Basin 2016')
+```
+
+## Look at change through time Calapooia Farm Nitrogen
+```{r change, results='hide', message=FALSE}
+df1 <- sc_get_data(metric='n_ff_1987', aoi='cat', comid=comids)
+df2 <- sc_get_data(metric='n_ff_2017', aoi='cat', comid=comids)
+df2$n_ff_1987cat <- df1$n_ff_1987cat[match(df2$comid, df1$comid)]
+df2$Farm_Nitrogen_Difference <- df2$n_ff_2017cat-df2$n_ff_1987cat
+flowline_nldi$Farm_Nitrogen_Difference <- df2$Farm_Nitrogen_Difference[match(flowline_nldi$nhdplus_comid, df2$comid)]
+```
+
+## Map the Results
+```{r map2, results='hide', message=FALSE}
+flowline_nldi |> 
+  ggplot() + geom_sf(aes(colour = Farm_Nitrogen_Difference)) + 
+  scale_y_continuous() + 
+  labs(color = "Kg Nitrogen")+ 
+  scale_color_distiller(palette = "Spectral") +
+  theme_minimal(12) + 
+  ggtitle('Farm Nitrogen Change at the Catchment Scale for \nthe Calapooia River Basin from 1987 to 2017')
+```
+
+## Crop Fixation for the Calapooia Watershed
+```{r crop, results='hide', message='false'}
+options(scipen=3)
+# get StreamCat metrics
+df <- sc_get_data(metric='n_cf_2017', aoi='ws', comid=comids)
+
+flowline_nldi$CropNFixation <- df$n_cf_2017ws[match(flowline_nldi$nhdplus_comid, df$comid)]
+```
+
+## Map the Results
+```{r map3, results='hide', message=FALSE}
+flowline_nldi |> 
+  ggplot() + geom_sf(aes(colour = CropNFixation)) + 
+  scale_y_continuous() +
+  scale_color_distiller(palette = "Spectral") +
+  labs(colour = "Kg Nitrogen") + 
+  theme_minimal(12) + 
+  ggtitle('Watershed Crop Nitrogen Fixation \nfor the Calapooia River Basin 2017')
+```

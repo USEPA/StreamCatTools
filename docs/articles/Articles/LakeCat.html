@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../../index.html">StreamCatTools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,7 @@
 <li><a class="dropdown-item" href="../../articles/StartHere.html">Start Here</a></li>
     <li><a class="dropdown-item" href="../../articles/Articles/Introduction.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../../articles/Articles/LakeCat.html">Working with LakeCat data</a></li>
+    <li><a class="dropdown-item" href="../../articles/Articles/NNI.html">National Nutrient Inventory (NNI) Data in StreamCat</a></li>
     <li><a class="dropdown-item" href="../../articles/Articles/Applications.html">Applications</a></li>
   </ul>
 </li>
@@ -301,7 +302,7 @@ the <code>sc_get_data</code> function.</p>
 2019, just at the catchment level for several COMIDs using the
 <code>lc_nlcd</code> function. Loads data into a tibble we can view.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/lc_nlcd.html">lc_nlcd</a></span><span class="op">(</span>comid<span class="op">=</span><span class="st">'23783629,23794487,23812618'</span>, year<span class="op">=</span><span class="st">'2019'</span>, aoi<span class="op">=</span><span class="st">'ws'</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/lc_get_nlcd.html">lc_get_nlcd</a></span><span class="op">(</span>comid<span class="op">=</span><span class="st">'23783629,23794487,23812618'</span>, year<span class="op">=</span><span class="st">'2019'</span>, aoi<span class="op">=</span><span class="st">'ws'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
@@ -414,7 +415,7 @@ the <code>sc_get_data</code> function.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
