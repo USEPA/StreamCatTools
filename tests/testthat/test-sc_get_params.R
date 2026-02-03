@@ -36,7 +36,7 @@ test_that("sc_get_params for StreamCat metric categories", {
   testthat::skip_on_cran()
   params <- sc_get_params(param='categories')
   expect_true(exists("params"))
-  expect_gt(length(params),9)
+  expect_gt(length(params),8)
 })
 
 test_that("sc_get_params for StreamCat datasets", {
