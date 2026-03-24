@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../../index.html">StreamCatTools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,7 @@
 <li><a class="dropdown-item" href="../../articles/StartHere.html">Start Here</a></li>
     <li><a class="dropdown-item" href="../../articles/Articles/Introduction.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../../articles/Articles/LakeCat.html">Working with LakeCat data</a></li>
+    <li><a class="dropdown-item" href="../../articles/Articles/NNI.html">National Nutrient Inventory (NNI) Data in StreamCat</a></li>
     <li><a class="dropdown-item" href="../../articles/Articles/Applications.html">Applications</a></li>
   </ul>
 </li>
@@ -60,7 +61,7 @@
 
 
 
-<link href="Applications_files/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<link href="Applications_files/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
 <script src="Applications_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="Applications_files/leaflet-1.3.1/leaflet.css" rel="stylesheet">
 <script src="Applications_files/leaflet-1.3.1/leaflet.js"></script><link href="Applications_files/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
 <script src="Applications_files/proj4-2.6.2/proj4.min.js"></script><script src="Applications_files/Proj4Leaflet-1.0.1/proj4leaflet.js"></script><link href="Applications_files/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
@@ -156,13 +157,13 @@ metrics</p>
 <span></span>
 <span><span class="co"># join mmi to NARS info data frame with StreamCat PctCrop metric</span></span>
 <span><span class="va">nrsa_sf</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">nrsa_sf</span>, <span class="va">mmi</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'SITE_ID'</span>,<span class="st">'BENT_MMI_COND'</span><span class="op">)</span><span class="op">]</span>, by<span class="op">=</span><span class="st">'SITE_ID'</span><span class="op">)</span></span>
-<span><span class="va">bxplt</span> <span class="op">&lt;-</span> <span class="va">nrsa_sf</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html" class="external-link">drop_na</a></span><span class="op">(</span><span class="va">BENT_MMI_COND</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">bxplt</span> <span class="op">&lt;-</span> <span class="va">nrsa_sf</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html" class="external-link">drop_na</a></span><span class="op">(</span><span class="va">BENT_MMI_COND</span><span class="op">)</span>  <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">pctcrop2006ws</span>, y<span class="op">=</span><span class="va">BENT_MMI_COND</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">'NRSA Benthic MMI versus % Crop in Watershed from 2006 NLCD'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">bxplt</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Applications_files/figure-html/nars_ggplot-1.png" alt="NRSA Benthic MMI versus  % Crop in Watershed from 2006 NLCD." width="700"></p>
+<p><img src="Applications_files/figure-html/nars_ggplot-1.png" class="r-plt" alt="NRSA Benthic MMI versus  % Crop in Watershed from 2006 NLCD." width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -175,7 +176,7 @@ metrics</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

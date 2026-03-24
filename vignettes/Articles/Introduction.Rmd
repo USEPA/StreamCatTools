@@ -104,16 +104,16 @@ knitr::kable(head(df))
 ```
 
 ## Get NLCD data
-In this example we access National Land Cover Dataset (NLCD) data for 2001, just at the catchment level for several COMIDs using the `sc_nlcd` function.  Loads data into a tibble we can view.
+In this example we access National Land Cover Dataset (NLCD) data for 2001, just at the catchment level for several COMIDs using the `sc_get_nlcd` function.  Loads data into a tibble we can view.
 ```{r get_nlcd}
-df <- sc_nlcd(year='2001', aoi='cat',
+df <- sc_get_nlcd(year='2001', aoi='cat',
               comid='179,1337,1337420')
 knitr::kable(df)
 ```
 
 We can also pass a couple years for a different area of interest for another region like a county.
 ```{r get_nlcd2}
-df <- sc_nlcd(year='2006, 2019', aoi='ws',
+df <- sc_get_nlcd(year='2006, 2019', aoi='ws',
               county='41003')
 knitr::kable(head(df))
 ```

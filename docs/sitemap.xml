@@ -4,6 +4,7 @@
 <url><loc>https://usepa.github.io/StreamCatTools/articles/Articles/Applications.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/Articles/Introduction.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/Articles/LakeCat.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/articles/Articles/NNI.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/index.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/Introduction.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/LakeCat.html</loc></url>
@@ -18,13 +19,17 @@
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_comid.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_data.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_metric_names.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_nlcd.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_nni.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_params.html</loc></url>
-<url><loc>https://usepa.github.io/StreamCatTools/reference/lc_nlcd.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/reference/lc_plotnni.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/sc_fullname.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/sc_get_comid.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/sc_get_data.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/sc_get_metric_names.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/reference/sc_get_nlcd.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/reference/sc_get_nni.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/sc_get_params.html</loc></url>
-<url><loc>https://usepa.github.io/StreamCatTools/reference/sc_nlcd.html</loc></url>
+<url><loc>https://usepa.github.io/StreamCatTools/reference/sc_plotnni.html</loc></url>
 </urlset>
 

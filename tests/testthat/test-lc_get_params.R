@@ -35,7 +35,7 @@ test_that("lc_get_params for name parameters", {
   testthat::skip_on_cran()
   params <- lc_get_params(param='metric_names')
   expect_true(exists("params"))
-  expect_equal(length(params),517)
+  expect_gt(length(params),600)
 })
 
 test_that("lc_get_params for state parameters", {

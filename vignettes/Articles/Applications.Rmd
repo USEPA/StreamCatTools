@@ -96,8 +96,8 @@ mmi <- readr::read_csv("https://www.epa.gov/sites/production/files/2015-09/bentc
 
 # join mmi to NARS info data frame with StreamCat PctCrop metric
 nrsa_sf <- dplyr::left_join(nrsa_sf, mmi[,c('SITE_ID','BENT_MMI_COND')], by='SITE_ID')
-bxplt <- nrsa_sf %>% 
-  tidyr::drop_na(BENT_MMI_COND) %>%
+bxplt <- nrsa_sf |> 
+  tidyr::drop_na(BENT_MMI_COND)  |> 
   ggplot2::ggplot(aes(x=pctcrop2006ws, y=BENT_MMI_COND))+
   ggplot2::geom_boxplot()+
   ggplot2::ggtitle('NRSA Benthic MMI versus % Crop in Watershed from 2006 NLCD')
