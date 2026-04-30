@@ -203,7 +203,8 @@ lc_get_watershed <- function(
   }
   
   data_no_geom <- res[, setdiff(names(res), gcol), drop = FALSE]
-  result_sf <- sf::st_sf(data_no_geom, geometry = sfc)
+  result_sf <- sf::st_sf(data_no_geom, geometry = sfc) |> 
+    sf::st_set_crs(4326)
   
   # -- Disconnect if requested -------------------------------------------------
   if (!isTRUE(keep_open)) {
