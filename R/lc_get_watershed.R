@@ -1,161 +1,214 @@
-#' Fast lookup of a single COMID from S3 GeoParquet (optionally restricted to one HUC2)
+#' @title Get LakeCat Lake Watershed
 #'
+#' @description
+#' Fast lookup for a single COMID from S3 GeoParquet (optionally restricted to one HUC2).
 #' Queries one COMID from an S3-hosted, HUC2-partitioned GeoParquet dataset and returns an sf object.
-#' If \code{huc2} is provided, only that partition is scanned (fastest). If not, the function tries
-#' a default set of HUC2 candidates (01..21) until it finds a match, reusing a single DuckDB
-#' connection for speed. The function:
-#' - loads DuckDB httpfs (S3) and spatial extensions,
-#' - selects only geometry + \code{id_col} + optional \code{extras},
-#' - pushes the equality filter on \code{id_col} for row-group/file pruning,
-#' - never reads the HUC2 column from files (avoids mixed-type issues),
-#' - returns geometry as WKB with CRS you provide (default EPSG:4326).
+#' If `huc2` is provided, only that partition is scanned (fastest). If not, the function tries
+#' a glob over all HUC2 partitions and falls back to a shallower pattern if needed.
+#' The function:
+#' - loads DuckDB httpfs (S3) extension,
+#' - pushes an equality filter on `COMID` for row-group/file pruning,
+#' - converts WKB geometry to sf with the CRS you provide (default EPSG:4326).
 #'
-#' @param comid Scalar COMID to query (numeric or character).
+#' @param comid Scalar COMID to query (numeric or character, required).
 #' @param huc2 Optional two-digit HUC2 string (e.g., "01") to restrict search to one partition.
-#' @param bucket_root Character(1). S3 prefix to the dataset root (default
-#'   "s3://dmap-data-commons-ow/data/streamcat/LakeCatWatersheds").
-#' @param extras Character vector of additional attribute columns to return (case-insensitive).
-#'   Extras not present in the schema are ignored with a warning.
-#' @param id_col Character(1). Name of the ID column in the Parquet files (default "COMID").
-#' @param geometry_col Character(1). Name of the geometry column (default "geometry").
-#'   Fallbacks "wkb_geometry" or "geom" are auto-detected if "geometry" is absent.
-#' @param huc2_candidates Character vector of HUC2s to try if \code{huc2} is NULL (default 01..21).
-#' @param anonymous Logical. Use anonymous/public S3 access (default TRUE). Set FALSE to use AWS creds.
+#' @param huc2_filter Optional character vector of HUC2s to read (e.g., c("01","05")) for multi-partition pruning.
+#' @param bucket Character(1). S3 bucket (default "dmap-data-commons-ow").
+#' @param prefix Character(1). S3 prefix under the bucket (default "data/streamcat/LakeCatWatersheds/").
 #' @param region Character(1). S3 region (default "us-east-1").
-#' @param threads Integer or NULL. If set, PRAGMA threads for DuckDB (parallelism).
-#' @param crs Integer or character. CRS for the output sf object (default 4326).
+#' @param install_missing Logical. Install missing packages (duckdb, DBI, sf, wk) if needed (default FALSE).
+#' @param keep_open Logical. Keep the DuckDB connection open (default FALSE). Note: the connection is not returned.
+#' @param verbose Logical. Print progress messages (default TRUE).
+#' @param progress Logical. Show a simple progress bar (default TRUE).
+#' @param threads Integer or NULL. If set, `PRAGMA threads` for DuckDB (parallelism).
+#' @param enable_object_cache Logical. Enable DuckDB object cache to speed repeated queries (default TRUE).
+#' @param skip_describe Logical. Skip DESCRIBE step (default FALSE).
+#' @param skip_counts Logical. Skip HUC2 counts step (default TRUE; no longer returned).
+#' @param sf_crs Integer or character. CRS for the output sf object (default 4326).
 #'
 #' @return An sf object with zero or one+ rows (if multiple features share the same COMID).
-#'         Includes an HUC2 column derived from the partition that matched.
-#' @import DBI duckdb sf
 #' @export
 lc_get_watershed <- function(
     comid,
-    huc2 = NULL,
-    bucket_root = "s3://dmap-data-commons-ow/data/streamcat/LakeCatWatersheds",
-    extras = character(),
-    id_col = "COMID",
-    geometry_col = "geometry",
-    huc2_candidates = sprintf("%02d", 1:21),
-    anonymous = TRUE,
+    huc2 = NA_character_,
+    huc2_filter = NULL,
+    bucket = "dmap-data-commons-ow",
+    prefix = "data/streamcat/LakeCatWatersheds/",
     region = "us-east-1",
+    install_missing = FALSE,
+    keep_open = FALSE,
+    verbose = TRUE,
+    progress = TRUE,
     threads = NULL,
-    crs = 4326
+    enable_object_cache = TRUE,
+    skip_describe = FALSE,
+    skip_counts = TRUE,
+    sf_crs = 4326
 ) {
-  # Validate COMID is scalar
-  if (length(comid) != 1L || is.na(comid)) {
-    stop("comid must be a single non-NA value.", call. = FALSE)
+  # -- Require COMID ----------------------------------------------------------
+  if (missing(comid) || is.na(comid)) {
+    stop("Argument 'comid' is required (numeric or character).")
   }
-  if (!is.null(huc2)) {
-    if (!is.character(huc2) || length(huc2) != 1L) {
-      stop("huc2 must be a single two-digit character value like '01', or NULL.", call. = FALSE)
+  comid_chr <- as.character(comid)
+  
+  # -- Packages ---------------------------------------------------------------
+  needed <- c("duckdb", "DBI", "sf", "wk")
+  have <- vapply(needed, requireNamespace, logical(1), quietly = TRUE)
+  if (!all(have)) {
+    missing <- needed[!have]
+    if (isTRUE(install_missing)) {
+      install.packages(missing, repos = "https://cloud.r-project.org")
+      have <- vapply(needed, requireNamespace, logical(1), quietly = TRUE)
+      if (!all(have)) {
+        stop("Could not load packages after installation: ",
+             paste(needed[!have], collapse = ", "))
+      }
+    } else {
+      stop("Missing required packages: ", paste(missing, collapse = ", "),
+           ". Set install_missing = TRUE to install automatically.")
     }
   }
   
-  # Open and configure DuckDB once
-  con <- DBI::dbConnect(duckdb::duckdb())
-  on.exit(DBI::dbDisconnect(con, shutdown = TRUE), add = TRUE)
+  msg <- function(...) if (isTRUE(verbose)) cat(sprintf("[%s] %s\n", format(Sys.time(), "%H:%M:%S"), paste0(...)))
   
-  DBI::dbExecute(con, "INSTALL httpfs; LOAD httpfs;")
-  DBI::dbExecute(con, "INSTALL spatial; LOAD spatial;")
+  # -- Progress bar -----------------------------------------------------------
+  total_steps <- 6L + (!skip_describe) + (!skip_counts)
+  step <- 0L; pb <- NULL
+  bump <- function() { step <<- step + 1L; if (!is.null(pb)) utils::setTxtProgressBar(pb, step) }
+  if (isTRUE(progress)) {
+    pb <- utils::txtProgressBar(min = 0, max = total_steps, style = 3)
+    on.exit(try(close(pb), silent = TRUE), add = TRUE)
+  }
+  
+  msg("duckdb version: ", as.character(utils::packageVersion("duckdb")))
+  bump()
+  
+  # -- Connect ---------------------------------------------------------------
+  con <- DBI::dbConnect(duckdb::duckdb())
+  if (!isTRUE(keep_open)) {
+    on.exit(try(DBI::dbDisconnect(con, shutdown = TRUE), silent = TRUE), add = TRUE)
+  }
   if (!is.null(threads)) {
     DBI::dbExecute(con, sprintf("PRAGMA threads=%d;", as.integer(threads)))
   }
-  # Optional cache for repeated S3 object access within the same session
-  try(DBI::dbExecute(con, "PRAGMA enable_object_cache=true;"), silent = TRUE)
+  bump()
   
-  DBI::dbExecute(con, sprintf("SET s3_region='%s';", region))
-  DBI::dbExecute(con, "SET s3_use_ssl=1;")
-  DBI::dbExecute(con, "SET s3_url_style='path';")
-  if (isTRUE(anonymous)) {
-    DBI::dbExecute(con, "SET s3_access_key_id='';")
-    DBI::dbExecute(con, "SET s3_secret_access_key='';")
-    DBI::dbExecute(con, "SET s3_session_token='';")
+  # -- Configure httpfs/S3 ---------------------------------------------------
+  msg("Loading and configuring httpfs ...")
+  DBI::dbExecute(con, "INSTALL httpfs;")
+  DBI::dbExecute(con, "LOAD httpfs;")
+  DBI::dbExecute(con, sprintf("SET s3_region = '%s';", region))
+  DBI::dbExecute(con, "SET s3_use_ssl = true;")
+  DBI::dbExecute(con, "SET s3_url_style = 'path';")
+  DBI::dbExecute(con, "SET s3_access_key_id = '';")
+  DBI::dbExecute(con, "SET s3_secret_access_key = '';")
+  DBI::dbExecute(con, "SET s3_session_token = '';")
+  if (isTRUE(enable_object_cache)) {
+    DBI::dbExecute(con, "SET enable_object_cache = true;")
   }
+  try(DBI::dbExecute(con, sprintf("
+    CREATE OR REPLACE SECRET s3_public (
+      TYPE S3,
+      PROVIDER CONFIG,
+      KEY_ID '',
+      SECRET '',
+      REGION '%s'
+    );
+  ", region)), silent = TRUE)
+  bump()
   
-  # Helper: convert data.frame with WKB to sf
-  as_sf_ <- function(df, crs) {
-    if (!nrow(df)) return(sf::st_sf(sf::st_sfc(), crs = crs)[, 0])
-    geom_wkb <- structure(df$geometry, class = "WKB")
-    sfc <- tryCatch(sf::st_as_sfc(geom_wkb, EWKB = TRUE, crs = crs),
-                    error = function(e) sf::st_as_sfc(geom_wkb, EWKB = FALSE, crs = crs))
-    sf::st_sf(df[setdiff(names(df), "geometry")], geometry = sfc, crs = crs)
-  }
+  # -- Build source (glob or restricted partitions) --------------------------
+  norm_prefix <- paste0(sub("/+$", "", prefix), "/")
+  shallow_glob <- sprintf("s3://%s/%s*/*.parquet",  bucket, norm_prefix)
+  deep_glob    <- sprintf("s3://%s/%s**/*.parquet", bucket, norm_prefix)
   
-  # Helper: resolve requested columns against actual schema (case-insensitive)
-  resolve_cols_ <- function(con, pattern, id_col, geometry_col, extras) {
-    probe <- DBI::dbGetQuery(con, sprintf("SELECT * FROM parquet_scan('%s') LIMIT 0", pattern))
-    avail <- names(probe)
-    map1 <- function(x) { i <- match(tolower(x), tolower(avail)); if (is.na(i)) NA_character_ else avail[i] }
-    id_real   <- map1(id_col)
-    geom_real <- map1(geometry_col)
-    if (is.na(id_real)) stop(sprintf('id_col "%s" not found. Available: %s', id_col, paste(avail, collapse = ", ")), call. = FALSE)
-    if (is.na(geom_real)) {
-      fb <- c("wkb_geometry", "geom")
-      i <- match(tolower(fb), tolower(avail))
-      if (any(!is.na(i))) {
-        geom_real <- avail[i[which(!is.na(i))[1]]]
-        warning(sprintf('geometry_col not found as "%s". Using "%s".', geometry_col, geom_real), call. = FALSE)
-      } else {
-        stop(sprintf('geometry_col "%s" not found. Available: %s', geometry_col, paste(avail, collapse = ", ")), call. = FALSE)
+  src_sql <- NULL
+  if (length(huc2_filter)) {
+    parts <- sprintf("s3://%s/%sHUC2=%s/*.parquet", bucket, norm_prefix, huc2_filter)
+    paths_sql <- paste0("[", paste(sprintf("'%s'", parts), collapse = ", "), "]")
+    src_sql <- sprintf("read_parquet(%s, hive_partitioning = true)", paths_sql)
+  } else {
+    pick_glob <- function(globs) {
+      for (g in globs) {
+        ok <- try({
+          DBI::dbGetQuery(con, sprintf("SELECT 1 FROM read_parquet('%s', hive_partitioning = true) LIMIT 1", g))
+          TRUE
+        }, silent = TRUE)
+        if (isTRUE(ok)) return(g)
       }
+      NULL
     }
-    extras_real <- vapply(extras, map1, character(1))
-    if (any(is.na(extras_real))) {
-      missing_extras <- extras[is.na(extras_real)]
-      if (length(missing_extras)) {
-        warning(sprintf('Ignoring extras not present: %s', paste(missing_extras, collapse = ", ")), call. = FALSE)
-      }
-      extras_real <- extras_real[!is.na(extras_real)]
+    glob <- pick_glob(c(deep_glob, shallow_glob))
+    if (is.null(glob)) {
+      stop("No Parquet files found under s3://", bucket, "/", norm_prefix,
+           " (checked patterns: ", deep_glob, " and ", shallow_glob, ").")
     }
-    list(id = id_real, geom = geom_real, extras = unique(extras_real))
+    msg("Using glob: ", glob)
+    src_sql <- sprintf("read_parquet('%s', hive_partitioning = true)", glob)
+  }
+  bump()
+  
+  # -- Optional describe/counts (not returned) --------------------------------
+  if (!isTRUE(skip_describe)) {
+    msg("Describing schema ...")
+    invisible(DBI::dbGetQuery(con, sprintf("DESCRIBE SELECT * FROM %s LIMIT 0", src_sql)))
+  }
+  bump()
+  if (!isTRUE(skip_counts)) {
+    msg("Counting rows per HUC2 ...")
+    invisible(DBI::dbGetQuery(con, sprintf("
+      SELECT HUC2, COUNT(*) AS n
+      FROM %s
+      GROUP BY HUC2
+      ORDER BY HUC2
+    ", src_sql)))
+  }
+  bump()
+  
+  # -- COMID query ------------------------------------------------------------
+  msg("Querying COMID = ", comid_chr, if (!is.na(huc2)) paste0(" within HUC2=", huc2) else "")
+  where <- sprintf("CAST(COMID AS VARCHAR) = '%s'", comid_chr)
+  if (!is.na(huc2)) {
+    where <- sprintf("%s AND HUC2 = '%s'", where, huc2)
+  }
+  sql <- sprintf("SELECT * FROM %s WHERE %s", src_sql, where)
+  res <- DBI::dbGetQuery(con, sql)
+  msg("Rows returned: ", nrow(res))
+  bump()
+  
+  # -- Convert to sf ----------------------------------------------------------
+  # Detect geometry column; try common names
+  geom_candidates <- c("geometry", "wkb_geometry", "geom", "wkb")
+  geom_col <- intersect(names(res), geom_candidates)
+  
+  if (!length(geom_col)) {
+    stop("No geometry column found in result; checked: ", paste(geom_candidates, collapse = ", "),
+         ". Ensure the dataset contains WKB geometry and uses one of these column names.")
+  }
+  gcol <- geom_col[1]
+  
+  # Convert WKB to sfc
+  gval <- res[[gcol]]
+  if (inherits(gval, "blob")) {
+    gval <- unclass(gval)  # blob::blob -> list(raw)
+  }
+  if (is.raw(gval)) {
+    gval <- as.list(gval)  # single raw -> list(raw)
   }
   
-  # Helper: run the fast query on a single HUC2 using the existing connection
-  query_one_huc2_ <- function(huc2_val) {
-    pattern <- sprintf("%s/HUC2=%s/*.parquet", bucket_root, huc2_val)
-    cols <- resolve_cols_(con, pattern, id_col, geometry_col, extras)
-    
-    # Build minimal SELECT with WKB geometry
-    geom_expr <- sprintf('ST_AsWKB("%s") AS geometry', cols$geom)
-    other_cols <- unique(c(cols$id, cols$extras))
-    other_expr <- if (length(other_cols)) paste(sprintf('"%s"', other_cols), collapse = ", ") else ""
-    select_list <- paste(c(geom_expr, other_expr), collapse = if (nzchar(other_expr)) ", " else "")
-    
-    # Literal for COMID
-    value_sql <- if (is.numeric(comid)) as.character(comid) else DBI::dbQuoteString(con, as.character(comid))
-    
-    sql <- sprintf(
-      "SELECT %s
-       FROM parquet_scan('%s')
-       WHERE \"%s\" = %s
-       LIMIT 1",
-      select_list, pattern, cols$id, value_sql
-    )
-    
-    df <- DBI::dbGetQuery(con, sql)
-    if (!nrow(df)) return(NULL)
-    
-    g <- as_sf_(df, crs = crs)
-    g$HUC2 <- huc2_val
-    g
+  if (length(gval) == 0L) {
+    sfc <- sf::st_sfc(crs = sf_crs)  # empty sfc with CRS
+  } else {
+    sfc <- sf::st_as_sfc(wk::wkb(gval), crs = sf_crs)
   }
   
-  # Known HUC2: single fast query
-  if (!is.null(huc2)) {
-    res <- tryCatch(query_one_huc2_(huc2), error = function(e) NULL)
-    if (is.null(res)) {
-      return(sf::st_sf(sf::st_sfc(), crs = crs)[, 0])
-    }
-    return(res)
+  data_no_geom <- res[, setdiff(names(res), gcol), drop = FALSE]
+  result_sf <- sf::st_sf(data_no_geom, geometry = sfc)
+  
+  # -- Disconnect if requested -------------------------------------------------
+  if (!isTRUE(keep_open)) {
+    try(DBI::dbDisconnect(con, shutdown = TRUE), silent = TRUE)
   }
   
-  # Unknown HUC2: reuse the same connection and try candidates in order
-  for (h in huc2_candidates) {
-    res <- tryCatch(query_one_huc2_((h)), error = function(e) NULL)
-    if (!is.null(res) && nrow(res)) return(res)
-  }
-  
-  # Not found
-  sf::st_sf(sf::st_sfc(), crs = crs)[, 0]
+  return(result_sf)
 }
