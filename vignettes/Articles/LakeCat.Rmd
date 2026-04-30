@@ -114,3 +114,18 @@ In this example we access National Land Cover Dataset (NLCD) data for 2019, just
 df <- lc_get_nlcd(comid='23783629,23794487,23812618', year='2019', aoi='ws')
 knitr::kable(df)
 ```
+
+## Get lake and lake watersheds as `sf` objects
+
+`StreamCatTools` includes a function `lc_get_watersheds` that will return the watershed of any lake by COMID from an AWS S3 bucket of partitioned geoparquet files for all LakeCat lake watersheds (both on-network and off-network lakes).  The watershed requested is returned as an `sf` object and uses `duckDB` as well as optional parallelization for faster data returns and specification of specific HUC2 if known to reduce search time. This can be used in conjunction with `nhdplusTools` function `get_waterbodies` to map lake features for which `LakeCat` metrics are requested.
+
+```{r get_nlcd}
+lake <- nhdplusTools::get_waterbodies(id = 19334077)
+ws <- lc_get_watershed(comid = 19334077)
+```
+
+```{r get_nlcd}
+ws <- lc_get_watershed(comid = 19334077, huc2 = "01", huc2_filter = "01", 
+                       threads = parallel::detectCores())
+mapview::mapview(lake) + mapview::mapview(ws)
+```
