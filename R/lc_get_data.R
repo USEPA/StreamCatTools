@@ -207,7 +207,7 @@ lc_get_data <- function(comid = NULL,
 #' @examples
 #' \dontrun{
 #'
-#' df <- lc_nlcd(comid='23783629', year='2019', aoi='ws')  # Will show a deprecation warning
+#' df <- lc_get_nlcd(comid='23783629', year='2019', aoi='ws')  # Will show a deprecation warning
 #' 
 #' df <- lc_get_nlcd(comid='23783629', year='2019', aoi='ws')
 #' 
