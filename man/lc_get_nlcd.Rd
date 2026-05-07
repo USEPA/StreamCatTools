@@ -2,23 +2,9 @@
 % Please edit documentation in R/lc_get_data.R
 \name{lc_get_nlcd}
 \alias{lc_get_nlcd}
-\alias{lc_nlcd}
 \title{Get NLCD Data}
 \usage{
 lc_get_nlcd(
-  year = "2019",
-  comid = NULL,
-  aoi = NULL,
-  showAreaSqKm = NULL,
-  showPctFull = NULL,
-  state = NULL,
-  county = NULL,
-  region = NULL,
-  conus = NULL,
-  countOnly = NULL
-)
-
-lc_nlcd(
   year = "2019",
   comid = NULL,
   aoi = NULL,
@@ -67,7 +53,7 @@ Function to specifically retrieve all NLCD metrics for a given year using the St
 \examples{
 \dontrun{
 
-df <- lc_nlcd(comid='23783629', year='2019', aoi='ws')  # Will show a deprecation warning
+df <- lc_get_nlcd(comid='23783629', year='2019', aoi='ws')  # Will show a deprecation warning
 
 df <- lc_get_nlcd(comid='23783629', year='2019', aoi='ws')
 
@@ -84,4 +70,3 @@ comid='23783629,23794487,23812618')
 \author{
 Marc Weber
 }
-\keyword{internal}

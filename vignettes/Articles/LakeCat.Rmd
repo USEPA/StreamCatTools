@@ -117,15 +117,45 @@ knitr::kable(df)
 
 ## Get lake and lake watersheds as `sf` objects
 
-`StreamCatTools` includes a function `lc_get_watersheds` that will return the watershed of any lake by COMID from an AWS S3 bucket of partitioned geoparquet files for all LakeCat lake watersheds (both on-network and off-network lakes).  The watershed requested is returned as an `sf` object and uses `duckDB` as well as optional parallelization for faster data returns and specification of specific HUC2 if known to reduce search time. This can be used in conjunction with `nhdplusTools` function `get_waterbodies` to map lake features for which `LakeCat` metrics are requested.
+`StreamCatTools` includes a function `lc_get_watershed` that will return the watershed of any lake by COMID from an AWS S3 bucket of partitioned geoparquet files for all LakeCat lake watersheds (both on-network and off-network lakes).  The watershed requested is returned as an `sf` object and uses `duckDB` as well as optional parallelization for faster data returns and specification of a specific HUC2 if known to reduce search time. **NOTE** `lc_get_watershed` currently only returns one watershed per request. This can be used in conjunction with `nhdplusTools` function `get_waterbodies` to map lake features for which `LakeCat` metrics are requested as shown below.
 
-```{r get_nlcd}
+```{r get_lake}
 lake <- nhdplusTools::get_waterbodies(id = 19334077)
-ws <- lc_get_watershed(comid = 19334077)
 ```
 
-```{r get_nlcd}
-ws <- lc_get_watershed(comid = 19334077, huc2 = "01", huc2_filter = "01", 
-                       threads = parallel::detectCores())
-mapview::mapview(lake) + mapview::mapview(ws)
+```{r get_watershed}
+tictoc::tic()
+ws <- lc_get_watershed(comid = 19334077)
+tictoc::toc()
 ```
+
+### Adding a HUC2 query parameter and using multi-threading speeds the process significantly
+```{r get_lake_and_watershed_faster}
+tictoc::tic()
+ws <- lc_get_watershed(comid = 19334077, huc2 = "01",huc2_filter = "01", 
+                      threads = 2,retries = 5)
+tictoc::toc()
+```
+
+### View lake with watershed
+```{r view_lake_watershed}
+m1 <- mapview::mapview(ws, 
+                       col.regions = "blue", 
+                       alpha.regions = 0.1,  
+                       color = "blue",
+                       alpha = 0.8,
+                       lwd = 2,
+                       layer.name = "Watershed")
+
+
+m2 <- mapview::mapview(lake, 
+                       col.regions = "blue", 
+                       alpha.regions = 0.5,
+                       color = "blue",
+                       alpha = 0.8,
+                       layer.name = "Lake")
+
+
+mapview::m1 + m2
+```
+
