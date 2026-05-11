@@ -52,7 +52,7 @@ Imports:
     patchwork,
     cowplot,
     tigris,
-    ggplot2
+    ggplot2,
 Suggests: 
   dplyr,
   mapview,
@@ -67,7 +67,10 @@ Suggests:
   stringr,
   purrr,
   lifecycle,
-  tidyselect
+  tidyselect,
+  DBI, 
+  duckdb,
+  tictoc,
 Encoding: UTF-8
 URL: https://usepa.github.io/StreamCatTools/, https://github.com/USEPA/StreamCatTools
 BugReports: https://github.com/USEPA/StreamCatTools/issues

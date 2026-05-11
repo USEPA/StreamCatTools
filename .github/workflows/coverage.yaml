@@ -30,6 +30,7 @@ jobs:
         with:
           extra-packages: any::covr, any::xml2
           needs: coverage
+          cache-version: 2  # Increment this to bust the cache
 
       - name: Test coverage
         run: |

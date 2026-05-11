@@ -240,7 +240,7 @@ sc_get_data <- function(comid = NULL,
 #' @examples
 #' \dontrun{
 #' 
-#' df <- sc_nlcd(year='2001', aoi='cat',comid='179') # Will show a deprecation warning
+#' df <- sc_get_nlcd(year='2001', aoi='cat',comid='179') # Will show a deprecation warning
 #' 
 #' df <- sc_get_nlcd(year='2001', aoi='cat',comid='179,1337,1337420')
 #'
@@ -249,7 +249,7 @@ sc_get_data <- function(comid = NULL,
 #' df <- sc_get_nlcd(year='2001', aoi='ws', region='Region01',
 #' countOnly=TRUE)
 #'
-#' df <- sc_nlcd(year='2001', aoi='ws', region='Region01',
+#' df <- sc_get_nlcd(year='2001', aoi='ws', region='Region01',
 #' showAreaSqKm=FALSE, showPctFull=TRUE)
 #'
 #' df <- sc_get_nlcd(year='2001, 2006', aoi='cat,ws',
@@ -333,7 +333,6 @@ sc_get_nlcd <- function(year = '2019',
 }
 
 #' @rdname sc_get_nlcd
-#' @export
 #' @keywords internal
 sc_nlcd <- function(year = '2019',
                     comid = NULL,
