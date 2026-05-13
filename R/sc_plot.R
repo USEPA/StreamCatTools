@@ -206,7 +206,10 @@ sc_plotnni <- function(comid, include.nue = FALSE, include.inset = TRUE){
   #comid
   comidint <- as.integer(comid)
   flowline <- nhdplusTools::get_nhdplus(comid = comidint, realization = "flowline")
-  point <- sf::st_centroid(flowline)
+  point <- flowline |>
+    sf::st_geometry() |>
+    sf::st_centroid() |>
+    sf::st_as_sf()
   
   #create N bar plot
   nbar <- ggplot() + 

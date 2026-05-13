@@ -44,7 +44,7 @@ sc_get_params <- function(param = NULL) {
     } else if(param == 'variable_info') {
       params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
         httr2::req_perform() |>
-        httr2::resp_body_string() |>
+        httr2::resp_body_raw() |>
         readr::read_csv(show_col_types = FALSE) |>
         dplyr::select(-UUID,-DATE_DOWNLOADED,-METADATA) |>
         dplyr::rename(dataset=FINAL_TABLE,category=INDICATOR_CATEGORY,
@@ -55,14 +55,14 @@ sc_get_params <- function(param = NULL) {
     } else if(param == 'categories'){
       params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
         httr2::req_perform() |>
-        httr2::resp_body_string() |>
+        httr2::resp_body_raw() |>
         readr::read_csv(show_col_types = FALSE) |>
         dplyr::select(INDICATOR_CATEGORY)
       params <- sort(unique(params$INDICATOR_CATEGORY))
     } else if(param == 'datasets'){
       params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
         httr2::req_perform() |>
-        httr2::resp_body_string() |>
+        httr2::resp_body_raw() |>
         readr::read_csv(show_col_types = FALSE) |>
         dplyr::select(DSNAME)
       params <- sort(unique(params$DSNAME[!is.na(params$DSNAME)]))
@@ -78,7 +78,7 @@ sc_get_params <- function(param = NULL) {
     } else if(param == 'county'){
       params <- resp$county_options[[1]]
       params$fips <- as.character(params$fips)
-      params <- params |> dplyr::select(params, -dplyr::any_of("fips_str"))
+      params <- params |> dplyr::select(-dplyr::any_of("fips_str"))
       params$fips[nchar(params$fips) < 5] <- paste0('0',params$fips[nchar(params$fips) < 5])
       params <- params[with(params,order(state,county_name)),]
     }
@@ -171,7 +171,7 @@ sc_get_metric_names <- function(category = NULL,
   resp <- tryCatch({
     params <- httr2::request('https://api.epa.gov/StreamCat/streams/variable_info') |>
     httr2::req_perform() |>
-    httr2::resp_body_string() |>
+    httr2::resp_body_raw() |>
     readr::read_csv(show_col_types = FALSE)
   },error = function(e) {
     message("An error occurred during req_perform(); the service may be down or function parameters may be mis-specified: ", e$message)
