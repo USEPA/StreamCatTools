@@ -12,7 +12,7 @@ This is a resubmission.
 
 ## R CMD check results
 
-Here is the output from `devtools::check()` on R Version R version 4.5.2,
+Here is the output from `devtools::check()` on R Version 4.5.2,
 devtools version 2.5.0, and Windows 11 x64 operating system
 
 Duration: 2m 18.5s
