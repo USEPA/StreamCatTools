@@ -1,11 +1,8 @@
-This is a patch update that:
+This is a minor update that:
 
--   Adds new functions `sc_get_nni()` and `lc_get_nni()` for ease of access to 
-    National Nutrient Inventory data in StreamCat
--   Adds new functions `sc_plot()` and `lc_plot` for plotting nitrogen and 
-    phosphorus budgets for watersheds
--   Adds a new article describing functions for plotting National Nutrient
-    Inventory data in StreamCat
+-   Adds new `lc_get_watershed` function to return a lake watershed as an `sf`
+    feature for a LakeCat (NHDPlusV2 Waterbody) COMID from an S3-hosted, 
+    HUC2-partitioned GeoParquet dataset
 
 -------
 
@@ -16,8 +13,8 @@ This is a resubmission.
 ## R CMD check results
 
 Here is the output from `devtools::check()` on R Version R version 4.5.2,
-devtools version 2.4.6, and Windows 11 x64 operating system
+devtools version 2.5.0, and Windows 11 x64 operating system
 
-Duration: 3m 55s
+Duration: 2m 18.5s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔

@@ -80,7 +80,7 @@ lc_get_params <- function(param = NULL) {
     } else if(param == 'county'){
       params <- resp$county_options[[1]]
       params$fips <- as.character(params$fips)
-      params <- params |> dplyr::select(-fips_str)
+      params <- params |> dplyr::select(params, -dplyr::any_of("fips_str"))
       params$fips[nchar(params$fips) < 5] <- paste0('0',params$fips[nchar(params$fips) < 5])
       params <- params[with(params,order(state,county_name)),]
     }

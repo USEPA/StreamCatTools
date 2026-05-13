@@ -130,7 +130,7 @@ lc_get_watershed <- function(
   bump()
   
   # --- Retry helper for transient HTTP timeouts ---
-  sleep_time <- function(k) min(retry_max_delay, retry_base_delay * (2^(k - 1))) * runif(1, 0.9, 1.1)
+  sleep_time <- function(k) min(retry_max_delay, retry_base_delay * (2^(k - 1))) * stats::runif(1, 0.9, 1.1)
   db_get_query_retry <- function(sql) {
     for (k in seq_len(retries)) {
       out <- try(DBI::dbGetQuery(con, sql), silent = TRUE)
