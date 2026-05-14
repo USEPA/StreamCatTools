@@ -25,6 +25,13 @@
 #' @param skip_describe Logical. Skip DESCRIBE step (default FALSE).
 #' @param skip_counts Logical. Skip HUC2 counts step (default TRUE; no longer returned).
 #' @param sf_crs Integer or character. CRS for the output sf object (default 4326).
+#' @param retries Integer. Number of retries for transient S3/HTTP errors (default 5).
+#' @param retry_base_delay Numeric. Initial exponential backoff delay in seconds (default 0.5).
+#' @param retry_max_delay Numeric. Maximum backoff delay per attempt in seconds (default 8).
+#' @param url_style Character. S3 URL style used by DuckDB httpfs, one of "path" or "virtual_hosted".
+#'   Passed to `match.arg()`, default "path".
+#' @param s3_endpoint Optional character(1). Custom S3 endpoint hostname (e.g., "s3.amazonaws.com").
+#'   NULL uses the default for the selected region.
 #'
 #' @return An sf object with zero or one+ rows (if multiple features share the same COMID).
 #' @export
@@ -67,7 +74,7 @@ lc_get_watershed <- function(
   if (!all(have)) {
     missing <- needed[!have]
     if (isTRUE(install_missing)) {
-      install.packages(missing, repos = "https://cloud.r-project.org")
+      utils::install.packages(missing, repos = "https://cloud.r-project.org")
       have <- vapply(needed, requireNamespace, logical(1), quietly = TRUE)
       if (!all(have)) stop("Could not load packages after installation: ", paste(needed[!have], collapse = ", "))
     } else {
