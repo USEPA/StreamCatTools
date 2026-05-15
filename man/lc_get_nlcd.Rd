@@ -2,23 +2,9 @@
 % Please edit documentation in R/lc_get_data.R
 \name{lc_get_nlcd}
 \alias{lc_get_nlcd}
-\alias{lc_nlcd}
 \title{Get NLCD Data}
 \usage{
 lc_get_nlcd(
-  year = "2019",
-  comid = NULL,
-  aoi = NULL,
-  showAreaSqKm = NULL,
-  showPctFull = NULL,
-  state = NULL,
-  county = NULL,
-  region = NULL,
-  conus = NULL,
-  countOnly = NULL
-)
-
-lc_nlcd(
   year = "2019",
   comid = NULL,
   aoi = NULL,
@@ -52,6 +38,21 @@ Values: true|false}
 \item{showPctFull}{Return the pctfull for each dataset. The default value is false.
 Values: true|false}
 
+\item{state}{Return metric information for COMIDs within a specific state. Use a state's abbreviation to
+query for a given state.
+Syntax: state=<state1>,<state2>}
+
+\item{county}{Return metric information for COMIDs within a specific county.
+Users must use the FIPS code, not county name, as a way to disambiguate counties.
+Syntax: county=<county1>,<county1>}
+
+\item{region}{Return metric information for COMIDs within a specified hydroregion.
+Syntax: region=<regionid1>,<regionid2>}
+
+\item{conus}{Return all COMIDs in the conterminous United States.
+The default value is false.
+Values: true|false}
+
 \item{countOnly}{Return a CSV containing only the row count (ROWCOUNT) and the column
 count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
 Values: true|false}
@@ -67,7 +68,7 @@ Function to specifically retrieve all NLCD metrics for a given year using the St
 \examples{
 \dontrun{
 
-df <- lc_nlcd(comid='23783629', year='2019', aoi='ws')  # Will show a deprecation warning
+df <- lc_get_nlcd(comid='23783629', year='2019', aoi='ws')  # Will show a deprecation warning
 
 df <- lc_get_nlcd(comid='23783629', year='2019', aoi='ws')
 
@@ -84,4 +85,3 @@ comid='23783629,23794487,23812618')
 \author{
 Marc Weber
 }
-\keyword{internal}

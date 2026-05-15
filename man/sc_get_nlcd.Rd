@@ -82,7 +82,7 @@ Function to retrieve all NLCD metrics for a given year using the StreamCat API.
 \examples{
 \dontrun{
 
-df <- sc_nlcd(year='2001', aoi='cat',comid='179') # Will show a deprecation warning
+df <- sc_get_nlcd(year='2001', aoi='cat',comid='179') # Will show a deprecation warning
 
 df <- sc_get_nlcd(year='2001', aoi='cat',comid='179,1337,1337420')
 
@@ -91,7 +91,7 @@ df <- sc_get_nlcd(year='2001', aoi='ws', region='Region01')
 df <- sc_get_nlcd(year='2001', aoi='ws', region='Region01',
 countOnly=TRUE)
 
-df <- sc_nlcd(year='2001', aoi='ws', region='Region01',
+df <- sc_get_nlcd(year='2001', aoi='ws', region='Region01',
 showAreaSqKm=FALSE, showPctFull=TRUE)
 
 df <- sc_get_nlcd(year='2001, 2006', aoi='cat,ws',
