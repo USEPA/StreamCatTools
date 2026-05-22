@@ -156,6 +156,6 @@ m2 <- mapview::mapview(lake,
                        layer.name = "Lake")
 
 
-mapview::m1 + m2
+m1 + m2
 ```
 

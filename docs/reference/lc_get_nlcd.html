@@ -11,7 +11,7 @@ Function to specifically retrieve all NLCD metrics for a given year using the St
 
     <a class="navbar-brand me-2" href="../index.html">StreamCatTools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,19 +63,6 @@ Function to specifically retrieve all NLCD metrics for a given year using the St
 <span>  region <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  conus <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  countOnly <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">lc_nlcd</span><span class="op">(</span></span>
-<span>  year <span class="op">=</span> <span class="st">"2019"</span>,</span>
-<span>  comid <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  aoi <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  showAreaSqKm <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  showPctFull <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  state <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  county <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  region <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  conus <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  countOnly <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -113,6 +100,29 @@ Values: true|false</p></dd>
 Values: true|false</p></dd>
 
 
+<dt id="arg-state">state<a class="anchor" aria-label="anchor" href="#arg-state"></a></dt>
+<dd><p>Return metric information for COMIDs within a specific state. Use a state's abbreviation to
+query for a given state.
+Syntax: state=&lt;state1&gt;,&lt;state2&gt;</p></dd>
+
+
+<dt id="arg-county">county<a class="anchor" aria-label="anchor" href="#arg-county"></a></dt>
+<dd><p>Return metric information for COMIDs within a specific county.
+Users must use the FIPS code, not county name, as a way to disambiguate counties.
+Syntax: county=&lt;county1&gt;,&lt;county1&gt;</p></dd>
+
+
+<dt id="arg-region">region<a class="anchor" aria-label="anchor" href="#arg-region"></a></dt>
+<dd><p>Return metric information for COMIDs within a specified hydroregion.
+Syntax: region=&lt;regionid1&gt;,&lt;regionid2&gt;</p></dd>
+
+
+<dt id="arg-conus">conus<a class="anchor" aria-label="anchor" href="#arg-conus"></a></dt>
+<dd><p>Return all COMIDs in the conterminous United States.
+The default value is false.
+Values: true|false</p></dd>
+
+
 <dt id="arg-countonly">countOnly<a class="anchor" aria-label="anchor" href="#arg-countonly"></a></dt>
 <dd><p>Return a CSV containing only the row count (ROWCOUNT) and the column
 count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
@@ -132,7 +142,7 @@ Values: true|false</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">lc_nlcd</span><span class="op">(</span>comid<span class="op">=</span><span class="st">'23783629'</span>, year<span class="op">=</span><span class="st">'2019'</span>, aoi<span class="op">=</span><span class="st">'ws'</span><span class="op">)</span>  <span class="co"># Will show a deprecation warning</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">lc_get_nlcd</span><span class="op">(</span>comid<span class="op">=</span><span class="st">'23783629'</span>, year<span class="op">=</span><span class="st">'2019'</span>, aoi<span class="op">=</span><span class="st">'ws'</span><span class="op">)</span>  <span class="co"># Will show a deprecation warning</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">lc_get_nlcd</span><span class="op">(</span>comid<span class="op">=</span><span class="st">'23783629'</span>, year<span class="op">=</span><span class="st">'2019'</span>, aoi<span class="op">=</span><span class="st">'ws'</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
