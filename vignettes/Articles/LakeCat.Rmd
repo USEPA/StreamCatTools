@@ -139,23 +139,19 @@ tictoc::toc()
 
 ### View lake with watershed
 ```{r view_lake_watershed}
-m1 <- mapview::mapview(ws, 
-                       col.regions = "blue", 
-                       alpha.regions = 0.1,  
-                       color = "blue",
-                       alpha = 0.8,
-                       lwd = 2,
-                       layer.name = "Watershed")
+mapview::mapview(ws, 
+                 col.regions = "blue", 
+                 alpha.regions = 0.1,  
+                 color = "blue",
+                 alpha = 0.8,
+                 lwd = 2,
+                 layer.name = "Watershed") +
+mapview::mapview(lake, 
+                 col.regions = "blue", 
+                 alpha.regions = 0.5,
+                 color = "blue",
+                 alpha = 0.8,
+                 layer.name = "Lake")
 
-
-m2 <- mapview::mapview(lake, 
-                       col.regions = "blue", 
-                       alpha.regions = 0.5,
-                       color = "blue",
-                       alpha = 0.8,
-                       layer.name = "Lake")
-
-
-m1 + m2
 ```
 
