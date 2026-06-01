@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../../index.html">StreamCatTools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,7 @@
 <li><a class="dropdown-item" href="../../articles/StartHere.html">Start Here</a></li>
     <li><a class="dropdown-item" href="../../articles/Articles/Introduction.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../../articles/Articles/LakeCat.html">Working with LakeCat data</a></li>
+    <li><a class="dropdown-item" href="../../articles/Articles/NNI.html">National Nutrient Inventory (NNI) Data in StreamCat</a></li>
     <li><a class="dropdown-item" href="../../articles/Articles/Applications.html">Applications</a></li>
   </ul>
 </li>
@@ -112,8 +113,8 @@ returns a tibble of information about StreamCat metrics):</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Anthropogen… NABD_… Cat,… <span style="color: #BB0000;">NA</span>    NABD NID Reservo… Volume all rese… Cubi…    33</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Anthropogen… NABD_… Cat,… <span style="color: #BB0000;">NA</span>    NABD Normal Rese… Volume all rese… Cubi…    33</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Natural      Preci… Cat,… <span style="color: #BB0000;">NA</span>    Surplus Precipit… This dataset re… Kilo…    75</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Soils        Rckde… Cat,… <span style="color: #BB0000;">NA</span>    Mean Bedrock Dep… Mean depth (cm)… Cent…    56</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Soils        agkff… Cat,… <span style="color: #BB0000;">NA</span>    Ag Soil Erodibil… Mean of STATSGO… Unit…    28</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Soils        agkff… Cat,… <span style="color: #BB0000;">NA</span>    Ag Soil Erodibil… Mean of STATSGO… Unit…    28</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Natural      al2o3… Cat,… <span style="color: #BB0000;">NA</span>    Mean Lithologica… Mean % of litho… Perc…    13</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 5 more variables: dataset &lt;chr&gt;, source_name &lt;chr&gt;, source_URL &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ACTIVE &lt;dbl&gt;, DSNAME &lt;chr&gt;</span></span></span></code></pre></div>
 <p>We can look up the display name or names for a metric using the
@@ -246,28 +247,28 @@ the <code>sc_get_data</code> function.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">23762961</td>
-<td align="right">1.11</td>
+<td align="right">23762761</td>
+<td align="right">1.72</td>
 </tr>
 <tr class="even">
-<td align="right">23762985</td>
-<td align="right">0.84</td>
+<td align="right">23762835</td>
+<td align="right">0.64</td>
 </tr>
 <tr class="odd">
+<td align="right">23762859</td>
+<td align="right">0.22</td>
+</tr>
+<tr class="even">
 <td align="right">23762915</td>
 <td align="right">1.14</td>
+</tr>
+<tr class="odd">
+<td align="right">23762947</td>
+<td align="right">0.50</td>
 </tr>
 <tr class="even">
 <td align="right">23762959</td>
 <td align="right">1.14</td>
-</tr>
-<tr class="odd">
-<td align="right">23762967</td>
-<td align="right">1.10</td>
-</tr>
-<tr class="even">
-<td align="right">23762761</td>
-<td align="right">1.72</td>
 </tr>
 </tbody>
 </table>
@@ -285,6 +286,86 @@ time to process</strong>.</p>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
 <col width="0%">
 <col width="0%">
 <col width="0%">
@@ -1124,6 +1205,7 @@ time to process</strong>.</p>
 <th align="right">pcturbop2019cat</th>
 <th align="right">pctwdwet2019cat</th>
 <th align="right">wetindexcat</th>
+<th align="right">precip_minus_evtcat</th>
 <th align="right">pctundsev1987cat</th>
 <th align="right">pctlowsev1987cat</th>
 <th align="right">pctmodsev1987cat</th>
@@ -1223,7 +1305,7 @@ time to process</strong>.</p>
 <th align="right">sio2cat</th>
 <th align="right">compstrgthcat</th>
 <th align="right">pctfire2001cat</th>
-<th align="left">agkffactcat</th>
+<th align="right">agkffactcat</th>
 <th align="right">pctwdwet2011cat</th>
 <th align="right">coalminedenscat</th>
 <th align="right">elevcat</th>
@@ -1276,7 +1358,7 @@ time to process</strong>.</p>
 <th align="right">tmean8110cat</th>
 <th align="right">caocat</th>
 <th align="right">pctbl2011cat</th>
-<th align="left">kffactcat</th>
+<th align="right">kffactcat</th>
 <th align="right">pctglaclakecrscat</th>
 <th align="right">pctmxfst2011cat</th>
 <th align="right">k2ocat</th>
@@ -1435,6 +1517,18 @@ time to process</strong>.</p>
 <th align="right">pctagslphigh2016cat</th>
 <th align="right">pctagslpmid2019cat</th>
 <th align="right">pctagslphigh2019cat</th>
+<th align="right">p_dep_2002cat</th>
+<th align="right">p_dep_2003cat</th>
+<th align="right">p_dep_2004cat</th>
+<th align="right">p_dep_2005cat</th>
+<th align="right">p_dep_2006cat</th>
+<th align="right">p_dep_2007cat</th>
+<th align="right">p_dep_2008cat</th>
+<th align="right">p_dep_2009cat</th>
+<th align="right">p_dep_2010cat</th>
+<th align="right">p_dep_2011cat</th>
+<th align="right">p_dep_2012cat</th>
+<th align="right">p_dep_2013cat</th>
 <th align="right">n_usgsww_1978cat</th>
 <th align="right">n_usgsww_1980cat</th>
 <th align="right">n_usgsww_1982cat</th>
@@ -1513,6 +1607,73 @@ time to process</strong>.</p>
 <th align="right">p_leg_2015cat</th>
 <th align="right">p_leg_2016cat</th>
 <th align="right">p_leg_2017cat</th>
+<th align="right">n_leg_2010cat</th>
+<th align="right">p_leg_2010cat</th>
+<th align="right">n_tin_1987cat</th>
+<th align="right">n_tin_1988cat</th>
+<th align="right">n_tin_1989cat</th>
+<th align="right">n_tin_1990cat</th>
+<th align="right">n_tin_1991cat</th>
+<th align="right">n_tin_1992cat</th>
+<th align="right">n_tin_1993cat</th>
+<th align="right">n_tin_1994cat</th>
+<th align="right">n_tin_1995cat</th>
+<th align="right">n_tin_1996cat</th>
+<th align="right">n_tin_1997cat</th>
+<th align="right">n_tin_1998cat</th>
+<th align="right">n_tin_1999cat</th>
+<th align="right">n_tin_2000cat</th>
+<th align="right">n_tin_2001cat</th>
+<th align="right">n_tin_2002cat</th>
+<th align="right">n_tin_2003cat</th>
+<th align="right">n_tin_2004cat</th>
+<th align="right">n_tin_2005cat</th>
+<th align="right">n_tin_2006cat</th>
+<th align="right">n_tin_2007cat</th>
+<th align="right">n_tin_2008cat</th>
+<th align="right">n_tin_2009cat</th>
+<th align="right">n_tin_2011cat</th>
+<th align="right">n_tin_2012cat</th>
+<th align="right">n_tin_2013cat</th>
+<th align="right">n_tin_2014cat</th>
+<th align="right">n_tin_2015cat</th>
+<th align="right">n_tin_2016cat</th>
+<th align="right">n_tin_2017cat</th>
+<th align="right">p_tin_1987cat</th>
+<th align="right">p_tin_1988cat</th>
+<th align="right">p_tin_1989cat</th>
+<th align="right">p_tin_1990cat</th>
+<th align="right">p_tin_1991cat</th>
+<th align="right">p_tin_1992cat</th>
+<th align="right">p_tin_1993cat</th>
+<th align="right">p_tin_1994cat</th>
+<th align="right">p_tin_1995cat</th>
+<th align="right">p_tin_1996cat</th>
+<th align="right">p_tin_1997cat</th>
+<th align="right">p_tin_1998cat</th>
+<th align="right">p_tin_1999cat</th>
+<th align="right">p_tin_2000cat</th>
+<th align="right">p_tin_2001cat</th>
+<th align="right">p_tin_2002cat</th>
+<th align="right">p_tin_2003cat</th>
+<th align="right">p_tin_2004cat</th>
+<th align="right">p_tin_2005cat</th>
+<th align="right">p_tin_2006cat</th>
+<th align="right">p_tin_2007cat</th>
+<th align="right">p_tin_2008cat</th>
+<th align="right">p_tin_2009cat</th>
+<th align="right">p_tin_2011cat</th>
+<th align="right">p_tin_2012cat</th>
+<th align="right">p_tin_2013cat</th>
+<th align="right">p_tin_2014cat</th>
+<th align="right">p_tin_2015cat</th>
+<th align="right">p_tin_2016cat</th>
+<th align="right">p_tin_2017cat</th>
+<th align="right">p_dep_1997cat</th>
+<th align="right">p_dep_1998cat</th>
+<th align="right">p_dep_1999cat</th>
+<th align="right">p_dep_2000cat</th>
+<th align="right">p_dep_2001cat</th>
 </tr></thead>
 <tbody><tr class="odd">
 <td align="right">179</td>
@@ -1739,6 +1900,7 @@ time to process</strong>.</p>
 <td align="right">0</td>
 <td align="right">37.9</td>
 <td align="right">878.2494</td>
+<td align="right">46.1099</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -1838,7 +2000,7 @@ time to process</strong>.</p>
 <td align="right">64.3313</td>
 <td align="right">169.6366</td>
 <td align="right">0</td>
-<td align="left">NA</td>
+<td align="right">0.0026</td>
 <td align="right">37.57</td>
 <td align="right">0</td>
 <td align="right">196.1233</td>
@@ -1891,7 +2053,7 @@ time to process</strong>.</p>
 <td align="right">4.885117</td>
 <td align="right">7.9453</td>
 <td align="right">0</td>
-<td align="left">NA</td>
+<td align="right">0.2442</td>
 <td align="right">0</td>
 <td align="right">49.16</td>
 <td align="right">1.0557</td>
@@ -2050,6 +2212,18 @@ time to process</strong>.</p>
 <td align="right">0</td>
 <td align="right">3.17</td>
 <td align="right">0</td>
+<td align="right">20.32574</td>
+<td align="right">18.50136</td>
+<td align="right">17.59088</td>
+<td align="right">18.2278</td>
+<td align="right">18.81752</td>
+<td align="right">18.56952</td>
+<td align="right">18.38229</td>
+<td align="right">17.69823</td>
+<td align="right">20.08625</td>
+<td align="right">18.56114</td>
+<td align="right">16.50694</td>
+<td align="right">17.57473</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -2128,6 +2302,73 @@ time to process</strong>.</p>
 <td align="right">18310.91</td>
 <td align="right">18545.61</td>
 <td align="right">18805.58</td>
+<td align="right">24530.75</td>
+<td align="right">17538.92</td>
+<td align="right">731.5523</td>
+<td align="right">696.5523</td>
+<td align="right">774.7137</td>
+<td align="right">2922.933</td>
+<td align="right">2476.309</td>
+<td align="right">2357.526</td>
+<td align="right">2377.684</td>
+<td align="right">2603.939</td>
+<td align="right">2371.844</td>
+<td align="right">2908.544</td>
+<td align="right">2667.832</td>
+<td align="right">3015.62</td>
+<td align="right">3115.135</td>
+<td align="right">2434.286</td>
+<td align="right">2419.809</td>
+<td align="right">3328.306</td>
+<td align="right">3014.946</td>
+<td align="right">2782.592</td>
+<td align="right">3300.603</td>
+<td align="right">3461.606</td>
+<td align="right">3283.332</td>
+<td align="right">3181.2</td>
+<td align="right">2763.434</td>
+<td align="right">1886.577</td>
+<td align="right">2083.627</td>
+<td align="right">1995.734</td>
+<td align="right">2137.391</td>
+<td align="right">2040.086</td>
+<td align="right">2140.836</td>
+<td align="right">2305.558</td>
+<td align="right">226.4224</td>
+<td align="right">238.475</td>
+<td align="right">292.1372</td>
+<td align="right">261.341</td>
+<td align="right">256.9639</td>
+<td align="right">262.13</td>
+<td align="right">169.9578</td>
+<td align="right">285.1908</td>
+<td align="right">271.4696</td>
+<td align="right">152.4241</td>
+<td align="right">151.6671</td>
+<td align="right">149.4479</td>
+<td align="right">198.2835</td>
+<td align="right">293.852</td>
+<td align="right">322.9758</td>
+<td align="right">403.1997</td>
+<td align="right">420.7817</td>
+<td align="right">480.4471</td>
+<td align="right">605.2297</td>
+<td align="right">656.1878</td>
+<td align="right">606.3166</td>
+<td align="right">638.3252</td>
+<td align="right">584.3335</td>
+<td align="right">155.8621</td>
+<td align="right">210.9557</td>
+<td align="right">228.3564</td>
+<td align="right">245.8559</td>
+<td align="right">263.2626</td>
+<td align="right">280.8009</td>
+<td align="right">298.3469</td>
+<td align="right">18.46541</td>
+<td align="right">21.6809</td>
+<td align="right">18.73153</td>
+<td align="right">19.38125</td>
+<td align="right">17.18284</td>
 </tr></tbody>
 </table>
 </div>
@@ -2136,9 +2377,10 @@ time to process</strong>.</p>
 </h2>
 <p>In this example we access National Land Cover Dataset (NLCD) data for
 2001, just at the catchment level for several COMIDs using the
-<code>sc_nlcd</code> function. Loads data into a tibble we can view.</p>
+<code>sc_get_nlcd</code> function. Loads data into a tibble we can
+view.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/sc_nlcd.html">sc_nlcd</a></span><span class="op">(</span>year<span class="op">=</span><span class="st">'2001'</span>, aoi<span class="op">=</span><span class="st">'cat'</span>,</span>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/sc_get_nlcd.html">sc_get_nlcd</a></span><span class="op">(</span>year<span class="op">=</span><span class="st">'2001'</span>, aoi<span class="op">=</span><span class="st">'cat'</span>,</span>
 <span>              comid<span class="op">=</span><span class="st">'179,1337,1337420'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
@@ -2243,7 +2485,7 @@ time to process</strong>.</p>
 <p>We can also pass a couple years for a different area of interest for
 another region like a county.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/sc_nlcd.html">sc_nlcd</a></span><span class="op">(</span>year<span class="op">=</span><span class="st">'2006, 2019'</span>, aoi<span class="op">=</span><span class="st">'ws'</span>,</span>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/sc_get_nlcd.html">sc_get_nlcd</a></span><span class="op">(</span>year<span class="op">=</span><span class="st">'2006, 2019'</span>, aoi<span class="op">=</span><span class="st">'ws'</span>,</span>
 <span>              county<span class="op">=</span><span class="st">'41003'</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
@@ -2319,76 +2561,111 @@ another region like a county.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">23762961</td>
+<td align="right">23762761</td>
+<td align="right">0.00</td>
+<td align="right">57.44</td>
+<td align="right">0.40</td>
+<td align="right">1.90</td>
+<td align="right">3.08</td>
+<td align="right">2.45</td>
+<td align="right">0.27</td>
+<td align="right">0.00</td>
+<td align="right">20.77</td>
 <td align="right">0.01</td>
-<td align="right">36.68</td>
-<td align="right">4.65</td>
-<td align="right">1.03</td>
-<td align="right">1.51</td>
-<td align="right">33.28</td>
-<td align="right">3.44</td>
-<td align="right">0</td>
-<td align="right">7.32</td>
-<td align="right">0.08</td>
-<td align="right">3.99</td>
-<td align="right">0.10</td>
-<td align="right">1.69</td>
-<td align="right">0.30</td>
-<td align="right">3.46</td>
-<td align="right">2.46</td>
-<td align="right">0</td>
-<td align="right">5.85</td>
-<td align="right">3.00</td>
-<td align="right">35.58</td>
-<td align="right">3.44</td>
+<td align="right">6.65</td>
+<td align="right">0.00</td>
+<td align="right">0.31</td>
+<td align="right">0.07</td>
+<td align="right">4.89</td>
+<td align="right">1.76</td>
+<td align="right">0.00</td>
+<td align="right">19.15</td>
+<td align="right">0.05</td>
+<td align="right">2.84</td>
+<td align="right">4.91</td>
+<td align="right">0.00</td>
+<td align="right">38.13</td>
+<td align="right">1.72</td>
+<td align="right">7.95</td>
+<td align="right">0.00</td>
+<td align="right">0.04</td>
+<td align="right">23.53</td>
+<td align="right">0.31</td>
+<td align="right">1.06</td>
+<td align="right">0.29</td>
 <td align="right">0.01</td>
-<td align="right">26.93</td>
-<td align="right">1.11</td>
-<td align="right">5.74</td>
-<td align="right">0.09</td>
-<td align="right">0.23</td>
-<td align="right">10.78</td>
-<td align="right">4.79</td>
-<td align="right">0.66</td>
-<td align="right">1.67</td>
-<td align="right">0.11</td>
 </tr>
 <tr class="even">
-<td align="right">23762985</td>
-<td align="right">0.00</td>
-<td align="right">51.52</td>
-<td align="right">1.58</td>
-<td align="right">1.03</td>
-<td align="right">2.21</td>
-<td align="right">20.06</td>
-<td align="right">0.84</td>
-<td align="right">0</td>
-<td align="right">9.14</td>
-<td align="right">0.04</td>
-<td align="right">6.06</td>
+<td align="right">23762835</td>
+<td align="right">0.80</td>
+<td align="right">64.53</td>
+<td align="right">3.36</td>
+<td align="right">0.28</td>
+<td align="right">3.02</td>
+<td align="right">12.26</td>
+<td align="right">0.79</td>
 <td align="right">0.05</td>
-<td align="right">1.46</td>
-<td align="right">0.24</td>
-<td align="right">4.60</td>
+<td align="right">2.66</td>
+<td align="right">1.20</td>
+<td align="right">5.40</td>
+<td align="right">0.49</td>
+<td align="right">1.50</td>
 <td align="right">1.18</td>
-<td align="right">0</td>
-<td align="right">7.16</td>
-<td align="right">1.05</td>
-<td align="right">21.16</td>
-<td align="right">4.62</td>
-<td align="right">0.01</td>
-<td align="right">37.51</td>
-<td align="right">0.84</td>
-<td align="right">8.44</td>
-<td align="right">0.04</td>
-<td align="right">0.19</td>
-<td align="right">15.78</td>
-<td align="right">1.22</td>
-<td align="right">0.51</td>
-<td align="right">1.44</td>
-<td align="right">0.04</td>
+<td align="right">1.68</td>
+<td align="right">0.80</td>
+<td align="right">0.05</td>
+<td align="right">2.38</td>
+<td align="right">2.18</td>
+<td align="right">13.64</td>
+<td align="right">1.72</td>
+<td align="right">0.95</td>
+<td align="right">60.46</td>
+<td align="right">0.64</td>
+<td align="right">3.12</td>
+<td align="right">0.44</td>
+<td align="right">1.08</td>
+<td align="right">9.50</td>
+<td align="right">0.94</td>
+<td align="right">0.20</td>
+<td align="right">1.51</td>
+<td align="right">1.18</td>
 </tr>
 <tr class="odd">
+<td align="right">23762859</td>
+<td align="right">0.00</td>
+<td align="right">16.68</td>
+<td align="right">25.04</td>
+<td align="right">0.85</td>
+<td align="right">1.27</td>
+<td align="right">31.69</td>
+<td align="right">1.11</td>
+<td align="right">0.00</td>
+<td align="right">8.28</td>
+<td align="right">0.26</td>
+<td align="right">0.86</td>
+<td align="right">0.37</td>
+<td align="right">5.51</td>
+<td align="right">1.90</td>
+<td align="right">5.55</td>
+<td align="right">0.64</td>
+<td align="right">0.00</td>
+<td align="right">8.32</td>
+<td align="right">2.99</td>
+<td align="right">53.93</td>
+<td align="right">5.65</td>
+<td align="right">0.00</td>
+<td align="right">14.40</td>
+<td align="right">0.22</td>
+<td align="right">2.36</td>
+<td align="right">0.27</td>
+<td align="right">1.70</td>
+<td align="right">1.97</td>
+<td align="right">1.57</td>
+<td align="right">0.84</td>
+<td align="right">5.55</td>
+<td align="right">0.22</td>
+</tr>
+<tr class="even">
 <td align="right">23762915</td>
 <td align="right">0.01</td>
 <td align="right">55.83</td>
@@ -2397,7 +2674,7 @@ another region like a county.</p>
 <td align="right">2.74</td>
 <td align="right">6.60</td>
 <td align="right">0.40</td>
-<td align="right">0</td>
+<td align="right">0.00</td>
 <td align="right">18.61</td>
 <td align="right">0.05</td>
 <td align="right">7.45</td>
@@ -2406,7 +2683,7 @@ another region like a county.</p>
 <td align="right">0.14</td>
 <td align="right">4.65</td>
 <td align="right">1.33</td>
-<td align="right">0</td>
+<td align="right">0.00</td>
 <td align="right">19.10</td>
 <td align="right">0.01</td>
 <td align="right">6.87</td>
@@ -2423,6 +2700,41 @@ another region like a county.</p>
 <td align="right">0.58</td>
 <td align="right">0.05</td>
 </tr>
+<tr class="odd">
+<td align="right">23762947</td>
+<td align="right">0.00</td>
+<td align="right">74.13</td>
+<td align="right">0.00</td>
+<td align="right">0.46</td>
+<td align="right">1.34</td>
+<td align="right">3.46</td>
+<td align="right">0.14</td>
+<td align="right">0.00</td>
+<td align="right">10.56</td>
+<td align="right">0.04</td>
+<td align="right">3.10</td>
+<td align="right">0.00</td>
+<td align="right">0.47</td>
+<td align="right">0.06</td>
+<td align="right">5.70</td>
+<td align="right">0.55</td>
+<td align="right">0.00</td>
+<td align="right">10.31</td>
+<td align="right">0.00</td>
+<td align="right">3.67</td>
+<td align="right">5.69</td>
+<td align="right">0.00</td>
+<td align="right">71.56</td>
+<td align="right">0.50</td>
+<td align="right">3.37</td>
+<td align="right">0.00</td>
+<td align="right">0.03</td>
+<td align="right">3.84</td>
+<td align="right">0.18</td>
+<td align="right">0.34</td>
+<td align="right">0.46</td>
+<td align="right">0.04</td>
+</tr>
 <tr class="even">
 <td align="right">23762959</td>
 <td align="right">0.01</td>
@@ -2432,7 +2744,7 @@ another region like a county.</p>
 <td align="right">1.50</td>
 <td align="right">33.72</td>
 <td align="right">3.51</td>
-<td align="right">0</td>
+<td align="right">0.00</td>
 <td align="right">7.24</td>
 <td align="right">0.09</td>
 <td align="right">3.95</td>
@@ -2441,7 +2753,7 @@ another region like a county.</p>
 <td align="right">0.30</td>
 <td align="right">3.43</td>
 <td align="right">2.51</td>
-<td align="right">0</td>
+<td align="right">0.00</td>
 <td align="right">5.79</td>
 <td align="right">3.02</td>
 <td align="right">36.01</td>
@@ -2457,76 +2769,6 @@ another region like a county.</p>
 <td align="right">0.66</td>
 <td align="right">1.66</td>
 <td align="right">0.12</td>
-</tr>
-<tr class="odd">
-<td align="right">23762967</td>
-<td align="right">0.01</td>
-<td align="right">38.81</td>
-<td align="right">3.54</td>
-<td align="right">1.04</td>
-<td align="right">1.60</td>
-<td align="right">31.71</td>
-<td align="right">3.49</td>
-<td align="right">0</td>
-<td align="right">7.53</td>
-<td align="right">0.09</td>
-<td align="right">4.30</td>
-<td align="right">0.09</td>
-<td align="right">1.65</td>
-<td align="right">0.29</td>
-<td align="right">3.40</td>
-<td align="right">2.47</td>
-<td align="right">0</td>
-<td align="right">5.98</td>
-<td align="right">2.42</td>
-<td align="right">33.49</td>
-<td align="right">3.39</td>
-<td align="right">0.01</td>
-<td align="right">28.48</td>
-<td align="right">1.10</td>
-<td align="right">6.20</td>
-<td align="right">0.08</td>
-<td align="right">0.23</td>
-<td align="right">11.36</td>
-<td align="right">4.86</td>
-<td align="right">0.64</td>
-<td align="right">1.64</td>
-<td align="right">0.13</td>
-</tr>
-<tr class="even">
-<td align="right">23762761</td>
-<td align="right">0.00</td>
-<td align="right">57.44</td>
-<td align="right">0.40</td>
-<td align="right">1.90</td>
-<td align="right">3.08</td>
-<td align="right">2.45</td>
-<td align="right">0.27</td>
-<td align="right">0</td>
-<td align="right">20.77</td>
-<td align="right">0.01</td>
-<td align="right">6.65</td>
-<td align="right">0.00</td>
-<td align="right">0.31</td>
-<td align="right">0.07</td>
-<td align="right">4.89</td>
-<td align="right">1.76</td>
-<td align="right">0</td>
-<td align="right">19.15</td>
-<td align="right">0.05</td>
-<td align="right">2.84</td>
-<td align="right">4.91</td>
-<td align="right">0.00</td>
-<td align="right">38.13</td>
-<td align="right">1.72</td>
-<td align="right">7.95</td>
-<td align="right">0.00</td>
-<td align="right">0.04</td>
-<td align="right">23.53</td>
-<td align="right">0.31</td>
-<td align="right">1.06</td>
-<td align="right">0.29</td>
-<td align="right">0.01</td>
 </tr>
 </tbody>
 </table>
@@ -2613,7 +2855,7 @@ not run as it takes a bit of time</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

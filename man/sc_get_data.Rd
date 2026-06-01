@@ -82,7 +82,7 @@ df <- sc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')
 
 df <- sc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
 
-df <- sc_get_data(metric='pcturbmd2006', aoi='wsrp100',
+df <- sc_get_data(metric='pcturbmd2006', aoi='ws,rp100',
 comid='1337420')
 
 df <- sc_get_data(metric='pcturbmd2006,damdens',
