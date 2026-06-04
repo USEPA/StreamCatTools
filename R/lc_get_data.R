@@ -99,7 +99,15 @@ lc_get_data <- function(comid = NULL,
   }
   # Collapse vectors into a single string separated by a comma.
   if (!is.null(comid)){
-    comid <- paste(comid, collapse = ",")
+    # This handles numeric vectors, character vectors, lists, or "100,200,300" strings
+    comid_vec <- .parse_comids(comid)
+    
+    # Use your internal offline validator against the LakeCat COMID set (RDS from S3)
+    # Will stop() with a helpful message if any are invalid
+    is_valid_lakecat_comid(comid_vec)
+    
+    # Collapse to the API's comma-separated form
+    comid <- paste(comid_vec, collapse = ",")
   }
   metric <- paste(metric, collapse = ",")
   aoi <- paste(aoi, collapse = ",")
@@ -462,4 +470,145 @@ lc_get_nni <- function(year, aoi = NULL, comid = NULL,
   )
   # End of function. Return a data frame.
   return(final_df)
+}
+
+
+#' Validate COMIDs
+#'
+#' @description
+#' Checks user supplied COMIDs against valid COMID values in LakeCat
+#' and returns a message if any COMIDs are not valid COMIDs.
+#' Called internally by
+#' \code{\link{lc_get_data}} when \code{validate = TRUE}.
+#'
+#' @details
+#' Validation works by querying the NLDI for valid COMIDs with the 
+#' supplied COMIDs and comparing these COMIDs against those requested.
+#' Any COMID absent from the official list is considered invalid — i.e., 
+#' it does not correspond to an NHDPlusV2 catchment recognized by LakeCat.
+#'
+#' @param comids Integer or character vector of COMIDs to validate. Accepts
+#'   the same formats as the \code{comid} parameter of \code{\link{sc_get_data}}:
+#'   a numeric vector, a character vector, or a comma-separated string.
+#'
+#' @return A character vector of COMIDs from \code{comids} that were
+#'   \emph{not} found in the StreamCat database. Returns \code{character(0)}
+#'   if all supplied COMIDs are valid.
+#'
+#' @seealso \code{\link{lc_get_data}}
+#'
+#' @author Marc Weber
+#'
+#' @keywords internal
+
+# Helper: normalize incoming IDs to a character vector of digits
+# Normalize incoming IDs to a character vector of digits
+.parse_comids <- function(x) {
+  if (is.null(x)) return(character(0))
+  if (is.list(x)) x <- unlist(x, recursive = TRUE, use.names = FALSE)
+  
+  if (is.numeric(x)) return(as.character(as.integer(x)))
+  
+  if (is.character(x)) {
+    if (length(x) == 1L) {
+      parts <- unlist(strsplit(x, "[,\\s]+", perl = TRUE), use.names = FALSE)
+      parts <- gsub("[^0-9]", "", parts, perl = TRUE)
+      parts <- parts[nzchar(parts)]
+      return(parts)
+    } else {
+      parts <- trimws(x)
+      parts <- gsub("[^0-9]", "", parts, perl = TRUE)
+      parts <- parts[nzchar(parts)]
+      return(parts)
+    }
+  }
+  stop("Unsupported id input type. Provide numeric, character, vector, list, or a comma-separated string.")
+}
+
+# Load LakeCat COMIDs from public S3 (RDS) with optional caching
+.load_lakecat_comids <- function(
+    src = "https://dmap-data-commons-ow.s3.amazonaws.com/data/streamcat/lakecat_comids.rds",
+    use_cache = TRUE, force_refresh = FALSE
+) {
+  # Try to use a small local cache to avoid re-downloading each call
+  if (use_cache) {
+    cache_dir  <- file.path(tools::R_user_dir("yourpkg", "cache"))
+    cache_file <- file.path(cache_dir, "lakecat_comids.rds")
+    if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
+    
+    if (force_refresh || !file.exists(cache_file)) {
+      method <- if (capabilities("libcurl")) "libcurl" else "auto"
+      utils::download.file(src, cache_file, mode = "wb", quiet = TRUE, method = method)
+    }
+    obj <- readRDS(cache_file)
+  } else {
+    obj <- readRDS(url(src, "rb"))
+  }
+  
+  # Be flexible about the object type in the RDS
+  vec <- NULL
+  if (is.vector(obj) && !is.list(obj)) {
+    vec <- obj
+  } else if (is.data.frame(obj)) {
+    nm <- names(obj)
+    col <- intersect(tolower(nm), c("comid"))
+    if (length(col)) vec <- obj[[nm[match(col[1], tolower(nm))]]]
+  }
+  if (is.null(vec)) stop("RDS did not contain a COMID vector or a data frame with a COMID column.", call. = FALSE)
+  
+  vec <- suppressWarnings(as.integer(vec))
+  vec <- unique(vec[!is.na(vec)])
+  vec
+}
+
+# Assert-style validator using the LakeCat COMID set (offline)
+# - Accepts scalar, vector, list, or comma-separated string.
+# - Errors if any ID is non-numeric or not found in the LakeCat set.
+# - Otherwise returns invisibly.
+is_valid_lakecat_comid <- function(
+    id,
+    src = "https://dmap-data-commons-ow.s3.amazonaws.com/data/streamcat/lakecat_comids.rds",
+    use_cache = TRUE, force_refresh = FALSE
+) {
+  ids_chr <- .parse_comids(id)
+  if (!length(ids_chr)) return(invisible(integer(0)))
+  
+  ids_int <- suppressWarnings(as.integer(ids_chr))
+  non_numeric <- is.na(ids_int)
+  
+  lakecat_set <- .load_lakecat_comids(src = src, use_cache = use_cache, force_refresh = force_refresh)
+  
+  # Same exists_map + vapply pattern you referenced (one check per unique ID)
+  query_ids <- unique(ids_int[!non_numeric])
+  exists_map <- setNames(logical(length(query_ids)), as.character(query_ids))
+  exists_map[] <- vapply(
+    query_ids,
+    function(i) i %in% lakecat_set,
+    logical(1)
+  )
+  
+  # Map back to the original order
+  found <- rep(FALSE, length(ids_int))
+  if (length(exists_map)) {
+    idx <- match(as.character(ids_int), names(exists_map))
+    # non-numeric remain FALSE; numeric get TRUE/FALSE from exists_map
+    hit <- exists_map[idx]
+    hit[is.na(hit)] <- FALSE
+    found <- hit
+  }
+  
+  not_found <- (!non_numeric) & (!found)
+  
+  if (any(non_numeric | not_found)) {
+    msg <- character(0)
+    if (any(non_numeric)) {
+      msg <- c(msg, sprintf("Non-numeric COMID(s): %s", paste(unique(ids_chr[non_numeric]), collapse = ", ")))
+    }
+    if (any(not_found)) {
+      msg <- c(msg, sprintf("Not found in LakeCat COMIDs: %s", paste(unique(ids_chr[not_found]), collapse = ", ")))
+    }
+    stop(paste(msg, collapse = "\n"), call. = FALSE)
+  }
+  
+  invisible(ids_int)
 }
