@@ -105,8 +105,17 @@ sc_get_data <- function(comid = NULL,
   }
   # Collapse vectors into a single string separated by a comma.
   if (!is.null(comid)){
-    comid <- paste(comid, collapse = ",")
+    # This handles numeric vectors, character vectors, lists, or "100,200,300" strings
+    comid_vec <- .parse_comids(comid)
+    
+    # Use your internal offline validator against the LakeCat COMID set (RDS from S3)
+    # Will stop() with a helpful message if any are invalid
+    is_valid_comid(comid_vec)
+    
+    # Collapse to the API's comma-separated form
+    comid <- paste(comid_vec, collapse = ",")
   }
+  # Collapse other vectors into comma-separated strings
   metric <- paste(metric, collapse = ",")
   aoi <- paste(aoi, collapse = ",")
   if (!is.null(state)){
@@ -536,3 +545,208 @@ sc_get_nni <- function(year, aoi = NULL, comid = NULL,
 
 #' @importFrom curl curl_fetch_memory
 NULL
+
+
+#' Validate COMIDs
+#'
+#' @description
+#' Checks user supplied COMIDs against valid COMID values in StreamCat
+#' and returns a message if any COMIDs are not valid COMIDs.
+#' Called internally by
+#' \code{\link{sc_get_data}} when \code{validate = TRUE}.
+#'
+#' @details
+#' Validation works by querying the NLDI for valid COMIDs with the 
+#' supplied COMIDs and comparing these COMIDs against those requested.
+#' Any COMID absent from the official list is considered invalid — i.e., 
+#' it does not correspond to an NHDPlusV2 catchment recognized by StreamCat.
+#' Additionally, error is raised for any COMIDs that are part of the COMIDs 
+#' connectors in the Great Lakes that are not included in StreamCat
+#'
+#' @param comids Integer or character vector of COMIDs to validate. Accepts
+#'   the same formats as the \code{comid} parameter of \code{\link{sc_get_data}}:
+#'   a numeric vector, a character vector, or a comma-separated string.
+#'
+#' @return A character vector of COMIDs from \code{comids} that were
+#'   \emph{not} found in the StreamCat database. Returns \code{character(0)}
+#'   if all supplied COMIDs are valid.
+#'
+#' @seealso \code{\link{sc_get_data}}
+#'
+#' @author Marc Weber
+#'
+#' @keywords internal
+
+# Helper: normalize incoming IDs to a character vector of digits
+.parse_comids <- function(x) {
+  if (is.null(x)) return(character(0))
+  
+  # If it's a list, unlist it first
+  if (is.list(x)) x <- unlist(x, recursive = TRUE, use.names = FALSE)
+  
+  if (is.numeric(x)) {
+    return(as.character(as.integer(x)))
+  }
+  
+  if (is.character(x)) {
+    if (length(x) == 1L) {
+      # Split by commas/whitespace; strip non-digits (e.g., quotes, parentheses)
+      parts <- unlist(strsplit(x, "[,\\s]+", perl = TRUE), use.names = FALSE)
+      parts <- gsub("[^0-9]", "", parts, perl = TRUE)
+      parts <- parts[nzchar(parts)]
+      return(parts)
+    } else {
+      parts <- trimws(x)
+      parts <- gsub("[^0-9]", "", parts, perl = TRUE)
+      parts <- parts[nzchar(parts)]
+      return(parts)
+    }
+  }
+  
+  stop("Unsupported id input type. Provide numeric, character, vector, list, or a comma-separated string.")
+}
+
+# Assert-style validator
+# - online = TRUE (default): query NLDI (nhdplusTools::get_nldi_feature) to confirm existence.
+# - online = FALSE: validate against a local .valid_comids vector (must be available).
+# - Also errors if an ID is present (valid) but listed in .missing_COMIDs/.missing_comids.
+is_valid_comid <- function(comid, online = TRUE) {
+  ids_chr <- .parse_comids(comid)
+  if (!length(ids_chr)) return(invisible(ids_chr))
+  
+  # Convert to integer where possible
+  ids_int <- suppressWarnings(as.integer(ids_chr))
+  not_numeric <- is.na(ids_int)
+  
+  # Gather expected-missing list (accept either spelling)
+  expected_missing <- integer(0)
+  if (exists(".missing_COMIDs", inherits = TRUE)) {
+    expected_missing <- c(expected_missing, get(".missing_COMIDs", inherits = TRUE))
+  }
+  if (exists(".missing_comids", inherits = TRUE)) {
+    expected_missing <- c(expected_missing, get(".missing_comids", inherits = TRUE))
+  }
+  expected_missing <- unique(suppressWarnings(as.integer(expected_missing)))
+  
+  if (isTRUE(online)) {
+    if (!requireNamespace("nhdplusTools", quietly = TRUE)) {
+      stop("Online validation requires nhdplusTools. Install it or call assert_valid_comids(..., online = FALSE).", call. = FALSE)
+    }
+    
+    # Query NLDI only for unique, numeric-looking IDs
+    query_ids <- unique(ids_chr[!not_numeric])
+    exists_map <- setNames(logical(length(query_ids)), query_ids)
+    
+    exists_map[] <- vapply(
+      query_ids,
+      function(i) {
+        out <- tryCatch(
+          nhdplusTools::get_nldi_feature(list(featureSource = "comid", featureID = i)),
+          error = function(e) NULL
+        )
+        isTRUE(inherits(out, "sf")) && nrow(out) > 0
+      },
+      logical(1)
+    )
+    
+    found <- rep(FALSE, length(ids_chr))
+    if (length(exists_map)) {
+      found_vals <- exists_map[match(ids_chr, names(exists_map))]
+      found_vals[is.na(found_vals)] <- FALSE
+      found[!not_numeric] <- found_vals[!not_numeric]
+    }
+    
+  } else {
+    # Offline validation requires .valid_comids
+    if (!exists(".valid_comids", inherits = TRUE)) {
+      stop("Local validation requested but .valid_comids not found. Provide it or set online = TRUE.", call. = FALSE)
+    }
+    valid_local <- (!not_numeric) & (ids_int %in% .valid_comids)
+    found <- valid_local
+  }
+  
+  # Compute error conditions
+  not_found <- (!not_numeric) & (!found)
+  flagged_present <- found & (!is.na(ids_int)) & (ids_int %in% expected_missing)
+  
+  if (any(not_numeric | not_found | flagged_present)) {
+    msg <- character(0)
+    if (any(not_numeric)) {
+      msg <- c(msg, sprintf("Non-numeric COMID(s): %s", paste(unique(ids_chr[not_numeric]), collapse = ", ")))
+    }
+    if (any(not_found)) {
+      src <- if (isTRUE(online)) "NLDI" else ".valid_comids"
+      msg <- c(msg, sprintf("Not found in %s: %s", src, paste(unique(ids_chr[not_found]), collapse = ", ")))
+    }
+    if (any(flagged_present)) {
+      which_missing <- unique(ids_chr[flagged_present])
+      src <- if (exists(".missing_COMIDs", inherits = TRUE)) ".missing_COMIDs" else ".missing_comids"
+      msg <- c(msg, sprintf("Valid COMID but one of Great Lake connector or other COMIDs not included in StreamCat in %s: %s", src, paste(which_missing, collapse = ", ")))
+    }
+    stop(paste(msg, collapse = "\n"), call. = FALSE)
+  }
+  
+  # All good; return invisibly
+  invisible(ids_int)
+}
+
+.missing_comids <- as.integer(c(
+  904020528, 904020529, 904020533, 12211194, 12211232, 12211228, 12211188,
+  12211202, 12211208, 12211224, 25823896, 12211204, 12211196, 12211192,
+  25823892, 12211212, 12211186, 12211200, 12211206, 12211216, 12211220,
+  12211174, 13196000, 13196024, 13196020, 13196028, 13196016, 13189762,
+  13196010, 13189316, 13189392, 13189520, 13190016, 13189920, 13189524,
+  13189564, 13189118, 13189156, 13189960, 13189370, 13189530, 13189356,
+  13189598, 13189244, 13189596, 13189584, 13189754, 13189758, 13189378,
+  13189692, 13189768, 13190242, 13189680, 13189602, 13189830, 13189306,
+  13189304, 13189114, 13189366, 13189308, 13189866, 13189694, 13189836,
+  13189710, 13189776, 13189712, 13189572, 13189576, 13189714, 13189764,
+  13189398, 13189938, 13189224, 13189808, 13189664, 13189566, 13189842,
+  13189590, 13189718, 13189582, 13189124, 13189756, 13189958, 13189388,
+  13189580, 13189736, 13189672, 13196034, 13189748, 13189906, 13189676,
+  13189540, 13189568, 13189868, 13189846, 13189066, 13189720, 13189860,
+  13189926, 13189546, 13189804, 13191228, 13189822, 13189914, 13189740,
+  904090018, 13189662, 13189744, 13190240, 13189814, 13189750, 13189834,
+  13189158, 13189082, 13190024, 13189294, 13189820, 13191224, 13189844,
+  13189852, 13189936, 13189984, 13189870, 13189794, 13189706, 13189818,
+  13189594, 13189062, 13189588, 13189064, 13189974, 13189704, 13191214,
+  13196004, 13189534, 13189950, 13189674, 13189942, 13189682, 13189922,
+  13189102, 13189116, 13189928, 13189956, 13189386, 13189072, 13189792,
+  13189660, 13189972, 13191220, 13191192, 13189666, 13189954, 13189526,
+  13189826, 13190238, 13189932, 13189934, 13190022, 13189390, 904090019,
+  13189068, 13189952, 13191204, 13189542, 13190018, 10850256, 13189872,
+  13189790, 13189986, 13191208, 13189862, 13189586, 13189708, 13189552,
+  13189668, 13189864, 13189536, 13189962, 13189080, 13189904, 13191230,
+  13189832, 13189948, 13189746, 13189910, 13189678, 13189670, 13191232,
+  13189732, 13189854, 13189912, 13189242, 10850230, 13189812, 13189522,
+  13191222, 13189916, 13189728, 13191226, 13189702, 13189592, 13189802,
+  13189700, 13190020, 13189726, 13189908, 13189946, 13189848, 13189528,
+  13189778, 13189774, 13189810, 13191106, 13189698, 13189532, 10850250,
+  13189930, 10850252, 13191206, 13191216, 13189296, 13189742, 13189850,
+  13191218, 10850240, 10850244, 10850010, 13189918, 10849982, 13189976,
+  10850242, 10850268, 13189924, 10850282, 10850264, 10850054, 10850232,
+  10850280, 10850288, 10850258, 10850348, 10850320, 13191138, 10850006,
+  10850052, 10850022, 10850394, 10850334, 10850284, 10850314, 10850030,
+  10850340, 166764012, 10848664, 10848690, 10850266, 10849992, 10850290,
+  10851378, 166764013, 10850286, 10850040, 10850018, 10848684, 10848666,
+  10850044, 10850350, 10850274, 10850344, 10850272, 10850326, 10848688,
+  26917654, 10850342, 10849990, 10850058, 10850328, 10850262, 10850032,
+  10850278, 10850014, 10850338, 10848680, 10850332, 10851384, 10850316,
+  10850322, 10850312, 10850310, 10850036, 10850050, 10850392, 10850228,
+  166764011, 10850038, 10850292, 10850330, 26917656, 10851382, 10850346,
+  15569793, 15568799, 15568857, 15568125, 15568855, 15567833, 15571659,
+  15568091, 15568149, 15569901, 15568009, 15568783, 15568131, 15568003,
+  15569797, 15568093, 15568129, 15568011, 15567983, 15568143, 15568107,
+  15568113, 15568109, 15569803, 166764152, 15571665, 904120018, 15568121,
+  15567993, 15568015, 15569799, 15569907, 15568135, 15571657, 15567989,
+  15568119, 15569809, 15569791, 166764154, 904120017, 15569903, 15568147,
+  30833944, 15568141, 904120016, 15568127, 166764151, 15568007, 15568139,
+  15567987, 15569905, 15567997, 15568145, 15502697, 25293394, 15502723,
+  25293246, 25293298, 25293206, 25293274, 25293362, 25293232, 15502711,
+  25293390, 25293180, 15502719, 25293330, 15502715, 25293332, 25293184,
+  25293366, 25293350, 25293186, 25293398, 25293270, 25293324, 25293410,
+  25293322, 25293294, 15502727, 15502695, 25293386, 25293208, 25293234,
+  25293230, 25293364, 25293272, 25293406, 25293402, 25293196, 25293202,
+  25293306, 25293222, 25293296, 25293236, 25293188
+))
+
