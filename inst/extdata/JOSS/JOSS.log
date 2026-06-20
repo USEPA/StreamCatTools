@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.6.19)  19 JUN 2026 20:28
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.6.19)  20 JUN 2026 10:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1175,8 +1175,18 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [4]
-Overfull \hbox (4.83623pt too wide) in paragraph at lines 552--552
-[]|\TU/lmr/m/n/7 Precip_Minus_EVT[AOI]|  
+Overfull \hbox (13.93501pt too wide) in paragraph at lines 553--553
+[]|\TU/lmr/m/n/7 inorgnwetdep[Year][AOI]|  
+ []
+
+
+Overfull \hbox (10.69402pt too wide) in paragraph at lines 553--554
+[]|\TU/lmr/m/n/7 Kilogram/Hectare/Year|  
+ []
+
+
+Overfull \hbox (4.723pt too wide) in paragraph at lines 556--556
+[]|\TU/lmr/m/n/7 pcthighsev[Year][AOI]|  
  []
 
 File: C:/Users/mwebe/AppData/Local/R/win-library/4.6/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
@@ -1201,11 +1211,6 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 [6]
 File: JOSS_files/JOSS_files/figure-latex/unnamed-chunk-12-1.pdf Graphic file (type pdf)
 <use JOSS_files/JOSS_files/figure-latex/unnamed-chunk-12-1.pdf>
-
-Underfull \hbox (badness 10000) in paragraph at lines 683--685
-[][]
- []
-
 File: C:/Users/mwebe/AppData/Local/R/win-library/4.6/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mwebe/AppData/Local/R/win-library/4.6/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1216,8 +1221,28 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [7]
-Underfull \hbox (badness 1565) in paragraph at lines 706--707
-\TU/lmr/m/n/10 The lake-catchment (LakeCat) dataset: Characterizing landscape features for
+Overfull \hbox (625.91139pt too wide) in paragraph at lines 698--698
+[]\TU/lmtt/m/n/10 ##   |                                                                              |                                                                      |   0%[10:28:32] duckdb version: 1.5.4 
+ []
+
+
+Overfull \hbox (1523.66139pt too wide) in paragraph at lines 699--699
+[]\TU/lmtt/m/n/10 ##   |                                                                              |==========                                                            |  14%  |                                                                              |====================                                                  |  29%[10:28:32] Loading and configuring httpfs ...[] 
+ []
+
+
+Overfull \hbox (1455.41139pt too wide) in paragraph at lines 700--700
+[]\TU/lmtt/m/n/10 ##   |                                                                              |==============================                                        |  43%  |                                                                              |========================================                              |  57%[10:28:32] Describing schema ...[] 
+ []
+
+
+Overfull \hbox (1555.16139pt too wide) in paragraph at lines 701--701
+[]\TU/lmtt/m/n/10 ##   |                                                                              |==================================================                    |  71%  |                                                                              |============================================================          |  86%[10:28:34] Querying COMID = 19334077 within HUC2=01[] 
+ []
+
+
+Overfull \hbox (457.91139pt too wide) in paragraph at lines 703--703
+[]\TU/lmtt/m/n/10 ##   |                                                                              |======================================================================| 100%[] 
  []
 
 File: C:/Users/mwebe/AppData/Local/R/win-library/4.6/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
@@ -1230,6 +1255,13 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [8]
+File: JOSS_files/JOSS_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (type pdf)
+<use JOSS_files/JOSS_files/figure-latex/unnamed-chunk-13-1.pdf>
+
+Overfull \hbox (253.16139pt too wide) in paragraph at lines 784--784
+[]\TU/lmtt/m/n/10 ## If the plot does not render to the plot window when calling the function either save the plot or resize the plot window 
+ []
+
 File: C:/Users/mwebe/AppData/Local/R/win-library/4.6/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mwebe/AppData/Local/R/win-library/4.6/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1239,7 +1271,33 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
-[9] (./JOSS.aux)
+[9]
+File: JOSS_files/JOSS_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type pdf)
+<use JOSS_files/JOSS_files/figure-latex/unnamed-chunk-14-1.pdf>
+File: C:/Users/mwebe/AppData/Local/R/win-library/4.6/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
+<C:/Users/mwebe/AppData/Local/R/win-library/4.6/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
+
+Package fancyhdr Warning: \headheight is too small (62.59596pt): 
+(fancyhdr)                Make it at least 63.55022pt, for example:
+(fancyhdr)                \setlength{\headheight}{63.55022pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
+
+[10]
+Underfull \hbox (badness 1565) in paragraph at lines 815--816
+\TU/lmr/m/n/10 The lake-catchment (LakeCat) dataset: Characterizing landscape features for
+ []
+
+File: C:/Users/mwebe/AppData/Local/R/win-library/4.6/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
+<C:/Users/mwebe/AppData/Local/R/win-library/4.6/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
+
+Package fancyhdr Warning: \headheight is too small (62.59596pt): 
+(fancyhdr)                Make it at least 63.55022pt, for example:
+(fancyhdr)                \setlength{\headheight}{63.55022pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
+
+[11] (./JOSS.aux)
  ***********
 LaTeX2e <2026-06-01>
 L3 programming layer <2026-06-18>
@@ -1251,12 +1309,12 @@ Package logreq Info: Writing requests to 'JOSS.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 38133 strings out of 469837
- 781965 string characters out of 5467789
- 1661494 words of memory out of 5000000
- 66489 multiletter control sequences out of 15000+600000
+ 38152 strings out of 469837
+ 783065 string characters out of 5467789
+ 1675547 words of memory out of 5000000
+ 66506 multiletter control sequences out of 15000+600000
  634747 words of font info for 95 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  84i,12n,94p,1243b,852s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on JOSS.pdf (9 pages).
+Output written on JOSS.pdf (11 pages).

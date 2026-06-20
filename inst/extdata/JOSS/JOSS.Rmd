@@ -79,7 +79,7 @@ Easily accessible, robust, and consistent watershed data is an underpinning of h
 knitr::include_graphics("Flowchart.png")
 ```
 
-The core functions in `StreamCatTools` leverage the `httr2` library [@wickham2025httr2] for a modern, pipeable method for working with APIs. Specifically, `StreamCatTools` simplifies the calls to the API for StreamCat and LakeCat data within the R programming language to allow a user to: (1) access details on available StreamCat and LakeCat metrics, (2) match users' sites to NHDPlusV21 waterbodies (streams or lakes) to access StreamCat and Lakecat data, and (3) retrieve StreamCat and LakeCat watershed metrics by COMID, by state, by county, by hydroregion, or for all of CONUS.  Additionally, several convenience functions retrieve data from particular years for data with time series, such as the National Land Cover Database (NLCD) [@usgsnlcd] <!-- citation looks odd in PDF --> and the National Nutrient Inventory (NNI) [@nutinventory]. 
+The core functions in `StreamCatTools` leverage the `httr2` library [@wickham2025httr2] for a modern, pipeable method for working with APIs. Specifically, `StreamCatTools` simplifies the calls to the API for StreamCat and LakeCat data within the R programming language to allow a user to: (1) access details on available StreamCat and LakeCat metrics, (2) match users' sites to NHDPlusV21 waterbodies (streams or lakes) to access StreamCat and Lakecat data, and (3) retrieve StreamCat and LakeCat watershed metrics by COMID, by state, by county, by hydroregion, or for all of CONUS.  Additionally, several convenience functions retrieve data from particular years for data with time series, such as the National Land Cover Database (NLCD) [@usgsnlcd] <!-- citation looks odd in PDF --> and the National Nutrient Inventory (NNI) [@nutinventory]. Lastly, there is plotting functionality for use with NNI metrics as well as a function to retrieve the watersheds for specific lake features as an `sf` object.  Users can likewise access watersheds for specific COMIDs using the `nhdplusTools` package for visualization of and plotting of watersheds to go along with StreamCat or LakeCat metrics.
 
 You can install the most recent version of `StreamCatTools` from CRAN by running:
 
@@ -135,28 +135,29 @@ print('A selection of available LakeCat metrics include: ')
 cat(paste0(name_params[1:10],collapse = "\n"))
 ```
 
-StreamCat and LakeCat are built around the concepts of local drainage area (i.e catchment) and watershed (i.e. the local drainage area and all upstream catchments) [@hill2016streamcat].  This approach uses the NHDPlusV21 hydrographic framework of catchments as the building block for summarizing landscape information represented in landscape data and then programmatically summarizing both the catchment landscape summary and all upstream catchments. `sc_get_params` and `lc_get_params` also include a 'variable_info' parameter to return more detailed metadata for metrics including both short and long metric descriptions, years available (if applicable), units, and the metric category. 
+StreamCat and LakeCat are built around the concepts of local drainage area (i.e catchment) and watershed (i.e. the local drainage area and all upstream catchments) [@hill2016streamcat].  This approach uses the NHDPlusV21 hydrographic framework of catchments as the building block for summarizing landscape information represented in landscape data and then aggregating both the catchment landscape summary and all upstream catchments using the weighted average of metrics in most cases, but using a sum or count for certain metrics. `sc_get_params` and `lc_get_params` also include a 'variable_info' parameter to return more detailed metadata for metrics including both short and long metric descriptions, years available (if applicable), units, and the metric category. 
 
 ```{r}
 var_info <- sc_get_params(param='variable_info')
 
-my_data <- head(var_info[,c('metric','short_description','units')],10)
+my_data <- head(var_info[c(5,10,29,33,45,102),c('metric','short_description','year','units')])
 
 knitr::kable(
   my_data,
   format = "latex",
   booktabs = TRUE,
   longtable = TRUE,
-  col.names = c('Metric', 'Short Description', 'Units'),
-  align = "lll"
+  col.names = c('Metric', 'Short Description', 'Year', 'Units'),
+  align = "llll"
 )  |> 
   kableExtra::kable_styling(
     latex_options = c("repeat_header"),
     font_size = 7
   )  |> 
-  kableExtra::column_spec(1, width = "1.2in")  |> 
-  kableExtra::column_spec(2, width = "1.4in")  |> 
-  kableExtra::column_spec(3, width = "1.0in")   
+  kableExtra::column_spec(1, width = "1.0in")  |> 
+  kableExtra::column_spec(2, width = "1.0in")  |> 
+  kableExtra::column_spec(3, width = "1.0in")  |> 
+  kableExtra::column_spec(4, width = "1.0in")
 ```
 
 Additional functions provided for getting metadata about the underlying StreamCat and LakeCat data include the `sc_fullname` and `lc_fullname` functions to provide the descriptive full name for any given metric in StreamCat or LakeCat:
@@ -236,8 +237,89 @@ calapooia <- ggplot() +
 
 plot(calapooia)
 ```
-<!-- To Do -->
-Also show: new functionality for accessing and plotting NNI data.  Perhaps any other uses or applications we are aware of (such as CASTools R Shiny app).
+
+Watersheds for lakes can also be retrieved using the `lc_get_watershed` function in order to visualize LakeCat metrics along with the plotted watersheds for lake features:
+
+```{r}
+library(ggplot2)
+library(patchwork)
+library(ggforce)
+
+df <- lc_get_nlcd(comid='19334077', year='2019', aoi='ws')
+lake <- nhdplusTools::get_waterbodies(id = 19334077)
+ws <- lc_get_watershed(comid = 19334077, huc2 = "01",huc2_filter = "01", 
+                      threads = 2,retries = 5)
+df <- df |>
+  dplyr::mutate(
+    PctConifer = pctconif2019ws,
+    PctDeciduous = pctdecid2019ws,
+    PctMixedForest = pctmxfst2019ws,
+    PctAgriculture = pctcrop2019ws + pcthay2019ws,
+    PctShrub = pctshrb2019ws,
+    PctGrass = pctgrs2019ws,
+    PctWetland = pcthbwet2019ws + pctwdwet2019ws,
+    PctUrban = pcturbhi2019ws + pcturblo2019ws + pcturbmd2019ws + pcturbop2019ws
+  ) |>
+  dplyr::select(PctConifer, PctDeciduous, PctMixedForest, PctAgriculture, PctShrub, PctGrass, PctWetland, PctUrban)
+
+landcover_df <- df |>
+  tidyr::pivot_longer(
+    cols = c(PctConifer, PctDeciduous, PctMixedForest, PctAgriculture,
+             PctShrub, PctGrass, PctWetland, PctUrban),
+    names_to = "category",
+    values_to = "value"
+  ) |>
+  dplyr::mutate(
+    category = factor(category,
+      levels = c("PctConifer","PctDeciduous","PctMixedForest","PctAgriculture",
+                 "PctShrub","PctGrass","PctWetland","PctUrban")
+    ),
+    pct_label = ifelse(value >= 5, paste0(round(value, 1), "%"), "")  # blank label if < 5%
+  )
+
+pie_colors <- c(
+  PctConifer      = "#08519c",
+  PctDeciduous    = "#74c476",
+  PctMixedForest  = "#fec44f",
+  PctAgriculture  = "#d8b365",
+  PctShrub        = "#8c510a",
+  PctGrass        = "#bdbdbd",
+  PctWetland      = "#41b6c4",
+  PctUrban        = "#de2d26"
+)
+
+# --- map ---
+p_map <- ggplot() +
+  geom_sf(data = ws, fill = "grey90", color = "black", linewidth = 0.6) +
+  geom_sf(data = lake, fill = "#4393c3", color = "#2166ac", linewidth = 0.3) +
+  theme_void() +
+  labs(title = "Watershed Boundary") +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+
+# --- pie ---
+p_pie <- ggplot(landcover_df, aes(x = "", y = value, fill = category)) +
+  geom_col(width = 1, color = "white") +
+  coord_polar(theta = "y") +
+  geom_text(aes(label = pct_label), position = position_stack(vjust = 0.5), size = 3, color = "black") +
+  scale_fill_manual(values = pie_colors, name = "Land Cover") +
+  theme_void() +
+  labs(title = "Land Cover Composition") +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+
+p_map + p_pie + plot_layout(ncol = 2, widths = c(1, 1))
+```
+
+Plotting functions to specifically plot NNI metrics in StreamCat have been developed and are also available [@MarkleyNNI] such as the following example to plot annual time series of nitrogen and phosphorus budget data for a given watershed such as the Mississippi-Atchafalaya River Basin:
+
+```{r}
+library(StreamCatTools)
+library(ggplot2)
+library(ggpattern)
+com <- '22812041'
+sc_plotnni(comid = com, include.nue = TRUE)
+```
+
+Future functionality for `StreamCatTools` includes expanding the scope of plotting functions as well as expanding the range of metrics and ease of querying these metrics.  `StreamCatTools` currently facilitates easy ingestion of StreamCat and LakeCat watershed landscape metrics into workflows in R which is of great use to state watershed planners, researchers and non-governmental organizaitons and borne out by the over 5000 package downloads and over 350 citations of the underlying StreamCat and LakeCat data served by the `StreamCatTools` package.
 
 # Acknowledgements
 
@@ -248,3 +330,4 @@ We would like to sincerely thank the editor and reviewers for all of their helpf
 The United States Environmental Protection Agency (EPA) GitHub project code is provided on an "as is" basis and the user assumes responsibility for its use. EPA has relinquished control of the information and no longer has responsibility to protect the integrity , confidentiality, or availability of the information. Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by EPA. The EPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by EPA or the United States Government.The information in this document has been funded entirely by the United States Environmental Protection Agency (USEPA), in part through appointments to the USEPA’s Internship/Research Participation Program at the Office of Research and Development administered by the Oak Ridge Institute for Science and Education through an interagency agreement. The views expressed in this article are those of the authors and do not necessarily represent the views or policies of the USEPA. 
 
 # References
+
