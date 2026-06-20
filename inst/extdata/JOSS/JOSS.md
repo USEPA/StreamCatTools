@@ -71,7 +71,7 @@ Easily accessible, robust, and consistent watershed data is an underpinning of h
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.7\linewidth]{Flowchart} 
+{\centering \includegraphics[width=0.9\linewidth]{Flowchart} 
 
 }
 
@@ -101,7 +101,7 @@ You can install the most recent development version from GitHub by running:
 library(StreamCatTools)
 ```
 
-`StreamCatTools` includes several functions to facilitate accessing and working with the data. First, users can list metric names and find out more about StreamCat and LakeCat data available in StreamCat using using the `sc_get_params` and `lc_get_params`functions. The parameters `aoi` and `metric_names` provide a user with the available areas of interest for metrics and names of metrics.  The areas of interest available for all metrics in StreamCat and Lakecat are 'cat' and 'ws' (catchment and watershed) and in StreamCat some metrics are available at the 100 meter riparian buffer scale ('catrp100' and 'wsrp100') and for certain metrics the designation of 'other' needs to be used (where the metric is in-stream or derived and not part of the other listed areas of interest). Extracting this information in `StreamCatTools` looks like this:
+`StreamCatTools` includes several functions to facilitate accessing and working with the data. First, users can list metric names and find out more about StreamCat and LakeCat data available in StreamCat using using the `sc_get_params` and `lc_get_params` functions. The parameters `aoi` and `metric_names` provide a user with the available areas of interest for metrics and names of metrics.  The areas of interest available for all metrics in StreamCat and Lakecat are 'cat' and 'ws' (catchment and watershed) and in StreamCat some metrics are available at the 100 meter riparian buffer scale ('catrp100' and 'wsrp100') and for certain metrics the designation of 'other' needs to be used (where the metric is in-stream or derived and not part of the other listed areas of interest). Extracting this information in `StreamCatTools` looks like this:
 
 
 ``` r
@@ -116,6 +116,9 @@ print('areas of interest include: ')
 ## [1] "areas of interest include: "
 ```
 
+``` r
+cat(paste0(aois,collapse = "\n"))
+```
 
 ```
 ## cat
@@ -134,6 +137,9 @@ print('A selection of available StreamCat metrics include: ')
 ## [1] "A selection of available StreamCat metrics include: "
 ```
 
+``` r
+cat(paste0(name_params[1:10],collapse = "\n"))
+```
 
 ```
 ## agkffact
@@ -155,19 +161,7 @@ And the same information for LakeCat metrics is derived in similar fashion:
 aois <- lc_get_params(param='aoi')
 
 name_params <- lc_get_params(param='metric_names')
-```
 
-```
-## Warning in open.connection(con, "rb"): URL
-## 'https://api.epa.gov/StreamCat/lakes/metrics': Timeout of 60 seconds was
-## reached
-```
-
-```
-## An error occurred during req_perform(); the service may be down or function parameters may be mis-specified: cannot open the connection to 'https://api.epa.gov/StreamCat/lakes/metrics'
-```
-
-``` r
 print('areas of interest include: ')
 ```
 
@@ -175,6 +169,9 @@ print('areas of interest include: ')
 ## [1] "areas of interest include: "
 ```
 
+``` r
+cat(paste0(aois, collapse = "\n"))
+```
 
 ```
 ## cat
@@ -190,7 +187,22 @@ print('A selection of available LakeCat metrics include: ')
 ## [1] "A selection of available LakeCat metrics include: "
 ```
 
+``` r
+cat(paste0(name_params[1:10],collapse = "\n"))
+```
 
+```
+## agkffact
+## al2o3
+## bfi
+## canaldens
+## cao
+## cbnf
+## clay
+## coalminedens
+## compstrgth
+## damdens
+```
 
 StreamCat and LakeCat are built around the concepts of local drainage area (i.e catchment) and watershed (i.e. the local drainage area and all upstream catchments) [@hill2016streamcat].  This approach uses the NHDPlusV21 hydrographic framework of catchments as the building block for summarizing landscape information represented in landscape data and then programmatically summarizing both the catchment landscape summary and all upstream catchments. `sc_get_params` and `lc_get_params` also include a 'variable_info' parameter to return more detailed metadata for metrics including both short and long metric descriptions, years available (if applicable), units, and the metric category. 
 
@@ -198,38 +210,122 @@ StreamCat and LakeCat are built around the concepts of local drainage area (i.e 
 ``` r
 var_info <- sc_get_params(param='variable_info')
 
-my_data <- head(var_info[,c('metric','short_description','long_description','units')],10)
+my_data <- head(var_info[,c('metric','short_description','units')],10)
 
 knitr::kable(
   my_data,
   format = "latex",
   booktabs = TRUE,
   longtable = TRUE,
-  col.names = c('metric','short_description','long_description','units'),
-  align = "ccccc"
-)
+  col.names = c('Metric', 'Short Description', 'Units'),
+  align = "lll"
+)  |> 
+  kableExtra::kable_styling(
+    latex_options = c("repeat_header"),
+    font_size = 7
+  )  |> 
+  kableExtra::column_spec(1, width = "1.2in")  |> 
+  kableExtra::column_spec(2, width = "1.4in")  |> 
+  kableExtra::column_spec(3, width = "1.0in")   
 ```
 
+\begingroup\fontsize{7}{9}\selectfont
 
-\begin{longtable}{cccc}
+\begin{longtable}{>{\raggedright\arraybackslash}p{1.2in}>{\raggedright\arraybackslash}p{1.4in}>{\raggedright\arraybackslash}p{1.0in}}
 \toprule
-metric & short\_description & long\_description & units\\
+Metric & Short Description & Units\\
 \midrule
-NABD\_Dens[AOI] & NABD Dam Density & Density of georeferenced dams within AOI (dams/ square km) & Count/Square Kilometer\\
-NABD\_NIDStor[AOI] & NABD NID Reservoir Volume & Volume all reservoirs (NID\_STORA in NID) per unit area of AOI (cubic meters/square km) & Cubic Meters/Square Kilometer\\
-NABD\_NrmStor[AOI] & NABD Normal Reservoir Volume & Volume all reservoirs (NORM\_STORA in NID) per unit area of AOI (cubic meters/square km) & Cubic Meters/Square Kilometer\\
-Precip\_Minus\_EVT[AOI] & Surplus Precipitation & This dataset represents surplus precipitation (mm): precipitation minus potential evaporation described in DOI: 10.1016/j.scitotenv.2020.137661 within individual,  local NHDPlusV2 catchments and upstream, contributing watersheds. & Kilometer/Square Kilometer\\
-agkffact[AOI] & Ag Soil Erodibility Kf Factor & Mean of STATSGO Kffactor raster on agricultural land (NLCD 2006) within AOI. The Universal Soil Loss Equation (USLE) and represents a relative index of susceptibility of bare, cultivated soil to particle detachment and transport by rainfall & Unitless\\
-\addlinespace
-al2o3[AOI] & Mean Lithological Aluminum Oxide & Mean \% of lithological aluminum oxide (Al2O3) content in surface or near surface geology within AOI & Percent\\
-areasqkm[AOI] & Watershed Area Square Kilometers & Watershed area (square km) & Square Kilometers\\
-bankfulldepth & Predicted Bankfull Depth & Predicted bankfull depth: thalweg depth plus bankfull height, which is the height from the water surface to the bankfull stage & Meters\\
-bankfullwidth & Predicted Bankfull Width & Predicted bankfull width: distance from left to right bank at bankfull stage where the potential water height would spill outside of the channel and into the floodplain & Meters\\
-bfi[AOI] & Base Flow Index & Base flow is the component of streamflow that can be attributed to ground-water discharge into streams. The BFI is the ratio of base flow to total flow, expressed as a percentage, within AOI & Percent\\
-\bottomrule
-\end{longtable}
+\endfirsthead
+\multicolumn{3}{@{}l}{\textit{(continued)}}\\
+\toprule
+Metric & Short Description & Units\\
+\midrule
+\endhead
 
-Additional functions provided for getting metadata about the underlying StreamCat and LakeCat data include the `sc_fullname` and `lc_fullname` functions and the `sc_get_params` and `lc_get_params` functions, respectively. Users can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric dataset names, or the areas of interest the metrics are available for using the `sc_get_metric_names` or `lc_get_metric_names` functions. More details on these functions can be found at the [package introduction page](https://usepa.github.io/StreamCatTools/articles/Articles/Introduction.html). 
+\endfoot
+\bottomrule
+\endlastfoot
+NABD\_Dens[AOI] & NABD Dam Density & Count/Square Kilometer\\
+NABD\_NIDStor[AOI] & NABD NID Reservoir Volume & Cubic Meters/Square Kilometer\\
+NABD\_NrmStor[AOI] & NABD Normal Reservoir Volume & Cubic Meters/Square Kilometer\\
+Precip\_Minus\_EVT[AOI] & Surplus Precipitation & Kilometer/Square Kilometer\\
+agkffact[AOI] & Ag Soil Erodibility Kf Factor & Unitless\\
+\addlinespace
+al2o3[AOI] & Mean Lithological Aluminum Oxide & Percent\\
+areasqkm[AOI] & Watershed Area Square Kilometers & Square Kilometers\\
+bankfulldepth & Predicted Bankfull Depth & Meters\\
+bankfullwidth & Predicted Bankfull Width & Meters\\
+bfi[AOI] & Base Flow Index & Percent\\*
+\end{longtable}
+\endgroup{}
+
+Additional functions provided for getting metadata about the underlying StreamCat and LakeCat data include the `sc_fullname` and `lc_fullname` functions to provide the descriptive full name for any given metric in StreamCat or LakeCat:
+
+
+``` r
+fullname <- sc_fullname(metric='pctgrs2019')
+fullname
+```
+
+```
+## [1] "Grassland/Herbaceous Percentage 2019"
+```
+
+Users can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric dataset names, or the areas of interest available for a given metric using the `sc_get_metric_names` or `lc_get_metric_names` functions:
+
+
+``` r
+metrics <- sc_get_metric_names(category = c('Deposition','Climate'),
+                               aoi=c('Cat','Ws'))
+my_data <- head(metrics[,c('Category','Metric','AOI')],10)
+knitr::kable(
+  my_data,
+  format = "latex",
+  booktabs = TRUE,
+  longtable = TRUE,
+  col.names = c('Category','Metric','AOI'),
+  align = "lll"
+)  |> 
+  kableExtra::kable_styling(
+    latex_options = c("repeat_header"),
+    font_size = 7
+  )  |> 
+  kableExtra::column_spec(1, width = "1.2in") |>  
+  kableExtra::column_spec(2, width = "1.4in") |>   
+  kableExtra::column_spec(3, width = "1.0in")   
+```
+
+\begingroup\fontsize{7}{9}\selectfont
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{1.2in}>{\raggedright\arraybackslash}p{1.4in}>{\raggedright\arraybackslash}p{1.0in}}
+\toprule
+Category & Metric & AOI\\
+\midrule
+\endfirsthead
+\multicolumn{3}{@{}l}{\textit{(continued)}}\\
+\toprule
+Category & Metric & AOI\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+Climate & bfi[AOI] & Cat, Ws\\
+Deposition & inorgnwetdep[Year][AOI] & Cat, Ws\\
+Deposition & nh4[Year][AOI] & Cat, Ws\\
+Deposition & no3[Year][AOI] & Cat, Ws\\
+Climate & precip8110[AOI] & Cat, Ws\\
+\addlinespace
+Climate & precip9120[AOI] & Cat, Ws\\
+Climate & precip[Year][AOI] & Cat, Ws\\
+Deposition & sn[Year][AOI] & Cat, Ws\\
+Climate & tmax8110[AOI] & Cat, Ws\\
+Climate & tmax9120[AOI] & Cat, Ws\\*
+\end{longtable}
+\endgroup{}
+
+More details on these functions can be found at the [package introduction page](https://usepa.github.io/StreamCatTools/articles/Articles/Introduction.html). 
 
 The primary package functionality is in the `sc_get_data` and `lc_get_data` functions which allow users to extract catchment or watershed metrics of interest by providing NHDPlusV21 COMIDs for streams or lakes within the database. Users can also request data for a given state(s), county(ies), hydroregion(s), or all of CONUS.  Additionally, convenience functions are provided for accessing the NLCD and NNI datasets, respectively, using `sc_nlcd` and `lc_nlcd` and `sc_nni` and `lc_nni`. 
 
@@ -279,7 +375,7 @@ calapooia <- ggplot() +
 plot(calapooia)
 ```
 
-![](JOSS_files/figure-latex/unnamed-chunk-14-1.pdf)<!-- --> 
+![](JOSS_files/figure-latex/unnamed-chunk-12-1.pdf)<!-- --> 
 <!-- To Do -->
 Also show: new functionality for accessing and plotting NNI data.  Perhaps any other uses or applications we are aware of (such as CASTools R Shiny app).
 

@@ -75,7 +75,7 @@ Easily accessible, robust, and consistent watershed data is an underpinning of h
 
 <!-- Spell out API in figure caption -->
 
-```{r flowchart, fig.cap="Diagram of the StreamCat and StreamCatTools framework. A backend Oracle database and web service are exposed through api.gov to functions in StreamCatTools which simplify accesss and analysis of the data in R via the application programming interface.", echo=FALSE, label="flowchart",  out.width="70%", fig.align="center"}
+```{r flowchart, fig.cap="Diagram of the StreamCat and StreamCatTools framework. A backend Oracle database and web service are exposed through api.gov to functions in StreamCatTools which simplify accesss and analysis of the data in R via the application programming interface.", echo=FALSE, label="flowchart",  out.width="90%", fig.align="center"}
 knitr::include_graphics("Flowchart.png")
 ```
 
@@ -99,7 +99,7 @@ You can install the most recent development version from GitHub by running:
 library(StreamCatTools)
 ```
 
-`StreamCatTools` includes several functions to facilitate accessing and working with the data. First, users can list metric names and find out more about StreamCat and LakeCat data available in StreamCat using using the `sc_get_params` and `lc_get_params`functions. The parameters `aoi` and `metric_names` provide a user with the available areas of interest for metrics and names of metrics.  The areas of interest available for all metrics in StreamCat and Lakecat are 'cat' and 'ws' (catchment and watershed) and in StreamCat some metrics are available at the 100 meter riparian buffer scale ('catrp100' and 'wsrp100') and for certain metrics the designation of 'other' needs to be used (where the metric is in-stream or derived and not part of the other listed areas of interest). Extracting this information in `StreamCatTools` looks like this:
+`StreamCatTools` includes several functions to facilitate accessing and working with the data. First, users can list metric names and find out more about StreamCat and LakeCat data available in StreamCat using using the `sc_get_params` and `lc_get_params` functions. The parameters `aoi` and `metric_names` provide a user with the available areas of interest for metrics and names of metrics.  The areas of interest available for all metrics in StreamCat and Lakecat are 'cat' and 'ws' (catchment and watershed) and in StreamCat some metrics are available at the 100 meter riparian buffer scale ('catrp100' and 'wsrp100') and for certain metrics the designation of 'other' needs to be used (where the metric is in-stream or derived and not part of the other listed areas of interest). Extracting this information in `StreamCatTools` looks like this:
 
 ```{r}
 aois <- sc_get_params(param='aoi')
@@ -107,17 +107,13 @@ aois <- sc_get_params(param='aoi')
 name_params <- sc_get_params(param='metric_names')
 
 print('areas of interest include: ')
-```
 
-```{r, echo=FALSE}
 cat(paste0(aois,collapse = "\n"))
 ```
 
 ```{r}
 print('A selection of available StreamCat metrics include: ')
-```
 
-```{r, echo=FALSE}
 cat(paste0(name_params[1:10],collapse = "\n"))
 ```
 
@@ -129,17 +125,13 @@ aois <- lc_get_params(param='aoi')
 name_params <- lc_get_params(param='metric_names')
 
 print('areas of interest include: ')
-```
 
-```{r, echo=FALSE}
 cat(paste0(aois, collapse = "\n"))
 ```
 
 ```{r}
 print('A selection of available LakeCat metrics include: ')
-```
 
-```{r, echo=FALSE}
 cat(paste0(name_params[1:10],collapse = "\n"))
 ```
 
@@ -148,19 +140,56 @@ StreamCat and LakeCat are built around the concepts of local drainage area (i.e 
 ```{r}
 var_info <- sc_get_params(param='variable_info')
 
-my_data <- head(var_info[,c('metric','short_description','long_description','units')],10)
+my_data <- head(var_info[,c('metric','short_description','units')],10)
 
 knitr::kable(
   my_data,
   format = "latex",
   booktabs = TRUE,
   longtable = TRUE,
-  col.names = c('metric','short_description','long_description','units'),
-  align = "ccccc"
-)
+  col.names = c('Metric', 'Short Description', 'Units'),
+  align = "lll"
+)  |> 
+  kableExtra::kable_styling(
+    latex_options = c("repeat_header"),
+    font_size = 7
+  )  |> 
+  kableExtra::column_spec(1, width = "1.2in")  |> 
+  kableExtra::column_spec(2, width = "1.4in")  |> 
+  kableExtra::column_spec(3, width = "1.0in")   
 ```
 
-Additional functions provided for getting metadata about the underlying StreamCat and LakeCat data include the `sc_fullname` and `lc_fullname` functions and the `sc_get_params` and `lc_get_params` functions, respectively. Users can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric dataset names, or the areas of interest the metrics are available for using the `sc_get_metric_names` or `lc_get_metric_names` functions. More details on these functions can be found at the [package introduction page](https://usepa.github.io/StreamCatTools/articles/Articles/Introduction.html). 
+Additional functions provided for getting metadata about the underlying StreamCat and LakeCat data include the `sc_fullname` and `lc_fullname` functions to provide the descriptive full name for any given metric in StreamCat or LakeCat:
+
+```{r}
+fullname <- sc_fullname(metric='pctgrs2019')
+fullname
+```
+
+Users can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric dataset names, or the areas of interest available for a given metric using the `sc_get_metric_names` or `lc_get_metric_names` functions:
+
+```{r}
+metrics <- sc_get_metric_names(category = c('Deposition','Climate'),
+                               aoi=c('Cat','Ws'))
+my_data <- head(metrics[,c('Category','Metric','AOI')],10)
+knitr::kable(
+  my_data,
+  format = "latex",
+  booktabs = TRUE,
+  longtable = TRUE,
+  col.names = c('Category','Metric','AOI'),
+  align = "lll"
+)  |> 
+  kableExtra::kable_styling(
+    latex_options = c("repeat_header"),
+    font_size = 7
+  )  |> 
+  kableExtra::column_spec(1, width = "1.2in") |>  
+  kableExtra::column_spec(2, width = "1.4in") |>   
+  kableExtra::column_spec(3, width = "1.0in")   
+```
+
+More details on these functions can be found at the [package introduction page](https://usepa.github.io/StreamCatTools/articles/Articles/Introduction.html). 
 
 The primary package functionality is in the `sc_get_data` and `lc_get_data` functions which allow users to extract catchment or watershed metrics of interest by providing NHDPlusV21 COMIDs for streams or lakes within the database. Users can also request data for a given state(s), county(ies), hydroregion(s), or all of CONUS.  Additionally, convenience functions are provided for accessing the NLCD and NNI datasets, respectively, using `sc_nlcd` and `lc_nlcd` and `sc_nni` and `lc_nni`. 
 
