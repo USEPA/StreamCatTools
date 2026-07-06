@@ -44,9 +44,11 @@ journal: JOSS
 
 header-includes:
   - \usepackage{graphicx}
+  - \usepackage{natbib}
   - \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
   - \providecommand{\pandocnewline}{\\}
   - \providecommand{\pandocbounded}[1]{#1}
+  - \AtBeginDocument{\setcitestyle{maxcitenames=2,mincitenames=1}}
   - \providecommand{\pandocboundedpreserve}[1]{#1}
   - \usepackage{fvextra}  % extends fancyvrb
   - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,breakautoindent=true,commandchars=\\\{\},fontsize=\small}
