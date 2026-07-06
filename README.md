@@ -7,6 +7,7 @@
 [![R-CMD-check](https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/StreamCatTools)](https://cran.r-project.org/package=StreamCatTools)
 [![CodeCov](https://img.shields.io/badge/test%20coverage-82.62%25-388600.svg)](https://img.shields.io/badge/test%20coverage-82.62%25-388600.svg)
+[![DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/USEPA/StreamCatTools)
 <!-- badges: end -->
 
 ## StreamCatTools: Tools to work with the [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) API within R and access the full suite of StreamCat and [LakeCat](https://www.epa.gov/national-aquatic-resource-surveys/lakecat-dataset) metrics.
