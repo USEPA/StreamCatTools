@@ -13,44 +13,40 @@ authors:
     orcid: 0000-0001-9583-0426
     affiliation: 2
   - name: Selia Markley
-    orcid: 
     affiliation: 4
   - name: Travis Hudson
-    orcid:  
     affiliation: 3
   - name: Alan Brookes
-    orcid: 
     affiliation: 2
-  
-affiliations:
- - name: Office of Water, United States Environmental Protection Agency
-   index: 1
- - name: United States Environmental Protection Agency Retired
-   index: 2
- - name: Oak Ridge Associated Universities Student Services Contractor c/o United States Environmental Protection Agency
-   index: 3
- - name: Oak Ridge Institude for Science and Education Fellow c/o United States Environmental Protection Agency
-   index: 4
 
-citation_author: Weber et. al.
+affiliations:
+  - name: Office of Water, United States Environmental Protection Agency
+    index: 1
+  - name: United States Environmental Protection Agency Retired
+    index: 2
+  - name: Oak Ridge Associated Universities Student Services Contractor c/o United States Environmental Protection Agency
+    index: 3
+  - name: Oak Ridge Institute for Science and Education Fellow c/o United States Environmental Protection Agency
+    index: 4
+
+citation_author: Weber et al.
 date: 25 August 2026
 year: 2026
 bibliography: paper.bib
-output:
-  bookdown::pdf_book:
-    base_format: rticles::joss_article
 csl: apa.csl
 journal: JOSS
+output:
+  rticles::joss_article:
+    keep_tex: true
 
 header-includes:
-  - \usepackage{graphicx}
-  - \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-  - \providecommand{\pandocnewline}{\\}
   - \providecommand{\pandocbounded}[1]{#1}
-  - \providecommand{\pandocboundedpreserve}[1]{#1}
-  - \usepackage{fvextra}  % extends fancyvrb
-  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,breakautoindent=true,commandchars=\\\{\},fontsize=\small}
-  - \DefineVerbatimEnvironment{Verbatim}{Verbatim}{breaklines,breakanywhere,breakautoindent=true,fontsize=\small}
+  - \providecommand{\pandocnewline}{\\}
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,commandchars=\\\{\}}
+  - \DefineVerbatimEnvironment{Verbatim}{Verbatim}{breaklines,breakanywhere}
+  - \ExecuteBibliographyOptions{maxcitenames=2,mincitenames=1,maxbibnames=99}
+  - \AtBeginDocument{\AtBeginBibliography{\defcounter{maxnames}{2}\defcounter{minnames}{1}}}
 ---
 
 
@@ -75,7 +71,7 @@ Easily accessible, robust, and consistent watershed data is an underpinning of h
 
 }
 
-\caption{Diagram of the StreamCat and StreamCatTools framework. A backend Oracle database and web service are exposed through api.gov to functions in StreamCatTools which simplify accesss and analysis of the data in R via the application programming interface.}(\#fig:flowchart)
+\caption{Diagram of the StreamCat and StreamCatTools framework. A backend Oracle database and web service are exposed through api.gov to functions in StreamCatTools which simplify accesss and analysis of the data in R via the application programming interface.}\label{fig:flowchart}
 \end{figure}
 
 The core functions in `StreamCatTools` leverage the `httr2` library [@wickham2025httr2] for a modern, pipeable method for working with APIs. Specifically, `StreamCatTools` simplifies the calls to the API for StreamCat and LakeCat data within the R programming language to allow a user to: (1) access details on available StreamCat and LakeCat metrics, (2) match users' sites to NHDPlusV21 waterbodies (streams or lakes) to access StreamCat and Lakecat data, and (3) retrieve StreamCat and LakeCat watershed metrics by COMID, by state, by county, by hydroregion, or for all of CONUS.  Additionally, several convenience functions retrieve data from particular years for data with time series, such as the National Land Cover Database (NLCD) [@usgsnlcd] <!-- citation looks odd in PDF --> and the National Nutrient Inventory (NNI) [@nutinventory]. Lastly, there is plotting functionality for use with NNI metrics as well as a function to retrieve the watersheds for specific lake features as an `sf` object.  Users can likewise access watersheds for specific COMIDs using the `nhdplusTools` package for visualization of and plotting of watersheds to go along with StreamCat or LakeCat metrics.
@@ -113,7 +109,7 @@ print('areas of interest include: ')
 ```
 
 ```
-## [1] "areas of interest include: "
+#> [1] "areas of interest include: "
 ```
 
 ``` r
@@ -121,11 +117,11 @@ cat(paste0(aois,collapse = "\n"))
 ```
 
 ```
-## cat
-## catrp100
-## other
-## ws
-## wsrp100
+#> cat
+#> catrp100
+#> other
+#> ws
+#> wsrp100
 ```
 
 
@@ -134,7 +130,7 @@ print('A selection of available StreamCat metrics include: ')
 ```
 
 ```
-## [1] "A selection of available StreamCat metrics include: "
+#> [1] "A selection of available StreamCat metrics include: "
 ```
 
 ``` r
@@ -142,16 +138,16 @@ cat(paste0(name_params[1:10],collapse = "\n"))
 ```
 
 ```
-## agkffact
-## al2o3
-## bankfulldepth
-## bankfullwidth
-## bfi
-## canaldens
-## cao
-## cbnf
-## chem
-## clay
+#> agkffact
+#> al2o3
+#> bankfulldepth
+#> bankfullwidth
+#> bfi
+#> canaldens
+#> cao
+#> cbnf
+#> chem
+#> clay
 ```
 
 And the same information for LakeCat metrics is derived in similar fashion:
@@ -166,7 +162,7 @@ print('areas of interest include: ')
 ```
 
 ```
-## [1] "areas of interest include: "
+#> [1] "areas of interest include: "
 ```
 
 ``` r
@@ -174,8 +170,8 @@ cat(paste0(aois, collapse = "\n"))
 ```
 
 ```
-## cat
-## ws
+#> cat
+#> ws
 ```
 
 
@@ -184,7 +180,7 @@ print('A selection of available LakeCat metrics include: ')
 ```
 
 ```
-## [1] "A selection of available LakeCat metrics include: "
+#> [1] "A selection of available LakeCat metrics include: "
 ```
 
 ``` r
@@ -192,16 +188,16 @@ cat(paste0(name_params[1:10],collapse = "\n"))
 ```
 
 ```
-## agkffact
-## al2o3
-## bfi
-## canaldens
-## cao
-## cbnf
-## clay
-## coalminedens
-## compstrgth
-## damdens
+#> agkffact
+#> al2o3
+#> bfi
+#> canaldens
+#> cao
+#> cbnf
+#> clay
+#> coalminedens
+#> compstrgth
+#> damdens
 ```
 
 StreamCat and LakeCat are built around the concepts of local drainage area (i.e catchment) and watershed (i.e. the local drainage area and all upstream catchments) [@hill2016streamcat].  This approach uses the NHDPlusV21 hydrographic framework of catchments as the building block for summarizing landscape information represented in landscape data and then aggregating both the catchment landscape summary and all upstream catchments using the weighted average of metrics in most cases, but using a sum or count for certain metrics. `sc_get_params` and `lc_get_params` also include a 'variable_info' parameter to return more detailed metadata for metrics including both short and long metric descriptions, years available (if applicable), units, and the metric category. 
@@ -265,7 +261,7 @@ fullname
 ```
 
 ```
-## [1] "Grassland/Herbaceous Percentage 2019"
+#> NULL
 ```
 
 Users can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric dataset names, or the areas of interest available for a given metric using the `sc_get_metric_names` or `lc_get_metric_names` functions:
