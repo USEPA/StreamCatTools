@@ -1,20 +1,10 @@
 ---
-title: "Start Here"
-output: 
-  html_document:
-    theme: flatly
-    keep_md: yes
-    number_sections: true
-    highlighted: default 
-    toc: yes
-    toc_float:
-      collapsed: no
-      smooth_scroll: no
-    toc_depth: 2
+title: "StartHere"
+output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Start Here}
-  %\VignetteEncoding{UTF-8}{inputenc}
+  %\VignetteIndexEntry{StartHere}
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}

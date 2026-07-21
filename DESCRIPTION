@@ -1,26 +1,27 @@
 Package: StreamCatTools
 Type: Package
-Title: 'StreamCatTools'
+Title: StreamCatTools: Tools for Working with StreamCat and LakeCat Data
 Version: 0.11.0
+Date: 2026-05-15
 Authors@R: c(person(given = "Marc", 
                     family = "Weber", 
                     role = c("aut", "cre"), 
                     email = "weber.marc@epa.gov"),
              person(given = "Ryan",
                     family = "Hill",
-                    role = "ctb",
+                    role = "aut",
                     email = "hill.ryan@epa.gov"),
              person(given = "Selia",
                     family = "Markley",
-                    role = "ctb",
+                    role = "aut",
                     email = "markley.selia@epa.gov"),
              person(given = "Travis",
                     family = "Hudson",
-                    role = "ctb",
+                    role = "aut",
                     email = "travish1842@gmail.com"),
              person(given = "Allen",
                     family = "Brookes",
-                    role = "ctb",
+                    role = "aut",
                     email = "brookes.allen@epa.gov"),
              person(given = "David",
                     family = "Rebhuhn",
@@ -76,7 +77,7 @@ Suggests:
 Encoding: UTF-8
 URL: https://usepa.github.io/StreamCatTools/, https://github.com/USEPA/StreamCatTools
 BugReports: https://github.com/USEPA/StreamCatTools/issues
-VignetteBuilder: knitr,rmarkdown
+VignetteBuilder: knitr
 LazyData: true
 License: CC0
 NeedsCompilation: no
