@@ -5,17 +5,17 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>StreamCatTools • StreamCatTools</title>
+<title>StreamCatTools: Tools for Working with StreamCat and LakeCat Data • StreamCatTools</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" sizes="any" href="favicon.ico">
 <link rel="manifest" href="site.webmanifest">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="StreamCatTools">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="StreamCatTools: Tools for Working with StreamCat and LakeCat Data">
 <meta name="description" content="Tools for using the StreamCat and LakeCat API and interacting with the StreamCat and LakeCat database. Convenience functions in the package wrap the API for StreamCat on &lt;https://api.epa.gov/StreamCat/streams/metrics&gt;.">
 <meta property="og:description" content="Tools for using the StreamCat and LakeCat API and interacting with the StreamCat and LakeCat database. Convenience functions in the package wrap the API for StreamCat on &lt;https://api.epa.gov/StreamCat/streams/metrics&gt;.">
 <meta property="og:image" content="https://usepa.github.io/StreamCatTools/logo.png">
@@ -41,7 +41,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/StartHere.html">Start Here</a></li>
+<li><a class="dropdown-item" href="articles/StartHere.html">StartHere</a></li>
     <li><a class="dropdown-item" href="articles/Articles/Introduction.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="articles/Articles/LakeCat.html">Working with LakeCat data</a></li>
     <li><a class="dropdown-item" href="articles/Articles/NNI.html">National Nutrient Inventory (NNI) Data in StreamCat</a></li>
@@ -87,11 +87,9 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"USEPA/StreamCatTools"</span>, build_vignettes<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://usepa.github.io/StreamCatTools/">StreamCatTools</a></span><span class="op">)</span></span></code></pre></div>
-<p>To view the vignettes in RStudio, run</p>
+<p>To view the vignette in RStudio, run</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"Introduction"</span>, <span class="st">"StreamCatTools"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"Applications"</span>, <span class="st">"StreamCatTools"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"LakeCat"</span>, <span class="st">"StreamCatTools"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"StartHere"</span>, <span class="st">"StreamCatTools"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
@@ -116,8 +114,22 @@
 <div class="section level3">
 <h3 id="recommended-citation">Recommended Citation:<a class="anchor" aria-label="anchor" href="#recommended-citation"></a>
 </h3>
-<pre><code>  Weber, Marc H, Hill, Ryan A., Brookes, Allen F. 2024, StreamCatTools: Tools to work with the StreamCat API within R and access the full suite of StreamCat and LakeCat metrics,
-  https://usepa.github.io/StreamCatTools</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">citation</span>(<span class="at">package =</span> <span class="st">"StreamCatTools"")</span></span></code></pre></div>
+<pre><code>To cite package ‘StreamCatTools’ in publications use:
+
+  Weber M, Hill R, Markley S, Hudson T, Brookes A (2026). _StreamCatTools:
+  StreamCatTools: Tools for Working with StreamCat and LakeCat Data_. R package
+  version 0.11.0, &lt;https://usepa.github.io/StreamCatTools/&gt;.
+
+A BibTeX entry for LaTeX users is
+
+  @Manual{,
+    title = {StreamCatTools: StreamCatTools: Tools for Working with StreamCat and LakeCat Data},
+    author = {Marc Weber and Ryan Hill and Selia Markley and Travis Hudson and Allen Brookes},
+    year = {2026},
+    note = {R package version 0.11.0},
+    url = {https://usepa.github.io/StreamCatTools/},
+  }</code></pre>
 </div>
 <div class="section level3">
 <h3 id="disclaimer">Disclaimer<a class="anchor" aria-label="anchor" href="#disclaimer"></a>
@@ -155,6 +167,10 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Marc Weber <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Ryan Hill <br><small class="roles"> Author </small>   </li>
+<li>Selia Markley <br><small class="roles"> Author </small>   </li>
+<li>Travis Hudson <br><small class="roles"> Author </small>   </li>
+<li>Allen Brookes <br><small class="roles"> Author </small>   </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -168,6 +184,7 @@
 <li><a href="https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://cran.r-project.org/package=StreamCatTools" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/StreamCatTools" alt="Downloads"></a></li>
 <li><a href="https://img.shields.io/badge/test%20coverage-82.62%25-388600.svg" class="external-link"><img src="https://img.shields.io/badge/test%20coverage-82.62%25-388600.svg" alt="CodeCov"></a></li>
+<li><a href="https://deepwiki.com/USEPA/StreamCatTools" class="external-link"><img src="https://deepwiki.com/badge.svg" alt="DeepWiki"></a></li>
 </ul>
 </div>
 
@@ -176,7 +193,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Marc Weber.</p>
+  <p>Developed by Marc Weber, Ryan Hill, Selia Markley, Travis Hudson, Allen Brookes.</p>
 </div>
 
 <div class="pkgdown-footer-right">
