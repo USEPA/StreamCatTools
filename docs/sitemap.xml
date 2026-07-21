@@ -1,17 +1,13 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://usepa.github.io/StreamCatTools/404.html</loc></url>
-<url><loc>https://usepa.github.io/StreamCatTools/articles/Applications.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/Articles/Applications.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/Articles/Introduction.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/Articles/LakeCat.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/Articles/NNI.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/index.html</loc></url>
-<url><loc>https://usepa.github.io/StreamCatTools/articles/Introduction.html</loc></url>
-<url><loc>https://usepa.github.io/StreamCatTools/articles/LakeCat.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/articles/StartHere.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/authors.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/index.html</loc></url>
-<url><loc>https://usepa.github.io/StreamCatTools/LICENSE-text.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/LICENSE.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/news/index.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/index.html</loc></url>
@@ -23,7 +19,6 @@
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_nni.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_params.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_get_watershed.html</loc></url>
-<url><loc>https://usepa.github.io/StreamCatTools/reference/lc_nlcd.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/lc_plotnni.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/sc_fullname.html</loc></url>
 <url><loc>https://usepa.github.io/StreamCatTools/reference/sc_get_comid.html</loc></url>

@@ -137,12 +137,13 @@ returns a tibble of information about StreamCat metrics):</p>
 <code class="sourceCode R"><span><span class="va">metric</span><span class="op">=</span><span class="st">'pcthbwet2016'</span></span>
 <span><span class="va">fullname</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/lc_fullname.html">lc_fullname</a></span><span class="op">(</span><span class="va">metric</span><span class="op">)</span></span>
 <span><span class="va">fullname</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Herbaceous Wetland Percentage 2016"</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metric</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'pctdecid2019'</span>,<span class="st">'fert'</span><span class="op">)</span></span>
 <span><span class="va">fullname</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/lc_fullname.html">lc_fullname</a></span><span class="op">(</span><span class="va">metric</span><span class="op">)</span></span>
 <span><span class="va">fullname</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Deciduous Forest Percentage 2019"                   </span></span>
+<span><span class="co">#&gt; [2] "Synthetic Nitrogen Fertilizer Application Mean Rate"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="filter-metric-information-by-criteria">Filter metric information by criteria<a class="anchor" aria-label="anchor" href="#filter-metric-information-by-criteria"></a>
@@ -430,15 +431,15 @@ shown below.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">tic</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">ws</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/lc_get_watershed.html">lc_get_watershed</a></span><span class="op">(</span>comid <span class="op">=</span> <span class="fl">19334077</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   |                                                                              |                                                                      |   0%[17:19:29] duckdb version: 1.5.2</span></span>
-<span><span class="co">#&gt;   |                                                                              |==========                                                            |  14%  |                                                                              |====================                                                  |  29%[17:19:30] Loading and configuring httpfs ...</span></span>
-<span><span class="co">#&gt;   |                                                                              |==============================                                        |  43%[17:19:33] Using glob: s3://dmap-data-commons-ow/data/streamcat/LakeCatWatersheds/**/*.parquet</span></span>
-<span><span class="co">#&gt;   |                                                                              |========================================                              |  57%[17:19:33] Describing schema ...</span></span>
-<span><span class="co">#&gt;   |                                                                              |==================================================                    |  71%  |                                                                              |============================================================          |  86%[17:19:34] Querying COMID = 19334077</span></span>
-<span><span class="co">#&gt; [17:21:34] Rows returned: 1</span></span>
+<span><span class="co">#&gt;   |                                                                              |                                                                      |   0%[10:15:39] duckdb version: 1.5.2</span></span>
+<span><span class="co">#&gt;   |                                                                              |==========                                                            |  14%  |                                                                              |====================                                                  |  29%[10:15:39] Loading and configuring httpfs ...</span></span>
+<span><span class="co">#&gt;   |                                                                              |==============================                                        |  43%[10:15:52] Using glob: s3://dmap-data-commons-ow/data/streamcat/LakeCatWatersheds/**/*.parquet</span></span>
+<span><span class="co">#&gt;   |                                                                              |========================================                              |  57%[10:15:52] Describing schema ...</span></span>
+<span><span class="co">#&gt;   |                                                                              |==================================================                    |  71%  |                                                                              |============================================================          |  86%[10:15:53] Querying COMID = 19334077</span></span>
+<span><span class="co">#&gt; [10:17:46] Rows returned: 1</span></span>
 <span><span class="co">#&gt;   |                                                                              |======================================================================| 100%</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 125.51 sec elapsed</span></span></code></pre></div>
+<span><span class="co">#&gt; 127.53 sec elapsed</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="adding-a-huc2-query-parameter-and-using-multi-threading-speeds-the-process-significantly">Adding a HUC2 query parameter and using multi-threading speeds the
 process significantly<a class="anchor" aria-label="anchor" href="#adding-a-huc2-query-parameter-and-using-multi-threading-speeds-the-process-significantly"></a>
@@ -447,14 +448,14 @@ process significantly<a class="anchor" aria-label="anchor" href="#adding-a-huc2-
 <code class="sourceCode R"><span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">tic</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">ws</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/lc_get_watershed.html">lc_get_watershed</a></span><span class="op">(</span>comid <span class="op">=</span> <span class="fl">19334077</span>, huc2 <span class="op">=</span> <span class="st">"01"</span>,huc2_filter <span class="op">=</span> <span class="st">"01"</span>, </span>
 <span>                      threads <span class="op">=</span> <span class="fl">2</span>,retries <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   |                                                                              |                                                                      |   0%[17:21:35] duckdb version: 1.5.2</span></span>
-<span><span class="co">#&gt;   |                                                                              |==========                                                            |  14%  |                                                                              |====================                                                  |  29%[17:21:35] Loading and configuring httpfs ...</span></span>
-<span><span class="co">#&gt;   |                                                                              |==============================                                        |  43%  |                                                                              |========================================                              |  57%[17:21:38] Describing schema ...</span></span>
-<span><span class="co">#&gt;   |                                                                              |==================================================                    |  71%  |                                                                              |============================================================          |  86%[17:21:43] Querying COMID = 19334077 within HUC2=01</span></span>
-<span><span class="co">#&gt; [17:22:20] Rows returned: 1</span></span>
+<span><span class="co">#&gt;   |                                                                              |                                                                      |   0%[10:17:46] duckdb version: 1.5.2</span></span>
+<span><span class="co">#&gt;   |                                                                              |==========                                                            |  14%  |                                                                              |====================                                                  |  29%[10:17:46] Loading and configuring httpfs ...</span></span>
+<span><span class="co">#&gt;   |                                                                              |==============================                                        |  43%  |                                                                              |========================================                              |  57%[10:17:46] Describing schema ...</span></span>
+<span><span class="co">#&gt;   |                                                                              |==================================================                    |  71%  |                                                                              |============================================================          |  86%[10:17:48] Querying COMID = 19334077 within HUC2=01</span></span>
+<span><span class="co">#&gt; [10:18:37] Rows returned: 1</span></span>
 <span><span class="co">#&gt;   |                                                                              |======================================================================| 100%</span></span>
 <span><span class="fu">tictoc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tictoc/man/tic.html" class="external-link">toc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 45.3 sec elapsed</span></span></code></pre></div>
+<span><span class="co">#&gt; 50.63 sec elapsed</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="view-lake-with-watershed">View lake with watershed<a class="anchor" aria-label="anchor" href="#view-lake-with-watershed"></a>
