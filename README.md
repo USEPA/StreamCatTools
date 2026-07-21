@@ -33,12 +33,11 @@ install_github("USEPA/StreamCatTools", build_vignettes=TRUE)
 library(StreamCatTools)
 ```
 
-To view the vignettes in RStudio, run
+To view the vignette in RStudio, run
 ```r
-vignette("Introduction", "StreamCatTools")
-vignette("Applications", "StreamCatTools")
-vignette("LakeCat", "StreamCatTools")
+vignette("StartHere", "StreamCatTools")
 ```
+
 ### Contributing
 Contributions to development of the package are welcome and encouraged. Please consider the following guidlelines for contributing to `StreamCatTools`:
 
@@ -53,9 +52,26 @@ Contributions to development of the package are welcome and encouraged. Please c
 [PyNHD](https://github.com/hyriver/pynhd), part of the [HyRiver](https://github.com/hyriver) suite of Python packages, also provides access to StreamCat data via the API in Python, along with other NHDPlus value-added attributes for catchments and catchment and network accumulated values for catchments available via [USGS ScienceBase](https://www.usgs.gov/tools/sciencebase)
 
 ### Recommended Citation:
+```r
+citation(package = "StreamCatTools"")
 ```
-  Weber, Marc H, Hill, Ryan A., Brookes, Allen F. 2024, StreamCatTools: Tools to work with the StreamCat API within R and access the full suite of StreamCat and LakeCat metrics,
-  https://usepa.github.io/StreamCatTools
+
+```
+To cite package ‘StreamCatTools’ in publications use:
+
+  Weber M, Hill R, Markley S, Hudson T, Brookes A (2026). _StreamCatTools:
+  StreamCatTools: Tools for Working with StreamCat and LakeCat Data_. R package
+  version 0.11.0, <https://usepa.github.io/StreamCatTools/>.
+
+A BibTeX entry for LaTeX users is
+
+  @Manual{,
+    title = {StreamCatTools: StreamCatTools: Tools for Working with StreamCat and LakeCat Data},
+    author = {Marc Weber and Ryan Hill and Selia Markley and Travis Hudson and Allen Brookes},
+    year = {2026},
+    note = {R package version 0.11.0},
+    url = {https://usepa.github.io/StreamCatTools/},
+  }
 ```
 ### Disclaimer
 The United States Environmental Protection Agency (EPA) GitHub project code is provided on an "as is" basis and the user assumes responsibility for its use.  EPA has relinquished control of the information and no longer has responsibility to protect the integrity , confidentiality, or availability of the information.  Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by EPA.  The EPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by EPA or the United States Government.
