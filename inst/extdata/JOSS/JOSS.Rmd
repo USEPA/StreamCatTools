@@ -77,7 +77,7 @@ Easily accessible, robust, and consistent watershed data underpin hydrology rese
 knitr::include_graphics("Flowchart.png")
 ```
 
-The core functions in `StreamCatTools` leverage the `httr2` library [@wickham2025httr2] for a modern, pipeable method for working with APIs. Specifically, `StreamCatTools` simplifies the calls to the API for StreamCat and LakeCat data within the R programming language to allow a user to: (1) access details on available StreamCat and LakeCat metrics; (2) match users' sites to NHDPlusV21 waterbodies (streams or lakes) to access site-relevant StreamCat and Lakecat data; and (3) retrieve StreamCat and LakeCat watershed metrics by COMID, by state, by county, by hydroregion, or for all of CONUS.  Additionally, several convenience functions to retrieve year-specific data for variables with time series data, such as the National Land Cover Database (NLCD) [@usgsnlcd] and the National Nutrient Inventory (NNI) [@nutinventory]. Lastly, there is plotting functionality for use with NNI metrics as well as a function to retrieve the watersheds for specific lake features as an `sf` object.  Users also can access watersheds for specific COMIDs using the `nhdplusTools` package for visualization and plotting of watersheds along with StreamCat or LakeCat metrics.
+The core functions in `StreamCatTools` leverage the `httr2` library [@wickham2025httr2] for a modern, pipeable method for working with APIs. Specifically, `StreamCatTools` simplifies the calls to the API for StreamCat and LakeCat data within the R programming language to allow a user to: (1) access details on available StreamCat and LakeCat metrics; (2) match users' sites to NHDPlusV21 waterbodies (streams or lakes) to access site-relevant StreamCat and Lakecat data; and (3) retrieve StreamCat and LakeCat watershed metrics by COMID, by state, by county, by hydroregion, or for all of CONUS.  Additionally, several convenience functions to retrieve year-specific data for variables with time series data, such as the National Land Cover Database (NLCD) [@NLCD] and the National Nutrient Inventory (NNI) [@nutinventory]. Lastly, there is plotting functionality for use with NNI metrics as well as a function to retrieve the watersheds for specific lake features as an `sf` object.  Users also can access watersheds for specific COMIDs using the `nhdplusTools` package for visualization and plotting of watersheds along with StreamCat or LakeCat metrics.
 
 You can install the most recent version of `StreamCatTools` from CRAN by running:
 
@@ -85,11 +85,13 @@ You can install the most recent version of `StreamCatTools` from CRAN by running
 install.packages("StreamCatTools")
 ```
 
-You can install the most recent package version from GitHub by running either:
+You can install the most recent package version from GitHub by running:
+<!-- jwh: recommend updating to pak.  remotes is eventually slated for replacement
+https://remotes.r-lib.org/MAINTENANCE.html?q=pak#future-directions -->
 ```{r, eval = FALSE}
-install.packages(“remotes”)
-library(remotes)
-install_github("USEPA/StreamCatTools", build_vignettes=FALSE)
+install.packages(“pak”)
+library(pak)
+pkg_install("github::USEPA/StreamCatTools")
 ```
 
 `StreamCatTools` is loaded into an **R** session:
@@ -100,21 +102,16 @@ library(StreamCatTools)
 
 `StreamCatTools` includes several functions to facilitate accessing and working with the data. First, users can list metric names and find out more about StreamCat and LakeCat data available in StreamCat using using the `sc_get_params()` and `lc_get_params()` functions. The parameters `aoi` and `metric_names` provide a user with the available areas of interest for metrics and names of metrics.  The areas of interest available for all metrics in StreamCat and Lakecat are 'cat' and 'ws' (catchment and watershed) and in StreamCat some metrics are available at the 100 meter riparian buffer scale ('catrp100' and 'wsrp100') and for certain metrics the designation of 'other' needs to be used (where the metric is in-stream or derived and not part of the other listed areas of interest). Extracting this information in `StreamCatTools` looks like this:
 
+<!-- Clean up these code chunks with the print/cat stuff.  All of this is getting echoed and all you really want is to see what the output looks like.  I would just allow it to use the default print.  I've changed this code chunk to what I would use.  If you want more customized prints, you'll need to get fancy so that the code doesn't echo.-->
 ```{r warning=FALSE, message=FALSE}
 aois <- sc_get_params(param='aoi')
+aois
 
 name_params <- sc_get_params(param='metric_names')
+name_params[1:10]
 
-print('areas of interest include: ')
-
-cat(paste0(aois,collapse = "\n"))
 ```
 
-```{r warning=FALSE, message=FALSE}
-print('A selection of available StreamCat metrics include: ')
-
-cat(paste0(name_params[1:10],collapse = "\n"))
-```
 
 And the same information for LakeCat metrics is derived in similar fashion:
 
@@ -136,7 +133,8 @@ cat(paste0(name_params[1:10],collapse = "\n"))
 
 StreamCat and LakeCat are built around the concepts of local drainage area (i.e catchment) and watershed (i.e. the local drainage area and all upstream catchments) [@hill2016streamcat].  This approach uses the NHDPlusV21 hydrographic framework of catchments as the building block for summarizing information represented in landscape data and then aggregating both the catchment landscape summary and all upstream catchment summaries using either the weighted average of metrics (in most cases) or a sum or count (for certain metrics). `sc_get_params()` and `lc_get_params()` also include a 'variable_info' parameter to return more detailed metadata for metrics including both short and long metric descriptions, years available (if applicable), units, and the metric category. 
 
-```{r warning=FALSE, message=FALSE}
+<!-- jwh: Same as above comment, this code should not be included in the rendered doc.  update all code chunks creating table.  I added echo = FALSE to this one.  Also tables should have a caption.--> 
+```{r warning=FALSE, message=FALSE, echo=FALSE}
 var_info <- sc_get_params(param='variable_info')
 
 my_data <- head(var_info[c(5,10,29,33,45,102),c('metric','short_description','year','units')])
