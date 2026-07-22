@@ -71,9 +71,8 @@ Easily accessible, robust, and consistent watershed data underpin hydrology rese
 
 `StreamCatTools` provides a simple streamlined set of functions to easily query and ingest watershed landscape metrics into an R session. Figure \@ref(fig:flowchart) shows the overall framework of the StreamCat database, application programming interface, and functionality in the package that simplifies data access in R using web services for the StreamCat and LakeCat datasets. 
 
-<!-- Spell out API in figure caption -->
 
-```{r flowchart, fig.cap="Diagram of the StreamCat and StreamCatTools framework. The backend Oracle database and REST (Representational State Transfer) web service are exposed through api.gov to functions in StreamCatTools that simplify accesss and analysis of the data in R via the application programming interface (API). The example here shows the general categories of Oracle database tables in the StreamCat Oracle database", echo=FALSE, label="flowchart",  out.width="95%", fig.align="center"}
+```{r flowchart, fig.cap="Diagram of the StreamCat and StreamCatTools framework. The backend Oracle database and REST web service are exposed through api.gov to functions in StreamCatTools that simplify access and analysis of the data in R via the application programming interface (API). The example here shows the general categories of Oracle database tables in the StreamCat Oracle database.", echo=FALSE, fig.align="center", out.width="95%"}
 knitr::include_graphics("Flowchart.png")
 ```
 
@@ -85,9 +84,8 @@ You can install the most recent version of `StreamCatTools` from CRAN by running
 install.packages("StreamCatTools")
 ```
 
-You can install the most recent package version from GitHub by running:
-<!-- jwh: recommend updating to pak.  remotes is eventually slated for replacement
-https://remotes.r-lib.org/MAINTENANCE.html?q=pak#future-directions -->
+You can install the most recent package version from GitHub by running (note we use `pak` as the replacement for `remotes` for package installation from GitHub):
+
 ```{r, eval = FALSE}
 install.packages(“pak”)
 library(pak)
@@ -100,61 +98,46 @@ pkg_install("github::USEPA/StreamCatTools")
 library(StreamCatTools)
 ```
 
-`StreamCatTools` includes several functions to facilitate accessing and working with the data. First, users can list metric names and find out more about StreamCat and LakeCat data available in StreamCat using using the `sc_get_params()` and `lc_get_params()` functions. The parameters `aoi` and `metric_names` provide a user with the available areas of interest for metrics and names of metrics.  The areas of interest available for all metrics in StreamCat and Lakecat are 'cat' and 'ws' (catchment and watershed) and in StreamCat some metrics are available at the 100 meter riparian buffer scale ('catrp100' and 'wsrp100') and for certain metrics the designation of 'other' needs to be used (where the metric is in-stream or derived and not part of the other listed areas of interest). Extracting this information in `StreamCatTools` looks like this:
+`StreamCatTools` includes several functions to retrieve basic metric metadata. First, users can list metric names and find out more about StreamCat and LakeCat data available in StreamCat using using the `sc_get_params()` and `lc_get_params()` functions. The parameters `aoi` and `metric_names` provide a user with the available areas of interest for metrics and names of metrics.  The areas of interest available for all metrics in StreamCat and Lakecat are 'cat' and 'ws' (catchment and watershed). Some metrics are available at the 100 meter riparian buffer scale ('catrp100' and 'wsrp100') fjust for stream metrics in StreamCat, and for certain metrics the designation of 'other' needs to be used (where the metric is in-stream or derived and not part of the other listed areas of interest). Extracting this information in `StreamCatTools` looks like this:
 
-<!-- Clean up these code chunks with the print/cat stuff.  All of this is getting echoed and all you really want is to see what the output looks like.  I would just allow it to use the default print.  I've changed this code chunk to what I would use.  If you want more customized prints, you'll need to get fancy so that the code doesn't echo.-->
 ```{r warning=FALSE, message=FALSE}
 aois <- sc_get_params(param='aoi')
 aois
-
-name_params <- sc_get_params(param='metric_names')
-name_params[1:10]
-
 ```
 
+```{r warning=FALSE, message=FALSE}
+names <- sc_get_params(param='metric_names')
+names[1:10]
+```
 
 And the same information for LakeCat metrics is derived in similar fashion:
 
 ```{r warning=FALSE, message=FALSE}
 aois <- lc_get_params(param='aoi')
-
-name_params <- lc_get_params(param='metric_names')
-
-print('areas of interest include: ')
-
-cat(paste0(aois, collapse = "\n"))
+aois
 ```
 
 ```{r warning=FALSE, message=FALSE}
-print('A selection of available LakeCat metrics include: ')
-
-cat(paste0(name_params[1:10],collapse = "\n"))
+names <- lc_get_params(param='metric_names')
+names[1:10]
 ```
 
-StreamCat and LakeCat are built around the concepts of local drainage area (i.e catchment) and watershed (i.e. the local drainage area and all upstream catchments) [@hill2016streamcat].  This approach uses the NHDPlusV21 hydrographic framework of catchments as the building block for summarizing information represented in landscape data and then aggregating both the catchment landscape summary and all upstream catchment summaries using either the weighted average of metrics (in most cases) or a sum or count (for certain metrics). `sc_get_params()` and `lc_get_params()` also include a 'variable_info' parameter to return more detailed metadata for metrics including both short and long metric descriptions, years available (if applicable), units, and the metric category. 
+StreamCat and LakeCat are built around the concepts of local drainage area (i.e catchment) and watershed (i.e. the local drainage area and all upstream catchments) [@hill2016streamcat].  This approach uses the NHDPlusV21 hydrographic framework of catchments as the building block for summarizing information represented in landscape data. Watershed data is produced combining both the catchment landscape summary and all upstream catchment summaries using either the weighted average of metrics (in most cases) or a sum or count (for certain metrics). `sc_get_params()` and `lc_get_params()` also include a 'variable_info' parameter to return more detailed metadata for metrics including both short and long metric descriptions, years available (if applicable), units, and the metric category (Table \@ref(tab:variable-table)). 
 
-<!-- jwh: Same as above comment, this code should not be included in the rendered doc.  update all code chunks creating table.  I added echo = FALSE to this one.  Also tables should have a caption.--> 
-```{r warning=FALSE, message=FALSE, echo=FALSE}
-var_info <- sc_get_params(param='variable_info')
-
-my_data <- head(var_info[c(5,10,29,33,45,102),c('metric','short_description','year','units')])
+```{r variable-table, warning=FALSE, message=FALSE, echo=FALSE, results='asis'}
+var_info <- sc_get_params(param = "variable_info")
+my_data <- head(var_info[c(5, 10, 29, 33, 45, 102), c("metric", "short_description", "year", "units")])
 
 knitr::kable(
   my_data,
   format = "latex",
   booktabs = TRUE,
-  longtable = TRUE,
-  col.names = c('Metric', 'Short Description', 'Year', 'Units'),
+  caption = "Example of variable information returned by the variable\\_info parameter in the sc\\_get\\_params function.",
+  label = "tab:variable-table",
+  col.names = c("Metric", "Short Description", "Year", "Units"),
   align = "llll"
-)  |> 
-  kableExtra::kable_styling(
-    latex_options = c("repeat_header"),
-    font_size = 7
-  )  |> 
-  kableExtra::column_spec(1, width = "1.0in")  |> 
-  kableExtra::column_spec(2, width = "1.0in")  |> 
-  kableExtra::column_spec(3, width = "1.0in")  |> 
-  kableExtra::column_spec(4, width = "1.0in")
+) |>
+  kableExtra::kable_styling(font_size = 7, latex_options = "hold_position")
 ```
 
 Additional functions for getting metadata about the underlying StreamCat and LakeCat data include the `sc_fullname()` and `lc_fullname()` functions which provide the descriptive full name for any given metric in StreamCat or LakeCat:
@@ -163,32 +146,64 @@ Additional functions for getting metadata about the underlying StreamCat and Lak
 sc_fullname(metric='pctgrs2019')
 ```
 
-Users can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric dataset names, or the areas of interest available for a given metric using the `sc_get_metric_names` or `lc_get_metric_names` functions:
+Users can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric dataset names, or the areas of interest available for a given metric using the `sc_get_metric_names` or `lc_get_metric_names` functions (Table \@ref(tab:metrics-table)).
 
 ```{r warning=FALSE, message=FALSE}
 metrics <- sc_get_metric_names(category = c('Deposition','Climate'),
                                aoi=c('Cat','Ws'))
 my_data <- head(metrics[,c('Category','Metric','AOI')],10)
+```
+
+```{r metrics-table, warning=FALSE, message=FALSE, echo=FALSE, results='asis'}
 knitr::kable(
   my_data,
   format = "latex",
   booktabs = TRUE,
-  longtable = TRUE,
-  col.names = c('Category','Metric','AOI'),
+  caption = "Example of metric names returned by the sc\\_get\\_metric\\_names function.",
+  label = "tab:metrics-table",
+  col.names = c("Category", "Metric", "AOI"),
   align = "lll"
-)  |> 
-  kableExtra::kable_styling(
-    latex_options = c("repeat_header"),
-    font_size = 7
-  )  |> 
-  kableExtra::column_spec(1, width = "1.2in") |>  
-  kableExtra::column_spec(2, width = "1.4in") |>   
-  kableExtra::column_spec(3, width = "1.0in")   
+) |>
+  kableExtra::kable_styling(font_size = 7, latex_options = "hold_position")   
 ```
 
 More details on these functions can be found at the [package introduction page](https://usepa.github.io/StreamCatTools/articles/Articles/Introduction.html). 
 
-The primary package functionality is in the `sc_get_data` and `lc_get_data` functions which allow users to extract catchment or watershed metrics of interest by providing NHDPlusV21 COMIDs for streams or lakes within the database. Users can also request data for a given state(s), county(ies), hydroregion(s), or all of CONUS.  Additionally, convenience functions are provided for accessing the NLCD and NNI datasets, respectively, using `sc_get_nlcd` and `lc_get_nlcd` and `sc_get_nni` and `lc_get_nni`:
+The primary package functionality is in the `sc_get_data` and `lc_get_data` functions which allow users to extract catchment or watershed metrics of interest by providing NHDPlusV21 COMIDs for streams or lakes within the database. The following example shows a request for two catchment and watershed metrics for three stream reaches:
+
+```{r warning=FALSE, message=FALSE}
+df <- sc_get_data(metric='pcturbmd2019,damdens',
+                  aoi='cat,ws', 
+                  comid='179,1337,1337420')
+```
+
+The first line requests percent of NLCD medium intensity developed land cover in 2019 and the density of dams. The second line specifies that the geographic area of interest (aoi) is the drainage to the local reach scale (i.e. 'cat', short for catchment) and the full watershed. The final line requests this data for three NHDPlusV2 stream segments specified by their unique COMIDs.  A similar request for LakeCat metrics for data on lakes might look like this, where we ask for data for a particular county using the county FIPS code rather than for a set of identifying COMIDs:
+
+```{r warning=FALSE, message=FALSE}
+df <- lc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
+head(df)
+```
+
+Users can also request data for a given state(s), county(ies), hydroregion(s), or all of CONUS (though asking for data for all of CONUS may time out if asking for too many metrics at once). The following example demonstrates a request data for a particular county in Oregon:  
+
+```{r warning=FALSE, message=FALSE}
+df <- sc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
+```
+
+StreamCatTools provides a convenience function in either `sc_get_params` or `lc_get_params` to discover the FIPS codes for states and counties in order to make it easier for users to query data by these parameters. For example, the following code chunk shows how to get the FIPS code for Benton County, Oregon in order to query data for that county:
+
+```{r warning=FALSE, message=FALSE, eval=FALSE}
+df <- sc_get_params(param='county') |> dplyr::filter(state == 'OR' & county_name == 'Benton County') |> dplyr::pull(fips)
+```
+
+Or we can ask for several different metrics for all of a state:
+
+```{r warning=FALSE, message=FALSE}
+df <- sc_get_data(metric='clay,agkffact', aoi='ws', state='CT')
+head(df)
+```
+
+Additionally, convenience functions are provided for accessing the NLCD and NNI datasets, respectively, using `sc_get_nlcd` and `lc_get_nlcd` and `sc_get_nni` and `lc_get_nni`:
 
 ```{r warning=FALSE, message=FALSE}
 df <- sc_get_nlcd(comid='1337420', year='2019', aoi='ws')
@@ -199,29 +214,16 @@ df <- sc_get_nni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
                  comid='179,1337,1337420')
 ```
 
-The following example shows a request for two catchment and watershed metrics for three stream reaches:
-
-```{r warning=FALSE, message=FALSE}
-df <- sc_get_data(metric='pcturbmd2019,damdens',
-                  aoi='cat,ws', 
-                  comid='179,1337,1337420')
-```
-
-The first line requests percent of NLCD medium intensity developed land cover in 2019 and the density of dams. The second line specifies that the geographic area of interest (aoi) is the drainage to the local reach scale (i.e. 'cat', short for catchment) and the full watershed. Finally, the final line request this data for three NHDPlusV2 stream segments specified by their unique COMIDs.  A similar request for LakeCat metrics for data on lakes might look like this, where we ask for data for a particular county using the county FIPS code rather than for a set of identifying COMIDs:
-
-```{r warning=FALSE, message=FALSE}
-df <- lc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
-```
-
-`StreamCatTools` provides a convenience function in either `sc_get_params` or `lc_get_params` to discover the FIPS codes for states and counties in order to make it easier for users to query data by these parameters. For example, the following code chunk shows how to get the FIPS code for Benton County, Oregon in order to query data for that county:
-
-```{r warning=FALSE, message=FALSE, eval=FALSE}
-lc_get_params(param='county') |> dplyr::filter(state == 'OR' & county_name == 'Benton') |> dplyr::pull(fips)`
-```
-
 # Applications and Discussion
 
-Watershed metrics from `StreamCatTools` can be easily visualized with functions from `nhdplusTools` [@blodgett2016nhdplustools] and `ggplot2` [@wickham2016ggplot2]. The example below plots the NLCD percent imperviousness for the the local drainage (catchment in NHDPlusV2 syntax) and displays the values mapped to each stream reach and to the overall basin boundary:
+One can easily summarize the data returned from `sc_get_data` or `lc_get_data` for a set of rivers or lakes or for the watersheds for an entire county or state in a number of ways. The following example calculates the mean percent of agriculture on slopes > 10% within a watershed for all watersheds in Benton County, Oregon:
+
+```{r warning=FALSE, message=FALSE}
+df <- sc_get_data(metric='pctagslphigh2019', aoi='ws', county='41003') |>
+  dplyr::summarise(mean_pctagslphigh2019ws = mean(pctagslphigh2019ws, na.rm=TRUE))
+df
+```
+Watershed metrics from `StreamCatTools` can also be easily visualized with functions from `nhdplusTools` [@blodgett2016nhdplustools] and `ggplot2` [@wickham2016ggplot2]. 
 
 ```{r warning=FALSE, message=FALSE}
 library(nhdplusTools)
@@ -236,7 +238,11 @@ df <- sc_get_data(metric='pctimp2019', aoi='cat', comid=flowline_nldi$UT_flowlin
 flowline_nldi <- flowline_nldi$UT_flowlines
 flowline_nldi$PCTIMP2019 <- df$pctimp2019cat[match(flowline_nldi$nhdplus_comid, df$comid)]
 basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
+```
 
+Figure \@ref(fig:calapooia) plots the NLCD percent imperiousness (percentage of area covered by constructed, artificial surfaces) for the the local drainage (catchment in NHDPlusV2 syntax) and displays the values mapped to each stream reach and to the overall basin boundary:
+
+```{r calapooia, fig.cap="Map of NLCD percent imperviousness for each catchment for the Calapooia River watershed in Oregon.", warning=FALSE, message=FALSE, echo=FALSE, label="watershed map",  out.width="95%", fig.align="center"}
 calapooia <- ggplot() +
     geom_sf(data = basin,
             fill = NA,
@@ -253,7 +259,7 @@ calapooia <- ggplot() +
 plot(calapooia)
 ```
 
-Watersheds for lakes can also be retrieved using the `lc_get_watershed` function in order to visualize LakeCat metrics along with the plotted watersheds for lake features:
+Watersheds for lakes can also be retrieved using the `lc_get_watershed` function in order to visualize LakeCat metrics along with the plotted watersheds for lake features as shown in Figure \@ref(fig:landcover)
 
 ```{r warning=FALSE, message=FALSE}
 library(ggplot2)
@@ -264,6 +270,9 @@ df <- lc_get_nlcd(comid='19334077', year='2019', aoi='ws')
 lake <- nhdplusTools::get_waterbodies(id = 19334077)
 ws <- lc_get_watershed(comid = 19334077, huc2 = "01",huc2_filter = "01", 
                       threads = 2,retries = 5, verbose=FALSE, progress=FALSE)
+```
+
+```{r landcover, fig.cap="NLCD land cover proportions with an example lake watershed.", warning=FALSE, message=FALSE, echo=FALSE, label="NLCD figure",  out.width="95%", fig.align="center"}
 df <- df |>
   dplyr::mutate(
     PctConifer = pctconif2019ws,
@@ -324,9 +333,9 @@ p_pie <- ggplot(landcover_df, aes(x = "", y = value, fill = category)) +
 p_map + p_pie + plot_layout(ncol = 2, widths = c(1, 1))
 ```
 
-Plotting functions to specifically plot NNI metrics in StreamCat have been developed and are also available [@MarkleyNNI] such as the following example to plot annual time series of nitrogen and phosphorus budget data for a given watershed such as the Mississippi-Atchafalaya River Basin:
+Plotting functions to specifically plot NNI metrics in StreamCat have been developed and are also available [@MarkleyNNI], such as Figure \@ref(fig:NNI) showing the annual time series of nitrogen and phosphorus budget data for a given watershed such as the Mississippi-Atchafalaya River Basin:
 
-```{r warning=FALSE, message=FALSE}
+```{r NNI, fig.cap="Annual time series of nitrogen and phosphorus buget data for the Mississippi=Atchafalaya river basin.", warning=FALSE, message=FALSE, label="NNI figure",  out.width="95%", fig.align="center"}
 library(StreamCatTools)
 library(ggplot2)
 library(ggpattern)
@@ -338,7 +347,7 @@ Future functionality for `StreamCatTools` includes expanding the scope of plotti
 
 # Acknowledgements
 
-Examples of using StreamCat and LakeCat make extensive use of `nhdplusTools`[@blodgett2016nhdplustools] and the functions for accessing the API are facilitated through use of `httr2`[@wickham2025httr2]. Figures were created using `ggplot2` [@wickham2016ggplot2]. 
+Examples of using StreamCat and LakeCat make extensive use of `nhdplusTools` [@blodgett2016nhdplustools] and the functions for accessing the API are facilitated through use of `httr2` [@wickham2025httr2]. Figures were created using `ggplot2` [@wickham2016ggplot2]. 
 
 We would like to sincerely thank the editor and reviewers for all of their helpful feedback which greatly improved both the software and the manuscript.
 

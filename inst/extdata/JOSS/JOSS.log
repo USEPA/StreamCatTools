@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.7.7)  7 JUL 2026 13:28
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.7.7)  22 JUL 2026 09:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1136,7 +1136,7 @@ LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
 File: Flowchart.png Graphic file (type bmp)
 <Flowchart.png>
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 431.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 414.
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1147,6 +1147,18 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [2]
+Overfull \hbox (16.91139pt too wide) in paragraph at lines 499--499
+[]\TU/lmtt/m/n/10 #>  [6] "cbnf"         "clay"         "coalminedens" "compstrgth"   "damdens"[] 
+ []
+
+
+Overfull \hbox (31.18544pt too wide) in paragraph at lines 521--534
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1167,36 +1179,12 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [4]
-Overfull \hbox (13.93501pt too wide) in paragraph at lines 621--621
-[]|\TU/lmr/m/n/7 inorgnwetdep[Year][AOI]|  
+Underfull \hbox (badness 5637) in paragraph at lines 646--652
+[]\TU/lmr/m/n/10 StreamCatTools provides a convenience function in either \TU/lmtt/m/n/10 sc_get_params \TU/lmr/m/n/10 or
  []
 
 
-Overfull \hbox (10.69402pt too wide) in paragraph at lines 621--622
-[]|\TU/lmr/m/n/7 Kilogram/Hectare/Year|  
- []
-
-
-Overfull \hbox (4.723pt too wide) in paragraph at lines 624--624
-[]|\TU/lmr/m/n/7 pcthighsev[Year][AOI]|  
- []
-
-File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
-<C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
-
-Package fancyhdr Warning: \headheight is too small (62.59596pt): 
-(fancyhdr)                Make it at least 63.55022pt, for example:
-(fancyhdr)                \setlength{\headheight}{63.55022pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
-
-[5]
-Underfull \hbox (badness 4739) in paragraph at lines 757--763
-[]\TU/lmtt/m/n/10 StreamCatTools \TU/lmr/m/n/10 provides a convenience function in either \TU/lmtt/m/n/10 sc_get_params \TU/lmr/m/n/10 or
- []
-
-
-Underfull \hbox (badness 1281) in paragraph at lines 757--763
+Underfull \hbox (badness 1281) in paragraph at lines 646--652
 \TU/lmtt/m/n/10 lc_get_params \TU/lmr/m/n/10 to discover the FIPS codes for states and counties in order to
  []
 
@@ -1209,9 +1197,23 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
+[5]
+File: JOSS_files/figure-latex/watershed map-1.pdf Graphic file (type pdf)
+<use JOSS_files/figure-latex/watershed map-1.pdf>
+File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
+<C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
+
+Package fancyhdr Warning: \headheight is too small (62.59596pt): 
+(fancyhdr)                Make it at least 63.55022pt, for example:
+(fancyhdr)                \setlength{\headheight}{63.55022pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
+
 [6]
-File: JOSS_files/JOSS_files/figure-latex/unnamed-chunk-16-1.pdf Graphic file (type pdf)
-<use JOSS_files/JOSS_files/figure-latex/unnamed-chunk-16-1.pdf>
+File: JOSS_files/figure-latex/NLCD figure-1.pdf Graphic file (type pdf)
+<use JOSS_files/figure-latex/NLCD figure-1.pdf>
+File: JOSS_files/figure-latex/NNI figure-1.pdf Graphic file (type pdf)
+<use JOSS_files/figure-latex/NNI figure-1.pdf>
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1232,41 +1234,7 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [8]
-File: JOSS_files/JOSS_files/figure-latex/unnamed-chunk-17-1.pdf Graphic file (type pdf)
-<use JOSS_files/JOSS_files/figure-latex/unnamed-chunk-17-1.pdf>
-File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
-<C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
-
-Package fancyhdr Warning: \headheight is too small (62.59596pt): 
-(fancyhdr)                Make it at least 63.55022pt, for example:
-(fancyhdr)                \setlength{\headheight}{63.55022pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
-
-[9]
-File: JOSS_files/JOSS_files/figure-latex/unnamed-chunk-18-1.pdf Graphic file (type pdf)
-<use JOSS_files/JOSS_files/figure-latex/unnamed-chunk-18-1.pdf>
-File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
-<C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
-
-Package fancyhdr Warning: \headheight is too small (62.59596pt): 
-(fancyhdr)                Make it at least 63.55022pt, for example:
-(fancyhdr)                \setlength{\headheight}{63.55022pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
-
-[10]
-File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
-<C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
-
-Package fancyhdr Warning: \headheight is too small (62.59596pt): 
-(fancyhdr)                Make it at least 63.55022pt, for example:
-(fancyhdr)                \setlength{\headheight}{63.55022pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
-
-[11]
-Underfull \hbox (badness 1565) in paragraph at lines 970--975
+Underfull \hbox (badness 1565) in paragraph at lines 868--873
 \TU/lmr/m/n/10 The lake-catchment (LakeCat) dataset: Characterizing landscape features for
  []
 
@@ -1279,24 +1247,34 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
-[12] (./JOSS.aux)
+[9]
+File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
+<C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
+
+Package fancyhdr Warning: \headheight is too small (62.59596pt): 
+(fancyhdr)                Make it at least 63.55022pt, for example:
+(fancyhdr)                \setlength{\headheight}{63.55022pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
+
+[10] (./JOSS.aux)
  ***********
 LaTeX2e <2026-06-01>
 L3 programming layer <2026-06-18>
  ***********
 Package rerunfilecheck Info: File `JOSS.out' has not changed.
-(rerunfilecheck)             Checksum: 31C9C0BA62A00B11075DA50EA70A7647;744.
+(rerunfilecheck)             Checksum: A6E5AD86407FCD70CC77821DCA6B419D;746.
 Package logreq Info: Writing requests to 'JOSS.run.xml'.
 \openout1 = `JOSS.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 38082 strings out of 469837
- 782025 string characters out of 5467699
- 1661855 words of memory out of 5000000
- 66445 multiletter control sequences out of 15000+600000
- 634739 words of font info for 94 fonts, out of 8000000 for 9000
+ 38087 strings out of 469837
+ 781863 string characters out of 5467699
+ 1662426 words of memory out of 5000000
+ 66454 multiletter control sequences out of 15000+600000
+ 634723 words of font info for 92 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 84i,13n,94p,693b,852s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,12n,94p,693b,852s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on JOSS.pdf (12 pages).
+Output written on JOSS.pdf (10 pages).
