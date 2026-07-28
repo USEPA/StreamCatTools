@@ -61,7 +61,7 @@ Easily accessible, robust, and consistent watershed data underpin hydrology rese
 
 # Package Overview
 
-`StreamCatTools` provides a simple streamlined set of functions to easily query and ingest watershed landscape metrics into an R session. Figure \@ref(fig:flowchart) shows the overall framework of the StreamCat database, application programming interface, and functionality in the package that simplifies data access in R using web services for the StreamCat and LakeCat datasets. 
+`StreamCatTools` provides a simple streamlined set of functions to easily query and ingest watershed landscape metrics into an R session. Figure \ref{fig:flowchart} shows the overall framework of the StreamCat database, application programming interface, and functionality in the package that simplifies data access in R using web services for the StreamCat and LakeCat datasets. 
 
 
 \begin{figure}
@@ -145,11 +145,11 @@ names[1:10]
 #>  [6] "cbnf"         "clay"         "coalminedens" "compstrgth"   "damdens"
 ```
 
-StreamCat and LakeCat are built around the concepts of local drainage area (i.e catchment) and watershed (i.e. the local drainage area and all upstream catchments) [@hill2016streamcat].  This approach uses the NHDPlusV21 hydrographic framework of catchments as the building block for summarizing information represented in landscape data. Watershed data is produced combining both the catchment landscape summary and all upstream catchment summaries using either the weighted average of metrics (in most cases) or a sum or count (for certain metrics). `sc_get_params()` and `lc_get_params()` also include a 'variable_info' parameter to return more detailed metadata for metrics including both short and long metric descriptions, years available (if applicable), units, and the metric category (Table \@ref(tab:variable-table)). 
+StreamCat and LakeCat are built around the concepts of local drainage area (i.e catchment) and watershed (i.e. the local drainage area and all upstream catchments) [@hill2016streamcat].  This approach uses the NHDPlusV21 hydrographic framework of catchments as the building block for summarizing information represented in landscape data. Watershed data is produced combining both the catchment landscape summary and all upstream catchment summaries using either the weighted average of metrics (in most cases) or a sum or count (for certain metrics). `sc_get_params()` and `lc_get_params()` also include a 'variable_info' parameter to return more detailed metadata for metrics including both short and long metric descriptions, years available (if applicable), units, and the metric category (Table \ref{tab:variable-table}). 
 
 \begin{table}[!h]
 \centering
-\caption{\label{tab:tab:variable-table}Example of variable information returned by the variable\_info parameter in the sc\_get\_params function.}
+\caption{\label{tab:variable-table}Example of variable information returned by the variable\_info parameter in the sc\_get\_params function.}
 \centering
 \fontsize{7}{9}\selectfont
 \begin{tabular}[t]{llll}
@@ -178,7 +178,7 @@ sc_fullname(metric='pctgrs2019')
 #> [1] "Grassland/Herbaceous Percentage 2019"
 ```
 
-Users can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric dataset names, or the areas of interest available for a given metric using the `sc_get_metric_names` or `lc_get_metric_names` functions (Table \@ref(tab:metrics-table)).
+Users can also filter metric names and information by the metric year(s), the indicator categories for metrics, the metric dataset names, or the areas of interest available for a given metric using the `sc_get_metric_names` or `lc_get_metric_names` functions (Table \ref{tab:metrics-table}).
 
 
 ``` r
@@ -189,7 +189,7 @@ my_data <- head(metrics[,c('Category','Metric','AOI')],10)
 
 \begin{table}[!h]
 \centering
-\caption{\label{tab:tab:metrics-table}Example of metric names returned by the sc\_get\_metric\_names function.}
+\caption{\label{tab:metrics-table}Example of metric names returned by the sc\_get\_metric\_names function.}
 \centering
 \fontsize{7}{9}\selectfont
 \begin{tabular}[t]{lll}
@@ -318,18 +318,18 @@ flowline_nldi$PCTIMP2019 <- df$pctimp2019cat[match(flowline_nldi$nhdplus_comid, 
 basin <- nhdplusTools::get_nldi_basin(nldi_feature = nldi_feature)
 ```
 
-Figure \@ref(fig:calapooia) plots the NLCD percent imperiousness (percentage of area covered by constructed, artificial surfaces) for the the local drainage (catchment in NHDPlusV2 syntax) and displays the values mapped to each stream reach and to the overall basin boundary:
+Figure \ref{fig:calapooia} plots the NLCD percent imperiousness (percentage of area covered by constructed, artificial surfaces) for the the local drainage (catchment in NHDPlusV2 syntax) and displays the values mapped to each stream reach and to the overall basin boundary.
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.95\linewidth]{JOSS_files/figure-latex/watershed map-1} 
+{\centering \includegraphics[width=0.95\linewidth]{JOSS_files/figure-latex/calapooia-1} 
 
 }
 
-\caption{Map of NLCD percent imperviousness for each catchment for the Calapooia River watershed in Oregon.}\label{fig:watershed map}
+\caption{Map of NLCD percent imperviousness for each catchment for the Calapooia River watershed in Oregon.}\label{fig:calapooia}
 \end{figure}
 
-Watersheds for lakes can also be retrieved using the `lc_get_watershed` function in order to visualize LakeCat metrics along with the plotted watersheds for lake features as shown in Figure \@ref(fig:landcover)
+Watersheds for lakes can also be retrieved using the `lc_get_watershed` function in order to visualize LakeCat metrics along with the plotted watersheds for lake features as shown in Figure \ref{fig:landcover}.
 
 
 ``` r
@@ -345,14 +345,14 @@ ws <- lc_get_watershed(comid = 19334077, huc2 = "01",huc2_filter = "01",
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.95\linewidth]{JOSS_files/figure-latex/NLCD figure-1} 
+{\centering \includegraphics[width=0.95\linewidth]{JOSS_files/figure-latex/landcover-1} 
 
 }
 
-\caption{NLCD land cover proportions with an example lake watershed.}\label{fig:NLCD figure}
+\caption{NLCD land cover proportions with an example lake watershed.}\label{fig:landcover}
 \end{figure}
 
-Plotting functions to specifically plot NNI metrics in StreamCat have been developed and are also available [@MarkleyNNI], such as Figure \@ref(fig:NNI) showing the annual time series of nitrogen and phosphorus budget data for a given watershed such as the Mississippi-Atchafalaya River Basin:
+Plotting functions to specifically plot NNI metrics in StreamCat have been developed and are also available [@MarkleyNNI], such as Figure \ref{fig:NNI} showing the annual time series of nitrogen and phosphorus budget data for a given watershed such as the Mississippi-Atchafalaya River Basin:
 
 
 ``` r
@@ -365,11 +365,11 @@ sc_plotnni(comid = com, include.nue = TRUE)
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.95\linewidth]{JOSS_files/figure-latex/NNI figure-1} 
+{\centering \includegraphics[width=0.95\linewidth]{JOSS_files/figure-latex/NNI-1} 
 
 }
 
-\caption{Annual time series of nitrogen and phosphorus buget data for the Mississippi=Atchafalaya river basin.}\label{fig:NNI figure}
+\caption{Annual time series of nitrogen and phosphorus buget data for the Mississippi=Atchafalaya river basin.}\label{fig:NNI}
 \end{figure}
 
 Future functionality for `StreamCatTools` includes expanding the scope of plotting functions as well as expanding the range of metrics and ease of querying these metrics. Additionally, an complementary package, `StreamCatR` is being developed that will allow users to quickly and easily process their own landscape metrics to the NHDPlus framework or other hydrlolgic frameworks with network topology. `StreamCatTools` currently facilitates easy ingestion of StreamCat and LakeCat watershed landscape metrics into workflows in R which is of great use to state watershed planners, researchers and non-governmental organizations and borne out by the over 5000 package downloads and over 350 citations of the underlying StreamCat and LakeCat data served by the `StreamCatTools` package.

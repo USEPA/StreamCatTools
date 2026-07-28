@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.7.7)  22 JUL 2026 09:51
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.7.7)  22 JUL 2026 10:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1198,8 +1198,8 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [5]
-File: JOSS_files/figure-latex/watershed map-1.pdf Graphic file (type pdf)
-<use JOSS_files/figure-latex/watershed map-1.pdf>
+File: JOSS_files/figure-latex/calapooia-1.pdf Graphic file (type pdf)
+<use JOSS_files/figure-latex/calapooia-1.pdf>
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1210,10 +1210,10 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [6]
-File: JOSS_files/figure-latex/NLCD figure-1.pdf Graphic file (type pdf)
-<use JOSS_files/figure-latex/NLCD figure-1.pdf>
-File: JOSS_files/figure-latex/NNI figure-1.pdf Graphic file (type pdf)
-<use JOSS_files/figure-latex/NNI figure-1.pdf>
+File: JOSS_files/figure-latex/landcover-1.pdf Graphic file (type pdf)
+<use JOSS_files/figure-latex/landcover-1.pdf>
+File: JOSS_files/figure-latex/NNI-1.pdf Graphic file (type pdf)
+<use JOSS_files/figure-latex/NNI-1.pdf>
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1270,7 +1270,7 @@ Package logreq Info: Writing requests to 'JOSS.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
  38087 strings out of 469837
- 781863 string characters out of 5467699
+ 781699 string characters out of 5467699
  1662426 words of memory out of 5000000
  66454 multiletter control sequences out of 15000+600000
  634723 words of font info for 92 fonts, out of 8000000 for 9000
