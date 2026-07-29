@@ -129,19 +129,17 @@ sc_get_data <- function(comid = NULL,
   }
   # Force old and odd naming convention to behave correctly
   if (!is.null(aoi)){
-      if (stringr::str_detect(aoi,'catchment')) {
-        aoi <- gsub('catchment','cat',aoi)
-      }
-      if (stringr::str_detect(aoi,'watershed')) {
-        aoi <- gsub('watershed','ws',aoi)
-      }
-      if (stringr::str_detect(aoi,'riparian_catchment')) {
-        aoi <- gsub('riparian_catchment','catrp100',aoi)
-      }
-      if (stringr::str_detect(aoi,'riparian_watershed')) {
-        aoi <- gsub('riparian_watershed','wsrp100',aoi)
-      }
-    }
+    aoi_tokens <- strsplit(aoi, ",")[[1]]
+    aoi_tokens <- vapply(aoi_tokens, function(x) {
+      switch(tolower(trimws(x)),
+             catchment = "cat",
+             watershed = "ws",
+             riparian_catchment = "catrp100",
+             riparian_watershed = "wsrp100",
+             x)
+    }, character(1), USE.NAMES = FALSE)
+    aoi <- paste(aoi_tokens, collapse = ",")
+  }
   
   if (!is.null(conus) & metric=='all'){
     stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
@@ -167,10 +165,11 @@ sc_get_data <- function(comid = NULL,
     httr2::req_method("POST") |>
     httr2::req_headers("Content-Type" = "application/x-www-form-urlencoded") |>
     httr2::req_method("POST") |>
-    httr2::req_body_form(!!!header_data) |> 
-    httr2::req_throttle(rate = 30 / 60) |> 
-    httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
-    httr2::req_perform() |> 
+    httr2::req_body_form(!!!header_data) |>
+    httr2::req_throttle(rate = 30 / 60) |>
+    httr2::req_timeout(seconds = 180) |>
+    httr2::req_retry(backoff = ~ 15, max_tries = 10, retry_on_failure = TRUE) |>
+    httr2::req_perform() |>
     httr2::resp_body_string() |> 
     jsonlite::fromJSON()
   },error = function(e) {
@@ -342,7 +341,6 @@ sc_get_nlcd <- function(year = '2019',
 }
 
 #' @rdname sc_get_nlcd
-#' @keywords internal
 sc_nlcd <- function(year = '2019',
                     comid = NULL,
                     aoi = NULL,
@@ -354,16 +352,16 @@ sc_nlcd <- function(year = '2019',
                     conus = NULL,
                     countOnly = NULL) {
   lifecycle::deprecate_warn("0.10.0", "sc_nlcd()", "sc_get_nlcd()")
-  sc_get_nlcd(year = '2019',
-              comid = NULL,
-              aoi = NULL,
-              showAreaSqKm = NULL,
-              showPctFull = NULL,
-              state = NULL,
-              county = NULL,
-              region = NULL,
-              conus = NULL,
-              countOnly = NULL)
+  sc_get_nlcd(year = year,
+              comid = comid,
+              aoi = aoi,
+              showAreaSqKm = showAreaSqKm,
+              showPctFull = showPctFull,
+              state = state,
+              county = county,
+              region = region,
+              conus = conus,
+              countOnly = countOnly)
 }
 
 #' @title Get NNI
