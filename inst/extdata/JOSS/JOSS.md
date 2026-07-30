@@ -16,7 +16,7 @@ authors:
     affiliation: 4
   - name: Travis Hudson
     affiliation: 3
-  - name: Alan Brookes
+  - name: Allen Brookes
     affiliation: 2
 
 affiliations:
