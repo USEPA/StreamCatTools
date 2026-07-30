@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.7.7)  22 JUL 2026 10:51
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.7.7)  30 JUL 2026 13:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1129,14 +1129,14 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 380.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 379.
 [1
 
 ]
 File: Flowchart.png Graphic file (type bmp)
 <Flowchart.png>
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 414.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 413.
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1147,17 +1147,14 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [2]
-Overfull \hbox (16.91139pt too wide) in paragraph at lines 499--499
+Overfull \hbox (16.91139pt too wide) in paragraph at lines 498--498
 []\TU/lmtt/m/n/10 #>  [6] "cbnf"         "clay"         "coalminedens" "compstrgth"   "damdens"[] 
  []
 
 
-Overfull \hbox (31.18544pt too wide) in paragraph at lines 521--534
+Overfull \hbox (31.18544pt too wide) in paragraph at lines 520--533
  [][] 
  []
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
@@ -1179,13 +1176,8 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [4]
-Underfull \hbox (badness 5637) in paragraph at lines 646--652
+Underfull \hbox (badness 5637) in paragraph at lines 645--651
 []\TU/lmr/m/n/10 StreamCatTools provides a convenience function in either \TU/lmtt/m/n/10 sc_get_params \TU/lmr/m/n/10 or
- []
-
-
-Underfull \hbox (badness 1281) in paragraph at lines 646--652
-\TU/lmtt/m/n/10 lc_get_params \TU/lmr/m/n/10 to discover the FIPS codes for states and counties in order to
  []
 
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
@@ -1234,10 +1226,6 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [8]
-Underfull \hbox (badness 1565) in paragraph at lines 868--873
-\TU/lmr/m/n/10 The lake-catchment (LakeCat) dataset: Characterizing landscape features for
- []
-
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1269,10 +1257,10 @@ Package logreq Info: Writing requests to 'JOSS.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 38087 strings out of 469837
- 781699 string characters out of 5467699
- 1662426 words of memory out of 5000000
- 66454 multiletter control sequences out of 15000+600000
+ 38088 strings out of 469837
+ 781709 string characters out of 5467699
+ 1663427 words of memory out of 5000000
+ 66455 multiletter control sequences out of 15000+600000
  634723 words of font info for 92 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  84i,12n,94p,693b,852s stack positions out of 10000i,1000n,20000p,200000b,200000s
