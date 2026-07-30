@@ -141,13 +141,19 @@ sc_get_data <- function(comid = NULL,
     aoi <- paste(aoi_tokens, collapse = ",")
   }
   
+  metric <- tolower(metric)
+  show_pct_full_requested <- !is.null(showPctFull) &&
+    !identical(tolower(as.character(showPctFull)), "false") &&
+    !isFALSE(showPctFull)
   if (!is.null(conus) & metric=='all'){
     stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
-  } 
+  }
+  if (metric == 'all' && show_pct_full_requested) {
+    stop("showPctFull is not supported when metric='all'. Please request specific metrics or omit showPctFull.")
+  }
   if (metric=='all'){
     message("Using metric='all' with a large aoi may take a considerable amount of time to return results - request may timeout if multiple AOIs are requested")
   }
-  metric = tolower(metric)
   items = unlist(strsplit(metric,','))
   items = gsub(" ","",items)
   items = gsub("\n","",items)
