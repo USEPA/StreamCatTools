@@ -223,7 +223,7 @@ df <- sc_get_data(metric='pctagslphigh2019', aoi='ws', county='41003') |>
   dplyr::summarise(mean_pctagslphigh2019ws = mean(pctagslphigh2019ws, na.rm=TRUE))
 df
 ```
-Watershed metrics from `StreamCatTools` can also be easily visualized with functions from `hydrogeofetch` [@blodgett2026] and `ggplot2` [@wickham2016ggplot2]. 
+Watershed metrics from `StreamCatTools` can also be easily visualized with functions from `hydrogeofetch` [@blodgett2026hydrogeofetch] and `ggplot2` [@wickham2016ggplot2]. 
 
 ```{r warning=FALSE, message=FALSE}
 library(hydrogeofetch)
