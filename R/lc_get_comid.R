@@ -56,9 +56,9 @@ lc_get_comid <- function(dd = NULL, xcoord = NULL,
   
   output <- do.call(rbind, lapply(1:nrow(dd), function(i){
     if (is.null(buffer)){
-      wb <- hydrogeofetch::get_waterbodies(dd[i,])
+      wb <- nhdplusTools::get_waterbodies(dd[i,])
     } else {
-      wb <- hydrogeofetch::get_waterbodies(dd[i,], buffer=buffer)
+      wb <- nhdplusTools::get_waterbodies(dd[i,], buffer=buffer)
     }
     if (!is.null(wb)){
       comid <- wb |>
