@@ -22,7 +22,7 @@
 #' @param crsys The epsg code if using a raw data frame
 #' 
 #' @param buffer The amount of buffer to use to extend search for a waterbody 
-#' (simply passed to hydrogeofetch::get_waterbodies)
+#' (simply passed to nhdplusTools::get_waterbodies)
 #' 
 #' @return A new sf data frame with a populated 'COMID' column
 #'

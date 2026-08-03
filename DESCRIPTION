@@ -45,7 +45,7 @@ Description: Tools for using the 'StreamCat' and 'LakeCat' API and
 Depends: R (>= 4.1.0)
 Imports: 
     sf,
-    hydrogeofetch,
+    nhdplusTools,
     jsonlite,
     httr2,
     curl (>= 6.0.0),
