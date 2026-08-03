@@ -10,6 +10,13 @@ test_that("lc_get_data for a sample COMID returns a data frame", {
   expect_equal(ncol(df), 7)
 })
 
+test_that("lc_get_data rejects showPctFull when metric='all'", {
+  expect_error(
+    lc_get_data(comid='23794487', aoi='ws', metric='all', showPctFull='true'),
+    regexp = "showPctFull.*metric='all'"
+  )
+})
+
 test_that("lc_get_data for a county and ws metrics returns a data frame", {
   testthat::skip_on_cran()
   df <- lc_get_data(metric='pctwdwet2006', aoi='ws',
