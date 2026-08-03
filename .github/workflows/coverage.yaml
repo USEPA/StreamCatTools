@@ -35,15 +35,38 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev
 
-      - name: Debug pak resolution
+      - name: Ensure pak is installed and current
+        # Install/upgrade pak from CRAN to ensure exported API is available
         run: |
-          Rscript -e 'if (!requireNamespace("pak", quietly = TRUE)) install.packages("pak", repos="https://cran.rstudio.com"); options(pak.verbose = TRUE); try(pak::resolve(c("any::covr","any::xml2")), silent = FALSE)'
+          Rscript -e 'if (!requireNamespace("pak", quietly = TRUE)) install.packages("pak", repos = "https://cran.rstudio.com")'
+          Rscript -e 'message("pak version: ", as.character(packageVersion("pak"))); message("pak exports:"); print(head(getNamespaceExports("pak"), 200))'
+
+      - name: Debug pak resolution (safe checks)
+        # Do not call non-exported pak internals like pak::resolve; instead use exported APIs and print diagnostics
+        run: |
+          Rscript -e '
+            if (!requireNamespace("pak", quietly = TRUE)) {
+              install.packages("pak", repos = "https://cran.rstudio.com")
+            }
+            message("pak version: ", as.character(packageVersion("pak")))
+            message("sessionInfo:")
+            print(sessionInfo())
+            message("Trying a safe pak operation (pkg_install with upgrade=FALSE)...")
+            tryCatch({
+              # Use exported pak API to verify installer works. Use upgrade=FALSE to avoid changing runner state excessively.
+              pak::pkg_install(c("covr", "xml2"), upgrade = FALSE, ask = FALSE)
+              message("pak::pkg_install completed (or packages were already installed).")
+            }, error = function(e) {
+              message("pak::pkg_install failed: ", conditionMessage(e))
+              stop(e)
+            })
+          '
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::covr, any::xml2
           needs: coverage
-          cache-version: 2  # Increment this to bust the cache
+          cache-version: 3  # Bump cache-version to avoid reusing an older pak installation
 
       - name: Test coverage
         run: |
