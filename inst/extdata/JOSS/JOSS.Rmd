@@ -349,9 +349,13 @@ Potential future functionality for `StreamCatTools` includes expanding the scope
 
 Examples of using StreamCat and LakeCat make extensive use of `hydrogeofetch` [@blodgett2026hydrogeofetch] and the functions for accessing the API are facilitated through use of `httr2` [@wickham2025httr2]. Figures were created using `ggplot2` [@wickham2016ggplot2]. 
 
-We would like to sincerely thank the editor and reviewers for all of their helpful feedback which greatly improved both the software and the manuscript.
+We would like to sincerely thank Michael Dumelle and Jeff Hollister for helpful comments which improved this manuscript as well as the editor and reviewers for all of their helpful feedback which greatly improved both the software and the manuscript.
 
 The United States Environmental Protection Agency (EPA) GitHub project code is provided on an "as is" basis and the user assumes responsibility for its use. EPA has relinquished control of the information and no longer has responsibility to protect the integrity , confidentiality, or availability of the information. Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by EPA. The EPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by EPA or the United States Government.The information in this document has been funded entirely by the United States Environmental Protection Agency (USEPA), in part through appointments to the USEPA’s Internship/Research Participation Program at the Office of Research and Development administered by the Oak Ridge Institute for Science and Education through an interagency agreement. The views expressed in this article are those of the authors and do not necessarily represent the views or policies of the USEPA. 
+
+# AI Usage Disclosure
+
+The R code for this R package was initially developed by Marc Weber and minimal generative AI was used for the most recent version of the package where several functions were refactored.
 
 # References
 
