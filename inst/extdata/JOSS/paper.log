@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.8.31)  31 AUG 2026 15:06
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.8.31)  31 AUG 2026 15:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -833,123 +833,77 @@ Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 )
 \cslhangindent=\skip99
 \csllabelwidth=\skip100
-(c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fvextra/fvextra.sty
-Package: fvextra 2026/02/25 v1.14.0 fvextra - extensions and patches for fancyvrb
-(c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lineno/lineno.sty
-Package: lineno 2026/03/08 line numbers on paragraphs v5.9
-\linenopenalty=\count491
-\output=\toks45
-\linenoprevgraf=\count492
-\linenumbersep=\dimen303
-\linenumberwidth=\dimen304
-\c@linenumber=\count493
-\c@pagewiselinenumber=\count494
-\c@LN@truepage=\count495
-\c@internallinenumber=\count496
-\c@internallinenumbers=\count497
-\quotelinenumbersep=\dimen305
-\bframerule=\dimen306
-\bframesep=\dimen307
-\bframebox=\box78
-\@LN@amsmath@ams@eqpen=\count498
-)
-\c@FancyVerbWriteLine=\count499
-\c@FancyVerbBufferLine=\count500
-\c@FV@TrueTabGroupLevel=\count501
-\c@FV@TrueTabCounter=\count502
-\FV@TabBox@Group=\box79
-\FV@bgcolorstructbox=\box80
-\FV@TmpLength=\skip101
-\c@FV@HighlightLinesStart=\count503
-\c@FV@HighlightLinesStop=\count504
-\FV@LoopCount=\count505
-\FV@NCharsBox=\box81
-\FV@BreakIndent=\dimen308
-\FV@BreakIndentNChars=\count506
-\FV@BreakSymbolSepLeft=\dimen309
-\FV@BreakSymbolSepLeftNChars=\count507
-\FV@BreakSymbolSepRight=\dimen310
-\FV@BreakSymbolSepRightNChars=\count508
-\FV@BreakSymbolIndentLeft=\dimen311
-\FV@BreakSymbolIndentLeftNChars=\count509
-\FV@BreakSymbolIndentRight=\dimen312
-\FV@BreakSymbolIndentRightNChars=\count510
-\c@FancyVerbLineBreakLast=\count511
-\FV@LineBox=\box82
-\FV@LineIndentBox=\box83
-\c@FV@BreakBufferDepth=\count512
-\FV@LineWidth=\dimen313
-) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty
+(c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
-\heavyrulewidth=\dimen314
-\lightrulewidth=\dimen315
-\cmidrulewidth=\dimen316
-\belowrulesep=\dimen317
-\belowbottomsep=\dimen318
-\aboverulesep=\dimen319
-\abovetopsep=\dimen320
-\cmidrulesep=\dimen321
-\cmidrulekern=\dimen322
-\defaultaddspace=\dimen323
-\@cmidla=\count513
-\@cmidlb=\count514
-\@aboverulesep=\dimen324
-\@belowrulesep=\dimen325
-\@thisruleclass=\count515
-\@lastruleclass=\count516
-\@thisrulewidth=\dimen326
+\heavyrulewidth=\dimen303
+\lightrulewidth=\dimen304
+\cmidrulewidth=\dimen305
+\belowrulesep=\dimen306
+\belowbottomsep=\dimen307
+\aboverulesep=\dimen308
+\abovetopsep=\dimen309
+\cmidrulesep=\dimen310
+\cmidrulekern=\dimen311
+\defaultaddspace=\dimen312
+\@cmidla=\count491
+\@cmidlb=\count492
+\@aboverulesep=\dimen313
+\@belowrulesep=\dimen314
+\@thisruleclass=\count493
+\@lastruleclass=\count494
+\@thisrulewidth=\dimen315
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2026-01-28 v4.27 Multi-page Table package (DPC)
-\LTleft=\skip102
-\LTright=\skip103
-\LTpre=\skip104
-\LTpost=\skip105
-\LTchunksize=\count517
-\LTcapwidth=\dimen327
-\LT@head=\box84
-\LT@firsthead=\box85
-\LT@foot=\box86
-\LT@lastfoot=\box87
-\LT@gbox=\box88
-\LT@cols=\count518
-\LT@rows=\count519
-\c@LT@tables=\count520
-\c@LT@chunks=\count521
-\LT@p@ftn=\toks46
+\LTleft=\skip101
+\LTright=\skip102
+\LTpre=\skip103
+\LTpost=\skip104
+\LTchunksize=\count495
+\LTcapwidth=\dimen316
+\LT@head=\box78
+\LT@firsthead=\box79
+\LT@foot=\box80
+\LT@lastfoot=\box81
+\LT@gbox=\box82
+\LT@cols=\count496
+\LT@rows=\count497
+\c@LT@tables=\count498
+\c@LT@chunks=\count499
+\LT@p@ftn=\toks45
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/array.sty
 Package: array 2026/02/24 v2.7b Tabular extension package (FMi)
-\col@sep=\dimen328
-\ar@mcellbox=\box89
-\extrarowheight=\dimen329
-\NC@list=\toks47
-\extratabsurround=\skip106
-\backup@length=\skip107
-\ar@cellbox=\box90
+\col@sep=\dimen317
+\ar@mcellbox=\box83
+\extrarowheight=\dimen318
+\NC@list=\toks46
+\extratabsurround=\skip105
+\backup@length=\skip106
+\ar@cellbox=\box84
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
-\multirow@colwidth=\skip108
-\multirow@cntb=\count522
-\multirow@dima=\skip109
-\bigstrutjot=\dimen330
+\multirow@colwidth=\skip107
+\multirow@cntb=\count500
+\multirow@dima=\skip108
+\bigstrutjot=\dimen319
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/wrapfig/wrapfig.sty
-\wrapoverhang=\dimen331
-\WF@size=\dimen332
-\c@WF@wrappedlines=\count523
-\WF@box=\box91
-\WF@everypar=\toks48
+\wrapoverhang=\dimen320
+\WF@size=\dimen321
+\c@WF@wrappedlines=\count501
+\WF@box=\box85
+\WF@everypar=\toks47
 Package: wrapfig 2003/01/31  v 3.6
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count524
-\float@exts=\toks49
-\float@box=\box92
-\@float@everytoks=\toks50
-\@floatcapt=\box93
+\c@float@type=\count502
+\float@exts=\toks48
+\float@box=\box86
+\@float@everytoks=\toks49
+\@floatcapt=\box87
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/colortbl/colortbl.sty
 Package: colortbl 2026/05/01 v1.0l Color table columns (DPC)
 new hooks used!!
-\minrowclearance=\skip110
-\rownum=\count525
+\minrowclearance=\skip109
+\rownum=\count503
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2025-06-23 v0.14 Display of landscape pages in PDF
 (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
@@ -962,83 +916,83 @@ Package pdflscape Info: Auto-detected driver: dvipdfm (xetex) on input line 98.
 Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed)
 (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
-\@vwid@box=\box94
-\sift@deathcycles=\count526
-\@vwid@loff=\dimen333
-\@vwid@roff=\dimen334
+\@vwid@box=\box88
+\sift@deathcycles=\count504
+\@vwid@loff=\dimen322
+\@vwid@roff=\dimen323
 )
 ==> First Aid for varwidth.sty applied!
-\c@taburow=\count527
-\tabu@nbcols=\count528
-\tabu@cnt=\count529
-\tabu@Xcol=\count530
-\tabu@alloc=\count531
-\tabu@nested=\count532
-\tabu@target=\dimen335
-\tabu@spreadtarget=\dimen336
-\tabu@naturalX=\dimen337
-\tabucolX=\dimen338
-\tabu@Xsum=\dimen339
-\extrarowdepth=\dimen340
-\abovetabulinesep=\dimen341
-\belowtabulinesep=\dimen342
-\tabustrutrule=\dimen343
-\tabu@thebody=\toks51
-\tabu@footnotes=\toks52
-\tabu@box=\box95
-\tabu@arstrutbox=\box96
-\tabu@hleads=\box97
-\tabu@vleads=\box98
-\tabu@cellskip=\skip111
+\c@taburow=\count505
+\tabu@nbcols=\count506
+\tabu@cnt=\count507
+\tabu@Xcol=\count508
+\tabu@alloc=\count509
+\tabu@nested=\count510
+\tabu@target=\dimen324
+\tabu@spreadtarget=\dimen325
+\tabu@naturalX=\dimen326
+\tabucolX=\dimen327
+\tabu@Xsum=\dimen328
+\extrarowdepth=\dimen329
+\abovetabulinesep=\dimen330
+\belowtabulinesep=\dimen331
+\tabustrutrule=\dimen332
+\tabu@thebody=\toks50
+\tabu@footnotes=\toks51
+\tabu@box=\box89
+\tabu@arstrutbox=\box90
+\tabu@hleads=\box91
+\tabu@vleads=\box92
+\tabu@cellskip=\skip110
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/threeparttable/threeparttable.sty
 Package: threeparttable 2003/06/13  v 3.0
-\@tempboxb=\box99
+\@tempboxb=\box93
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/threeparttablex/threeparttablex.sty
 Package: threeparttablex 2013/07/23 v0.3 by daleif
-\TPTL@width=\skip112
+\TPTL@width=\skip111
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ulem/ulem.sty
-\UL@box=\box100
-\UL@hyphenbox=\box101
-\UL@skip=\skip113
-\UL@hook=\toks53
-\UL@height=\dimen344
-\UL@pe=\count533
-\UL@pixel=\dimen345
-\ULC@box=\box102
+\UL@box=\box94
+\UL@hyphenbox=\box95
+\UL@skip=\skip112
+\UL@hook=\toks52
+\UL@height=\dimen333
+\UL@pe=\count511
+\UL@pixel=\dimen334
+\ULC@box=\box96
 Package: ulem 2019/11/18
-\ULdepth=\dimen346
+\ULdepth=\dimen335
 ) (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/makecell/makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
-\rotheadsize=\dimen347
-\c@nlinenum=\count534
-\TeXr@lab=\toks54
+\rotheadsize=\dimen336
+\c@nlinenum=\count512
+\TeXr@lab=\toks53
 )
-\@quotelevel=\count535
-\@quotereset=\count536
+\@quotelevel=\count513
+\@quotereset=\count514
 (./paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 306.
-LaTeX Font Info:    ... okay on input line 306.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 306.
-LaTeX Font Info:    ... okay on input line 306.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 306.
-LaTeX Font Info:    ... okay on input line 306.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 306.
-LaTeX Font Info:    ... okay on input line 306.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 306.
-LaTeX Font Info:    ... okay on input line 306.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 306.
-LaTeX Font Info:    ... okay on input line 306.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 306.
-LaTeX Font Info:    ... okay on input line 306.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 306.
-LaTeX Font Info:    ... okay on input line 306.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 306.
-LaTeX Font Info:    ... okay on input line 306.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 306.
-LaTeX Font Info:    ... okay on input line 306.
-Package hyperref Info: Link coloring ON on input line 306.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 299.
+LaTeX Font Info:    ... okay on input line 299.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 299.
+LaTeX Font Info:    ... okay on input line 299.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 299.
+LaTeX Font Info:    ... okay on input line 299.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 299.
+LaTeX Font Info:    ... okay on input line 299.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 299.
+LaTeX Font Info:    ... okay on input line 299.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 299.
+LaTeX Font Info:    ... okay on input line 299.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 299.
+LaTeX Font Info:    ... okay on input line 299.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 299.
+LaTeX Font Info:    ... okay on input line 299.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 299.
+LaTeX Font Info:    ... okay on input line 299.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 299.
+LaTeX Font Info:    ... okay on input line 299.
+Package hyperref Info: Link coloring ON on input line 299.
 (./paper.out) (./paper.out)
 \@outlinefile=\write6
 \openout6 = `paper.out'.
@@ -1066,8 +1020,8 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'paper.bbl' not found.
 No file paper.bbl.
-Package biblatex Info: Reference section=0 on input line 306.
-Package biblatex Info: Reference segment=0 on input line 306.
+Package biblatex Info: Reference section=0 on input line 299.
+Package biblatex Info: Reference segment=0 on input line 299.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1102,22 +1056,22 @@ Package biblatex Info: Reference segment=0 on input line 306.
 * \@reversemargintrue
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 307.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 300.
 (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 307.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 300.
 (c:/Users/mweber/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 
-Package hyperref Warning: Suppressing link with empty target on input line 333.
+Package hyperref Warning: Suppressing link with empty target on input line 326.
 
 
-Package hyperref Warning: Suppressing link with empty target on input line 333.
+Package hyperref Warning: Suppressing link with empty target on input line 326.
 
 
-Package hyperref Warning: Suppressing link with empty target on input line 333.
+Package hyperref Warning: Suppressing link with empty target on input line 326.
 
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
@@ -1129,7 +1083,7 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 386.
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 379.
 [1
 
 ]
@@ -1146,7 +1100,7 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 
 [2]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 443.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 436.
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1157,12 +1111,12 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [3]
-Overfull \hbox (16.91139pt too wide) in paragraph at lines 528--528
+Overfull \hbox (16.91139pt too wide) in paragraph at lines 521--521
 []\TU/lmtt/m/n/10 #>  [6] "cbnf"         "clay"         "coalminedens" "compstrgth"   "damdens"[] 
  []
 
 
-Overfull \hbox (31.18544pt too wide) in paragraph at lines 550--563
+Overfull \hbox (31.18544pt too wide) in paragraph at lines 543--556
  [][] 
  []
 
@@ -1176,7 +1130,7 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [4]
-Underfull \hbox (badness 5637) in paragraph at lines 675--681
+Underfull \hbox (badness 5637) in paragraph at lines 668--674
 []\TU/lmr/m/n/10 StreamCatTools provides a convenience function in either \TU/lmtt/m/n/10 sc_get_params \TU/lmr/m/n/10 or
  []
 
@@ -1190,6 +1144,10 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [5]
+Overfull \hbox (247.91139pt too wide) detected at line 677
+\TU/lmtt/m/n/10 df []<-[] []\TU/lmtt/b/n/10 sc_get_params[]\TU/lmtt/m/n/10 ([]param=[][][]county[][]) []\TU/lmtt/b/n/10 |>[] \TU/lmtt/m/n/10 dplyr[]\TU/lmtt/b/n/10 ::[][]filter[]\TU/lmtt/m/n/10 (state []\TU/lmtt/b/n/10 ==[] [][]\TU/lmtt/m/n/10 OR[][] []\TU/lmtt/b/n/10 &[] \TU/lmtt/m/n/10 county_name []\TU/lmtt/b/n/10 ==[] [][]\TU/lmtt/m/n/10 Benton County[][]) []\TU/lmtt/b/n/10 |>[] \TU/lmtt/m/n/10 dplyr[]\TU/lmtt/b/n/10 ::[][]pull[]\TU/lmtt/m/n/10 (fips) 
+ []
+
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1200,10 +1158,36 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [6]
+Overfull \hbox (43.16139pt too wide) detected at line 759
+  \TU/lmtt/m/n/10 dplyr[]\TU/lmtt/b/n/10 ::[][]summarise[]\TU/lmtt/m/n/10 ([]mean_pctagslphigh2019ws =[] []\TU/lmtt/b/n/10 mean[]\TU/lmtt/m/n/10 (pctagslphigh2019ws, []na.rm=[][]TRUE[])) 
+ []
+
+
+Overfull \hbox (211.16139pt too wide) detected at line 782
+\TU/lmtt/m/n/10 flowline_nldi []<-[] hydrogeofetch[]\TU/lmtt/b/n/10 ::[][]navigate_nldi[]\TU/lmtt/m/n/10 (nldi_feature, []mode =[] []"UT"[], []data_source =[] []"flowlines"[], []distance=[][]5000[]) 
+ []
+
+
+Overfull \hbox (121.91139pt too wide) detected at line 783
+\TU/lmtt/m/n/10 df []<-[] []\TU/lmtt/b/n/10 sc_get_data[]\TU/lmtt/m/n/10 ([]metric=[][][]pctimp2019[][], []aoi=[][][]cat[][], []comid=[]flowline_nldi[]\TU/lmtt/b/n/10 $[]\TU/lmtt/m/n/10 UT_flowlines[]\TU/lmtt/b/n/10 $[]\TU/lmtt/m/n/10 nhdplus_comid) 
+ []
+
+
+Overfull \hbox (85.16139pt too wide) detected at line 785
+\TU/lmtt/m/n/10 flowline_nldi[]\TU/lmtt/b/n/10 $[]\TU/lmtt/m/n/10 PCTIMP2019 []<-[] df[]\TU/lmtt/b/n/10 $[]\TU/lmtt/m/n/10 pctimp2019cat[[]\TU/lmtt/b/n/10 match[]\TU/lmtt/m/n/10 (flowline_nldi[]\TU/lmtt/b/n/10 $[]\TU/lmtt/m/n/10 nhdplus_comid, df[]\TU/lmtt/b/n/10 $[]\TU/lmtt/m/n/10 comid)] 
+ []
+
 File: paper_files/figure-latex/calapooia-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/calapooia-1.pdf>
+
+Overfull \hbox (16.91139pt too wide) detected at line 818
+                      []\TU/lmtt/m/n/10 threads =[] []2[],[]retries =[] []5[], []verbose=[][]FALSE[], []progress=[][]FALSE[]) 
+ []
+
 File: paper_files/figure-latex/landcover-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/landcover-1.pdf>
+File: paper_files/figure-latex/NNI-1.pdf Graphic file (type pdf)
+<use paper_files/figure-latex/NNI-1.pdf>
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1224,8 +1208,6 @@ Package fancyhdr Warning: \headheight is too small (62.59596pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.95425pt}.
 
 [8]
-File: paper_files/figure-latex/NNI-1.pdf Graphic file (type pdf)
-<use paper_files/figure-latex/NNI-1.pdf>
 File: C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 <C:/Users/mweber/R/library/rticles/rmarkdown/templates/joss/resources/JOSS-logo.png>
 
@@ -1267,11 +1249,11 @@ Package logreq Info: Writing requests to 'paper.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 38276 strings out of 469768
- 787495 string characters out of 5466495
- 1667067 words of memory out of 5000000
- 66712 multiletter control sequences out of 15000+600000
- 634723 words of font info for 92 fonts, out of 8000000 for 9000
+ 37089 strings out of 469768
+ 762463 string characters out of 5466495
+ 1641287 words of memory out of 5000000
+ 65538 multiletter control sequences out of 15000+600000
+ 634699 words of font info for 89 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  92i,12n,94p,694b,852s stack positions out of 10000i,1000n,20000p,200000b,200000s
 

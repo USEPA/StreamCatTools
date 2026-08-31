@@ -18,7 +18,6 @@ authors:
     affiliation: 3
   - name: Allen Brookes
     affiliation: 2
-
 affiliations:
   - name: Office of Water, United States Environmental Protection Agency
     index: 1
@@ -28,7 +27,6 @@ affiliations:
     index: 3
   - name: Oak Ridge Institute for Science and Education Fellow c/o United States Environmental Protection Agency
     index: 4
-
 citation_author: Weber et al.
 date: 25 August 2026
 year: 2026
@@ -38,15 +36,6 @@ journal: JOSS
 output:
   rticles::joss_article:
     keep_tex: true
-
-header-includes:
-  - \providecommand{\pandocbounded}[1]{#1}
-  - \providecommand{\pandocnewline}{\\}
-  - \usepackage{fvextra}
-  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,commandchars=\\\{\}}
-  - \DefineVerbatimEnvironment{Verbatim}{Verbatim}{breaklines,breakanywhere}
-  - \ExecuteBibliographyOptions{maxcitenames=2,mincitenames=1,maxbibnames=99}
-  - \AtBeginDocument{\AtBeginBibliography{\defcounter{maxnames}{2}\defcounter{minnames}{1}}}
 ---
 
 
@@ -94,7 +83,7 @@ You can install the most recent package version from *GitHub* by running the fol
 
 
 ``` r
-install.packages(“pak”)
+install.packages("pak")
 library(pak)
 pkg_install("github::USEPA/StreamCatTools")
 ```
@@ -295,7 +284,7 @@ df <- sc_get_nni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
 
 # Software design
 
-`StreamCatTools` is designed as a light convienence wrapper over the StreamCat and LakeCat REST services with all requests issued through `httr2`. The interface is organized into two symmetric families of functions: `sc_*` for stream/catchment data from StreamCat and `lc_*` for lake-basin data from LakeCat.
+`StreamCatTools` is designed as a light convenience wrapper over the StreamCat and LakeCat REST services with all requests issued through `httr2`. The interface is organized into two symmetric families of functions: `sc_*` for stream/catchment data from StreamCat and `lc_*` for lake-basin data from LakeCat.
 
 Data access is handled by `sc_get_data()` and `lc_get_data()`, which query by metric name, area of interest (catchment or watershed), and spatial filter (COMID, county, state, or hydroregion). These functions batch requests transparently so that hundreds of COMIDs can be passed in a single call without overrunning server limits, apply input validation with informative error messages, and return tidy data frames ready for analysis. Discovery and metadata are handled by `sc_get_params()` and `lc_get_params()`, which enumerate available metrics and their full descriptions and expose lookup tables for state and county names and FIPS codes, so that queries can be constructed reproducibly without hard-coding parameters.
 
@@ -335,7 +324,7 @@ flowline_nldi$PCTIMP2019 <- df$pctimp2019cat[match(flowline_nldi$nhdplus_comid, 
 basin <- hydrogeofetch::get_nldi_basin(nldi_feature = nldi_feature)
 ```
 
-Figure \ref{fig:calapooia} plots the NLCD percent imperiousness (percentage of area covered by constructed, artificial surfaces) for the the local drainage (catchment in NHDPlusV21 syntax) and displays the values mapped to each stream reach and to the overall basin boundary.
+Figure \ref{fig:calapooia} plots the NLCD percent imperviousness (percentage of area covered by constructed, artificial surfaces) for the the local drainage (catchment in NHDPlusV21 syntax) and displays the values mapped to each stream reach and to the overall basin boundary.
 
 \begin{figure}
 
@@ -386,10 +375,10 @@ sc_plotnni(comid = com, include.nue = TRUE)
 
 }
 
-\caption{Annual time series of nitrogen and phosphorus buget data for the Mississippi=Atchafalaya river basin.}\label{fig:NNI}
+\caption{Annual time series of nitrogen and phosphorus budget data for the Mississippi=Atchafalaya river basin.}\label{fig:NNI}
 \end{figure}
 
-Potential future functionality for `StreamCatTools` includes expanding the scope of plotting functions as well as expanding the range of metrics and ease of querying these metrics. Additionally, a complementary package, `StreamCatR` is being developed that will allow users to quickly and easily process their own landscape metrics to the NHDPlus framework or other hydrlolgic frameworks with network topology. `StreamCatTools` currently facilitates easy ingestion of StreamCat and LakeCat watershed landscape metrics into workflows in R which is of great use to state watershed planners, researchers and non-governmental organizations and borne out by the over 5000 package downloads and over 350 citations of the underlying StreamCat and LakeCat data that are served by the `StreamCatTools` package.
+Potential future functionality for `StreamCatTools` includes expanding the scope of plotting functions as well as expanding the range of metrics and ease of querying these metrics. Additionally, a complementary package, `StreamCatR` is being developed that will allow users to quickly and easily process their own landscape metrics to the NHDPlus framework or other hydrologic frameworks with network topology. `StreamCatTools` currently facilitates easy ingestion of StreamCat and LakeCat watershed landscape metrics into workflows in R which is of great use to state watershed planners, researchers and non-governmental organizations and borne out by the over 5000 package downloads and over 350 citations of the underlying StreamCat and LakeCat data that are served by the `StreamCatTools` package.
 
 # Research impact
 `StreamCatTools` and the underlying StreamCat dataset provides more than 600 natural and anthropogenic landscape metrics — summarized to both local catchments and full upstream watersheds — for roughly 2.65 million stream reaches across the conterminous United States [@hill2016streamcat], with the parallel LakeCat dataset extending the same framework to more than 356,000 lakes. These data underpin national-scale products including models of biological stream
