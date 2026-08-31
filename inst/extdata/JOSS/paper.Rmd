@@ -1,42 +1,4 @@
----
-title: 'StreamCatTools: An R package for working with StreamCat and LakeCat watershed data in R'
-tags:
-  - R
-  - Watersheds
-  - NHDPlus
-  - API
-authors:
-  - name: Marc H. Weber
-    orcid: 0000-0002-9742-4744
-    affiliation: 1
-  - name: Ryan A. Hill
-    orcid: 0000-0001-9583-0426
-    affiliation: 1
-  - name: Selia Markley
-    affiliation: 4
-  - name: Travis Hudson
-    affiliation: 3
-  - name: Allen Brookes
-    affiliation: 2
-affiliations:
-  - name: Office of Water, United States Environmental Protection Agency
-    index: 1
-  - name: United States Environmental Protection Agency Retired
-    index: 2
-  - name: Oak Ridge Associated Universities Student Services Contractor c/o United States Environmental Protection Agency
-    index: 3
-  - name: Oak Ridge Institute for Science and Education Fellow c/o United States Environmental Protection Agency
-    index: 4
-citation_author: Weber et al.
-date: 25 August 2026
-year: 2026
-bibliography: paper.bib
-csl: apa.csl
-journal: JOSS
-output:
-  rticles::joss_article:
-    keep_tex: true
----
+@ref-hill2016streamcat
 
 ```{r setup, include=FALSE}
 options(width = 80)
