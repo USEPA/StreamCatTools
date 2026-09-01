@@ -240,7 +240,7 @@ library(StreamCatTools)
 start_comid = 23763517
 nldi_feature <- list(featureSource = "comid", featureID = start_comid)
 flowline_nldi <- hydrogeofetch::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
-df <- sc_get_data(metric='pctimp2019', aoi='cat', comid=flowline_nldi$UT_flowlines$nhdplus_comid)
+df <- sc_get_data(metric='pctimp2019', aoi='cat', comid=flowline_nldi$UT_flowlines$nhdplus_comid[!flowline_nldi$UT_flowlines$nhdplus_comid %in% c(947090059,947090060)])
 flowline_nldi <- flowline_nldi$UT_flowlines
 flowline_nldi$PCTIMP2019 <- df$pctimp2019cat[match(flowline_nldi$nhdplus_comid, df$comid)]
 basin <- hydrogeofetch::get_nldi_basin(nldi_feature = nldi_feature)
