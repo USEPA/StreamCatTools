@@ -57,7 +57,7 @@ sc_get_comid <- function(dd = NULL, xcoord = NULL,
   geom_col <- attr(dd, "sf_column")
   run_for <- 1:nrow(dd)
   output <- do.call(rbind, lapply(1:nrow(dd), function(i){
-    comid <- nhdplusTools::discover_nhdplus_id(dd[i,c(geom_col)])
+    comid <- hydrogeofetch::discover_nhdplus_id(dd[i,c(geom_col)])
     if (length(comid)==0L) comid <- NA else comid <- comid
     return(comid)
   }))

@@ -205,7 +205,7 @@ sc_plotnni <- function(comid, include.nue = FALSE, include.inset = TRUE){
   
   #comid
   comidint <- as.integer(comid)
-  flowline <- nhdplusTools::get_nhdplus(comid = comidint, realization = "flowline")
+  flowline <- hydrogeofetch::get_nhdplus(comid = comidint, realization = "flowline")
   point <- flowline |>
     sf::st_geometry() |>
     sf::st_centroid() |>
