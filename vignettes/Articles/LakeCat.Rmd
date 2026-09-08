@@ -76,7 +76,7 @@ head(metrics)
 ```
 
 ## Get Waterbody COMIDs
-In this example we use the `lc_get_comid` function to find COMIDs for a set of example lake locations we load into R.`lc_get_comid` is just a simple wrapper for `get_waterbodies` in the [hydrogeofetch](https://doi-usgs.github.io/nhdplusTools/) R package. We can then use the COMIDs we derive for our lake locations to get LakeCat metrics for these lakes as we show in after this.
+In this example we use the `lc_get_comid` function to find COMIDs for a set of example lake locations we load into R.`lc_get_comid` is just a simple wrapper for `get_waterbodies` in the [hydrogeofetch](https://doi-usgs.github.io/hydrogeofetch/) R package. We can then use the COMIDs we derive for our lake locations to get LakeCat metrics for these lakes as we show in after this.
 ```{r comids, warning=FALSE, message=FALSE}
 dd <- data.frame(x = c(-89.198,-114.125,-122.044),
                  y = c(45.502,47.877,43.730)) |> 
