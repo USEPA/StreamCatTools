@@ -611,7 +611,7 @@ NULL
 }
 
 # Assert-style validator
-# - online = TRUE (default): query NLDI (nhdplusTools::get_nldi_feature) to confirm existence.
+# - online = TRUE (default): query NLDI (hydrogeofetch::get_nldi_feature) to confirm existence.
 # - online = FALSE: validate against a local .valid_comids vector (must be available).
 # - Also errors if an ID is present (valid) but listed in .missing_COMIDs/.missing_comids.
 is_valid_comid <- function(comid, online = TRUE) {
@@ -633,10 +633,6 @@ is_valid_comid <- function(comid, online = TRUE) {
   expected_missing <- unique(suppressWarnings(as.integer(expected_missing)))
   
   if (isTRUE(online)) {
-    if (!requireNamespace("nhdplusTools", quietly = TRUE)) {
-      stop("Online validation requires nhdplusTools. Install it or call assert_valid_comids(..., online = FALSE).", call. = FALSE)
-    }
-    
     # Query NLDI only for unique, numeric-looking IDs
     query_ids <- unique(ids_chr[!not_numeric])
     exists_map <- setNames(logical(length(query_ids)), query_ids)
@@ -645,7 +641,7 @@ is_valid_comid <- function(comid, online = TRUE) {
       query_ids,
       function(i) {
         out <- tryCatch(
-          nhdplusTools::get_nldi_feature(list(featureSource = "comid", featureID = i)),
+          hydrogeofetch::get_nldi_feature(list(featureSource = "comid", featureID = i)),
           error = function(e) NULL
         )
         isTRUE(inherits(out, "sf")) && nrow(out) > 0
