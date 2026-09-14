@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "StreamCatTools: An R package for working with StreamCat and LakeCat watershed data in R"
+authors:
+  - family-names: "Weber"
+    given-names: "Marc"
+    orcid: "https://orcid.org/0000-0002-9742-4744"
+  - family-names: "Hill"
+    given-names: "Ryan"
+    orcid: "https://orcid.org/0000-0001-9583-0426"
+  - family-names: "Markley"
+    given-names: "Selia"
+  - family-names: "Hudson"
+    given-names: "Travis"
+  - family-names: "Brookes"
+    given-names: "Allen"
+repository-code: "https://github.com/USEPA/StreamCatTools"
+license: "MIT"
+version: "0.11.0"
