@@ -8,6 +8,13 @@ test_that("sc_get_data for a sample COMID returns a data frame", {
   expect_equal(ncol(df), 2)
 })
 
+test_that("sc_get_data rejects showPctFull when metric='all'", {
+  expect_error(
+    sc_get_data(comid='179', aoi='ws', metric='all', showPctFull='true'),
+    regexp = "showPctFull.*metric='all'"
+  )
+})
+
 test_that("sc_get_data for multiple COMIDs and areas and metrics returns a data frame", {
   testthat::skip_on_cran()
   df <- sc_get_data(metric='pcturbmd2006,pctconif2008,rddens', 

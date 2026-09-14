@@ -122,16 +122,28 @@ lc_get_data <- function(comid = NULL,
   }
   # Force old and odd naming convention to behave correctly
   if (!is.null(aoi)){
-    if (aoi == 'catchment') aoi <- 'cat'
-    if (aoi == 'watershed') aoi <- 'ws'
+    aoi_tokens <- strsplit(aoi, ",")[[1]]
+    aoi_tokens <- vapply(aoi_tokens, function(x) {
+      switch(tolower(trimws(x)),
+             catchment = "cat",
+             watershed = "ws",
+             x)
+    }, character(1), USE.NAMES = FALSE)
+    aoi <- paste(aoi_tokens, collapse = ",")
   }
+  metric <- tolower(metric)
+  show_pct_full_requested <- !is.null(showPctFull) &&
+    !identical(tolower(as.character(showPctFull)), "false") &&
+    !isFALSE(showPctFull)
   if (!is.null(conus) & metric=='all'){
     stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
-  } 
+  }
+  if (metric == 'all' && show_pct_full_requested) {
+    stop("showPctFull is not supported when metric='all'. Please request specific metrics or omit showPctFull.")
+  }
   if (metric=='all'){
     message("Using metric='all' with a large aoi may take a considerable amount of time to return results - request may timeout if multiple AOIs are requested")
   }
-  metric = tolower(metric)
   items = unlist(strsplit(metric,','))
   items = gsub(" ","",items)
   items = gsub("\n","",items)
@@ -149,10 +161,11 @@ lc_get_data <- function(comid = NULL,
     httr2::req_method("POST") |>
     httr2::req_headers("Content-Type" = "application/x-www-form-urlencoded") |>
     httr2::req_method("POST") |>
-    httr2::req_body_form(!!!header_data) |> 
-    httr2::req_throttle(rate = 30 / 60) |> 
-    httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
-    httr2::req_perform() |> 
+    httr2::req_body_form(!!!header_data) |>
+    httr2::req_throttle(rate = 30 / 60) |>
+    httr2::req_timeout(seconds = 180) |>
+    httr2::req_retry(backoff = ~ 15, max_tries = 10, retry_on_failure = TRUE) |>
+    httr2::req_perform() |>
     httr2::resp_body_string() |> 
     jsonlite::fromJSON()
   },error = function(e) {

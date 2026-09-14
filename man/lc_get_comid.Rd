@@ -26,7 +26,7 @@ frame}
 \item{crsys}{The epsg code if using a raw data frame}
 
 \item{buffer}{The amount of buffer to use to extend search for a waterbody 
-(simply passed to nhdplusTools::get_waterbodies)}
+(simply passed to hydrogeofetch::get_waterbodies)}
 }
 \value{
 A new sf data frame with a populated 'COMID' column

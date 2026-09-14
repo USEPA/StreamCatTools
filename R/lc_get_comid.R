@@ -22,7 +22,7 @@
 #' @param crsys The epsg code if using a raw data frame
 #' 
 #' @param buffer The amount of buffer to use to extend search for a waterbody 
-#' (simply passed to nhdplusTools::get_waterbodies)
+#' (simply passed to hydrogeofetch::get_waterbodies)
 #' 
 #' @return A new sf data frame with a populated 'COMID' column
 #'
@@ -56,9 +56,9 @@ lc_get_comid <- function(dd = NULL, xcoord = NULL,
   
   output <- do.call(rbind, lapply(1:nrow(dd), function(i){
     if (is.null(buffer)){
-      wb <- nhdplusTools::get_waterbodies(dd[i,])
+      wb <- hydrogeofetch::get_waterbodies(dd[i,])
     } else {
-      wb <- nhdplusTools::get_waterbodies(dd[i,], buffer=buffer)
+      wb <- hydrogeofetch::get_waterbodies(dd[i,], buffer=buffer)
     }
     if (!is.null(wb)){
       comid <- wb |>
