@@ -115,7 +115,7 @@ sc_get_data <- function(comid = NULL,
     # Collapse to the API's comma-separated form
     comid <- paste(comid_vec, collapse = ",")
   # declare global variables to satisfy R CMD check where needed
-  if (getRversion() >= "2.15.1") utils::globalVariables(c("aoi_tokens", "year_tokens", "n_aoi", "n_year", ".pt_row_internal"))
+  
 
   }
   # Collapse other vectors into comma-separated strings
