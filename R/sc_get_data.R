@@ -585,25 +585,25 @@ NULL
 #' @keywords internal
 
 # Helper: normalize incoming IDs to a character vector of digits
-.parse_comids <- function(x) {
-  if (is.null(x)) return(character(0))
+.parse_comids <- function(comids) {
+  if (is.null(comids)) return(character(0))
   
   # If it's a list, unlist it first
-  if (is.list(x)) x <- unlist(x, recursive = TRUE, use.names = FALSE)
+  if (is.list(comids)) comids <- unlist(comids, recursive = TRUE, use.names = FALSE)
   
-  if (is.numeric(x)) {
-    return(as.character(as.integer(x)))
+  if (is.numeric(comids)) {
+    return(as.character(as.integer(comids)))
   }
   
-  if (is.character(x)) {
-    if (length(x) == 1L) {
+  if (is.character(comids)) {
+    if (length(comids) == 1L) {
       # Split by commas/whitespace; strip non-digits (e.g., quotes, parentheses)
-      parts <- unlist(strsplit(x, "[,\\s]+", perl = TRUE), use.names = FALSE)
+      parts <- unlist(strsplit(comids, "[,\\s]+", perl = TRUE), use.names = FALSE)
       parts <- gsub("[^0-9]", "", parts, perl = TRUE)
       parts <- parts[nzchar(parts)]
       return(parts)
     } else {
-      parts <- trimws(x)
+      parts <- trimws(comids)
       parts <- gsub("[^0-9]", "", parts, perl = TRUE)
       parts <- parts[nzchar(parts)]
       return(parts)

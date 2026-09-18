@@ -4,9 +4,9 @@
 \alias{.parse_comids}
 \title{Validate COMIDs}
 \usage{
-.parse_comids(x)
+.parse_comids(comids)
 
-.parse_comids(x)
+.parse_comids(comids)
 }
 \arguments{
 \item{comids}{Integer or character vector of COMIDs to validate. Accepts
