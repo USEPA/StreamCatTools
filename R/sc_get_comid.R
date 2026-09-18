@@ -67,7 +67,7 @@ sc_get_comid <- function(points_sf,
 
   # prepare points transformed to service CRS
   pts <- sf::st_transform(points_sf, crs = sr_wkid)
-  pts$.__pt_row <- seq_len(nrow(pts))
+  pts$.pt_row_internal <- seq_len(nrow(pts))
   coords <- sf::st_coordinates(pts)[, c("X", "Y"), drop = FALSE]
   if (nrow(coords) == 0L) return(integer(0))
   idx <- split(seq_len(nrow(coords)), ceiling(seq_len(nrow(coords)) / chunk_size))
@@ -128,9 +128,9 @@ sc_get_comid <- function(points_sf,
     match_feat <- vapply(joined, function(x) if (length(x)) x[1] else NA_integer_, integer(1))
     matched_featureid <- if (nrow(polys_sf) > 0 && feature_id_field %in% names(polys_sf)) polys_sf[[feature_id_field]][match_feat] else rep(NA_integer_, length(match_feat))
 
-    out_list[[i]] <- tibble::tibble(.__pt_row = chunk_pts$.__pt_row, FEATUREID = matched_featureid)
+    out_list[[i]] <- tibble::tibble(.pt_row_internal = chunk_pts$.pt_row_internal, FEATUREID = matched_featureid)
   }
 
-  out_df <- dplyr::bind_rows(out_list) |> dplyr::arrange(.__pt_row)
+  out_df <- dplyr::bind_rows(out_list) |> dplyr::arrange(.pt_row_internal)
   out_df$FEATUREID
 }

@@ -1,3 +1,12 @@
+# StreamCatTools 0.12.0
+
+-   Replaced `sc_get_comid` with a new REST service implementation using
+    the EPA NHDPlus NP21 simplified catchments layer.
+-   Added a `count_metrics` helper function 
+-   Added MIT license for package
+-   Refactored `sc_get_data` and `lc_get_data` slightly for improved
+    functionality (based on https://github.com/pauldzy/StreamCatTools)
+
 # StreamCatTools 0.11.0
 
 -   Adds new `lc_get_watershed` function to return a lake watershed as an `sf`

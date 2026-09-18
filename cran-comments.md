@@ -1,8 +1,7 @@
 This is a minor update that:
 
--   Adds new `lc_get_watershed` function to return a lake watershed as an `sf`
-    feature for a LakeCat (NHDPlusV2 Waterbody) COMID from an S3-hosted, 
-    HUC2-partitioned GeoParquet dataset
+-   Refactors several functions (e.g., `sc_get_data`, `lc_get_data`, and `sc_get_comids`) 
+    for improved functionality and speed 
 
 -------
 

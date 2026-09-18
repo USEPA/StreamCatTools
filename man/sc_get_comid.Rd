@@ -4,48 +4,56 @@
 \alias{sc_get_comid}
 \title{Get COMIDs via ArcGIS batch query}
 \usage{
-sc_get_comid(points_sf, service_layer_url = "https://watersgeo.epa.gov/arcgis/rest/services/NHDPlus_NP21/Catchments_NP21_Simplified/MapServer/0", layer_id = NULL, chunk_size = 1000, feature_id_field = "FEATUREID", verbose = TRUE)
+sc_get_comid(
+  points_sf,
+  service_layer_url =
+    "https://watersgeo.epa.gov/arcgis/rest/services/NHDPlus_NP21/Catchments_NP21_Simplified/MapServer/0",
+  layer_id = NULL,
+  chunk_size = 1000,
+  feature_id_field = "FEATUREID",
+  verbose = TRUE
+)
 }
 \arguments{
-\item{points_sf}{An `sf` POINT object containing the input locations.}
+\item{points_sf}{An sf POINT object containing the input locations. If you
+supply a plain data.frame, convert it to an sf object first.}
 
-\item{service_layer_url}{URL to the ArcGIS layer /query endpoint or the layer resource. Defaults to the EPA NHDPlus NP21 simplified catchments layer.}
+\item{service_layer_url}{URL to the ArcGIS layer /query endpoint or the
+layer resource. Defaults to the EPA NHDPlus NP21 simplified catchments
+layer (MapServer/0).}
 
-\item{layer_id}{Deprecated. Left for compatibility.}
+\item{layer_id}{Deprecated. Left for compatibility if you need to append a
+layer id to the base service URL.}
 
 \item{chunk_size}{Number of points to send per batch request (default 1000).}
 
-\item{feature_id_field}{Name of the feature attribute to return as the COMID (default \code{"FEATUREID").}
+\item{feature_id_field}{Name of the feature attribute to return as the COMID
+(default "FEATUREID").}
 
 \item{verbose}{Logical, print progress messages for each chunk (default TRUE).}
 }
 \value{
-An integer vector of FEATUREID (COMID) values in the same order as the input points. Missing values are returned as NA.
+An integer vector of FEATUREID (COMID) values in the same order as
+the input points. Missing values are returned as NA.
 }
 \description{
-Retrieve NHDPlus catchment FEATUREID (COMID) for a set of point locations by batching points to an ArcGIS Feature Service /query endpoint and mapping the returned catchment geometries back to the input points via a local spatial intersection.
+Retrieve NHDPlus catchment FEATUREID (COMID) for a set of point locations
+by batching points to an ArcGIS Feature Service /query endpoint and mapping
+the returned catchment geometries back to the input points via a local
+spatial intersection. This avoids per-point HTTP requests and is faster for
+moderate-to-large point sets.
 }
 \examples{
 \dontrun{
+pts <- sf::st_as_sf(data.frame(id = 1:3,
+  x = c(-90, -90.1, -90.2), y = c(40, 40.1, 40.2)), coords = c('x', 'y'), crs = 3857)
 
-dd <- data.frame(x = c(-122.649,-100.348,-75.186,-106.675),
-y = c(45.085, 35.405,42.403,38.721))
-
-comids <- sc_get_comid(dd, xcoord='x',
-                       ycoord='y', crsys=4269)
-
-dd <- sf::st_point_on_surface(sf::read_sf(system.file("shape/nc.shp", package="sf")))
-
-comids <- sc_get_comid(dd)
-                                  
-comids <- sc_get_comid(dd, xcoord='x', 
-ycoord='y', crsys=4269)
-
-dd <- sf::read_sf(system.file("shape/nc.shp", package="sf"))
-comids <- sc_get_comid(dd)
-
- }
+system.time({
+  comids <- sc_get_comid(
+    points_sf = pts,
+    chunk_size = 500
+  )
+})
 }
-\author{
-Marc Weber
+
 }

@@ -114,6 +114,9 @@ sc_get_data <- function(comid = NULL,
     
     # Collapse to the API's comma-separated form
     comid <- paste(comid_vec, collapse = ",")
+  # declare global variables to satisfy R CMD check where needed
+  if (getRversion() >= "2.15.1") utils::globalVariables(c("aoi_tokens", "year_tokens", "n_aoi", "n_year", ".pt_row_internal"))
+
   }
   # Collapse other vectors into comma-separated strings
   metric <- paste(metric, collapse = ",")
@@ -635,7 +638,7 @@ is_valid_comid <- function(comid, online = TRUE) {
   if (isTRUE(online)) {
     # Query NLDI only for unique, numeric-looking IDs
     query_ids <- unique(ids_chr[!not_numeric])
-    exists_map <- setNames(logical(length(query_ids)), query_ids)
+    exists_map <- stats::setNames(logical(length(query_ids)), query_ids)
     
     exists_map[] <- vapply(
       query_ids,

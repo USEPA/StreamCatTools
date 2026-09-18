@@ -54,8 +54,11 @@ Imports:
     cowplot,
     tigris,
     ggplot2,
+    dplyr,
+    tidyr,
+    stringr,
+    tibble,
 Suggests: 
-  dplyr,
   mapview,
   testthat, 
   knitr, 
@@ -64,8 +67,6 @@ Suggests:
   xml2,
   magrittr,
   readr,
-  tidyr,
-  stringr,
   purrr,
   lifecycle,
   tidyselect,
@@ -79,6 +80,6 @@ URL: https://usepa.github.io/StreamCatTools/, https://github.com/USEPA/StreamCat
 BugReports: https://github.com/USEPA/StreamCatTools/issues
 VignetteBuilder: knitr
 LazyData: true
-License: CC0
+License: CC0 + file LICENSE
 NeedsCompilation: no
 Config/roxygen2/version: 8.1.0

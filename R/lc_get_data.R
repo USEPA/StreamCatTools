@@ -593,7 +593,7 @@ is_valid_lakecat_comid <- function(
   
   # Same exists_map + vapply pattern you referenced (one check per unique ID)
   query_ids <- unique(ids_int[!non_numeric])
-  exists_map <- setNames(logical(length(query_ids)), as.character(query_ids))
+  exists_map <- stats::setNames(logical(length(query_ids)), as.character(query_ids))
   exists_map[] <- vapply(
     query_ids,
     function(i) i %in% lakecat_set,

@@ -5,11 +5,6 @@
 #   (3) year expansion                    -> NLCD vintages and other multi-year layers
 # so you can see how a raw column count inflates past the number of distinct variables.
 
-suppressPackageStartupMessages({
-  library(dplyr)
-  library(tidyr)
-  library(stringr)
-})
 
 # ---- helper: turn a variable_info tibble into the three counts -------------
 summarize_metrics <- function(vi, label) {
@@ -22,21 +17,21 @@ summarize_metrics <- function(vi, label) {
   year <- if ("year" %in% names(vi)) vi$year else rep("NA", nrow(vi))
 
   vi <- vi |>
-    mutate(
-      metric = tolower(str_trim(metric)),
+    dplyr::mutate(
+      metric = tolower(stringr::str_trim(metric)),
       aoi    = ifelse(is.na(aoi) | aoi == "", "NA", aoi),
       year   = ifelse(is.na(year) | year == "", "NA", year)
     )
 
   # collapse to one row per base metric, unioning aoi + year tokens across rows
   per_metric <- vi |>
-    group_by(metric) |>
-    summarise(
-      aoi_tokens  = list(sort(unique(str_split(paste(aoi,  collapse = ","), "\\s*,\\s*")[[1]]))),
-      year_tokens = list(sort(unique(str_split(paste(year, collapse = ","), "\\s*,\\s*")[[1]]))),
+    dplyr::group_by(metric) |>
+    dplyr::summarise(
+      aoi_tokens  = list(sort(unique(stringr::str_split(paste(aoi,  collapse = ","), "\\s*,\\s*")[[1]]))),
+      year_tokens = list(sort(unique(stringr::str_split(paste(year, collapse = ","), "\\s*,\\s*")[[1]]))),
       .groups = "drop"
     ) |>
-    mutate(
+    dplyr::mutate(
       n_aoi     = lengths(aoi_tokens),
       n_year    = pmax(lengths(year_tokens), 1L),   # NA-only -> counts as 1
       n_columns = n_aoi * n_year                     # physical columns for this metric
