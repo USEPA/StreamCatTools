@@ -2,31 +2,28 @@
 % Please edit documentation in R/sc_get_comid.R
 \name{sc_get_comid}
 \alias{sc_get_comid}
-\title{Get COMIDs}
+\title{Get COMIDs via ArcGIS batch query}
 \usage{
-sc_get_comid(dd = NULL, xcoord = NULL, ycoord = NULL, crsys = NULL)
+sc_get_comid(points_sf, service_layer_url = "https://watersgeo.epa.gov/arcgis/rest/services/NHDPlus_NP21/Catchments_NP21_Simplified/MapServer/0", layer_id = NULL, chunk_size = 1000, feature_id_field = "FEATUREID", verbose = TRUE)
 }
 \arguments{
-\item{dd}{Name of data frame object.  Can be a simple
-data frame with coordinate columns in a known CRS or
-an sf points data frame}
+\item{points_sf}{An `sf` POINT object containing the input locations.}
 
-\item{xcoord}{The x coordinate column if using a raw data
-frame}
+\item{service_layer_url}{URL to the ArcGIS layer /query endpoint or the layer resource. Defaults to the EPA NHDPlus NP21 simplified catchments layer.}
 
-\item{ycoord}{The y coordinate column if using a raw data 
-frame}
+\item{layer_id}{Deprecated. Left for compatibility.}
 
-\item{crsys}{The epsg code if using a raw data frame}
+\item{chunk_size}{Number of points to send per batch request (default 1000).}
+
+\item{feature_id_field}{Name of the feature attribute to return as the COMID (default \code{"FEATUREID").}
+
+\item{verbose}{Logical, print progress messages for each chunk (default TRUE).}
 }
 \value{
-A new sf data frame with a populated 'COMID' column
+An integer vector of FEATUREID (COMID) values in the same order as the input points. Missing values are returned as NA.
 }
 \description{
-Function to return NHDPlusV2 COMIDS using either a 
-dataframe with coordinates and a specified CRS or an 
-sf object.  The function generates a vector of COMID
-values a user can then pass to sc_get_data function
+Retrieve NHDPlus catchment FEATUREID (COMID) for a set of point locations by batching points to an ArcGIS Feature Service /query endpoint and mapping the returned catchment geometries back to the input points via a local spatial intersection.
 }
 \examples{
 \dontrun{
