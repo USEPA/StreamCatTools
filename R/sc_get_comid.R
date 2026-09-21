@@ -25,7 +25,7 @@
 #' @examples
 #' \dontrun{
 #' pts <- sf::st_as_sf(data.frame(id = 1:3,
-#'   x = c(-90, -90.1, -90.2), y = c(40, 40.1, 40.2)), coords = c('x', 'y'), crs = 3857)
+#'   x = c(-90, -90.1, -90.2), y = c(40, 40.1, 40.2)), coords = c('x', 'y'), crs = 4326)
 #'
 #' system.time({
 #'   comids <- sc_get_comid(
@@ -41,8 +41,55 @@ sc_get_comid <- function(points_sf,
                          layer_id = NULL,
                          chunk_size = 1000,
                          feature_id_field = "FEATUREID",
-                         verbose = TRUE) {
-  if (!inherits(points_sf, "sf")) stop("points_sf must be an sf POINT object")
+                         verbose = TRUE,
+                         crs = NULL,
+                         coords = NULL) {
+  if (inherits(points_sf, "sf")) {
+    pts <- points_sf
+    if (!is.null(crs)) {
+      pts_crs <- sf::st_crs(pts)
+      if (is.na(pts_crs)) {
+        pts <- sf::st_set_crs(pts, crs)
+      }
+    }
+    if (is.na(sf::st_crs(pts))) {
+      stop("points_sf is an sf object with no CRS. Supply crs = ... or provide an sf object with an assigned CRS.")
+    }
+  } else if (is.data.frame(points_sf)) {
+    if (is.null(coords)) {
+      x_name <- NULL
+      y_name <- NULL
+      if (all(c("x", "y") %in% names(points_sf))) {
+        x_name <- "x"
+        y_name <- "y"
+      } else if (all(c("lon", "lat") %in% names(points_sf))) {
+        x_name <- "lon"
+        y_name <- "lat"
+      } else if (all(c("longitude", "latitude") %in% names(points_sf))) {
+        x_name <- "longitude"
+        y_name <- "latitude"
+      } else if (all(c("LON_SITE", "LAT_SITE") %in% names(points_sf))) {
+        x_name <- "LON_SITE"
+        y_name <- "LAT_SITE"
+      } else {
+        stop("points_sf must be an sf object or a data.frame with x/y or lon/lat coordinate columns; also pass coords = c('x', 'y') if needed.")
+      }
+    } else {
+      if (!is.character(coords) || length(coords) != 2L) {
+        stop("coords must be a character vector of length 2 of x/y coordinate names.")
+      }
+      x_name <- coords[1L]
+      y_name <- coords[2L]
+      if (!(x_name %in% names(points_sf)) || !(y_name %in% names(points_sf))) {
+        stop("The coordinate columns specified in coords are not present in points_sf.")
+      }
+    }
+
+    if (is.null(crs)) crs <- 4326
+    pts <- sf::st_as_sf(points_sf, coords = c(x_name, y_name), crs = crs)
+  } else {
+    stop("points_sf must be an sf POINT object or a data.frame with coordinate columns.")
+  }
 
   # normalize URL to the layer's /query endpoint
   if (!grepl("/query$", service_layer_url)) {
@@ -66,7 +113,7 @@ sc_get_comid <- function(points_sf,
   if (!is.null(sr_wkid) && sr_wkid %in% c(102100L, 102113L)) sr_wkid <- 3857L
 
   # prepare points transformed to service CRS
-  pts <- sf::st_transform(points_sf, crs = sr_wkid)
+  pts <- sf::st_transform(pts, crs = sr_wkid)
   pts$.pt_row_internal <- seq_len(nrow(pts))
   coords <- sf::st_coordinates(pts)[, c("X", "Y"), drop = FALSE]
   if (nrow(coords) == 0L) return(integer(0))
@@ -99,7 +146,7 @@ sc_get_comid <- function(points_sf,
     })
 
     if (is.null(resp) || is.null(resp$features) || length(resp$features) == 0) {
-      out_list[[i]] <- tibble::tibble(.__pt_row = idx[[i]], FEATUREID = NA_integer_)
+      out_list[[i]] <- tibble::tibble(.pt_row_internal = idx[[i]], FEATUREID = NA_integer_)
       next
     }
 

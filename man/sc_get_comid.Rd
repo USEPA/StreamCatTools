@@ -11,7 +11,9 @@ sc_get_comid(
   layer_id = NULL,
   chunk_size = 1000,
   feature_id_field = "FEATUREID",
-  verbose = TRUE
+  verbose = TRUE,
+  crs = NULL,
+  coords = NULL
 )
 }
 \arguments{
@@ -46,7 +48,7 @@ moderate-to-large point sets.
 \examples{
 \dontrun{
 pts <- sf::st_as_sf(data.frame(id = 1:3,
-  x = c(-90, -90.1, -90.2), y = c(40, 40.1, 40.2)), coords = c('x', 'y'), crs = 3857)
+  x = c(-90, -90.1, -90.2), y = c(40, 40.1, 40.2)), coords = c('x', 'y'), crs = 4326)
 
 system.time({
   comids <- sc_get_comid(
