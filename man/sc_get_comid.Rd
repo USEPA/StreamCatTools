@@ -33,6 +33,13 @@ layer id to the base service URL.}
 (default "FEATUREID").}
 
 \item{verbose}{Logical, print progress messages for each chunk (default TRUE).}
+
+\item{crs}{Optional CRS for the input points when a data.frame is supplied or
+when an sf object has no attached CRS. Use an EPSG code such as 4326.}
+
+\item{coords}{Optional character vector of length 2 giving x/y coordinate
+column names when 
+\\code{points_sf} is a data.frame. Example: \\code{c("lon", "lat")}.}
 }
 \value{
 An integer vector of FEATUREID (COMID) values in the same order as
