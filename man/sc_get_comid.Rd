@@ -7,8 +7,7 @@
 sc_get_comid(
   points_sf,
   service_layer_url =
-    "https://watersgeo.epa.gov/arcgis/rest/services/NHDPlus_NP21/" ,
-    "Catchments_NP21_Simplified/MapServer/0",
+    "https://watersgeo.epa.gov/arcgis/rest/services/NHDPlus_NP21/Catchments_NP21_Simplified/MapServer/0",
   layer_id = NULL,
   chunk_size = 1000,
   feature_id_field = "FEATUREID",
@@ -34,13 +33,6 @@ layer id to the base service URL.}
 (default "FEATUREID").}
 
 \item{verbose}{Logical, print progress messages for each chunk (default TRUE).}
-
-\item{crs}{Optional CRS for input points when \code{points_sf} is a data.frame
-or when the sf object has no attached CRS. Supply an EPSG code such as 4326.}
-
-\item{coords}{Optional character vector of length 2 giving the x/y coordinate
-column names when \code{points_sf} is a data.frame. For example,
-\code{c("lon", "lat")}.}
 }
 \value{
 An integer vector of FEATUREID (COMID) values in the same order as
