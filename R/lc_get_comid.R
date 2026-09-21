@@ -67,7 +67,7 @@ lc_get_comid <- function(dd = NULL, xcoord = NULL,
     }
 
     comids <- tryCatch({
-      unique(as.character(dplyr::pull(res, comid)))
+      unique(as.character(dplyr::pull(res, "comid")))
     }, error = function(e) character(0))
 
     if (length(comids) == 0L || all(is.na(comids))) {
