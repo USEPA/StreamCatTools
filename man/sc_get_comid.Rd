@@ -6,8 +6,8 @@
 \usage{
 sc_get_comid(
   points_sf,
-  service_layer_url =
-    "https://watersgeo.epa.gov/arcgis/rest/services/NHDPlus_NP21/Catchments_NP21_Simplified/MapServer/0",
+  service_layer_url = paste0("https://watersgeo.epa.gov/arcgis/rest/services/",
+    "NHDPlus_NP21/Catchments_NP21_Simplified/MapServer/0"),
   layer_id = NULL,
   chunk_size = 1000,
   feature_id_field = "FEATUREID",
@@ -17,32 +17,34 @@ sc_get_comid(
 )
 }
 \arguments{
-\item{points_sf}{An sf POINT object containing the input locations. If you
-supply a plain data.frame, convert it to an sf object first.}
+\item{points_sf}{An `sf` POINT object containing the input locations. If you
+supply a plain `data.frame`, convert it to an `sf` object first.}
 
-\item{service_layer_url}{URL to the ArcGIS layer /query endpoint or the
-layer resource. Defaults to the EPA NHDPlus NP21 simplified catchments
-layer (MapServer/0).}
+\item{service_layer_url}{URL to the ArcGIS service layer. Defaults to the
+EPA NHDPlus catchments endpoint.}
 
-\item{layer_id}{Deprecated. Left for compatibility if you need to append a
-layer id to the base service URL.}
+\item{layer_id}{Deprecated. This argument is kept only for backward
+compatibility. If supplied, it is appended to `service_layer_url` after
+trimming any trailing slash.}
 
-\item{chunk_size}{Number of points to send per batch request (default 1000).}
+\item{chunk_size}{Number of points to send per batch request. Default is
+1000.}
 
-\item{feature_id_field}{Name of the feature attribute to return as the COMID
-(default "FEATUREID").}
+\item{feature_id_field}{Name of the feature attribute to return as the COMID.
+Default is `"FEATUREID"`.}
 
-\item{verbose}{Logical, print progress messages for each chunk (default TRUE).}
+\item{verbose}{Logical; print progress messages for each chunk. Default is
+`TRUE`.}
 
-\item{crs}{Optional CRS for the input points when a data.frame is supplied or
-when an sf object has no attached CRS. Use an EPSG code such as 4326.}
+\item{crs}{Optional CRS for the input points when a `data.frame` is supplied
+or when an `sf` object has no attached CRS. Use an EPSG code such as 4326.}
 
 \item{coords}{Optional character vector of length 2 giving x/y coordinate
-column names when an object is a data frame. Example: c("lon", "lat").}
+column names when `points_sf` is a data frame. Example: `c("lon", "lat")`.}
 }
 \value{
 An integer vector of FEATUREID (COMID) values in the same order as
-the input points. Missing values are returned as NA.
+  the input points. Missing values are returned as `NA`.
 }
 \description{
 Retrieve NHDPlus catchment FEATUREID (COMID) for a set of point locations
@@ -53,15 +55,17 @@ moderate-to-large point sets.
 }
 \examples{
 \dontrun{
-pts <- sf::st_as_sf(data.frame(id = 1:3,
-  x = c(-90, -90.1, -90.2), y = c(40, 40.1, 40.2)), coords = c('x', 'y'), crs = 4326)
+pts <- sf::st_as_sf(
+  data.frame(
+    id = 1:3,
+    x = c(-90, -90.1, -90.2),
+    y = c(40, 40.1, 40.2)
+  ),
+  coords = c("x", "y"),
+  crs = 4326
+)
 
-system.time({
-  comids <- sc_get_comid(
-    points_sf = pts,
-    chunk_size = 500
-  )
-})
+comids <- sc_get_comid(points_sf = pts, chunk_size = 500)
 }
 
 }
