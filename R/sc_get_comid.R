@@ -21,8 +21,7 @@
 #' @param crs Optional CRS for the input points when a data.frame is supplied or
 #' when an sf object has no attached CRS. Use an EPSG code such as 4326.
 #' @param coords Optional character vector of length 2 giving x/y coordinate
-#' column names when 
-#' \\code{points_sf} is a data.frame. Example: \\code{c("lon", "lat")}. 
+#' column names when an object is a data frame. Example: c("lon", "lat").
 #'
 #' @return An integer vector of FEATUREID (COMID) values in the same order as
 #' the input points. Missing values are returned as NA.

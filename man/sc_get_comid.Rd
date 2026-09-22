@@ -38,8 +38,7 @@ layer id to the base service URL.}
 when an sf object has no attached CRS. Use an EPSG code such as 4326.}
 
 \item{coords}{Optional character vector of length 2 giving x/y coordinate
-column names when 
-\\code{points_sf} is a data.frame. Example: \\code{c("lon", "lat")}.}
+column names when an object is a data frame. Example: c("lon", "lat").}
 }
 \value{
 An integer vector of FEATUREID (COMID) values in the same order as
