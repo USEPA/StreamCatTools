@@ -3,7 +3,6 @@ Type: Package
 Title: Tools for Working with StreamCat and LakeCat Data
 Version: 0.12.0
 Date: 2026-09-23
-
 Authors@R: c(person(given = "Marc", 
                     family = "Weber", 
                     role = c("aut", "cre"), 
@@ -57,13 +56,10 @@ Imports:
     cowplot,
     tigris,
     ggplot2,
-<<<<<<< HEAD
     dplyr,
     tidyr,
     stringr,
     tibble,
-=======
->>>>>>> f73587f5edbb850ed9a2d1496e1000a3e0061d6f
 Suggests: 
   mapview,
   testthat, 
@@ -86,12 +82,7 @@ URL: https://usepa.github.io/StreamCatTools/, https://github.com/USEPA/StreamCat
 BugReports: https://github.com/USEPA/StreamCatTools/issues
 VignetteBuilder: knitr
 LazyData: true
-<<<<<<< HEAD
 License: MIT + file LICENSE
 NeedsCompilation: no
 Config/roxygen2/version: 8.1.0
-=======
-License: MIT+ file LICENSE
-NeedsCompilation: no
-Config/roxygen2/version: 8.0.0
->>>>>>> f73587f5edbb850ed9a2d1496e1000a3e0061d6f
+
