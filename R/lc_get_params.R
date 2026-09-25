@@ -111,6 +111,7 @@ lc_get_params <- function(param = NULL) {
 #' @export
 #'
 #' @examples
+#' \dontrun
 #' fullname <- lc_fullname(metric='clay')
 
 lc_fullname <- function(metric = NULL) {
