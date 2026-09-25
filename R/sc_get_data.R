@@ -114,6 +114,9 @@ sc_get_data <- function(comid = NULL,
     
     # Collapse to the API's comma-separated form
     comid <- paste(comid_vec, collapse = ",")
+  # declare global variables to satisfy R CMD check where needed
+  
+
   }
   # Collapse other vectors into comma-separated strings
   metric <- paste(metric, collapse = ",")
@@ -129,27 +132,31 @@ sc_get_data <- function(comid = NULL,
   }
   # Force old and odd naming convention to behave correctly
   if (!is.null(aoi)){
-      if (stringr::str_detect(aoi,'catchment')) {
-        aoi <- gsub('catchment','cat',aoi)
-      }
-      if (stringr::str_detect(aoi,'watershed')) {
-        aoi <- gsub('watershed','ws',aoi)
-      }
-      if (stringr::str_detect(aoi,'riparian_catchment')) {
-        aoi <- gsub('riparian_catchment','catrp100',aoi)
-      }
-      if (stringr::str_detect(aoi,'riparian_watershed')) {
-        aoi <- gsub('riparian_watershed','wsrp100',aoi)
-      }
-    }
+    aoi_tokens <- strsplit(aoi, ",")[[1]]
+    aoi_tokens <- vapply(aoi_tokens, function(x) {
+      switch(tolower(trimws(x)),
+             catchment = "cat",
+             watershed = "ws",
+             riparian_catchment = "catrp100",
+             riparian_watershed = "wsrp100",
+             x)
+    }, character(1), USE.NAMES = FALSE)
+    aoi <- paste(aoi_tokens, collapse = ",")
+  }
   
+  metric <- tolower(metric)
+  show_pct_full_requested <- !is.null(showPctFull) &&
+    !identical(tolower(as.character(showPctFull)), "false") &&
+    !isFALSE(showPctFull)
   if (!is.null(conus) & metric=='all'){
     stop('If you are requesting all metrics please request for regions, states or counties rather than all of conus')
-  } 
+  }
+  if (metric == 'all' && show_pct_full_requested) {
+    stop("showPctFull is not supported when metric='all'. Please request specific metrics or omit showPctFull.")
+  }
   if (metric=='all'){
     message("Using metric='all' with a large aoi may take a considerable amount of time to return results - request may timeout if multiple AOIs are requested")
   }
-  metric = tolower(metric)
   items = unlist(strsplit(metric,','))
   items = gsub(" ","",items)
   items = gsub("\n","",items)
@@ -167,10 +174,11 @@ sc_get_data <- function(comid = NULL,
     httr2::req_method("POST") |>
     httr2::req_headers("Content-Type" = "application/x-www-form-urlencoded") |>
     httr2::req_method("POST") |>
-    httr2::req_body_form(!!!header_data) |> 
-    httr2::req_throttle(rate = 30 / 60) |> 
-    httr2::req_retry(backoff = ~ 5, max_tries = 3) |>  
-    httr2::req_perform() |> 
+    httr2::req_body_form(!!!header_data) |>
+    httr2::req_throttle(rate = 30 / 60) |>
+    httr2::req_timeout(seconds = 180) |>
+    httr2::req_retry(backoff = ~ 15, max_tries = 10, retry_on_failure = TRUE) |>
+    httr2::req_perform() |>
     httr2::resp_body_string() |> 
     jsonlite::fromJSON()
   },error = function(e) {
@@ -342,7 +350,6 @@ sc_get_nlcd <- function(year = '2019',
 }
 
 #' @rdname sc_get_nlcd
-#' @keywords internal
 sc_nlcd <- function(year = '2019',
                     comid = NULL,
                     aoi = NULL,
@@ -354,16 +361,16 @@ sc_nlcd <- function(year = '2019',
                     conus = NULL,
                     countOnly = NULL) {
   lifecycle::deprecate_warn("0.10.0", "sc_nlcd()", "sc_get_nlcd()")
-  sc_get_nlcd(year = '2019',
-              comid = NULL,
-              aoi = NULL,
-              showAreaSqKm = NULL,
-              showPctFull = NULL,
-              state = NULL,
-              county = NULL,
-              region = NULL,
-              conus = NULL,
-              countOnly = NULL)
+  sc_get_nlcd(year = year,
+              comid = comid,
+              aoi = aoi,
+              showAreaSqKm = showAreaSqKm,
+              showPctFull = showPctFull,
+              state = state,
+              county = county,
+              region = region,
+              conus = conus,
+              countOnly = countOnly)
 }
 
 #' @title Get NNI
@@ -578,25 +585,25 @@ NULL
 #' @keywords internal
 
 # Helper: normalize incoming IDs to a character vector of digits
-.parse_comids <- function(x) {
-  if (is.null(x)) return(character(0))
+.parse_comids <- function(comids) {
+  if (is.null(comids)) return(character(0))
   
   # If it's a list, unlist it first
-  if (is.list(x)) x <- unlist(x, recursive = TRUE, use.names = FALSE)
+  if (is.list(comids)) comids <- unlist(comids, recursive = TRUE, use.names = FALSE)
   
-  if (is.numeric(x)) {
-    return(as.character(as.integer(x)))
+  if (is.numeric(comids)) {
+    return(as.character(as.integer(comids)))
   }
   
-  if (is.character(x)) {
-    if (length(x) == 1L) {
+  if (is.character(comids)) {
+    if (length(comids) == 1L) {
       # Split by commas/whitespace; strip non-digits (e.g., quotes, parentheses)
-      parts <- unlist(strsplit(x, "[,\\s]+", perl = TRUE), use.names = FALSE)
+      parts <- unlist(strsplit(comids, "[,\\s]+", perl = TRUE), use.names = FALSE)
       parts <- gsub("[^0-9]", "", parts, perl = TRUE)
       parts <- parts[nzchar(parts)]
       return(parts)
     } else {
-      parts <- trimws(x)
+      parts <- trimws(comids)
       parts <- gsub("[^0-9]", "", parts, perl = TRUE)
       parts <- parts[nzchar(parts)]
       return(parts)
@@ -607,7 +614,7 @@ NULL
 }
 
 # Assert-style validator
-# - online = TRUE (default): query NLDI (nhdplusTools::get_nldi_feature) to confirm existence.
+# - online = TRUE (default): query NLDI (hydrogeofetch::get_nldi_feature) to confirm existence.
 # - online = FALSE: validate against a local .valid_comids vector (must be available).
 # - Also errors if an ID is present (valid) but listed in .missing_COMIDs/.missing_comids.
 is_valid_comid <- function(comid, online = TRUE) {
@@ -629,19 +636,15 @@ is_valid_comid <- function(comid, online = TRUE) {
   expected_missing <- unique(suppressWarnings(as.integer(expected_missing)))
   
   if (isTRUE(online)) {
-    if (!requireNamespace("nhdplusTools", quietly = TRUE)) {
-      stop("Online validation requires nhdplusTools. Install it or call assert_valid_comids(..., online = FALSE).", call. = FALSE)
-    }
-    
     # Query NLDI only for unique, numeric-looking IDs
     query_ids <- unique(ids_chr[!not_numeric])
-    exists_map <- setNames(logical(length(query_ids)), query_ids)
+    exists_map <- stats::setNames(logical(length(query_ids)), query_ids)
     
     exists_map[] <- vapply(
       query_ids,
       function(i) {
         out <- tryCatch(
-          nhdplusTools::get_nldi_feature(list(featureSource = "comid", featureID = i)),
+          hydrogeofetch::get_nldi_feature(list(featureSource = "comid", featureID = i)),
           error = function(e) NULL
         )
         isTRUE(inherits(out, "sf")) && nrow(out) > 0
