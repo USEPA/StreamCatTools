@@ -18,7 +18,9 @@ A lookup of the full name for a given LakeCat metric
 Function to retrieve a full metric name based on the short name using the LakeCat API.
 }
 \examples{
+\donttest{
 fullname <- lc_fullname(metric='clay')
+}
 }
 \author{
 Marc Weber

@@ -22,7 +22,7 @@
 #' @param crsys The epsg code if using a raw data frame
 #' 
 #' @param buffer The amount of buffer to use to extend search for a waterbody 
-#' (simply passed to nhdplusTools::get_waterbodies)
+#' (simply passed to hydrogeofetch::get_waterbodies)
 #' 
 #' @return A new sf data frame with a populated 'COMID' column
 #'
@@ -52,27 +52,38 @@ lc_get_comid <- function(dd = NULL, xcoord = NULL,
   } else {
     dd <- sf::st_as_sf(dd, coords = c(xcoord, ycoord), crs = crsys, remove = FALSE)
   }
-  
-  
-  output <- do.call(rbind, lapply(1:nrow(dd), function(i){
-    if (is.null(buffer)){
-      wb <- nhdplusTools::get_waterbodies(dd[i,])
-    } else {
-      wb <- nhdplusTools::get_waterbodies(dd[i,], buffer=buffer)
+
+  output <- vapply(seq_len(nrow(dd)), function(i) {
+    res <- tryCatch({
+      if (is.null(buffer)) {
+        hydrogeofetch::get_waterbodies(dd[i, ])
+      } else {
+        hydrogeofetch::get_waterbodies(dd[i, ], buffer = buffer)
+      }
+    }, error = function(e) NULL)
+
+    if (is.null(res) || !inherits(res, "sf") || nrow(res) == 0L) {
+      return(NA_character_)
     }
-    if (!is.null(wb)){
-      comid <- wb |>
-        dplyr::pull(comid)
-    if (length(comid)==0L) comid <- NA else comid <- comid
-      return(comid)
-    } 
-  }))
-  output <- as.data.frame(output)
-  names(output)[1] <- 'COMID'
-  if (any(is.na(output$COMID))){
-    missing <- which(is.na(output$COMID))
-    message(paste0('Row number ', as.character(missing), ' came back with no corresponding COMIDS because the site(s) were outside the boundary of any NHDPlus Waterbody features. Any NA values in this list of COMIDs will be dropped by default in lc_get_data()'))
+
+    comids <- tryCatch({
+      unique(as.character(dplyr::pull(res, "comid")))
+    }, error = function(e) character(0))
+
+    if (length(comids) == 0L || all(is.na(comids))) {
+      return(NA_character_)
+    }
+
+    paste(comids, collapse = ",")
+  }, character(1))
+
+  output_df <- data.frame(COMID = output, stringsAsFactors = FALSE)
+
+  if (any(is.na(output_df$COMID))) {
+    missing <- which(is.na(output_df$COMID))
+    message(paste0('Row number ', paste(as.character(missing), collapse = ", "), ' came back with no corresponding COMIDS because the site(s) were outside the boundary of any NHDPlus Waterbody features. Any NA values in this list of COMIDs will be dropped by default in lc_get_data()'))
   }
-  comids <- paste(output$COMID, collapse=',')
+
+  comids <- paste(output_df$COMID, collapse = ',')
   return(comids)
 }

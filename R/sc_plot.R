@@ -205,7 +205,14 @@ sc_plotnni <- function(comid, include.nue = FALSE, include.inset = TRUE){
   
   #comid
   comidint <- as.integer(comid)
-  flowline <- nhdplusTools::get_nhdplus(comid = comidint, realization = "flowline")
+  flowline <- tryCatch({
+    hydrogeofetch::get_nhdplus(comid = comidint, realization = "flowline")
+  }, error = function(e) NULL)
+
+  if (is.null(flowline) || !inherits(flowline, "sf") || nrow(flowline) == 0L) {
+    stop("NHDPlus flowline data unavailable from the upstream service; cannot build the plot inset.")
+  }
+
   point <- flowline |>
     sf::st_geometry() |>
     sf::st_centroid() |>
