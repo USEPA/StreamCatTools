@@ -117,10 +117,17 @@ knitr::kable(df)
 
 ## Get lake and lake watersheds as `sf` objects
 
+<<<<<<< HEAD
 `StreamCatTools` includes a function `lc_get_watershed` that will return the watershed of any lake by COMID from an AWS S3 bucket of partitioned geoparquet files for all LakeCat lake watersheds (both on-network and off-network lakes).  The watershed requested is returned as an `sf` object and uses `duckDB` as well as optional parallelization for faster data returns and specification of a specific HUC2 if known to reduce search time. **NOTE** `lc_get_watershed` currently only returns one watershed per request. This can be used in conjunction with `hydrogeofetch` function `get_waterbodies` to map lake features for which `LakeCat` metrics are requested as shown below.
 
 ```{r get_lake}
 lake <- hydrogeofetch::get_waterbodies(id = 19334077)
+=======
+`StreamCatTools` includes a function `lc_get_watershed` that will return the watershed of any lake by COMID from an AWS S3 bucket of partitioned geoparquet files for all LakeCat lake watersheds (both on-network and off-network lakes).  The watershed requested is returned as an `sf` object and uses `duckDB` as well as optional parallelization for faster data returns and specification of a specific HUC2 if known to reduce search time. **NOTE** `lc_get_watershed` currently only returns one watershed per request. This can be used in conjunction with `nhdplusTools` function `get_waterbodies` to map lake features for which `LakeCat` metrics are requested as shown below.
+
+```{r get_lake}
+lake <- nhdplusTools::get_waterbodies(id = 19334077)
+>>>>>>> f73587f5edbb850ed9a2d1496e1000a3e0061d6f
 ```
 
 ```{r get_watershed}

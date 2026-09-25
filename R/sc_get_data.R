@@ -350,6 +350,7 @@ sc_get_nlcd <- function(year = '2019',
 }
 
 #' @rdname sc_get_nlcd
+#' @keywords internal
 sc_nlcd <- function(year = '2019',
                     comid = NULL,
                     aoi = NULL,
