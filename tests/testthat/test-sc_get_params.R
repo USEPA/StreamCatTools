@@ -28,6 +28,7 @@ test_that("sc_get_params for metric_names parameters", {
 test_that("sc_get_params for variable_info parameters", {
   testthat::skip_on_cran()
   params <- sc_get_params(param='variable_info')
+  skip_if_api_unavailable(params, "variable_info API")
   expect_true(exists("params"))
   expect_gt(nrow(params),100)
 })
@@ -35,6 +36,7 @@ test_that("sc_get_params for variable_info parameters", {
 test_that("sc_get_params for StreamCat metric categories", {
   testthat::skip_on_cran()
   params <- sc_get_params(param='categories')
+  skip_if_api_unavailable(params, "categories API")
   expect_true(exists("params"))
   expect_gt(length(params),8)
 })
@@ -42,6 +44,7 @@ test_that("sc_get_params for StreamCat metric categories", {
 test_that("sc_get_params for StreamCat datasets", {
   testthat::skip_on_cran()
   params <- sc_get_params(param='datasets')
+  skip_if_api_unavailable(params, "datasets API")
   expect_true(exists("params"))
   expect_gt(length(params),30)
 })

@@ -6,7 +6,7 @@
 ^docs$
 ^pkgdown$
 .github
-^LICENSE\.md$
 ^\.github$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^revdep$
