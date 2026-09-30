@@ -7,7 +7,14 @@ This is a minor update that:
 
 ## Resubmission
 
-This is a resubmission. 
+This is a resubmission. In this version I have
+
+-    Fixed Possibly misspelled words in DESCRIPTION by single-quoting 
+     'LakeCat' (3:45) and 'StreamCat' (3:31)
+-    Fixed typo for functionality in StartHere.Rmd:44    
+-    Fixed typo for guidelines in README.md:42
+-    Fixed typo for metrics in lc_get_params.R:143 and sc_get_params.R:141
+
 
 ## R CMD check results
 
