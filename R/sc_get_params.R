@@ -109,7 +109,9 @@ sc_get_params <- function(param = NULL) {
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' fullname <- sc_fullname(metric='clay')
+#' }
 
 sc_fullname <- function(metric = NULL) {
   result <- tryCatch({
