@@ -14,7 +14,8 @@ sc_get_data(
   county = NULL,
   region = NULL,
   conus = NULL,
-  countOnly = NULL
+  countOnly = NULL,
+  validate = FALSE
 )
 }
 \arguments{
@@ -66,6 +67,9 @@ Values: true|false}
 \item{countOnly}{Return a CSV containing only the row count (ROWCOUNT) and the column
 count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
 Values: true|false}
+
+\item{validate}{Logical. If TRUE, validate supplied COMIDs using the upstream NLDI service before calling the StreamCat API.
+The default is FALSE to avoid external NLDI calls during routine data retrieval.}
 }
 \value{
 A data frame of StreamCat metrics. If data are missing for all rows of a given metric, then the column for that metric will not exist. If data are missing for only some rows, then they will be specified with NA.
