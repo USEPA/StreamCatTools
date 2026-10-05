@@ -56,6 +56,9 @@
 #' count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
 #' Values: true|false
 #'
+#' @param validate Logical. If TRUE, validate supplied COMIDs using the upstream NLDI service before calling the StreamCat API.
+#' The default is FALSE to avoid external NLDI calls during routine data retrieval.
+#'
 #' @return A data frame of StreamCat metrics. If data are missing for all rows of a given metric, then the column for that metric will not exist. If data are missing for only some rows, then they will be specified with NA.
 #'
 #' @examples
@@ -96,7 +99,8 @@ sc_get_data <- function(comid = NULL,
                         county = NULL,
                         region = NULL,
                         conus = NULL,
-                        countOnly = NULL) {
+                        countOnly = NULL,
+                        validate = FALSE) {
   # Base API URL.
   base_url <- 'https://api.epa.gov/StreamCat/streams/metrics'
   req <- httr2::request(base_url)
@@ -107,11 +111,11 @@ sc_get_data <- function(comid = NULL,
   if (!is.null(comid)){
     # This handles numeric vectors, character vectors, lists, or "100,200,300" strings
     comid_vec <- .parse_comids(comid)
-    
-    # Use your internal offline validator against the LakeCat COMID set (RDS from S3)
-    # Will stop() with a helpful message if any are invalid
-    is_valid_comid(comid_vec)
-    
+
+    if (isTRUE(validate)) {
+      is_valid_comid(comid_vec)
+    }
+
     # Collapse to the API's comma-separated form
     comid <- paste(comid_vec, collapse = ",")
   # declare global variables to satisfy R CMD check where needed
