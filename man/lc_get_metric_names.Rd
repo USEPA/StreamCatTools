@@ -16,7 +16,7 @@ lc_get_metric_names(category = NULL, aoi = NULL, year = NULL, dataset = NULL)
 \item{dataset}{Filter LakeCat metrics based on the dataset name}
 }
 \value{
-A dataframe of merics and description that match filter criteria
+A dataframe of metrics and description that match filter criteria
 }
 \description{
 Function to filter LakeCat metrics metrics by category, area of interest,

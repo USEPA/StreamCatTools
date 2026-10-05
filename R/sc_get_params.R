@@ -109,7 +109,9 @@ sc_get_params <- function(param = NULL) {
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' fullname <- sc_fullname(metric='clay')
+#' }
 
 sc_fullname <- function(metric = NULL) {
   result <- tryCatch({
@@ -138,7 +140,7 @@ sc_fullname <- function(metric = NULL) {
 #' @param year Filter StreamCat metrics based on a particular year or years
 #' @param dataset Filter StreamCat metrics based on the dataset name
 #'
-#' @return A dataframe of merics and description that match filter criteria
+#' @return A dataframe of metrics and description that match filter criteria
 # #' @importFrom rlang .data
 #' @export
 #'
