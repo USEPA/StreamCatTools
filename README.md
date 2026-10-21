@@ -52,15 +52,15 @@ Contributions to development of the package are welcome and encouraged. Please c
 
 ### Recommended Citation:
 ```r
-citation(package = "StreamCatTools"")
+citation(package = "StreamCatTools")
 ```
 
 ```
 To cite package ‘StreamCatTools’ in publications use:
 
-  Weber M, Hill R, Markley S, Hudson T, Brookes A (2026). _StreamCatTools:
+  Weber M, Hill R, Markley S, Hudson T, Brookes A (2026). StreamCatTools:
   StreamCatTools: Tools for Working with StreamCat and LakeCat Data_. R package
-  version 0.11.0, <https://usepa.github.io/StreamCatTools/>.
+  version 0.12.0, <https://usepa.github.io/StreamCatTools/>.
 
 A BibTeX entry for LaTeX users is
 
@@ -68,7 +68,7 @@ A BibTeX entry for LaTeX users is
     title = {StreamCatTools: StreamCatTools: Tools for Working with StreamCat and LakeCat Data},
     author = {Marc Weber and Ryan Hill and Selia Markley and Travis Hudson and Allen Brookes},
     year = {2026},
-    note = {R package version 0.11.0},
+    note = {R package version 0.12.0},
     url = {https://usepa.github.io/StreamCatTools/},
   }
 ```
