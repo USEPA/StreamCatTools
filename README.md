@@ -7,7 +7,6 @@
 [![R-CMD-check](https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/USEPA/StreamCatTools/actions/workflows/R-CMD-check.yaml)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/StreamCatTools)](https://cran.r-project.org/package=StreamCatTools)
 [![CodeCov](https://img.shields.io/badge/test%20coverage-82.62%25-388600.svg)](https://img.shields.io/badge/test%20coverage-82.62%25-388600.svg)
-[![DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/USEPA/StreamCatTools)
 <!-- badges: end -->
 
 ## StreamCatTools: Tools to work with the [StreamCat](https://www.epa.gov/national-aquatic-resource-surveys/streamcat-dataset) API within R and access the full suite of StreamCat and [LakeCat](https://www.epa.gov/national-aquatic-resource-surveys/lakecat-dataset) metrics.
@@ -39,7 +38,7 @@ vignette("StartHere", "StreamCatTools")
 ```
 
 ### Contributing
-Contributions to development of the package are welcome and encouraged. Please consider the following guidlelines for contributing to `StreamCatTools`:
+Contributions to development of the package are welcome and encouraged. Please consider the following guidelines for contributing to `StreamCatTools`:
 
 - We encourage package users to submit bugs and enhancement requests by submitting issues - see the [Quickstart for GitHub Issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/quickstart) page if you are new to GitHub issues
 - Contributions should use the standard GitHub [fork - pull-request workflow](https://gist.github.com/Chaser324/ce0505fbed06b947d962)
@@ -75,3 +74,7 @@ A BibTeX entry for LaTeX users is
 ```
 ### Disclaimer
 The United States Environmental Protection Agency (EPA) GitHub project code is provided on an "as is" basis and the user assumes responsibility for its use.  EPA has relinquished control of the information and no longer has responsibility to protect the integrity , confidentiality, or availability of the information.  Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by EPA.  The EPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by EPA or the United States Government.
+
+## License
+
+This package is released under the MIT License. See [LICENSE.md](inst/LICENSE.md) for the full text.

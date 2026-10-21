@@ -113,9 +113,8 @@ lc_get_params <- function(param = NULL) {
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' fullname <- lc_fullname(metric='clay')
-#' }
+#' \dontrun{
+#' fullname <- lc_fullname(metric='clay')}
 
 lc_fullname <- function(metric = NULL) {
   result <- tryCatch({
@@ -143,7 +142,7 @@ lc_fullname <- function(metric = NULL) {
 #' @param year Filter LakeCat metrics based on a particular year or years
 #' @param dataset Filter LakeCat metrics based on the dataset name
 #'
-#' @return A dataframe of merics and description that match filter criteria
+#' @return A dataframe of metrics and description that match filter criteria
 # #' @importFrom rlang .data
 #' @export
 #'

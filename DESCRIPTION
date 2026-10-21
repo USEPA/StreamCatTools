@@ -1,6 +1,6 @@
 Package: StreamCatTools
 Type: Package
-Title: Tools for Working with StreamCat and LakeCat Data
+Title: Tools for Working with 'StreamCat' and 'LakeCat' Data
 Version: 0.12.0
 Date: 2026-09-23
 Authors@R: c(person(given = "Marc", 
@@ -85,3 +85,4 @@ LazyData: true
 License: MIT + file LICENSE
 NeedsCompilation: no
 Config/roxygen2/version: 8.1.0
+

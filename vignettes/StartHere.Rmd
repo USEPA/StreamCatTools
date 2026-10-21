@@ -41,7 +41,7 @@ The `StreamCatTools` package was designed to simplify the use of [StreamCat](htt
 There are three additional vignettes in `StreamCatTools` that are available on our website [here](https://usepa.github.io/StreamCatTools/) under the "Articles" tab:
 
 1. Introduction
-  * An overview of the basic fucntionality of the package
+  * An overview of the basic functionality of the package
 2. LakeCat
   * An overview of accessing data for lakes within the package and functions to do so
 3. Applications

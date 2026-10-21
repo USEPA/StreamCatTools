@@ -139,6 +139,7 @@ tictoc::toc()
 
 ### View lake with watershed
 ```{r view_lake_watershed}
+mapview::mapviewOptions(fgb=FALSE,basemaps = c("Esri.WorldGrayCanvas"))
 mapview::mapview(ws, 
                  col.regions = "blue", 
                  alpha.regions = 0.1,  
