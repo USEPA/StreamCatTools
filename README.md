@@ -77,4 +77,4 @@ The United States Environmental Protection Agency (EPA) GitHub project code is p
 
 ## License
 
-This package is released under the MIT License. See [LICENSE.md](inst/LICENSE.md) for the full text.
+This package is released under the MIT License. See [LICENSE.md](LICENSE.md) for the full text.
