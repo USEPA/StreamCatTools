@@ -50,7 +50,7 @@ basin <- hydrogeofetch::get_nldi_basin(nldi_feature = nldi_feature)
 
 ```{r wshd pt2}
 library(mapview)
-mapview::mapviewOptions(fgb=FALSE)
+mapview::mapviewOptions(fgb=FALSE,basemaps = c("Esri.WorldGrayCanvas"))
 mapview::mapview(basin, alpha.regions=.08) + mapview::mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
 ```
 
@@ -64,10 +64,12 @@ dplyr::glimpse(nrsa)
 # Promote data frame to sf spatial points data frame
 nrsa_sf <- sf::st_as_sf(nrsa, coords = c("LON_DD83", "LAT_DD83"), crs = 4269)
 
-# Get COMIDs
-nrsa$COMID<- NA
-nrsa_sf[i,'COMID'] <- sc_get_comid(nrsa_sf[i,c('geometry')])
-
+# Get COMIDs using hydrogeofetch package
+# nrsa$COMID<- NA
+# for (i in 1:nrow(nrsa_sf)){
+#   print (i)
+#   nrsa_sf[i,'COMID'] <- hydrogeofetch::discover_nhdplus_id(nrsa_sf[i,c('geometry')])
+# }
 load(system.file("extdata", "sample_nrsa_data.rda", package="StreamCatTools"))
 
 # get particular StreamCat data for all these NRSA sites
@@ -76,7 +78,7 @@ comids <- nrsa_sf$COMID
 comids <- comids[!is.na(comids)]
 comids <- comids[c(1:700)]
 comids <- paste(comids,collapse=',')
-df <- sc_get_data(metric='pctcrop2006', aoi='ws', nrsa_sf[1:500,'COMID'])
+df <- sc_get_data(metric='pctcrop2006', aoi='ws', comid=comids)
 
 # glimpse(df)
 df$COMID <- as.integer(df$comid)

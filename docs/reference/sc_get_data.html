@@ -87,7 +87,8 @@ specific metric data aggregated by area of interest, returned by comid(s), hydro
 <span>  county <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  region <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  conus <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  countOnly <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  countOnly <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  validate <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -161,6 +162,11 @@ Values: true|false</p></dd>
 <dd><p>Return a CSV containing only the row count (ROWCOUNT) and the column
 count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
 Values: true|false</p></dd>
+
+
+<dt id="arg-validate">validate<a class="anchor" aria-label="anchor" href="#arg-validate"></a></dt>
+<dd><p>Logical. If TRUE, validate supplied COMIDs using the upstream NLDI service before calling the StreamCat API.
+The default is FALSE to avoid external NLDI calls during routine data retrieval.</p></dd>
 
 </dl></div>
     <div id="value">
