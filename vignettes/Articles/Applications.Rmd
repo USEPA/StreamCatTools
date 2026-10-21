@@ -50,7 +50,7 @@ basin <- hydrogeofetch::get_nldi_basin(nldi_feature = nldi_feature)
 
 ```{r wshd pt2}
 library(mapview)
-mapview::mapviewOptions(fgb=FALSE)
+mapview::mapviewOptions(fgb=FALSE,basemaps = c("Esri.WorldGrayCanvas"))
 mapview::mapview(basin, alpha.regions=.08) + mapview::mapview(flowline_nldi, zcol = "PCTIMP2011CAT", legend = TRUE)
 ```
 
@@ -68,7 +68,7 @@ nrsa_sf <- sf::st_as_sf(nrsa, coords = c("LON_DD83", "LAT_DD83"), crs = 4269)
 # nrsa$COMID<- NA
 # for (i in 1:nrow(nrsa_sf)){
 #   print (i)
-#   nrsa_sf[i,'COMID'] <- discover_nhdplus_id(nrsa_sf[i,c('geometry')])
+#   nrsa_sf[i,'COMID'] <- hydrogeofetch::discover_nhdplus_id(nrsa_sf[i,c('geometry')])
 # }
 load(system.file("extdata", "sample_nrsa_data.rda", package="StreamCatTools"))
 
