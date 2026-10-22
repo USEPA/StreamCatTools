@@ -43,7 +43,7 @@ output: rticles::joss_article
 
 # Summary
 
-`StreamCatTools` provides an R interface to the StreamCat[@hill2016streamcat] and LakeCat[@hill2018lakecat] data and APIs for retrieving national scale watershed and lake-basin metrics. The package gives researchers and managers access to hundreds of catchment- and watershed-scale metrics without manual geospatial accumulation.
+`StreamCatTools` provides an R interface to the StreamCat [@hill2016streamcat] and LakeCat [@hill2018lakecat] data and APIs for retrieving national scale watershed and lake-basin metrics. The package gives researchers and managers access to hundreds of catchment- and watershed-scale metrics without manual geospatial accumulation.
 
 # Statement of Need
 
@@ -55,7 +55,7 @@ R packages for watershed science usually cover one of three tasks: network navig
 
 # Package Overview
 
-`StreamCatTools` is a lightweight R interface to the StreamCat API. The package allows for metadata discovery, metric lookup, and data retrieval using `httr2` [@wickham2025httr2]. The core functions retrieve variables at multiple AOIs: catchment (cat), watershed (ws), riparian catchment (catrp100), riparian watershed (wsrp100), and an other category for non-standard metrics) Figure \ref{fig:flowchart}. They also support National Land Cover Database (NLCD) [@NLCD] and National Nutrient Inventory (NNI) [@nutinventory] time-series products.
+`StreamCatTools` is a lightweight R interface to the StreamCat API. The package allows for metadata discovery, metric lookup, and data retrieval using `httr2` [@wickham2025httr2]. The core functions retrieve variables at multiple AOIs: catchment (cat), watershed (ws), riparian catchment (catrp100), riparian watershed (wsrp100), and an other category for non-standard metrics Figure. They also support National Land Cover Database (NLCD) [@NLCD] and National Nutrient Inventory (NNI) [@nutinventory] time-series products. The basic functionality and workflow is captured in \ref{fig:flowchart}.
 
 \begin{figure}
 
