@@ -13,21 +13,22 @@ authors:
     orcid: 0000-0001-9583-0426
     affiliation: 1
   - name: Selia Markley
-    affiliation: 4
+    affiliation: 2
   - name: Travis Hudson
     affiliation: 3
   - name: Allen Brookes
-    affiliation: 2
+    affiliation: 4
 
 affiliations:
   - name: Office of Water, United States Environmental Protection Agency
     index: 1
-  - name: United States Environmental Protection Agency Retired
+  - name: Oak Ridge Institute for Science and Education Fellow c/o United States Environmental Protection Agency
     index: 2
   - name: Oak Ridge Associated Universities Student Services Contractor c/o United States Environmental Protection Agency
     index: 3
-  - name: Oak Ridge Institute for Science and Education Fellow c/o United States Environmental Protection Agency
+  - name: United States Environmental Protection Agency Retired
     index: 4
+
 
 citation_author: Weber et al.
 date: 25 August 2026
@@ -54,7 +55,7 @@ R packages for watershed science usually cover one of three tasks: network navig
 
 # Package Overview
 
-`StreamCatTools` is a lightweight R interface to the StreamCat API. The package allows for metadata discovery, metric lookup, and data retrieval using `httr2` [@wickham2025httr2]. The core functions retrieve variables at multiple AOIs: catchment (cat), watershed (ws), riparian catchment (catrp100), riparian watershed (wsrp100), and an other category for non-standard metrics). They also support National Land Cover Database (NLCD) [@NLCD] and National Nutrient Inventory (NNI) [@nutinventory] time-series products.
+`StreamCatTools` is a lightweight R interface to the StreamCat API. The package allows for metadata discovery, metric lookup, and data retrieval using `httr2` [@wickham2025httr2]. The core functions retrieve variables at multiple AOIs: catchment (cat), watershed (ws), riparian catchment (catrp100), riparian watershed (wsrp100), and an other category for non-standard metrics) Figure \ref{fig:flowchart}. They also support National Land Cover Database (NLCD) [@NLCD] and National Nutrient Inventory (NNI) [@nutinventory] time-series products.
 
 \begin{figure}
 
@@ -113,19 +114,30 @@ names[1:10]
 
 The same pattern applies to LakeCat metadata retrieval with `lc_get_params()`.
 
-In StreamCat and LakeCat individual catchments (the local drainage area for a stream or lake) are aggregated to the watershed using either a weighted average or a count/sum depending on the metric [@hill2016streamcat]. `sc_get_params()` and `lc_get_params()` return variable descriptions, units, years, and metric categories (Table 1)
+In StreamCat and LakeCat individual catchments (the local drainage area for a stream or lake) are aggregated to the watershed using either a weighted average or a count/sum depending on the metric [@hill2016streamcat]. `sc_get_params()` and `lc_get_params()` return variable descriptions, units, years, and metric categories as shown in Table \ref{tab:variable-table}.
 
+\begin{table}
 
-Table: Example of variable information returned by the variable_info parameter in the sc_get_params function.
-
-|Metric                  |Short Description                           |Year      |Units                  |
-|:-----------------------|:-------------------------------------------|:---------|:----------------------|
-|agkffact[AOI]           |Ag Soil Erodibility Kf Factor               |NA        |Unitless               |
-|bfi[AOI]                |Base Flow Index                             |NA        |Percent                |
-|huden[Year][AOI]        |Mean Housing Density                        |2010      |Count/Square Kilometer |
-|inorgnwetdep[Year][AOI] |Mean Annual Precipitation-Weighted Nitrogen |2008      |Kilogram/Hectare/Year  |
-|n_ags_[Year][AOI]       |Nitrogen Agricultural Surplus               |1987-2017 |Kilograms              |
-|pcthighsev[Year][AOI]   |Percent High Burn Severity Class For Year   |1984-2018 |Percent                |
+\caption{\label{tab:variable-table}Example of variable information returned by the variable\_info parameter in the sc\_get\_params function.}
+\centering
+\begin{tabular}[t]{l|p{0.25\textwidth}|c|l}
+\hline
+Metric & Short Description & Year & Units\\
+\hline
+agkffact[AOI] & Ag Soil Erodibility Kf Factor & NA & Unitless\\
+\hline
+bfi[AOI] & Base Flow Index & NA & Percent\\
+\hline
+huden[Year][AOI] & Mean Housing Density & 2010 & Count/Square Kilometer\\
+\hline
+inorgnwetdep[Year][AOI] & Mean Annual Precipitation-Weighted Nitrogen & 2008 & Kilogram/Hectare/Year\\
+\hline
+n\_ags\_[Year][AOI] & Nitrogen Agricultural Surplus & 1987-2017 & Kilograms\\
+\hline
+pcthighsev[Year][AOI] & Percent High Burn Severity Class For Year & 1984-2018 & Percent\\
+\hline
+\end{tabular}
+\end{table}
 
 `sc_fullname()` and `lc_fullname()` return the full descriptive name for a given metric.:
 
@@ -138,7 +150,7 @@ sc_fullname(metric='pctgrs2019')
 #> [1] "Grassland/Herbaceous Percentage 2019"
 ```
 
-Users can also filter available metrics by year, category, dataset, and AOI using `sc_get_metric_names()` and `lc_get_metric_names()` (Table 2).
+Users can also filter available metrics by year, category, dataset, and AOI using `sc_get_metric_names()` and `lc_get_metric_names()` (Table \ref{tab:metrics-table}).
 
 
 ``` r
@@ -147,21 +159,36 @@ metrics <- sc_get_metric_names(category = c('Deposition','Climate'),
 my_data <- head(metrics[,c('Category','Metric','AOI')],10)
 ```
 
+\begin{table}
 
-Table: Example of metric names returned by the sc_get_metric_names function.
-
-|Category   |Metric                  |AOI     |
-|:----------|:-----------------------|:-------|
-|Climate    |bfi[AOI]                |Cat, Ws |
-|Deposition |inorgnwetdep[Year][AOI] |Cat, Ws |
-|Deposition |nh4[Year][AOI]          |Cat, Ws |
-|Deposition |no3[Year][AOI]          |Cat, Ws |
-|Climate    |precip8110[AOI]         |Cat, Ws |
-|Climate    |precip9120[AOI]         |Cat, Ws |
-|Climate    |precip[Year][AOI]       |Cat, Ws |
-|Deposition |sn[Year][AOI]           |Cat, Ws |
-|Climate    |tmax8110[AOI]           |Cat, Ws |
-|Climate    |tmax9120[AOI]           |Cat, Ws |
+\caption{\label{tab:metrics-table}Example of metric names returned by the sc\_get\_metric\_names function.}
+\centering
+\begin{tabular}[t]{l|l|l}
+\hline
+Category & Metric & AOI\\
+\hline
+Climate & bfi[AOI] & Cat, Ws\\
+\hline
+Deposition & inorgnwetdep[Year][AOI] & Cat, Ws\\
+\hline
+Deposition & nh4[Year][AOI] & Cat, Ws\\
+\hline
+Deposition & no3[Year][AOI] & Cat, Ws\\
+\hline
+Climate & precip8110[AOI] & Cat, Ws\\
+\hline
+Climate & precip9120[AOI] & Cat, Ws\\
+\hline
+Climate & precip[Year][AOI] & Cat, Ws\\
+\hline
+Deposition & sn[Year][AOI] & Cat, Ws\\
+\hline
+Climate & tmax8110[AOI] & Cat, Ws\\
+\hline
+Climate & tmax9120[AOI] & Cat, Ws\\
+\hline
+\end{tabular}
+\end{table}
 
 The `sc_get_data()` and `lc_get_data()` functions allow users to extract catchment or watershed metrics by chosen regional unit - below we request two catchment and watershed metrics (NLCD  medium intensity developed land cover and density of dams) for three stream reaches:
 
@@ -194,12 +221,15 @@ Helper functions are available to discover the relevant FIPS codes for counties 
 
 
 ``` r
-df <- sc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
+df <- sc_get_data(metric='pctwdwet2006', 
+                  aoi='ws', county='41003')
 ```
 
 
 ``` r
-df <- sc_get_params(param='county') |> dplyr::filter(state == 'OR' & county_name == 'Benton County') |> dplyr::pull(fips)
+df <- sc_get_params(param='county') |> 
+  dplyr::filter(state == 'OR' & county_name == 'Benton County') |>
+  dplyr::pull(fips)
 ```
 
 
@@ -250,8 +280,16 @@ df <- sc_get_nni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
 
 
 ``` r
-df <- sc_get_data(metric='pctagslphigh2019', aoi='ws', county='41003') |>
-  dplyr::summarise(mean_pctagslphigh2019ws = mean(pctagslphigh2019ws, na.rm=TRUE))
+df <- sc_get_data(
+  metric = "pctagslphigh2019",
+  aoi = "ws",
+  county = "41003"
+) |>
+  dplyr::summarise(
+    mean_pctagslphigh2019ws = mean(
+      pctagslphigh2019ws, na.rm = TRUE
+    )
+  )
 df
 ```
 
@@ -267,13 +305,33 @@ library(ggplot2)
 library(ggspatial)
 library(StreamCatTools)
 
-start_comid = 23763517
-nldi_feature <- list(featureSource = "comid", featureID = start_comid)
-flowline_nldi <- hydrogeofetch::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
-df <- sc_get_data(metric='pctimp2019', aoi='cat', comid=flowline_nldi$UT_flowlines$nhdplus_comid)
+start_comid <- 23763517
+nldi_feature <- list(
+  featureSource = "comid",
+  featureID = start_comid
+)
+
+flowline_nldi <- hydrogeofetch::navigate_nldi(
+  nldi_feature,
+  mode = "UT",
+  data_source = "flowlines",
+  distance = 5000
+)
+
+df <- sc_get_data(
+  metric = "pctimp2019",
+  aoi = "cat",
+  comid = flowline_nldi$UT_flowlines$nhdplus_comid
+)
+
 flowline_nldi <- flowline_nldi$UT_flowlines
-flowline_nldi$PCTIMP2019 <- df$pctimp2019cat[match(flowline_nldi$nhdplus_comid, df$comid)]
-basin <- hydrogeofetch::get_nldi_basin(nldi_feature = nldi_feature)
+flowline_nldi$PCTIMP2019 <- df$pctimp2019cat[
+  match(flowline_nldi$nhdplus_comid, df$comid)
+]
+
+basin <- hydrogeofetch::get_nldi_basin(
+  nldi_feature = nldi_feature
+)
 ```
 
 Figure \ref{fig:calapooia} plots the NLCD percent imperviousness for the local drainage mapped to each stream reach and to the overall basin boundary.
@@ -297,8 +355,10 @@ library(ggforce)
 
 df <- lc_get_nlcd(comid='19334077', year='2019', aoi='ws')
 lake <- hydrogeofetch::get_waterbodies(id = 19334077)
-ws <- lc_get_watershed(comid = 19334077, huc2 = "01",huc2_filter = "01", 
-                      threads = 2,retries = 5, verbose=FALSE, progress=FALSE)
+ws <- lc_get_watershed(comid = 19334077, huc2 = "01",
+                       huc2_filter = "01", 
+                       threads = 2,retries = 5, verbose=FALSE,
+                       progress=FALSE)
 ```
 
 \begin{figure}

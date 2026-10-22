@@ -13,21 +13,22 @@ authors:
     orcid: 0000-0001-9583-0426
     affiliation: 1
   - name: Selia Markley
-    affiliation: 4
+    affiliation: 2
   - name: Travis Hudson
     affiliation: 3
   - name: Allen Brookes
-    affiliation: 2
+    affiliation: 4
 
 affiliations:
   - name: Office of Water, United States Environmental Protection Agency
     index: 1
-  - name: United States Environmental Protection Agency Retired
+  - name: Oak Ridge Institute for Science and Education Fellow c/o United States Environmental Protection Agency
     index: 2
   - name: Oak Ridge Associated Universities Student Services Contractor c/o United States Environmental Protection Agency
     index: 3
-  - name: Oak Ridge Institute for Science and Education Fellow c/o United States Environmental Protection Agency
+  - name: United States Environmental Protection Agency Retired
     index: 4
+
 
 citation_author: Weber et al.
 date: 25 August 2026
@@ -62,7 +63,7 @@ R packages for watershed science usually cover one of three tasks: network navig
 
 # Package Overview
 
-`StreamCatTools` is a lightweight R interface to the StreamCat API. The package allows for metadata discovery, metric lookup, and data retrieval using `httr2` [@wickham2025httr2]. The core functions retrieve variables at multiple AOIs: catchment (cat), watershed (ws), riparian catchment (catrp100), riparian watershed (wsrp100), and an other category for non-standard metrics). They also support National Land Cover Database (NLCD) [@NLCD] and National Nutrient Inventory (NNI) [@nutinventory] time-series products.
+`StreamCatTools` is a lightweight R interface to the StreamCat API. The package allows for metadata discovery, metric lookup, and data retrieval using `httr2` [@wickham2025httr2]. The core functions retrieve variables at multiple AOIs: catchment (cat), watershed (ws), riparian catchment (catrp100), riparian watershed (wsrp100), and an other category for non-standard metrics) Figure \ref{fig:flowchart}. They also support National Land Cover Database (NLCD) [@NLCD] and National Nutrient Inventory (NNI) [@nutinventory] time-series products.
 
 ```{r flowchart, fig.cap="Diagram of the StreamCat and StreamCatTools framework. The backend Oracle database and REST web service are exposed through api.epa.gov to functions in StreamCatTools that simplify access and analysis of the data in R via the application programming interface (API). The example here shows the general categories of Oracle database tables in the StreamCat Oracle database.", echo=FALSE, fig.align="center", out.width="95%"}
 knitr::include_graphics("Flowchart.png")
@@ -101,18 +102,24 @@ names[1:10]
 
 The same pattern applies to LakeCat metadata retrieval with `lc_get_params()`.
 
-In StreamCat and LakeCat individual catchments (the local drainage area for a stream or lake) are aggregated to the watershed using either a weighted average or a count/sum depending on the metric [@hill2016streamcat]. `sc_get_params()` and `lc_get_params()` return variable descriptions, units, years, and metric categories (Table 1)
+In StreamCat and LakeCat individual catchments (the local drainage area for a stream or lake) are aggregated to the watershed using either a weighted average or a count/sum depending on the metric [@hill2016streamcat]. `sc_get_params()` and `lc_get_params()` return variable descriptions, units, years, and metric categories as shown in Table \ref{tab:variable-table}.
 
 ```{r variable-table, warning=FALSE, message=FALSE, echo=FALSE, results='asis'}
 var_info <- sc_get_params(param = "variable_info")
-my_data <- head(var_info[c(5, 10, 29, 33, 45, 102), c("metric", "short_description", "year", "units")])
+
+my_data <- head(
+  var_info[c(5, 10, 29, 33, 45, 102),
+           c("metric", "short_description", "year", "units")]
+)
 
 knitr::kable(
   my_data,
-  format = "pipe",
+  format = "latex",
   caption = "Example of variable information returned by the variable_info parameter in the sc_get_params function.",
+  label = "variable-table",
   col.names = c("Metric", "Short Description", "Year", "Units"),
-  align = "llll"
+  align = c("l", "p{0.25\\textwidth}", "c", "l"),
+  escape = TRUE
 )
 ```
 
@@ -122,7 +129,7 @@ knitr::kable(
 sc_fullname(metric='pctgrs2019')
 ```
 
-Users can also filter available metrics by year, category, dataset, and AOI using `sc_get_metric_names()` and `lc_get_metric_names()` (Table 2).
+Users can also filter available metrics by year, category, dataset, and AOI using `sc_get_metric_names()` and `lc_get_metric_names()` (Table \ref{tab:metrics-table}).
 
 ```{r warning=FALSE, message=FALSE}
 metrics <- sc_get_metric_names(category = c('Deposition','Climate'),
@@ -133,7 +140,7 @@ my_data <- head(metrics[,c('Category','Metric','AOI')],10)
 ```{r metrics-table, warning=FALSE, message=FALSE, echo=FALSE, results='asis'}
 knitr::kable(
   my_data,
-  format = "pipe",
+  format = "latex",
   caption = "Example of metric names returned by the sc_get_metric_names function.",
   col.names = c("Category", "Metric", "AOI"),
   align = "lll"
@@ -158,11 +165,14 @@ head(df)
 Helper functions are available to discover the relevant FIPS codes for counties for data retrieval and simplify state- and county-level queries:  
 
 ```{r warning=FALSE, message=FALSE}
-df <- sc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
+df <- sc_get_data(metric='pctwdwet2006', 
+                  aoi='ws', county='41003')
 ```
 
-```{r warning=FALSE, message=FALSE, eval=FALSE}
-df <- sc_get_params(param='county') |> dplyr::filter(state == 'OR' & county_name == 'Benton County') |> dplyr::pull(fips)
+```{r warning=FALSE, message=FALSE, eval=FALSE, tidy=FALSE}
+df <- sc_get_params(param='county') |> 
+  dplyr::filter(state == 'OR' & county_name == 'Benton County') |>
+  dplyr::pull(fips)
 ```
 
 ```{r warning=FALSE, message=FALSE}
@@ -198,25 +208,53 @@ df <- sc_get_nni(year='1987, 1990, 2005, 2017', aoi='cat,ws',
 
 `StreamCatTools` can be used to link watershed metrics with spatial analyses and ecological models. For example, users can calculate county- or state-scale summaries of land cover or hydrologic stressors and then combine those outputs with `ggplot2` or `hydrogeofetch`-based mapping:
 
-```{r warning=FALSE, message=FALSE}
-df <- sc_get_data(metric='pctagslphigh2019', aoi='ws', county='41003') |>
-  dplyr::summarise(mean_pctagslphigh2019ws = mean(pctagslphigh2019ws, na.rm=TRUE))
+```{r warning=FALSE, message=FALSE, tidy=FALSE}
+df <- sc_get_data(
+  metric = "pctagslphigh2019",
+  aoi = "ws",
+  county = "41003"
+) |>
+  dplyr::summarise(
+    mean_pctagslphigh2019ws = mean(
+      pctagslphigh2019ws, na.rm = TRUE
+    )
+  )
 df
 ```
 
-```{r warning=FALSE, message=FALSE}
+```{r warning=FALSE, message=FALSE, tidy=FALSE}
 library(hydrogeofetch)
 library(ggplot2)
 library(ggspatial)
 library(StreamCatTools)
 
-start_comid = 23763517
-nldi_feature <- list(featureSource = "comid", featureID = start_comid)
-flowline_nldi <- hydrogeofetch::navigate_nldi(nldi_feature, mode = "UT", data_source = "flowlines", distance=5000)
-df <- sc_get_data(metric='pctimp2019', aoi='cat', comid=flowline_nldi$UT_flowlines$nhdplus_comid)
+start_comid <- 23763517
+nldi_feature <- list(
+  featureSource = "comid",
+  featureID = start_comid
+)
+
+flowline_nldi <- hydrogeofetch::navigate_nldi(
+  nldi_feature,
+  mode = "UT",
+  data_source = "flowlines",
+  distance = 5000
+)
+
+df <- sc_get_data(
+  metric = "pctimp2019",
+  aoi = "cat",
+  comid = flowline_nldi$UT_flowlines$nhdplus_comid
+)
+
 flowline_nldi <- flowline_nldi$UT_flowlines
-flowline_nldi$PCTIMP2019 <- df$pctimp2019cat[match(flowline_nldi$nhdplus_comid, df$comid)]
-basin <- hydrogeofetch::get_nldi_basin(nldi_feature = nldi_feature)
+flowline_nldi$PCTIMP2019 <- df$pctimp2019cat[
+  match(flowline_nldi$nhdplus_comid, df$comid)
+]
+
+basin <- hydrogeofetch::get_nldi_basin(
+  nldi_feature = nldi_feature
+)
 ```
 
 Figure \ref{fig:calapooia} plots the NLCD percent imperviousness for the local drainage mapped to each stream reach and to the overall basin boundary.
@@ -247,8 +285,10 @@ library(ggforce)
 
 df <- lc_get_nlcd(comid='19334077', year='2019', aoi='ws')
 lake <- hydrogeofetch::get_waterbodies(id = 19334077)
-ws <- lc_get_watershed(comid = 19334077, huc2 = "01",huc2_filter = "01", 
-                      threads = 2,retries = 5, verbose=FALSE, progress=FALSE)
+ws <- lc_get_watershed(comid = 19334077, huc2 = "01",
+                       huc2_filter = "01", 
+                       threads = 2,retries = 5, verbose=FALSE,
+                       progress=FALSE)
 ```
 
 ```{r landcover, fig.cap="NLCD land cover proportions with an example lake watershed.", warning=FALSE, message=FALSE, echo=FALSE, out.width="95%", fig.align="center"}
