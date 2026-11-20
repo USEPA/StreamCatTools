@@ -60,7 +60,8 @@ Values: true|false}
 A tibble of desired StreamCat metrics
 }
 \description{
-Function to get all NNI data available for a given year.
+Retrieve the complete NNI bundle from the StreamCat API. Some component
+metrics are not available in the Parquet catalog.
 }
 \examples{
 \dontrun{

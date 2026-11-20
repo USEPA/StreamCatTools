@@ -40,10 +40,9 @@ Authors@R: c(person(given = "Marc",
                     role = "ctb"))
 Author: Marc Weber [aut, cre], Ryan Hill [aut], Selia Markley [aut], Travis Hudson [aut], Allen Brookes [aut], David Rebhuhn [ctb], Michael Dumelle [ctb], Justin Bousquin [ctb], Zachary Smith [ctb]
 Maintainer: Marc Weber <weber.marc@epa.gov>
-Description: Tools for using the 'StreamCat' and 'LakeCat' API and 
-             interacting with the 'StreamCat' and 'LakeCat' database. 
-             Convenience functions in the package wrap the API for 'StreamCat' 
-             on <https://api.epa.gov/StreamCat/streams/metrics>.
+Description: Tools for querying the 'StreamCat' Parquet data lake with
+             'DuckDB' and accessing the 'StreamCat' and 'LakeCat' API at
+             <https://api.epa.gov/StreamCat/streams/metrics>.
 Depends: R (>= 4.1.0)
 Imports: 
     sf,
@@ -60,6 +59,8 @@ Imports:
     tidyr,
     stringr,
     tibble,
+    DBI,
+    duckdb
 Suggests: 
   mapview,
   testthat, 
@@ -72,8 +73,6 @@ Suggests:
   purrr,
   lifecycle,
   tidyselect,
-  DBI, 
-  duckdb,
   tictoc,
   stats,
   wk

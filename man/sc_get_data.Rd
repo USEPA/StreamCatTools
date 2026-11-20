@@ -24,9 +24,9 @@ or any object that can be coerced to a comma-delimited list with \code{\link[bas
 One of \code{comid}, \code{county}, \code{state}, or \code{region} is required unless \code{conus='true'}.
 Syntax: comid=<comid1>,<comid2>}
 
-\item{metric}{Name(s) of metrics to query. Must be character string with comma-delimited list of metrics,
-or, if \code{metric='all'} then all metrics will be queried. \emph{\strong{Not} case-sensitive}.
-Syntax: name=<name1>,<name2>}
+\item{metric}{Metric names as a character vector or a comma-separated
+string. Names are case-insensitive; see \code{sc_get_params("metric_names")}.
+Set \code{metric = "all"} to request all metrics from the API.}
 
 \item{aoi}{Name(s) of areas of interest to query.
 If a metric does not have data for a given AOI, no data is returned for that AOI.
@@ -68,15 +68,36 @@ Values: true|false}
 count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
 Values: true|false}
 
-\item{validate}{Logical. If TRUE, validate supplied COMIDs using the upstream NLDI service before calling the StreamCat API.
-The default is FALSE to avoid external NLDI calls during routine data retrieval.}
+\item{validate}{Logical. If \code{TRUE}, validate supplied COMIDs using the
+upstream NLDI service before retrieving metrics. The default is \code{FALSE}.}
 }
 \value{
 A data frame of StreamCat metrics. If data are missing for all rows of a given metric, then the column for that metric will not exist. If data are missing for only some rows, then they will be specified with NA.
 }
 \description{
-Function to return StreamCat catchment and watershed metrics using the StreamCat API.  The function allows a user to get
-specific metric data aggregated by area of interest, returned by comid(s), hydroregion(s), state(s), or county(ies).
+Get StreamCat catchment and watershed metrics by COMID, hydroregion, state,
+county, or for the conterminous United States.
+}
+\details{
+By default, named metric requests by COMID, state, hydroregion, or CONUS
+query the StreamCat Parquet data lake with DuckDB. Geographic selectors take
+precedence in this order: CONUS, region, state, county, and COMID. Requests
+that select by county or set \code{countOnly = TRUE},
+\code{showPctFull = TRUE}, or \code{metric = "all"} use the StreamCat API.
+Requests containing NNI components not published in the lake also use the
+API. LakeCat requests are not affected.
+
+Set \code{options(StreamCatTools.backend = "api")} to use the API for all
+requests. Set \code{options(StreamCatTools.lake_root = "...")} to use a
+different data lake root. A DuckDB error is reported without retrying the
+request through the API.
+
+Result names follow the API convention: lowercase \code{comid} and
+lowercase metric names with the AOI suffix where applicable (for example,
+\code{fertcat} and \code{fertws}). With \code{showAreaSqKm = TRUE},
+area columns include \code{catareasqkm} and \code{wsareasqkm} for the
+corresponding AOIs. DuckDB returns the numeric precision stored in Parquet,
+which may differ from the API's rounded values.
 }
 \examples{
 \dontrun{
@@ -86,7 +107,7 @@ df <- sc_get_data(metric='pctgrs2006', aoi='ws', region='Region01')
 
 df <- sc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
 
-df <- sc_get_data(metric='pcturbmd2006', aoi='ws,rp100',
+df <- sc_get_data(metric='pcturbmd2006', aoi='ws,wsrp100',
 comid='1337420')
 
 df <- sc_get_data(metric='pcturbmd2006,damdens',

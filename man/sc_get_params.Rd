@@ -7,17 +7,22 @@
 sc_get_params(param = NULL)
 }
 \arguments{
-\item{param}{List of available parameters in the API for the following options:
-name, areaofInterest, region, state, county.  State and county return a data
-frame that includes FIPS codes, names and state abbreviations
-Syntax: param=<value1>,<value2>
-Values: name|area}
+\item{param}{A single parameter name: \code{"metric_names"}, \code{"aoi"},
+\code{"region"}, \code{"state"}, \code{"county"}, \code{"variable_info"},
+\code{"categories"}, or \code{"datasets"}.}
 }
 \value{
-A list of all the current StreamCat values for a given parameter
+A character vector of available values, or a data frame for
+\code{"state"}, \code{"county"}, and \code{"variable_info"}.
 }
 \description{
-Function to return available StreamCat parameters using the StreamCat API.
+Get available StreamCat query parameters or metric metadata.
+}
+\details{
+The \code{"metric_names"}, \code{"aoi"}, and \code{"region"} lookups use
+the DuckDB backend by default. See \code{\link{sc_get_data}} for the
+\code{StreamCatTools.backend} and \code{StreamCatTools.lake_root} options.
+All other lookups use the StreamCat API.
 }
 \examples{
 \dontrun{

@@ -1,15 +1,15 @@
 #' @title Get StreamCat data
 #'
 #' @description
-#' Function to return StreamCat catchment and watershed metrics using the StreamCat API.  The function allows a user to get
-#' specific metric data aggregated by area of interest, returned by comid(s), hydroregion(s), state(s), or county(ies).
+#' Get StreamCat catchment and watershed metrics by COMID, hydroregion, state,
+#' county, or for the conterminous United States.
 #'
 #' @author
 #' Marc Weber
 #'
-#' @param metric Name(s) of metrics to query. Must be character string with comma-delimited list of metrics,
-#' or, if \code{metric='all'} then all metrics will be queried. \emph{\strong{Not} case-sensitive}.
-#' Syntax: name=<name1>,<name2>
+#' @param metric Metric names as a character vector or a comma-separated
+#' string. Names are case-insensitive; see \code{sc_get_params("metric_names")}.
+#' Set \code{metric = "all"} to request all metrics from the API.
 #'
 #' @param aoi Name(s) of areas of interest to query.
 #' If a metric does not have data for a given AOI, no data is returned for that AOI.
@@ -56,8 +56,29 @@
 #' count (COLUMNCOUNT) that the server expects to return in a request. The default value is false.
 #' Values: true|false
 #'
-#' @param validate Logical. If TRUE, validate supplied COMIDs using the upstream NLDI service before calling the StreamCat API.
-#' The default is FALSE to avoid external NLDI calls during routine data retrieval.
+#' @param validate Logical. If \code{TRUE}, validate supplied COMIDs using the
+#' upstream NLDI service before retrieving metrics. The default is \code{FALSE}.
+#'
+#' @details
+#' By default, named metric requests by COMID, state, hydroregion, or CONUS
+#' query the StreamCat Parquet data lake with DuckDB. Geographic selectors take
+#' precedence in this order: CONUS, region, state, county, and COMID. Requests
+#' that select by county or set \code{countOnly = TRUE},
+#' \code{showPctFull = TRUE}, or \code{metric = "all"} use the StreamCat API.
+#' Requests containing NNI components not published in the lake also use the
+#' API. LakeCat requests are not affected.
+#'
+#' Set \code{options(StreamCatTools.backend = "api")} to use the API for all
+#' requests. Set \code{options(StreamCatTools.lake_root = "...")} to use a
+#' different data lake root. A DuckDB error is reported without retrying the
+#' request through the API.
+#'
+#' Result names follow the API convention: lowercase \code{comid} and
+#' lowercase metric names with the AOI suffix where applicable (for example,
+#' \code{fertcat} and \code{fertws}). With \code{showAreaSqKm = TRUE},
+#' area columns include \code{catareasqkm} and \code{wsareasqkm} for the
+#' corresponding AOIs. DuckDB returns the numeric precision stored in Parquet,
+#' which may differ from the API's rounded values.
 #'
 #' @return A data frame of StreamCat metrics. If data are missing for all rows of a given metric, then the column for that metric will not exist. If data are missing for only some rows, then they will be specified with NA.
 #'
@@ -69,7 +90,7 @@
 #'
 #' df <- sc_get_data(metric='pctwdwet2006', aoi='ws', county='41003')
 #'
-#' df <- sc_get_data(metric='pcturbmd2006', aoi='ws,rp100',
+#' df <- sc_get_data(metric='pcturbmd2006', aoi='ws,wsrp100',
 #' comid='1337420')
 #'
 #' df <- sc_get_data(metric='pcturbmd2006,damdens',
@@ -101,6 +122,54 @@ sc_get_data <- function(comid = NULL,
                         conus = NULL,
                         countOnly = NULL,
                         validate = FALSE) {
+  all_metrics <- identical(tolower(trimws(paste(metric, collapse = ","))), "all")
+  county_selected <- !is.null(county) &&
+    is.null(state) && is.null(region) && !.sc_true_flag(conus)
+  # These NNI components are not published in the StreamCat Parquet catalog.
+  # Route the complete request together (including requests from sc_plotnni).
+  api_nni <- any(grepl("^[np]_(dep|ff|uf|hw|cf)_[0-9]{4}$",
+                       tolower(.sc_lake_tokens(metric))))
+
+  if (
+    .sc_uses_api() || county_selected || .sc_true_flag(countOnly) ||
+      .sc_true_flag(showPctFull) || all_metrics || api_nni
+  ) {
+    if (all_metrics) metric <- "all"
+    return(.sc_api_data(
+      comid = comid,
+      metric = metric,
+      aoi = aoi,
+      showAreaSqKm = showAreaSqKm,
+      showPctFull = showPctFull,
+      state = state,
+      county = county,
+      region = region,
+      conus = conus,
+      countOnly = countOnly,
+      validate = validate
+    ))
+  }
+
+  if (isTRUE(validate) && !is.null(comid)) {
+    is_valid_comid(comid, strict = TRUE)
+  }
+  .sc_lake_data(
+    comid = comid,
+    metric = metric,
+    aoi = aoi,
+    state = state,
+    region = region,
+    conus = conus,
+    showAreaSqKm = showAreaSqKm
+  )
+}
+
+.sc_true_flag <- function(x) {
+  isTRUE(x) || (is.character(x) && identical(tolower(trimws(x)), "true"))
+}
+
+.sc_api_data <- function(comid, metric, aoi, showAreaSqKm, showPctFull,
+                         state, county, region, conus, countOnly, validate) {
   # Base API URL.
   base_url <- 'https://api.epa.gov/StreamCat/streams/metrics'
   req <- httr2::request(base_url)
@@ -164,7 +233,7 @@ sc_get_data <- function(comid = NULL,
   items = unlist(strsplit(metric,','))
   items = gsub(" ","",items)
   items = gsub("\n","",items)
-  params <- sc_get_params(param='metric_names')
+  params <- .sc_api_params(param='metric_names')
   if (metric != 'all' & !all(items %in% params)){
     message("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use sc_get_params(param='metric_names') to list valid metric names for StreamCat")
   }
@@ -211,7 +280,8 @@ sc_get_data <- function(comid = NULL,
 #' @description
 #' `r lifecycle::badge("deprecated")`
 #' `sc_nlcd()` was renamed to `sc_get_nlcd()` to create a more consistent API.
-#' Function to retrieve all NLCD metrics for a given year using the StreamCat API.
+#' Get all NLCD metrics for a given year using the same backend selection as
+#' \code{\link{sc_get_data}}.
 #'
 #' 
 #' @author
@@ -292,8 +362,7 @@ sc_get_nlcd <- function(year = '2019',
   year_chr <-  as.character(year)
   # split multiple years supplied as a single string into
   # a vector of years.
-  year_vec <- unlist(strsplit(x = year_chr,
-                              split = ",|, "))
+  year_vec <- trimws(unlist(strsplit(year_chr, ",", fixed = TRUE)))
   # Vector of valid NLCD years to check inputs against.
   valid_years <- c('2001',
                    '2004',
@@ -336,7 +405,7 @@ sc_get_nlcd <- function(year = '2019',
                       all_comb$Var2,
                       collapse = ",",
                       recycle0 = TRUE)
-  # Query the API.
+  # Query StreamCat.
   final_df <- sc_get_data(
     metric = metric,
     aoi = aoi,
@@ -381,7 +450,8 @@ sc_nlcd <- function(year = '2019',
 #' @title Get NNI
 #' 
 #' @description 
-#' Function to get all NNI data available for a given year.
+#' Retrieve the complete NNI bundle from the StreamCat API. Some component
+#' metrics are not available in the Parquet catalog.
 #' 
 #' @author
 #' Selia Markley
@@ -398,7 +468,7 @@ sc_nlcd <- function(year = '2019',
 #' @param comid Return metric information for specific COMIDs
 #' Syntax: comid=<comid1>,<comid2>
 #' 
-##' @param state Return metric information for COMIDs within a specific state. Use a state's abbreviation to
+#' @param state Return metric information for COMIDs within a specific state. Use a state's abbreviation to
 #' query for a given state.
 #' Syntax: state=<state1>,<state2>
 #'
@@ -449,8 +519,7 @@ sc_get_nni <- function(year, aoi = NULL, comid = NULL,
   year_chr <-  as.character(year)
   # split multiple years supplied as a single string into
   # a vector of years.
-  year_vec <- unlist(strsplit(x = year_chr,
-                              split = ",|, "))
+  year_vec <- trimws(unlist(strsplit(year_chr, ",", fixed = TRUE)))
   # Vector of valid NNI years to check inputs against.
   valid_years <- c('1987',
                    '1988',
@@ -530,26 +599,28 @@ sc_get_nni <- function(year, aoi = NULL, comid = NULL,
                     recycle0 = TRUE)
   # Create a data frame of all NNI Metric and year combinations.
   all_comb <- expand.grid(nni, year_vec)
-  # Concatenate the NLCD metric name with the supplied year(s) to create
-  # valid metric names to submit to the API.
+  # Concatenate each NNI metric name with the supplied year(s).
   nni_mets <- paste0(all_comb$Var1,
                      all_comb$Var2,
                      collapse = ",",
                      recycle0 = TRUE)
   # Combine all NNI metrics
-  nni_mets_all <- paste0(nni_mets, ",", ndep_mets, ",", pdep_mets, ",", ww_mets)
+  nni_mets_all <- c(nni_mets, ndep_mets, pdep_mets, ww_mets)
+  nni_mets_all <- paste(nni_mets_all[nzchar(nni_mets_all)], collapse = ",")
   
-  # Query the API.
-  final_df <- sc_get_data(
+  # The public Parquet catalog does not cover the full NNI bundle.
+  final_df <- .sc_api_data(
     metric = nni_mets_all,
     aoi = aoi,
     comid = comid,
     state = state,
     county = county,
+    region = region,
     showAreaSqKm = showAreaSqKm,
     showPctFull = showPctFull,
     conus = conus,
-    countOnly = countOnly
+    countOnly = countOnly,
+    validate = FALSE
   )
   # End of function. Return a data frame
   return(final_df)
@@ -622,8 +693,23 @@ NULL
 # - online = TRUE (default): query NLDI (hydrogeofetch::get_nldi_feature) to confirm existence.
 # - online = FALSE: validate against a local .valid_comids vector (must be available).
 # - Also errors if an ID is present (valid) but listed in .missing_COMIDs/.missing_comids.
-is_valid_comid <- function(comid, online = TRUE) {
-  ids_chr <- .parse_comids(comid)
+is_valid_comid <- function(comid, online = TRUE, strict = FALSE) {
+  if (strict) {
+    ids <- unlist(comid, recursive = TRUE, use.names = FALSE)
+    ids_chr <- if (is.numeric(ids)) {
+      format(ids, scientific = FALSE, trim = TRUE)
+    } else {
+      as.character(ids)
+    }
+    if (anyNA(ids_chr)) stop("COMIDs must be positive integers.", call. = FALSE)
+    ids_chr <- unlist(strsplit(ids_chr, "[,[:space:]]+"), use.names = FALSE)
+    ids_chr <- ids_chr[nzchar(ids_chr)]
+    if (any(!grepl("^[0-9]*[1-9][0-9]*$", ids_chr))) {
+      stop("COMIDs must be positive integers.", call. = FALSE)
+    }
+  } else {
+    ids_chr <- .parse_comids(comid)
+  }
   if (!length(ids_chr)) return(invisible(ids_chr))
   
   # Convert to integer where possible

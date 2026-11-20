@@ -77,7 +77,8 @@ A tibble of desired StreamCat metrics
 \description{
 `r lifecycle::badge("deprecated")`
 `sc_nlcd()` was renamed to `sc_get_nlcd()` to create a more consistent API.
-Function to retrieve all NLCD metrics for a given year using the StreamCat API.
+Get all NLCD metrics for a given year using the same backend selection as
+\code{\link{sc_get_data}}.
 }
 \examples{
 \dontrun{

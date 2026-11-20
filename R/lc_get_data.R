@@ -147,7 +147,7 @@ lc_get_data <- function(comid = NULL,
   items = unlist(strsplit(metric,','))
   items = gsub(" ","",items)
   items = gsub("\n","",items)
-  params <- sc_get_params(param='metric_names')
+  params <- .sc_api_params(param='metric_names')
   if (metric != 'all' & !all(items %in% params)){
     message("One or more of the provided metric names do not match the expected metric names in StreamCat.  Use lc_get_params(param='metric_names') to list valid metric names for StreamCat")
   }

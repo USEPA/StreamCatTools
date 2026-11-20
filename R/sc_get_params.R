@@ -1,18 +1,23 @@
 #' @title Get StreamCat Parameters
 #'
 #' @description
-#' Function to return available StreamCat parameters using the StreamCat API.
+#' Get available StreamCat query parameters or metric metadata.
 #'
 #' @author
 #' Marc Weber
 #'
-#' @param param List of available parameters in the API for the following options:
-#' name, areaofInterest, region, state, county.  State and county return a data
-#' frame that includes FIPS codes, names and state abbreviations
-#' Syntax: param=<value1>,<value2>
-#' Values: name|area
+#' @param param A single parameter name: \code{"metric_names"}, \code{"aoi"},
+#' \code{"region"}, \code{"state"}, \code{"county"}, \code{"variable_info"},
+#' \code{"categories"}, or \code{"datasets"}.
 #'
-#' @return A list of all the current StreamCat values for a given parameter
+#' @return A character vector of available values, or a data frame for
+#' \code{"state"}, \code{"county"}, and \code{"variable_info"}.
+#'
+#' @details
+#' The \code{"metric_names"}, \code{"aoi"}, and \code{"region"} lookups use
+#' the DuckDB backend by default. See \code{\link{sc_get_data}} for the
+#' \code{StreamCatTools.backend} and \code{StreamCatTools.lake_root} options.
+#' All other lookups use the StreamCat API.
 #' @export
 #'
 #' @examples
@@ -26,6 +31,20 @@
 #' params <- sc_get_params(param='datasets')}
 
 sc_get_params <- function(param = NULL) {
+  if (
+    !.sc_uses_api() && length(param) == 1L &&
+      param %in% c("metric_names", "aoi", "region")
+  ) {
+    return(.sc_lake_params(param))
+  }
+  .sc_api_params(param)
+}
+
+.sc_uses_api <- function() {
+  identical(getOption("StreamCatTools.backend", "duckdb"), "api")
+}
+
+.sc_api_params <- function(param) {
   UUID <- DATE_DOWNLOADED <- METADATA <- FINAL_TABLE<- NULL
   INDICATOR_CATEGORY <- METRIC_NAME <- AOI <- YEAR <- NULL
   WEBTOOL_NAME <- METRIC_UNITS <- METRIC_DESCRIPTION <- DSID <- NULL

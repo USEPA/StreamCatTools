@@ -1,5 +1,8 @@
 # StreamCatTools 0.12.0
 
+-   `sc_get_data()` now uses DuckDB to query the StreamCat Parquet data lake by default for named metrics by COMID, state, region, or CONUS. County, count-only, percent-full, and all-metric requests still use the API. Parquet values retain their stored precision. Set `options(StreamCatTools.backend = "api")` to opt out or `StreamCatTools.lake_root` to use a different data lake root.
+-   `sc_get_nni()` now forwards the `region` selector. The complete NNI bundle remains API-backed because the Parquet catalog does not include every component.
+-   `sc_get_params()` now uses DuckDB by default for metric names, AOIs, and regions; other metadata lookups still use the API.
 -   Replaced `sc_get_comid` with a new REST service implementation using
     the EPA NHDPlus NP21 simplified catchments layer.
 -   Added a `count_metrics` helper function 
