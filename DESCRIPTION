@@ -84,5 +84,4 @@ VignetteBuilder: knitr
 LazyData: true
 License: MIT + file LICENSE
 NeedsCompilation: no
-Config/roxygen2/version: 8.1.0
-
+Config/roxygen2/version: 8.1.1

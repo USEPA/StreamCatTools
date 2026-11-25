@@ -1,15 +1,5 @@
 context("Test that lc_get_params is pulling in StreamCat API parameters")
 
-skip_if_api_unavailable <- function(x, label = "API") {
-  if (is.null(x) ||
-      (is.data.frame(x) && nrow(x) == 0L) ||
-      (is.list(x) && length(x) == 0L) ||
-      (is.character(x) && length(x) == 0L)) {
-    testthat::skip(paste(label, "is unavailable; upstream service returned no data."))
-  }
-  invisible(x)
-}
-
 test_that("lc_get_params for metric_names parameters", {
   testthat::skip_on_cran()
   params <- lc_get_params(param='metric_names')

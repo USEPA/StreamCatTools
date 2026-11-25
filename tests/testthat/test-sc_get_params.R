@@ -68,6 +68,7 @@ test_that("sc_get_params for county parameters", {
 test_that("sc_get_metric_names for categories and AOIs", {
   testthat::skip_on_cran()
   metrics <- sc_get_metric_names(category = c('Deposition','Climate'),aoi=c('Cat','Ws'))
+  skip_if_api_unavailable(metrics, "StreamCat metric names API")
   expect_true(exists("metrics"))
   expect_gt(nrow(metrics),10)
   expect_equal(names(metrics), c("Category","Metric","AOI","Year", 
@@ -80,6 +81,7 @@ test_that("sc_get_metric_names for datasets", {
   metrics <- sc_get_metric_names(aoi='Other',
                                  dataset=c('Canal Density',
                                            'Predicted Channel Widths Depths'))
+  skip_if_api_unavailable(metrics, "StreamCat metric names API")
   expect_true(exists("metrics"))
   expect_lt(nrow(metrics),4)
   expect_equal(names(metrics), c("Category","Metric","AOI","Year", 
